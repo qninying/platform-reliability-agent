@@ -9,8 +9,8 @@ Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninyi
 |---|---|---|
 | 1 | Compare the five system classes, and place this domain among them | Approved by K.D. 2026-10-19 (`discovery/01-system-classes-placement.md`) |
 | 2 | Map the nine anatomy elements onto this domain's agent | Approved by K.D. 2026-10-19 (`discovery/02-agent-anatomy-map.md`) |
-| 3 | Document the role and which data analyst responsibilities transition | Not started |
-| 4 | 30-minute manager interview | Held 2026-10-19; notes kept private |
+| 3 | Document the role and which data analyst responsibilities transition | In review with K.D. |
+| 4 | 30-minute manager interview and weekly check-in | Held 2026-10-19; check-in agreed for Mondays 1:30 pm Central (`discovery/04-manager-interview.md`) |
 | 5 | Three proposed agent tasks with boundaries and completion evidence | Not started |
 
 ## Contents
@@ -23,6 +23,7 @@ Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninyi
 | `governance/agent-identity.md` | How the agent is treated as a governed identity |
 | `discovery/01-system-classes-placement.md` | Story: the five system classes and where this domain sits |
 | `discovery/02-agent-anatomy-map.md` | Story: the agent's ten components and what implements each (component map) |
+| `discovery/04-manager-interview.md` | Story: manager interview record and the weekly check-in |
 
 ## First deliverable checklist
 - [x] Research summary with source links
