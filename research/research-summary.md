@@ -1,5 +1,6 @@
 # Research Summary: Agentic AI for Platform Automation & Reliability
 **Intern:** Quincy Nkwain Ninying | **Manager:** K.D. | **Date:** 2026-10-07
+**Note (2026-10-19):** this is the pre-access research snapshot. Where it differs from the approved stories in `discovery/`, the stories take precedence. For example, the agent is now built first, and deterministic pieces are added only where measurements call for them.
 **Stage:** Pre-discovery research. I have not yet had access to the target platform. Everything below about how the agent should behave is the conceptual direction, not a final design. Platform details are open until discovery.
 ## 1. Five kinds of AI system
 | Type | What it does | How independent | When a human steps in |
