@@ -7,8 +7,8 @@ Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninyi
 ## Release 1: discovery and validation
 | # | Story | Status |
 |---|---|---|
-| 1 | Compare the five system classes, and place this domain among them | Approved by K.D. 2026-10-19 (`discovery/01-system-classes-placement.md`, approved PDF v2) |
-| 2 | Map the nine anatomy elements onto this domain's agent | Approved by K.D. 2026-10-19 (`discovery/02-agent-anatomy-map.md`, approved PDF v3) |
+| 1 | Compare the five system classes, and place this domain among them | Approved by K.D. 2026-10-19 (`discovery/01-system-classes-placement-approved-v2.pdf`) |
+| 2 | Map the nine anatomy elements onto this domain's agent | Approved by K.D. 2026-10-19 (`discovery/02-agent-anatomy-map-approved-v3.pdf`) |
 | 3 | Document the role and which Data Analytics (DA) responsibilities transition | In review with K.D. |
 | 4 | 30-minute manager interview and weekly check-in | Held 2026-10-19; check-in agreed for Mondays 1:30 pm Central (`discovery/04-manager-interview.md`) |
 | 5 | Three proposed agent tasks with boundaries and completion evidence | Not started |
@@ -21,15 +21,14 @@ Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninyi
 | `research/video-review-demo-to-production.md` | Review of the "Demo to Production" video |
 | `governance/tool-catalog-approach.md` | Tool approval rule and catalog format |
 | `governance/agent-identity.md` | How the agent is treated as a governed identity |
-| `discovery/01-system-classes-placement.md` | Story: the five system classes and where this domain sits |
-| `discovery/02-agent-anatomy-map.md` | Story: the agent's ten components and what implements each (component map) |
+| `discovery/01-system-classes-placement-approved-v2.pdf` | Story 1: the five system classes and where this domain sits, as K.D. approved it (version 2) |
+| `discovery/02-agent-anatomy-map-approved-v3.pdf` | Story 2: the agent's ten components and what implements each, as K.D. approved it (version 3) |
 | `discovery/04-manager-interview.md` | Story: manager interview record and the weekly check-in |
-| `discovery/01-system-classes-placement-approved-v2.pdf` | PDF of story 1 exactly as K.D. approved it (version 2) |
-| `discovery/02-agent-anatomy-map-approved-v3.pdf` | PDF of story 2 exactly as K.D. approved it (version 3) |
+| `brd/brd-draft-v0.7.pdf` | Business requirement document, early draft v0.7 (2026-10-14, written before platform access) |
 
 ## First deliverable checklist
 - [x] Research summary with source links
-- [x] Component map: `discovery/02-agent-anatomy-map.md` (version 3, approved by K.D. 2026-10-19)
+- [x] Component map: `discovery/02-agent-anatomy-map-approved-v3.pdf` (version 3, approved by K.D. 2026-10-19)
 - [ ] Role summary: responsibilities today vs the AI program
 - [x] Manager meeting notes (kept private; interview held 2026-10-19, `discovery/04-manager-interview.md`)
 - [ ] First three proposed agent tasks (info, tools, approvals, proof of completion)
