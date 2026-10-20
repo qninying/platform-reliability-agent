@@ -7,8 +7,8 @@ Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninyi
 ## Release 1: discovery and validation
 | # | Story | Status |
 |---|---|---|
-| 1 | Compare the five system classes, and place this domain among them | Approved by K.D. 2026-10-19 (`discovery/01-system-classes-placement.md`) |
-| 2 | Map the nine anatomy elements onto this domain's agent | Approved by K.D. 2026-10-19 (`discovery/02-agent-anatomy-map.md`) |
+| 1 | Compare the five system classes, and place this domain among them | Approved by K.D. 2026-10-19 (`discovery/01-system-classes-placement.md`, approved PDF v2) |
+| 2 | Map the nine anatomy elements onto this domain's agent | Approved by K.D. 2026-10-19 (`discovery/02-agent-anatomy-map.md`, approved PDF v3) |
 | 3 | Document the role and which Data Analytics (DA) responsibilities transition | In review with K.D. |
 | 4 | 30-minute manager interview and weekly check-in | Held 2026-10-19; check-in agreed for Mondays 1:30 pm Central (`discovery/04-manager-interview.md`) |
 | 5 | Three proposed agent tasks with boundaries and completion evidence | Not started |
@@ -24,6 +24,8 @@ Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninyi
 | `discovery/01-system-classes-placement.md` | Story: the five system classes and where this domain sits |
 | `discovery/02-agent-anatomy-map.md` | Story: the agent's ten components and what implements each (component map) |
 | `discovery/04-manager-interview.md` | Story: manager interview record and the weekly check-in |
+| `discovery/01-system-classes-placement-approved-v2.pdf` | PDF of story 1 exactly as K.D. approved it (version 2) |
+| `discovery/02-agent-anatomy-map-approved-v3.pdf` | PDF of story 2 exactly as K.D. approved it (version 3) |
 
 ## First deliverable checklist
 - [x] Research summary with source links
