@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 4,
+    "stories_verified": 5,
     "stories_submitted": 0,
-    "stories_in_progress": 50,
+    "stories_in_progress": 49,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 12,
-    "points_awarded": 60
+    "criteria_passed": 15,
+    "points_awarded": 75
   },
   "stories": [
     {
@@ -1381,19 +1381,15 @@
       "notes": "All 38 platform legacy records accounted for, each with a reason and a verified source line; replayable two-phase migration on the existing RETIRED_AGENTS mechanism (disable, never delete; idempotent skip of rows already disabled); hold-and-report rule for any record that cannot be classified, never defaulting to retired. Approved by K.D. as version 1 with conditions.",
       "updated_at": "2026-10-22",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 3,
         "criteria_total": 3,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "The plan accounts for every inherited legacy record for this domain, each one kept, merged or retired with a reason.",
-          "The migration is described as replayable: running it twice leaves the same end state, with no duplicated side effects.",
-          "The plan states what happens to a record the migration cannot classify, rather than assuming none exist."
-        ]
+        "verified_at": "2026-10-22T19:11:23.354Z",
+        "commit_sha": "0f7444465e5f07260f74a4b504b0e1f31efa418b",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/0f7444465e5f07260f74a4b504b0e1f31efa418b",
+        "commit_at": "2026-10-22T19:11:16Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
