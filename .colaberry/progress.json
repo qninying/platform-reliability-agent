@@ -1363,21 +1363,23 @@
       "criteria": [
         {
           "text": "The plan accounts for every inherited legacy record for this domain, each one kept, merged or retired with a reason.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "The migration is described as replayable: running it twice leaves the same end state, with no duplicated side effects.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "The plan states what happens to a record the migration cannot classify, rather than assuming none exist.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
+      "files_touched": [
+        "docs/migration/legacy-migration-plan.md"
+      ],
       "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "notes": "All 38 platform legacy records accounted for, each with a reason and a verified source line; replayable two-phase migration on the existing RETIRED_AGENTS mechanism (disable, never delete; idempotent skip of rows already disabled); hold-and-report rule for any record that cannot be classified, never defaulting to retired. Approved by K.D. as version 1 with conditions.",
+      "updated_at": "2026-10-22",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
