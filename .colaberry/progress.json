@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 1,
+    "stories_verified": 4,
     "stories_submitted": 0,
-    "stories_in_progress": 53,
+    "stories_in_progress": 50,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 3,
-    "points_awarded": 15
+    "criteria_passed": 12,
+    "points_awarded": 60
   },
   "stories": [
     {
@@ -1419,19 +1419,15 @@
       "notes": "Compares the five classes and recommends an agentic system with human checkpoints, argued from 48 capabilities, 23 human-reserved and 23 of the other 25 allowed to reach R4. Multi-agent is not needed: 0 of 81 dependencies leave the domain and none may reach R8. Approved by K.D. as version 3.",
       "updated_at": "2026-10-22",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 3,
         "criteria_total": 3,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "The document compares all five system classes (chatbot, fixed workflow, tool-using agent, agentic system, multi-agent system) and names which one this domain needs.",
-          "The choice cites this domain's own capability count and its human-reserved count, so the argument would change if those numbers changed.",
-          "The document states explicitly which class this domain does NOT need, and what would have to change to justify the next class up."
-        ]
+        "verified_at": "2026-10-22T13:12:24.291Z",
+        "commit_sha": "a6ee5057ec3063297ddb2e027df778c02ee96c0d",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/a6ee5057ec3063297ddb2e027df778c02ee96c0d",
+        "commit_at": "2026-10-22T13:12:11Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
@@ -1459,19 +1455,15 @@
       "notes": "All nine elements mapped to platform surfaces with file:line sources; 1 unknown (procedures) and 2 gaps (communication, coordination) recorded with what is missing. Approved by K.D. as version 4.",
       "updated_at": "2026-10-22",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 3,
         "criteria_total": 3,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "All nine anatomy elements are addressed, with none left blank and none dismissed as not applicable without a stated reason.",
-          "Each element names the concrete platform surface, tool or record it maps to, rather than describing the element in general terms.",
-          "Any element that cannot be filled is recorded as a gap with what is missing, rather than omitted."
-        ]
+        "verified_at": "2026-10-22T13:12:24.353Z",
+        "commit_sha": "2e70593c8a4e1c5c125c3a5dc8ada3f2bd42963b",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/2e70593c8a4e1c5c125c3a5dc8ada3f2bd42963b",
+        "commit_at": "2026-10-22T13:12:11Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
@@ -1499,19 +1491,15 @@
       "notes": "Accountable human named from the platform records; DA duty list proved absent by search; responsibilities mapped to capabilities as transitions (with readiness evidence), splits, and human-only (with reasons). Approved by K.D. as version 2.",
       "updated_at": "2026-10-22",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 3,
         "criteria_total": 3,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "The document names the accountable human for this domain and the specific responsibilities proposed to transition to the agent.",
-          "Each transitioning responsibility states what evidence would show the agent is ready to hold it.",
-          "Responsibilities that must stay human are listed separately, each with the reason it is reserved."
-        ]
+        "verified_at": "2026-10-22T13:12:24.395Z",
+        "commit_sha": "d623759e041b34092ea962f037c04089364bb80b",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/d623759e041b34092ea962f037c04089364bb80b",
+        "commit_at": "2026-10-22T13:12:11Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
