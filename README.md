@@ -1,8 +1,8 @@
-# Platform Automation & Reliability Agent
+# Ellis: Platform Automation & Reliability Agent
 
 Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninying. **Manager and stakeholder:** K.D. (AI Engineer). **Approvals:** K.D. gives sign-off, including on agent actions in production. A.M. oversees PR approvals, tool access and governance review.
 
-**Status (2026-10-19):** platform access received and this repo is connected to the Colaberry platform. Release 1 (discovery and validation) is in progress at autonomy level R0 (define the workflow, requirements, risks and human decisions). Work is a draft until K.D. approves it; approved work is kept in `discovery/`.
+**Status (2026-10-22):** discovery stories 1 to 4 verified on the Colaberry platform; story 5 in review with K.D. Release 1 (discovery and validation) is in progress at autonomy level R0 (define the workflow, requirements, risks and human decisions). Work is a draft until K.D. approves it; approved work is kept in `discovery/`.
 
 ## Release 1: discovery and validation
 | # | Story | Status |
@@ -16,6 +16,7 @@ Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninyi
 ## Contents
 | Path | What |
 |---|---|
+| `index.html`, `command-center/` | Command Center: progress and plan, read live from `.colaberry/` |
 | `assignment.md` | Project assignment and first-deliverable list |
 | `research/research-summary.md` | Research summary (deliverable 1), including open questions for K.D. |
 | `research/video-review-demo-to-production.md` | Review of the "Demo to Production" video |
@@ -29,7 +30,7 @@ Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninyi
 
 ## First deliverable checklist
 - [x] Research summary with source links
-- [x] Component map: `docs/discovery/02-agent-anatomy.md` (version 4, approved by K.D. 2026-10-21)
+- [x] Component map: `docs/discovery/02-agent-anatomy.md` (version 5; version 4 approved by K.D. 2026-10-21)
 - [x] Role summary: `docs/discovery/03-role-and-da-transition.md` (version 2, approved by K.D. 2026-10-21)
 - [x] Manager meeting notes (kept private; interview held 2026-10-19, `docs/discovery/04-manager-interview.md`)
 - [ ] First three proposed agent tasks (info, tools, approvals, proof of completion)

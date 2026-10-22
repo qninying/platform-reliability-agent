@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1",
+  "projectId": "9424aa6e-f754-521a-ace7-ae17fb2a5ff4",
+  "storyId": "STORY-000",
+  "projectTruthBaseRevision": 0,
+  "observedAt": "2026-10-22T15:54:21Z",
+  "sourceCommitSha": "3acbb7d14f7c8094c9625883dad4be8c9c63b886",
+  "factProposals": [
+    {
+      "dimension": "unknowns",
+      "value": "The plan defines no requirements, agents, measures, roles, guardrails or systems yet, so six Command Center tabs show empty states.",
+      "evidence": "command-center/tabs.js"
+    }
+  ],
+  "decisions": [
+    {
+      "statement": "The Command Center is a static page with no API and no model; it reads the .colaberry files at runtime.",
+      "rationale": "a public static page cannot keep a secret",
+      "evidence": "command-center/data.js"
+    },
+    {
+      "statement": "The knowledge base chat answers by matching the question against the loaded files and says when it cannot answer.",
+      "rationale": "no model or key on a public page; answers must cite the tab they came from",
+      "evidence": "command-center/kb.js"
+    },
+    {
+      "statement": "Email addresses are hidden on every screen.",
+      "rationale": "the plan text contains a personal email and the page may be published",
+      "evidence": "command-center/ui.js"
+    }
+  ],
+  "limitations": [
+    {
+      "statement": "Connection and run status cannot be seen from the repository files, so every status light stays grey and reads not checked from here.",
+      "evidence": "command-center/tabs.js"
+    },
+    {
+      "statement": "Every release in the plan starts and ends on 2026-10-01, so the Gantt bars have no length.",
+      "evidence": ".colaberry/plan.json"
+    }
+  ],
+  "demonstrationEvidence": [],
+  "measurementEvents": []
+}

@@ -1583,29 +1583,41 @@
       "criteria": [
         {
           "text": "Given the Command Center, when it is opened, then every tab is reachable and every card drills down one level.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "Given sample mode, when any tab is shown, then the sample data is visibly labelled as sample.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "Given the Command Center, when any tab renders, then .colaberry/plan.json and .colaberry/progress.json are both committed in this repo and every tab reads its content from them at runtime rather than from hard-coded values.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "Given the Command Center, when any tab is shown, then .colaberry/manifest.json is committed in this repo and every tab shows how old that data is and warns when the age exceeds a week.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "Trust — no tab shows a number, a connection or a result the project has not actually produced.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
+      "files_touched": [
+        "index.html",
+        ".nojekyll",
+        "command-center/data.js",
+        "command-center/sample.js",
+        "command-center/ui.js",
+        "command-center/tabs.js",
+        "command-center/kb.js",
+        "command-center/app.js",
+        "command-center/styles.css",
+        ".colaberry/profile.json",
+        ".colaberry/enrichment/STORY-000.json"
+      ],
       "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "notes": "Static Command Center at the repo root: nine tabs, each card drills down one level; sample/real and day/night switches; every tab reads .colaberry/plan.json and progress.json at runtime and shows the manifest's data age, warning after a week. Verified by loading all 14 routes in headless Chrome over a local server (no script errors, data stamp on every route) and by node checks of the age warning and the chat.",
+      "updated_at": "2026-10-22",
       "verification": null
     }
   ]
