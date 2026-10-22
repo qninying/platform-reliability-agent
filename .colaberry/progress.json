@@ -1,0 +1,1620 @@
+{
+  "schema_version": 2,
+  "project": "platform",
+  "totals": {
+    "stories_total": 55,
+    "stories_verified": 0,
+    "stories_submitted": 0,
+    "stories_in_progress": 0,
+    "stories_not_started": 55,
+    "criteria_total": 71,
+    "criteria_passed": 0,
+    "points_awarded": 0
+  },
+  "stories": [
+    {
+      "id": "platform.CAP.agent_behavior_safety_watch",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Every finding names the specific grant that was missing; a finding with no named grant is not emitted.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Every finding names the specific grant that was missing; a finding with no named grant is not emitted."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.agent_discovery_sync",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "The report names each row that would be created and states that each would arrive enabled, so the consequence is visible before the action.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The report names each row that would be created and states that each would arrive enabled, so the consequence is visible before the action."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.agent_enable_disable_control",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "A recommendation for a shared agent_name lists all timers that share it; a recommendation for an unregistered name states that no disable flag exists for it rather than proposing one.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "A recommendation for a shared agent_name lists all timers that share it; a recommendation for an unregistered name states that no disable flag exists for it rather than proposing one."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.agent_health_scoring",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Every score derived from run_count 0 is labelled unscored rather than 100.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Every score derived from run_count 0 is labelled unscored rather than 100."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.agent_identity_attribution",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "A chain passing through a disabled intermediary is reported as resolving-but-degraded, not as resolved; and an actor id matching no admin_users row is reported as unattributable.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "A chain passing through a disabled intermediary is reported as resolving-but-degraded, not as resolved; and an actor id matching no admin_users row is reported as unattributable."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.agent_promotion_and_approval_decision",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "The assembly cites real run records and names any criterion with no evidence as unmet; a capability whose only evidence is a passing mocked test is reported as unproven.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The assembly cites real run records and names any criterion with no evidence as unmet; a capability whose only evidence is a passing mocked test is reported as unproven."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.agent_registry_read_surface",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "A question about a name with no ai_agents row returns 'not registered', never 'disabled' and never 'zero runs' — those are three different facts and the surface must not merge them.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "A question about a name with no ai_agents row returns 'not registered', never 'disabled' and never 'zero runs' — those are three different facts and the surface must not merge them."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.agent_ticket_auto_resolution",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Every must-not ticket is still open, and a second run closes zero additional tickets and adds zero duplicate comments.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Every must-not ticket is still open, and a second run closes zero additional tickets and adds zero duplicate comments."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.backup_and_restore_verification",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "The answer is 'unknown — no backup verification exists in this repository', with the search that establishes it; it never infers a position from the presence of pg_dump in unrelated scripts.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The answer is 'unknown — no backup verification exists in this repository', with the search that establishes it; it never infers a position from the presence of pg_dump in unrelated scripts."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.capability_autonomy_authority_resolution",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "A capability with no recorded approval returns null with reason no_approved_autonomy, never a defaulted rung; and a human_decision capability never resolves above autonomy:R5.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "A capability with no recorded approval returns null with reason no_approved_autonomy, never a defaulted rung; and a human_decision capability never resolves above autonomy:R5."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.cron_health_alerting",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Jobs excluded by the trigger_type and enabled filter are listed as not-evaluated rather than omitted, so the answer discloses its own blind spot.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Jobs excluded by the trigger_type and enabled filter are listed as not-evaluated rather than omitted, so the answer discloses its own blind spot."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.cron_overlap_guard",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Each name is accompanied by its interval and its recorded duration; a timer with no duration data is listed as unassessable rather than safe.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Each name is accompanied by its interval and its recorded duration; a timer with no duration data is listed as unassessable rather than safe."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.cron_run_instrumentation",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "For an untracked timer the answer is 'not instrumented — no record exists', never 'did not run'. A positive control: asking about a name known to have no ai_agents row must return the not-instrumented answer.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "For an untracked timer the answer is 'not instrumented — no record exists', never 'did not run'. A positive control: asking about a name known to have no ai_agents row must return the not-instrumented answer."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.data_retention_sweep",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "A table whose window is not recorded anywhere returns 'unknown', never a guessed number of days.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "A table whose window is not recorded anywhere returns 'unknown', never a guessed number of days."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.dead_letter_capture",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "The report names the unwrapped job families explicitly, so an empty queue is never read as a healthy fleet.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The report names the unwrapped job families explicitly, so an empty queue is never read as a healthy fleet."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.dead_letter_triage",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "An empty queue is reported as 'empty, and here is what could not have reached it', never as a healthy fleet.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "An empty queue is reported as 'empty, and here is what could not have reached it', never as a healthy fleet."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.default_on_timer_guard",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "The enumeration is a measured list of names, not a count; and it states the three code locations where the default is applied.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The enumeration is a measured list of names, not a count; and it states the three code locations where the default is applied."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.deploy_verification_evidence",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "A release whose evidence is missing any of the three is reported as unverified, never as deployed; and an edge-level 200 alone is never accepted as proof the application started.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "A release whose evidence is missing any of the three is reported as unverified, never as deployed; and an edge-level 200 alone is never accepted as proof the application started."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.emergency_stop_and_kill_switch",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "A recommendation that names a per-agent stop for a schedulerService-registered job is wrong and must instead name the scheduler pause — a positive control that the recommendation understands the layering.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "A recommendation that names a per-agent stop for a schedulerService-registered job is wrong and must instead name the scheduler pause — a positive control that the recommendation understands the layering."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.error_class_coverage",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Coverage is reported as a share of all recorded failures; failures whose class is the generic fallback count as unclassified, not classified.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Coverage is reported as a share of all recorded failures; failures whose class is the generic fallback count as unclassified, not classified."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.execution_policy_enforcement",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "A request naming production_deploy is answered as denied with enforcedBy no_provider; a positive control asserts the same request is never answered as permitted.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "A request naming production_deploy is answered as denied with enforcedBy no_provider; a positive control asserts the same request is never answered as permitted."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.idempotency_and_replay_audit",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "The harness detects a deliberately non-idempotent fixture job as unsafe — if it cannot fail, it cannot pass.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The harness detects a deliberately non-idempotent fixture job as unsafe — if it cannot fail, it cannot pass."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.incident_trace_and_error_triage",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Where no trace exists for a failure, the answer is 'not traceable — this job is untracked', never a reconstructed narrative.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Where no trace exists for a failure, the answer is 'not traceable — this job is untracked', never a reconstructed narrative."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.infrastructure_evolution_proposals",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Each proposal's current state is one of open, accepted, deferred or rejected; a proposal with no recorded outcome reads as open, not as accepted.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Each proposal's current state is one of open, accepted, deferred or rejected; a proposal with no recorded outcome reads as open, not as accepted."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.manager_reachable_agent_surface",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "The answer names the org_members id and the absent admin_users row as two separate facts, and does not claim the surface is reachable under any current configuration.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The answer names the org_members id and the absent admin_users row as two separate facts, and does not claim the surface is reachable under any current configuration."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.manager_restriction_directives",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "A directive with no runtime enforcement path is reported as recorded-but-unenforced, not as in force.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "A directive with no runtime enforcement path is reported as recorded-but-unenforced, not as in force."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.manager_scoped_authorization",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "For Kesetebirhan Delele and any platform agent the answer is 'nobody, via no route, because he holds no admin_users row' — a positive control that the gap is reported rather than papered over.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "For Kesetebirhan Delele and any platform agent the answer is 'nobody, via no route, because he holds no admin_users row' — a positive control that the gap is reported rather than papered over."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.orchestration_auto_repair",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Running the same repair twice against the same fixture leaves one change, not two, and the second run reports no-op.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Running the same repair twice against the same fixture leaves one change, not two, and the second run reports no-op."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.orchestration_health_watch",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Every answer cites the ai_agents row and activity-log rows it was derived from; no answer is produced for an agent name with no row.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Every answer cites the ai_agents row and activity-log rows it was derived from; no answer is produced for an agent name with no row."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.platform_bug_fix_dispatch",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "The baseline test fails for the reported reason before any fix and is shown to fail — a test that passes before the fix proves nothing.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The baseline test fails for the reported reason before any fix and is shown to fail — a test that passes before the fix proves nothing."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.preview_stack_reaping",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "A stack with no activity signal at all is reported as unknown-idle, not as idle.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "A stack with no activity signal at all is reported as unknown-idle, not as idle."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.production_deploy_review_and_approval",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "The readiness report states tree cleanliness and whether HEAD matches origin/main as measured facts; it never merges, pushes to main or deploys, and a test asserts no deploy tool is among its grants.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The readiness report states tree cleanliness and whether HEAD matches origin/main as measured facts; it never merges, pushes to main or deploys, and a test asserts no deploy tool is among its grants."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.prompt_and_performance_optimization",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Every cost or latency figure traces to recorded runs; a prompt with no recorded runs reports unknown rather than zero.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Every cost or latency figure traces to recorded runs; a prompt with no recorded runs reports unknown rather than zero."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.registry_runtime_reconciliation",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Counts are reported as the reconciler measured them with the measurement date attached; no count is restated from a document.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Counts are reported as the reconciler measured them with the measurement date attached; no count is restated from a document."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.reliability_briefing_for_manager",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "No percentage appears without the record count behind it; the unmeasured section names the untracked timers and the phantom crons as present rather than omitting them.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "No percentage appears without the record count behind it; the unmeasured section names the untracked timers and the phantom crons as present rather than omitting them."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.reliability_threshold_ownership",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Each threshold is reported with its source file and line; a threshold whose alert outcomes were never recorded is reported as unmeasured rather than as well-tuned.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Each threshold is reported with its source file and line; a threshold whose alert outcomes were never recorded is reported as unmeasured rather than as well-tuned."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.runtime_cron_drift_detection",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Every count is accompanied by the list of names behind it; a count with no name list is not published. A positive control asserts WorkforceIntelligence appears in the no-seed-row class.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Every count is accompanied by the list of names behind it; a count with no name list is not published. A positive control asserts WorkforceIntelligence appears in the no-seed-row class."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.runtime_threat_and_access_watch",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "The answer distinguishes 'no admin_users row' from 'admin_users row with no sections', because they have different remedies.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The answer distinguishes 'no admin_users row' from 'admin_users row with no sections', because they have different remedies."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.schedule_governance_live_reload",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Every proposal says whether the target is in the reloadable aiOps registry or inline in schedulerService.ts, because the two have different remedies; a proposal with an unknown home is labelled unknown.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Every proposal says whether the target is in the reloadable aiOps registry or inline in schedulerService.ts, because the two have different remedies; a proposal with an unknown home is labelled unknown."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.scheduler_registration_liveness_probe",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "The report names ENABLE_FOLLOWUP_SCHEDULER as the single flag and names startScheduler as the only caller of the AI Ops scheduler, both as measured facts.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The report names ENABLE_FOLLOWUP_SCHEDULER as the single flag and names startScheduler as the only caller of the AI Ops scheduler, both as measured facts."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.schema_drift_detection",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Where no drift run has completed, the answer is 'unknown — last run not found', never 'no drift'.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Where no drift run has completed, the answer is 'unknown — last run not found', never 'no drift'."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.security_oversight_rollup",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "A scanner with no last_run_at renders as unknown; the rollup can never be green while any contribution is unknown.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "A scanner with no last_run_at renders as unknown; the rollup can never be green while any contribution is unknown."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.security_posture_scan",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "A scan that has never run returns 'unknown' rather than 'no findings'.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "A scan that has never run returns 'unknown' rather than 'no findings'."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.stale_action_recovery",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "The answer separates 'past the threshold' from 'past the attempt cap', because the second must not be recycled.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The answer separates 'past the threshold' from 'past the attempt cap', because the second must not be recycled."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.system_health_probe_and_alerting",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "The report explicitly names 'scheduler never registered' as undetectable by GET /health — a disclosure the probe itself cannot make.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The report explicitly names 'scheduler never registered' as undetectable by GET /health — a disclosure the probe itself cannot make."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.system_resilience_supervision",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "A subsystem with no signal is reported as unknown and prevents a healthy overall verdict.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "A subsystem with no signal is reported as unknown and prevents a healthy overall verdict."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.untracked_timer_registration_proposal",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Every entry carries a real call-site citation and a measurement date; the published count is the one just measured, not 33 or 34 quoted from a document.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Every entry carries a real call-site citation and a measurement date; the published count is the one just measured, not 33 or 34 quoted from a document."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.workforce_technology_direction",
+      "release": "r2",
+      "acceptance_total": 1,
+      "criteria": [
+        {
+          "text": "Divergence is reported against a written intended direction; with no written direction on file, the answer is 'unknown', not 'no divergence'.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Divergence is reported against a written intended direction; with no written direction on file, the answer is 'unknown', not 'no divergence'."
+        ]
+      }
+    },
+    {
+      "id": "platform.LEGACY-MIGRATION-PLAN",
+      "release": "r1",
+      "acceptance_total": 3,
+      "criteria": [
+        {
+          "text": "The plan accounts for every inherited legacy record for this domain, each one kept, merged or retired with a reason.",
+          "passed": false
+        },
+        {
+          "text": "The migration is described as replayable: running it twice leaves the same end state, with no duplicated side effects.",
+          "passed": false
+        },
+        {
+          "text": "The plan states what happens to a record the migration cannot classify, rather than assuming none exist.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 3,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The plan accounts for every inherited legacy record for this domain, each one kept, merged or retired with a reason.",
+          "The migration is described as replayable: running it twice leaves the same end state, with no duplicated side effects.",
+          "The plan states what happens to a record the migration cannot classify, rather than assuming none exist."
+        ]
+      }
+    },
+    {
+      "id": "platform.RESEARCH-1-SYSTEM-CLASSES",
+      "release": "r0",
+      "acceptance_total": 3,
+      "criteria": [
+        {
+          "text": "The document compares all five system classes (chatbot, fixed workflow, tool-using agent, agentic system, multi-agent system) and names which one this domain needs.",
+          "passed": false
+        },
+        {
+          "text": "The choice cites this domain's own capability count and its human-reserved count, so the argument would change if those numbers changed.",
+          "passed": false
+        },
+        {
+          "text": "The document states explicitly which class this domain does NOT need, and what would have to change to justify the next class up.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 3,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The document compares all five system classes (chatbot, fixed workflow, tool-using agent, agentic system, multi-agent system) and names which one this domain needs.",
+          "The choice cites this domain's own capability count and its human-reserved count, so the argument would change if those numbers changed.",
+          "The document states explicitly which class this domain does NOT need, and what would have to change to justify the next class up."
+        ]
+      }
+    },
+    {
+      "id": "platform.RESEARCH-2-AGENT-ANATOMY",
+      "release": "r0",
+      "acceptance_total": 3,
+      "criteria": [
+        {
+          "text": "All nine anatomy elements are addressed, with none left blank and none dismissed as not applicable without a stated reason.",
+          "passed": false
+        },
+        {
+          "text": "Each element names the concrete platform surface, tool or record it maps to, rather than describing the element in general terms.",
+          "passed": false
+        },
+        {
+          "text": "Any element that cannot be filled is recorded as a gap with what is missing, rather than omitted.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 3,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "All nine anatomy elements are addressed, with none left blank and none dismissed as not applicable without a stated reason.",
+          "Each element names the concrete platform surface, tool or record it maps to, rather than describing the element in general terms.",
+          "Any element that cannot be filled is recorded as a gap with what is missing, rather than omitted."
+        ]
+      }
+    },
+    {
+      "id": "platform.RESEARCH-3-ROLE-AND-DA-TRANSITION",
+      "release": "r0",
+      "acceptance_total": 3,
+      "criteria": [
+        {
+          "text": "The document names the accountable human for this domain and the specific responsibilities proposed to transition to the agent.",
+          "passed": false
+        },
+        {
+          "text": "Each transitioning responsibility states what evidence would show the agent is ready to hold it.",
+          "passed": false
+        },
+        {
+          "text": "Responsibilities that must stay human are listed separately, each with the reason it is reserved.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 3,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The document names the accountable human for this domain and the specific responsibilities proposed to transition to the agent.",
+          "Each transitioning responsibility states what evidence would show the agent is ready to hold it.",
+          "Responsibilities that must stay human are listed separately, each with the reason it is reserved."
+        ]
+      }
+    },
+    {
+      "id": "platform.RESEARCH-4-MANAGER-INTERVIEW",
+      "release": "r0",
+      "acceptance_total": 3,
+      "criteria": [
+        {
+          "text": "The interview plan fits 30 minutes, and every question is specific to this domain rather than reusable for any agent.",
+          "passed": false
+        },
+        {
+          "text": "A weekly check-in is proposed with a named day, a duration, and the three things it reviews.",
+          "passed": false
+        },
+        {
+          "text": "The plan states what to do with each answer, so a completed interview changes the build rather than only recording opinions.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 3,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The interview plan fits 30 minutes, and every question is specific to this domain rather than reusable for any agent.",
+          "A weekly check-in is proposed with a named day, a duration, and the three things it reviews.",
+          "The plan states what to do with each answer, so a completed interview changes the build rather than only recording opinions."
+        ]
+      }
+    },
+    {
+      "id": "platform.RESEARCH-5-THREE-PROPOSED-TASKS",
+      "release": "r0",
+      "acceptance_total": 3,
+      "criteria": [
+        {
+          "text": "Exactly three agent tasks are proposed, each with its boundary stated as what the agent must NOT do.",
+          "passed": false
+        },
+        {
+          "text": "Each task names the evidence that proves it completed, and that evidence is something other than the task being marked done.",
+          "passed": false
+        },
+        {
+          "text": "Each task names the human who approves it wherever approval is required.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 3,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "Exactly three agent tasks are proposed, each with its boundary stated as what the agent must NOT do.",
+          "Each task names the evidence that proves it completed, and that evidence is something other than the task being marked done.",
+          "Each task names the human who approves it wherever approval is required."
+        ]
+      }
+    },
+    {
+      "id": "STORY-000",
+      "release": null,
+      "acceptance_total": 5,
+      "criteria": [
+        {
+          "text": "Given the Command Center, when it is opened, then every tab is reachable and every card drills down one level.",
+          "passed": false
+        },
+        {
+          "text": "Given sample mode, when any tab is shown, then the sample data is visibly labelled as sample.",
+          "passed": false
+        },
+        {
+          "text": "Given the Command Center, when any tab renders, then .colaberry/plan.json and .colaberry/progress.json are both committed in this repo and every tab reads its content from them at runtime rather than from hard-coded values.",
+          "passed": false
+        },
+        {
+          "text": "Given the Command Center, when any tab is shown, then .colaberry/manifest.json is committed in this repo and every tab shows how old that data is and warns when the age exceeds a week.",
+          "passed": false
+        },
+        {
+          "text": "Trust — no tab shows a number, a connection or a result the project has not actually produced.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": null
+    }
+  ]
+}

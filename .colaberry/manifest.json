@@ -1,0 +1,262 @@
+{
+  "generated_at": "2026-10-22T02:09:22.914Z",
+  "plan_version": 1,
+  "plan_sha256": "63f1a191da70b55bb9d8a823ec84b0a8183199091da5287a0b2f138d973afdb1",
+  "correlation_id": "66cb6b5b-9292-42c5-b06d-0ca68fc1feb1",
+  "project_id": "9424aa6e-f754-521a-ace7-ae17fb2a5ff4",
+  "truth_revision": null,
+  "files": [
+    {
+      "path": "docs/REQUIREMENTS.md",
+      "sha256": "29f515206caf8773e5fcb876650ce6354291222e413a1b48f747b16d835e09a3"
+    },
+    {
+      "path": "docs/STORIES.md",
+      "sha256": "4664783fdd9aa7c4a86c5f43706a5e82751fee2797427848f85907ffcb2b6fce"
+    },
+    {
+      "path": "docs/TRACEABILITY.md",
+      "sha256": "b7ee512263cb45a4dd23d9adb004519cc28daa1da92883155ded705ffb78b6f7"
+    },
+    {
+      "path": "docs/DATA_CONTRACT.md",
+      "sha256": "d56e89edcfe36725945d961cf3479b646507d1fa855bba0dcdfff3f8f8a658b0"
+    },
+    {
+      "path": "CLAUDE.md",
+      "sha256": "a256b169b819080124ac60c2ce22721dcce144a96f804fb1d71909654d1d5802"
+    },
+    {
+      "path": "docs/stories/platform.CAP.agent_behavior_safety_watch.md",
+      "sha256": "a52434b5ea82225e89498bc539560a6d59db0087321a7addad908cc0acddee7c"
+    },
+    {
+      "path": "docs/stories/platform.CAP.agent_discovery_sync.md",
+      "sha256": "043ef941e348a72640d5ebddb5e3e288b325ee33d5880e7dafa272b0729d85ae"
+    },
+    {
+      "path": "docs/stories/platform.CAP.agent_enable_disable_control.md",
+      "sha256": "354c28720fd42c3e28a4e2367e186a44853a02f128a72527f1cfa9165ba807a0"
+    },
+    {
+      "path": "docs/stories/platform.CAP.agent_health_scoring.md",
+      "sha256": "cd776a5b317185e59e8ed3c4ad30676bccc38a80261c9dc91df51c57f2f8ec2a"
+    },
+    {
+      "path": "docs/stories/platform.CAP.agent_identity_attribution.md",
+      "sha256": "8514039ee552e0127c52766200c14415ddd4e9089a35c47acaa0d876e4b94447"
+    },
+    {
+      "path": "docs/stories/platform.CAP.agent_promotion_and_approval_decision.md",
+      "sha256": "28cac0f1c91326876a668af7bb9f81372a739a59f90a79f4805d6e72c068a973"
+    },
+    {
+      "path": "docs/stories/platform.CAP.agent_registry_read_surface.md",
+      "sha256": "82c401134b5717fcd7be798aa11ee9c84819941b79616305ebb7f9a3549e1648"
+    },
+    {
+      "path": "docs/stories/platform.CAP.agent_ticket_auto_resolution.md",
+      "sha256": "bf3b6d868787c3e2940007d0931dffa0459cdb769ab49213d623a09365461a74"
+    },
+    {
+      "path": "docs/stories/platform.CAP.backup_and_restore_verification.md",
+      "sha256": "fdc178987fc34b8c44c8c223f404f9b57847a2a9042386996bfd80519e5035ad"
+    },
+    {
+      "path": "docs/stories/platform.CAP.capability_autonomy_authority_resolution.md",
+      "sha256": "f333c366b52f926f001f54a9a49e00766dd2fa38f99fe11c7d86b38cf72d02b1"
+    },
+    {
+      "path": "docs/stories/platform.CAP.cron_health_alerting.md",
+      "sha256": "9d8a2e82f4f890a5dd0e6f9b86fde1bbff706600e055d4e9b5310897ddf15812"
+    },
+    {
+      "path": "docs/stories/platform.CAP.cron_overlap_guard.md",
+      "sha256": "a69f18a843c6f4b91fea106957e69747de80b33af34c06f3c5d0f78c8b3c06bc"
+    },
+    {
+      "path": "docs/stories/platform.CAP.cron_run_instrumentation.md",
+      "sha256": "474a9cfc1b7548764ddb8a493531c0ab05f8b496f0a9912ad4cfe972f75dfa1a"
+    },
+    {
+      "path": "docs/stories/platform.CAP.data_retention_sweep.md",
+      "sha256": "43e837955953191029c5c4a0b440b222b1836036eb34d8b1f2fe40c5da9d3acf"
+    },
+    {
+      "path": "docs/stories/platform.CAP.dead_letter_capture.md",
+      "sha256": "3c4843054e32133885ac62621712c585175f51d328c43f37e6a5b55f23c8efbf"
+    },
+    {
+      "path": "docs/stories/platform.CAP.dead_letter_triage.md",
+      "sha256": "f6ff5befe6326e0ff747f7091fc4ba960ea3fabb801834041fe8c32586b7573d"
+    },
+    {
+      "path": "docs/stories/platform.CAP.default_on_timer_guard.md",
+      "sha256": "ccfe9d22dd25967411cfc555a70121dc1933a6c7bf567ffa0e4b2d3bfc754a8a"
+    },
+    {
+      "path": "docs/stories/platform.CAP.deploy_verification_evidence.md",
+      "sha256": "e95888544dd07da69dfa9763b555b2db6ed5028c287c4908a2de62333763c1d0"
+    },
+    {
+      "path": "docs/stories/platform.CAP.emergency_stop_and_kill_switch.md",
+      "sha256": "faa5c40c3ce581f2ee7a475e1f713ff4b73a7472e88700615c37de38beea8bff"
+    },
+    {
+      "path": "docs/stories/platform.CAP.error_class_coverage.md",
+      "sha256": "1edcc80029bef03e937cf09a218095f8d75cb514c91d5bb7d638f846da521613"
+    },
+    {
+      "path": "docs/stories/platform.CAP.execution_policy_enforcement.md",
+      "sha256": "cf6cd19e47d2af449bd7ce07482c8d41616034321b141dc614de434bc13d3d43"
+    },
+    {
+      "path": "docs/stories/platform.CAP.idempotency_and_replay_audit.md",
+      "sha256": "514b522b9518856231cd72cdf2bbb8beca1cb8c0bab3c47396335506e6ceb412"
+    },
+    {
+      "path": "docs/stories/platform.CAP.incident_trace_and_error_triage.md",
+      "sha256": "fc6f47cad54e427305aeccd1fa721262c778b52ab7d451260e93c25502fd48c9"
+    },
+    {
+      "path": "docs/stories/platform.CAP.infrastructure_evolution_proposals.md",
+      "sha256": "2670a36a04b2911c8ffd9a4db4c1ee7d7c24a11516e233655ca6231bca3fa3fd"
+    },
+    {
+      "path": "docs/stories/platform.CAP.manager_reachable_agent_surface.md",
+      "sha256": "6be63bdafc27e5ea296807ee83f3c7e19088f8127ea9687128bba4da416dcad3"
+    },
+    {
+      "path": "docs/stories/platform.CAP.manager_restriction_directives.md",
+      "sha256": "c83d98ef4716c9c9698f81b059bf4f14e82a5a075a99390f9b6cc69ba96a9c85"
+    },
+    {
+      "path": "docs/stories/platform.CAP.manager_scoped_authorization.md",
+      "sha256": "e84fc4ab63a42913070920064f1692b49727b5077c12ec5da6919d25c36a55cd"
+    },
+    {
+      "path": "docs/stories/platform.CAP.orchestration_auto_repair.md",
+      "sha256": "61724700e7472ead3d4f518bb667eac6953c9c35c34fc69b31d17e11fbf32146"
+    },
+    {
+      "path": "docs/stories/platform.CAP.orchestration_health_watch.md",
+      "sha256": "7504365098531b29ed61f6b00a5052bcbe27cd13de2386ee42ccb9bad5fc8a9f"
+    },
+    {
+      "path": "docs/stories/platform.CAP.platform_bug_fix_dispatch.md",
+      "sha256": "098e6c8d61739db4fe2c8a64a1b130af6f52dae18f6fde191a9fb68b0e859090"
+    },
+    {
+      "path": "docs/stories/platform.CAP.preview_stack_reaping.md",
+      "sha256": "14b5ef0e892545be7185d9c528695cc7dedda08a9ca0c620861e44ed6de652e3"
+    },
+    {
+      "path": "docs/stories/platform.CAP.production_deploy_review_and_approval.md",
+      "sha256": "c92cd2e650c78f3d4a867858b78720cfa91b2399d25a9d9bb77d92ade4d60b66"
+    },
+    {
+      "path": "docs/stories/platform.CAP.prompt_and_performance_optimization.md",
+      "sha256": "3f1393acc5c296b22411c79ec9b14750afb03b4b0303e6c615ab1417993ffe11"
+    },
+    {
+      "path": "docs/stories/platform.CAP.registry_runtime_reconciliation.md",
+      "sha256": "956c922b8ab0cec1dda3c6089c4f7f94cfc6086b445cd27bd90b96b8ec0a1983"
+    },
+    {
+      "path": "docs/stories/platform.CAP.reliability_briefing_for_manager.md",
+      "sha256": "eb945cfadc77fbacfd6af6269048456e369df7a298992481a1a1fac113675fd7"
+    },
+    {
+      "path": "docs/stories/platform.CAP.reliability_threshold_ownership.md",
+      "sha256": "a1296db480ed9bf20418fd4f87e4adb04a42877b92972abee1f6a4c82b3e1940"
+    },
+    {
+      "path": "docs/stories/platform.CAP.runtime_cron_drift_detection.md",
+      "sha256": "ea848ca986a25210767636316ce6c995510b1a611dd3d3070d0208be76ffe5eb"
+    },
+    {
+      "path": "docs/stories/platform.CAP.runtime_threat_and_access_watch.md",
+      "sha256": "cabb430e091029b7346a445e4002e9bbed22708e9637c9e483915a584fedb22f"
+    },
+    {
+      "path": "docs/stories/platform.CAP.schedule_governance_live_reload.md",
+      "sha256": "b000bb0df80ef0155602ff3f09130959c5465a78c905943aba88feadab03fa2c"
+    },
+    {
+      "path": "docs/stories/platform.CAP.scheduler_registration_liveness_probe.md",
+      "sha256": "2f415f7d492a40cc787075e8f113f09b4a2e28dbe3d62c7ed6bc7cd6b57c6c73"
+    },
+    {
+      "path": "docs/stories/platform.CAP.schema_drift_detection.md",
+      "sha256": "9df39c30e3c23903b99661f67ee2c942d4b0e5f93e42f85d117cdfe84c61c63c"
+    },
+    {
+      "path": "docs/stories/platform.CAP.security_oversight_rollup.md",
+      "sha256": "ef22b7370b0fae8a603b180b03f7efc992cec5109b35ab3f21baf31a52487b6d"
+    },
+    {
+      "path": "docs/stories/platform.CAP.security_posture_scan.md",
+      "sha256": "e88972dbac8bf763f780a842987e2aa7897fbfbecd79e37fe81176d3c62e65ba"
+    },
+    {
+      "path": "docs/stories/platform.CAP.stale_action_recovery.md",
+      "sha256": "1ae5c038c15115ec8bf611f8e94d14230fce66a15957207711f3b44341b179a5"
+    },
+    {
+      "path": "docs/stories/platform.CAP.system_health_probe_and_alerting.md",
+      "sha256": "e177400bcfd475f6eaca3363f6f1aef4352cc6ff07bddf0cd2b016da30078751"
+    },
+    {
+      "path": "docs/stories/platform.CAP.system_resilience_supervision.md",
+      "sha256": "9be53efa51f65a06db9e5a36811cefcc66faf2c2efaa1ab66d7c82777272676d"
+    },
+    {
+      "path": "docs/stories/platform.CAP.untracked_timer_registration_proposal.md",
+      "sha256": "9bbad334310b130c1cc51b84e8d674cf6d59acbfd1f3b0e69de787da02f2dffe"
+    },
+    {
+      "path": "docs/stories/platform.CAP.workforce_technology_direction.md",
+      "sha256": "de57ef212bcc5472d52e7fbdd1a7d66cd56b945cab393d48ccac5c2975a1024b"
+    },
+    {
+      "path": "docs/stories/platform.LEGACY-MIGRATION-PLAN.md",
+      "sha256": "46651ea3268d0cc055ce131699771f0c7956fd80e07115e09d1ba9449849f778"
+    },
+    {
+      "path": "docs/stories/platform.RESEARCH-1-SYSTEM-CLASSES.md",
+      "sha256": "732b6285b6c1c3a78488560287565bd970184ebde74cd133149266f3c0d03f36"
+    },
+    {
+      "path": "docs/stories/platform.RESEARCH-2-AGENT-ANATOMY.md",
+      "sha256": "d6131a2305dae0d64ea393844aec7ed63afb15dacec671b02f3948ccbf4ae236"
+    },
+    {
+      "path": "docs/stories/platform.RESEARCH-3-ROLE-AND-DA-TRANSITION.md",
+      "sha256": "731db2a15a578a00d04e95fbf205131830fd5cb9416e45d80658c0700b58f040"
+    },
+    {
+      "path": "docs/stories/platform.RESEARCH-4-MANAGER-INTERVIEW.md",
+      "sha256": "e2633d553efc0016b27618d9483ee23e0fd2aed93f97ca3272a4b89fa430eea0"
+    },
+    {
+      "path": "docs/stories/platform.RESEARCH-5-THREE-PROPOSED-TASKS.md",
+      "sha256": "2967f023315ade3bd19dcbf784ce8265ff81127adecbff57c127a37e8f93edef"
+    },
+    {
+      "path": "docs/stories/STORY-000.md",
+      "sha256": "e8cd3f1492ecae8f8582145d36806086b27d5720b9a005a1944d44982ed55b89"
+    },
+    {
+      "path": ".colaberry/plan.json",
+      "sha256": "2a076a70607a3d7165fa95be71a15154ee84aaf3ce71030eab3e21a7a5efa31a"
+    },
+    {
+      "path": ".colaberry/progress.json",
+      "sha256": "f07cbe71b2bb86f59e0a2869c5fe470c741554c6fb0b4c81444edc1475ce61dd"
+    },
+    {
+      "path": ".colaberry/profile.json",
+      "sha256": "c8aa019c8dc81ae7aac33c6c315e31992ce0f2602e7d7a6f59e5707bbd9ff686"
+    }
+  ]
+}
