@@ -1401,21 +1401,23 @@
       "criteria": [
         {
           "text": "The document compares all five system classes (chatbot, fixed workflow, tool-using agent, agentic system, multi-agent system) and names which one this domain needs.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "The choice cites this domain's own capability count and its human-reserved count, so the argument would change if those numbers changed.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "The document states explicitly which class this domain does NOT need, and what would have to change to justify the next class up.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
+      "files_touched": [
+        "docs/discovery/01-system-classes.md"
+      ],
       "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "notes": "Compares the five classes and recommends an agentic system with human checkpoints, argued from 48 capabilities, 23 human-reserved and 23 of the other 25 allowed to reach R4. Multi-agent is not needed: 0 of 81 dependencies leave the domain and none may reach R8. Approved by K.D. as version 3.",
+      "updated_at": "2026-10-22",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
