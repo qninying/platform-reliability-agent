@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 12,
+    "stories_verified": 13,
     "stories_submitted": 0,
-    "stories_in_progress": 42,
+    "stories_in_progress": 41,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 24,
-    "points_awarded": 180
+    "criteria_passed": 25,
+    "points_awarded": 195
   },
   "stories": [
     {
@@ -414,17 +414,15 @@
       "notes": "Read-only report over the platform's five retention sweeps (catalogue pinned at 769ff4e). A window counts only when stated by an approved policy entry, a run record's retention_days, or the job's registry description; a window found only in code is 'unknown' with days null. Disagreeing sources are 'conflicting' with no number chosen. Tests 'acceptance: a table whose window is not recorded anywhere returns unknown, never a guessed number of days' and 'acceptance: with no records at all, every table in the catalogue is unknown, with no days' pass; filling unknown windows from the code's days fails both. 13 tests. Not yet run on a live export.",
       "updated_at": "2026-10-27",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "A table whose window is not recorded anywhere returns 'unknown', never a guessed number of days."
-        ]
+        "verified_at": "2026-10-26T21:15:35.036Z",
+        "commit_sha": "d267672c3611d398d51fc1b16435e78cc5ae0b45",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/d267672c3611d398d51fc1b16435e78cc5ae0b45",
+        "commit_at": "2026-10-26T21:15:25Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
