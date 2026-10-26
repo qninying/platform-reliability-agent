@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 5,
+    "stories_verified": 6,
     "stories_submitted": 0,
-    "stories_in_progress": 49,
+    "stories_in_progress": 48,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 15,
-    "points_awarded": 75
+    "criteria_passed": 18,
+    "points_awarded": 90
   },
   "stories": [
     {
@@ -1562,19 +1562,15 @@
       "notes": "Three tasks from this domain's own capabilities: logging coverage audit (cron_run_instrumentation, ceiling R2), past-failure diagnosis (incident_trace_and_error_triage, ceiling R5) and the manager's weekly reliability briefing (reliability_briefing_for_manager, ceiling R5). Each has completion evidence written first and checked by K.D. against a known answer, a Must NOT boundary, switch-off conditions and a named approver (K.D.; A.M. and K.D. for tool grants). The Task 2 answer key is held by K.D., outside this repository.",
       "updated_at": "2026-10-26",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 3,
         "criteria_total": 3,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "Exactly three agent tasks are proposed, each with its boundary stated as what the agent must NOT do.",
-          "Each task names the evidence that proves it completed, and that evidence is something other than the task being marked done.",
-          "Each task names the human who approves it wherever approval is required."
-        ]
+        "verified_at": "2026-10-26T18:13:43.137Z",
+        "commit_sha": "8e75cc3a51d8cc0daadf5e339eca273c2b22a66a",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/8e75cc3a51d8cc0daadf5e339eca273c2b22a66a",
+        "commit_at": "2026-10-26T18:13:35Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
