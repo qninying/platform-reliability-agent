@@ -1,8 +1,53 @@
 # Ellis: Platform Automation & Reliability Agent
 
+**Ellis watches the AI agents that run the Colaberry platform. It tells a person, with evidence, what is healthy, what is broken, and what it cannot see.**
+
 Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninying. **Manager and stakeholder:** K.D. (AI Engineer). **Approvals:** K.D. gives sign-off, including on agent actions in production. A.M. oversees PR approvals, tool access and governance review.
 
-**Status (2026-10-26):** Release 1 (discovery and validation) is complete: all five discovery stories are verified on the Colaberry platform. Release 2 (capability development) has started, at K.D.'s request: 6 of 48 capabilities are built and verified. Every capability so far only reads records or works on a sandbox copy; none changes the live platform. Discovery documents are drafts until K.D. approves them; approved versions are kept in `discovery/`.
+| Capabilities verified | Tests | Runtime dependencies | Changes to the live platform |
+|---|---|---|---|
+| 6 of 48 | 76 passing | none (Node 23.6+, TypeScript) | none: read-only, or a sandbox copy |
+
+## How Ellis is built
+- **Unknown is never reported as clean.** A scanner that did not run, scanned 0 files or is switched off reads "unknown", and a rollup over it can never be green.
+- **Every answer cites its evidence:** the table and row id behind each verdict, so a reviewer can check it.
+- **Pinned to the platform's code.** Every rule Ellis copies from the platform names the commit and the file:line it came from.
+- **Tests that are shown to catch defects.** For each capability, a key rule is deliberately broken and a named test is confirmed to fail.
+- **Built by reading the platform first.** Each write-up's "What the code showed" lists the platform weaknesses found while building it, with file:line references.
+
+**Status (2026-10-26):** Release 1 (discovery and validation) is complete: all five discovery stories are verified on the Colaberry platform. Release 2 (capability development) started at K.D.'s request. Discovery documents are drafts until K.D. approves them; approved versions are kept in `discovery/`.
+
+## Release 1: discovery and validation
+| # | Story | Status |
+|---|---|---|
+| 1 | Compare the five system classes, and place this domain among them | Approved by K.D. 2026-10-22, version 3 ([01-system-classes.md](docs/discovery/01-system-classes.md)) |
+| 2 | Map the nine anatomy elements onto this domain's agent | Approved by K.D. 2026-10-21, version 4 ([02-agent-anatomy.md](docs/discovery/02-agent-anatomy.md)) |
+| 3 | Document the role and which DA responsibilities transition | Approved by K.D. 2026-10-21, version 2 ([03-role-and-da-transition.md](docs/discovery/03-role-and-da-transition.md)) |
+| 4 | 30-minute manager interview and weekly check-in | Interview plan ready; weekly check-in proposed for Mondays 1:30 pm Central ([04-manager-interview.md](docs/discovery/04-manager-interview.md)) |
+| 5 | Three proposed agent tasks with boundaries and completion evidence | Version 3; K.D. asked to proceed with building 2026-10-26 ([05-three-proposed-tasks.md](docs/discovery/05-three-proposed-tasks.md)) |
+
+## Release 2: capability development
+Each capability is built with tests, and the platform verifies it from this repo. Each one starts at autonomy level R0, and its first release is R2: it reports and recommends, and changes nothing live.
+
+| # | Capability | The question it answers | Platform agents it reads | Write-up | Status |
+|---|---|---|---|---|---|
+| 1 | **Orchestration health watch** | Is orchestration healthy right now, and when did that last change? | [OrchestrationHealthAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/orchestrationHealthAgent.ts) | [orchestration-health-watch](docs/capabilities/orchestration-health-watch.md) | Verified 2026-10-26, [`cd225af`](https://github.com/qninying/platform-reliability-agent/commit/cd225af) |
+| 2 | **Orchestration auto-repair (sandbox only)** | Can the two approved repairs run safely, changing things only once however often they run? | [OrchestrationAutoRepairAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/orchestrationAutoRepairAgent.ts), [PromptMonitorAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/promptMonitorAgent.ts) | [orchestration-auto-repair](docs/capabilities/orchestration-auto-repair.md) | Verified 2026-10-26, [`add84c9`](https://github.com/qninying/platform-reliability-agent/commit/add84c9) |
+| 3 | **Static security posture scanning** | What did the last secret, code and dependency scan find, and when? | [SecretDetectionAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/secretDetectionAgent.ts), [CodeSecurityAuditAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/codeSecurityAuditAgent.ts), [DependencySecurityAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/dependencySecurityAgent.ts) | [security-posture-scan](docs/capabilities/security-posture-scan.md) | Verified 2026-10-26, [`8ad3ba9`](https://github.com/qninying/platform-reliability-agent/commit/8ad3ba9) |
+| 4 | **Runtime threat and access-control watch** | Who can reach which admin section, and what changed since the last check? | [AccessControlGuardianAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/accessControlGuardianAgent.ts), [RuntimeThreatMonitorAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/runtimeThreatMonitorAgent.ts), admin roles | [runtime-threat-and-access-watch](docs/capabilities/runtime-threat-and-access-watch.md) | Verified 2026-10-26, [`8263fa2`](https://github.com/qninying/platform-reliability-agent/commit/8263fa2) |
+| 5 | **Agent behaviour and AI-safety watch** | Which agents acted outside their grants, and which grant was missing? | [AgentBehaviorMonitorAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/agentBehaviorMonitorAgent.ts), [AISafetyMonitorAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/aiSafetyMonitorAgent.ts), agent grants | [agent-behavior-safety-watch](docs/capabilities/agent-behavior-safety-watch.md) | Verified 2026-10-26, [`f010814`](https://github.com/qninying/platform-reliability-agent/commit/f010814) |
+| 6 | **Security oversight rollup** | Is the platform safe right now, as one verdict over all seven scanners? | [SecurityDirectorAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/769ff4ec1/backend/src/services/agents/security/securityDirectorAgent.ts) and the [seven security timers](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/769ff4ec1/backend/src/services/aiOpsScheduler.ts#L328-L335) it supervises | [security-oversight-rollup](docs/capabilities/security-oversight-rollup.md) | Verified 2026-10-26, [`a520ec2`](https://github.com/qninying/platform-reliability-agent/commit/a520ec2) |
+
+42 more capabilities are planned in the platform's build plan for this domain ([`platform.json`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agentDomain/capabilities/platform.json)).
+
+## Run it
+```
+npm install   # TypeScript for the type check; Ellis itself has no runtime dependencies
+npm test
+npm run orchestration-health -- --snapshot examples/orchestration-health.example.json
+npm run security-rollup -- --snapshot examples/security-rollup.example.json
+```
+Each capability has a command and an example input in `examples/`. The examples are not production data. Each write-up explains its command and exit codes.
 
 ## The platform Ellis watches
 
@@ -19,39 +64,6 @@ Links below are pinned to commit `c860274`, the version Ellis's capabilities wer
 | Per-agent write grants | [`agentPermissionService.ts`, `AGENT_PERMISSIONS`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agentPermissionService.ts#L36) |
 | Admin roles and sections | [`access/mgmtRoles.ts`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/access/mgmtRoles.ts) |
 
-### Capabilities built, and the platform agents each one watches
-| Ellis capability | Platform agents and records it reads | Write-up |
-|---|---|---|
-| Orchestration health watch | [OrchestrationHealthAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/orchestrationHealthAgent.ts) | [orchestration-health-watch.md](docs/capabilities/orchestration-health-watch.md) |
-| Orchestration auto-repair (sandbox only) | [OrchestrationAutoRepairAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/orchestrationAutoRepairAgent.ts), [PromptMonitorAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/promptMonitorAgent.ts) | [orchestration-auto-repair.md](docs/capabilities/orchestration-auto-repair.md) |
-| Static security posture scanning | [SecretDetectionAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/secretDetectionAgent.ts), [CodeSecurityAuditAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/codeSecurityAuditAgent.ts), [DependencySecurityAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/dependencySecurityAgent.ts) | [security-posture-scan.md](docs/capabilities/security-posture-scan.md) |
-| Runtime threat and access-control watch | [AccessControlGuardianAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/accessControlGuardianAgent.ts), [RuntimeThreatMonitorAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/runtimeThreatMonitorAgent.ts), admin roles | [runtime-threat-and-access-watch.md](docs/capabilities/runtime-threat-and-access-watch.md) |
-| Agent behaviour and AI-safety watch | [AgentBehaviorMonitorAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/agentBehaviorMonitorAgent.ts), [AISafetyMonitorAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/aiSafetyMonitorAgent.ts), agent grants | [agent-behavior-safety-watch.md](docs/capabilities/agent-behavior-safety-watch.md) |
-| Security oversight rollup | [SecurityDirectorAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/769ff4ec1/backend/src/services/agents/security/securityDirectorAgent.ts) and the seven security timers it supervises ([`aiOpsScheduler.ts`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/769ff4ec1/backend/src/services/aiOpsScheduler.ts#L328-L335)) | [security-oversight-rollup.md](docs/capabilities/security-oversight-rollup.md) |
-
-## Release 1: discovery and validation
-| # | Story | Status |
-|---|---|---|
-| 1 | Compare the five system classes, and place this domain among them | Approved by K.D. 2026-10-22, version 3 (`docs/discovery/01-system-classes.md`) |
-| 2 | Map the nine anatomy elements onto this domain's agent | Approved by K.D. 2026-10-21, version 4 (`docs/discovery/02-agent-anatomy.md`) |
-| 3 | Document the role and which DA responsibilities transition | Approved by K.D. 2026-10-21, version 2 (`docs/discovery/03-role-and-da-transition.md`) |
-| 4 | 30-minute manager interview and weekly check-in | Interview plan ready; weekly check-in proposed for Mondays 1:30 pm Central (`docs/discovery/04-manager-interview.md`) |
-| 5 | Three proposed agent tasks with boundaries and completion evidence | Version 3; K.D. asked to proceed with building 2026-10-26 (`docs/discovery/05-three-proposed-tasks.md`) |
-
-## Release 2: capability development
-Each capability is built with tests, and the platform verifies it from this repo. Each one starts at autonomy level R0, and its first release is R2: it reports and recommends, and changes nothing live.
-
-| # | Capability | Write-up | Status |
-|---|---|---|---|
-| 1 | Orchestration health watch | [orchestration-health-watch.md](docs/capabilities/orchestration-health-watch.md) | Verified 2026-10-26 (commit `cd225af`) |
-| 2 | Orchestration auto-repair (sandbox only) | [orchestration-auto-repair.md](docs/capabilities/orchestration-auto-repair.md) | Verified 2026-10-26 (commit `add84c9`) |
-| 3 | Static security posture scanning | [security-posture-scan.md](docs/capabilities/security-posture-scan.md) | Verified 2026-10-26 (commit `8ad3ba9`) |
-| 4 | Runtime threat and access-control watch | [runtime-threat-and-access-watch.md](docs/capabilities/runtime-threat-and-access-watch.md) | Verified 2026-10-26 (commit `8263fa2`) |
-| 5 | Agent behaviour and AI-safety watch | [agent-behavior-safety-watch.md](docs/capabilities/agent-behavior-safety-watch.md) | Verified 2026-10-26 (commit `f010814`) |
-| 6 | Security oversight rollup | [security-oversight-rollup.md](docs/capabilities/security-oversight-rollup.md) | Verified 2026-10-26 (commit `a520ec2`) |
-
-42 more capabilities are planned. They are listed in the platform's build plan for this domain.
-
 ## Contents
 | Path | What |
 |---|---|
@@ -61,19 +73,10 @@ Each capability is built with tests, and the platform verifies it from this repo
 | `research/video-review-demo-to-production.md` | Review of the "Demo to Production" video |
 | `governance/tool-catalog-approach.md` | Tool approval rule and catalog format |
 | `governance/agent-identity.md` | How the agent is treated as a governed identity |
-| `docs/discovery/01-system-classes.md` | Story 1: the five system classes and where this domain sits |
-| `docs/discovery/02-agent-anatomy.md` | Story 2: the nine anatomy elements mapped to platform surfaces |
-| `docs/discovery/03-role-and-da-transition.md` | Story 3: the accountable human's role and which responsibilities transition |
-| `docs/discovery/04-manager-interview.md` | Story 4: 30-minute interview plan, what each answer changes, and the weekly check-in |
-| `docs/discovery/05-three-proposed-tasks.md` | Story 5: three proposed agent tasks, their boundaries and completion evidence |
 | `docs/migration/legacy-migration-plan.md` | Legacy migration plan for the 38 inherited platform records (version 1 approved by K.D.) |
-| `src/`, `test/` | Ellis's code and tests (`npm test`); one file per capability in `src/capabilities/` |
-| `docs/capabilities/orchestration-health-watch.md` | Capability: orchestration health watch, what it answers and the evidence |
-| `docs/capabilities/orchestration-auto-repair.md` | Capability: orchestration auto-repair in a sandbox, replay safety and the evidence |
-| `docs/capabilities/security-posture-scan.md` | Capability: what the last security scan of each kind found, and when, never mistaking a silent scanner for a clean one |
-| `docs/capabilities/runtime-threat-and-access-watch.md` | Capability: who holds which admin section today and what changed, telling 'no login' from 'login with no sections' |
-| `docs/capabilities/agent-behavior-safety-watch.md` | Capability: which agents acted outside their grants, each finding naming the missing grant |
-| `docs/capabilities/security-oversight-rollup.md` | Capability: one security verdict over seven scanners, never green while any scanner is silent |
+| `docs/discovery/` | Release 1: the five discovery stories (linked above) |
+| `docs/capabilities/` | Release 2: one write-up per capability: what it answers, what the platform code showed, and the evidence |
+| `src/`, `test/`, `examples/` | Ellis's code (one file per capability in `src/capabilities/`), its tests, and example inputs |
 | `brd/brd-draft-v0.7.pdf` | Business requirement document, early draft v0.7 (2026-10-14, written before platform access) |
 
 ## First deliverable checklist
@@ -82,4 +85,4 @@ Each capability is built with tests, and the platform verifies it from this repo
 - [x] Role summary: `docs/discovery/03-role-and-da-transition.md` (version 2, approved by K.D. 2026-10-21)
 - [x] Manager meeting notes (kept private; interview held 2026-10-19, `docs/discovery/04-manager-interview.md`)
 - [x] First three proposed agent tasks (info, tools, approvals, proof of completion): `docs/discovery/05-three-proposed-tasks.md`
-- [x] Recurring weekly meeting with K.D.: Mondays, 1:30 pm Central (`docs/discovery/04-manager-interview.md`)
+- [x] Recurring weekly meeting with K.D.: Mondays, 1:30 pm Central ([04-manager-interview.md](docs/discovery/04-manager-interview.md))
