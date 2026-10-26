@@ -1304,13 +1304,24 @@
       "criteria": [
         {
           "text": "The answer separates 'past the threshold' from 'past the attempt cap', because the second must not be recycled.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/staleActionRecovery.ts",
+        "src/cli/staleActions.ts",
+        "src/capabilities/orchestrationHealthWatch.ts",
+        "test/staleActionRecovery.test.ts",
+        "examples/stale-actions.example.json",
+        "docs/capabilities/stale-action-recovery.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/staleActionRecovery.test.ts"
+      ],
+      "notes": "Read-only report over scheduled_emails rows in 'processing' and the StaleActionRecovery timer run (platform commit 4f6b4d5). Each stuck row is past_threshold (attempts left, recyclable) or past_attempt_cap (counting the stuck run, it was the last allowed attempt; never recyclable); rows with no usable start time or attempt numbers are unknown and never recyclable. Each answer also says what the platform will do, since its recovery ignores the cap. Tests 'acceptance: the answer separates 'past the threshold' from 'past the attempt cap', and the second is not recyclable' and 'acceptance: a single-attempt action (the platform default) stuck once is past its cap...' pass; using the platform's cap rule fails both, removing the cap check fails 3. 12 tests. Not yet run on a live export.",
+      "updated_at": "2026-10-26",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

@@ -16,7 +16,8 @@
     "behavior-watch": "node src/cli/behaviorWatch.ts",
     "security-rollup": "node src/cli/securityRollup.ts",
     "retention-sweep": "node src/cli/retentionSweep.ts",
-    "preview-reaping": "node src/cli/previewReaping.ts"
+    "preview-reaping": "node src/cli/previewReaping.ts",
+    "stale-actions": "node src/cli/staleActions.ts"
   },
   "devDependencies": {
     "@types/node": "22.15.3",
