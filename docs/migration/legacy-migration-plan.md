@@ -1,6 +1,6 @@
 # Legacy migration plan: Platform Automation & Reliability
 
-**Story:** `platform.LEGACY-MIGRATION-PLAN` · **Version:** 1, approved by K.D. 2026-10-22 · **Accountable human:** K.D.
+**Story:** `platform.LEGACY-MIGRATION-PLAN` · **Version:** 1.1 (version 1 approved by K.D. 2026-10-22) · **Accountable human:** K.D.
 **Prepared by:** Q. Nkwain Ninying
 
 Platform facts come from the public Colaberry platform repository
@@ -22,7 +22,7 @@ Short names used throughout:
 Version 1 is approved on four conditions:
 
 1. **Phase B does switch records off.** Once a row is approved, phase B disables it (section 4). Nothing is switched off before that row's approval.
-2. **The four held records stay held:** TicketManagementAgent, `workforce_intelligence_engine`, `InboxCaseEngine` and `bpos_orchestrator`.
+2. **The held records stay held:** `workforce_intelligence_engine`, `InboxCaseEngine` and `bpos_orchestrator`. TicketManagementAgent was also held at approval; it is now superseded (see the decision below).
 3. **Every switch-off needs its own approval from K.D.**, one row at a time, separate from this plan's approval.
 4. **The 29 migrated records keep running unchanged.** They only gain a capability mapping.
 
@@ -30,8 +30,8 @@ Decisions on the open items:
 
 | Item | Decision | Before anything changes |
 |---|---|---|
-| TicketManagementAgent | Its two uncovered jobs, assigning unassigned tickets and escalating tickets stuck 48+ hours, are still needed; its old code is not. Both are recorded as **jobs still to be replaced**, not retired. Nothing is switched on. | A.M. runs a read-only count of unassigned tickets and tickets stuck 48+ hours. Then a person or an agent is chosen for each job. |
-| The 2 retirements and 4 supersessions | Confirmed, with conditions (section 2). The supersession list is now 3, because TicketManagementAgent is held. | For each retirement: the code search and git history showing the source never existed, and a read-only check that the registry row never ran. |
+| TicketManagementAgent | **Superseded; two jobs not carried forward.** Held at approval as jobs still to be replaced. Afterwards A.M. confirmed that its two uncovered jobs, assigning unassigned tickets and escalating tickets stuck 48+ hours, are no longer needed, and K.D. agreed by email. Its third job, closing old `in_review` tickets, is covered in part by the resolvers in `agent_ticket_auto_resolution`. | Nothing live changes: the row never runs. Disabling the row still needs its own approval (phase B). |
+| The 2 retirements and 4 supersessions | Confirmed, with conditions (section 2). All 4 supersessions now stand, TicketManagementAgent included (decision above). | For each retirement: the code search and git history showing the source never existed, and a read-only check that the registry row never ran. |
 | `workforce_intelligence_engine` | Accepted as K.D.'s direct report, as the platform's identity records already state. Not switched on. | Show what it does, its tool grants, the five agents that report through it, and whether it is the same agent as the `WorkforceIntelligence` timer (every 6 hours, no registry row). |
 
 ## 1. Completeness: are all 38 records here?
@@ -44,7 +44,7 @@ Every successor `capability_id` named in a disposition exists among the 48 capab
 |---|---|---|
 | `migrated_to_capability`, sharing a capability with other rows | 21 | **Merged**: several rows become one capability |
 | `migrated_to_capability`, sole row of its capability | 8 | **Kept**: carried forward one to one |
-| `superseded` | 4 | **Merged into a successor** (3 confirmed; TicketManagementAgent corrected to **held**, see section 5) |
+| `superseded` | 4 | **Merged into a successor** (TicketManagementAgent with two jobs not carried forward, see section 5) |
 | `retired` | 2 | **Retired** |
 | `unknown` | 3 | **Held** (section 3) |
 | **Total** | **38** | |
@@ -99,7 +99,7 @@ Every successor `capability_id` named in a disposition exists among the 48 capab
 | 31 | Deployment_Agent | `production_deploy_review_and_approval` (human-performed) | Source never existed; deploys are default-denied | 4953 | `backend/src/services/agents/platform/` absent yes; `executionPolicy.ts:33-42` yes |
 | 32 | Performance_Monitoring_Agent | `agent_health_scoring` | Source never existed; health scoring is live elsewhere | 4960 | function is at `aiOpsService.ts:456`, not `:428` |
 | 33 | PlatformReportingAgent | `reliability_briefing_for_manager` (proposed, absent; not built yet) | Unwired, so nothing running is lost; marked dead by the test baseline | 4967 | `cronRegistryBaseline.ts:87` yes; seed row is `SEED:1722`, not `:1720` |
-| 34 | TicketManagementAgent | **held: jobs still to be replaced** (was `agent_ticket_auto_resolution`) | See section 5, finding 1, and the decisions above | 4974 | yes, and the brief is wrong |
+| 34 | TicketManagementAgent | `agent_ticket_auto_resolution`, in part | Closing old tickets is covered in part; dispatch and 48-hour escalation are not carried forward (A.M. and K.D.). See section 5, finding 1 | 4974 | yes; the brief's "covered" claim is wrong, the outcome stands by decision |
 
 ### Retired
 
@@ -202,6 +202,9 @@ would settle it.
 tickets still be dispatched automatically, and stale ones escalated? If yes, that needs a successor capability that
 does not exist yet. If no, the comments that rely on it are stale and should be corrected.
 
+**Decided:** no. A.M. confirmed the two jobs are no longer needed and K.D. agreed, so the record is superseded and the
+two jobs are not carried forward. The comment at `autonomousEngine.ts:22-24` is now stale.
+
 ### Finding 2: citations that do not say what is claimed
 
 None of these change a disposition. Each was checked at both `c99021d` and `1f3184373`, with the same result.
@@ -232,7 +235,7 @@ The `SCHED` citations, which the brief re-measured, are all correct (24 of 24).
 
 | Step | What | Waits on | Changes anything live? |
 |---|---|---|---|
-| 1 | Plan approved; TicketManagementAgent held as jobs still to be replaced | Done 2026-10-22 | No |
+| 1 | Plan approved; TicketManagementAgent later superseded, two jobs not carried forward | Done | No |
 | 2 | Retirements and supersessions confirmed; read-only "never ran" check for each retirement | Step 1 | No |
 | 3 | Settle `workforce_intelligence_engine`: accepted as K.D.'s report; show what it does, its grants, its five reports, and whether it is the `WorkforceIntelligence` timer | K.D. admin access (blocked today) | No |
 | 4 | Run the `tickets.created_by_id` query for InboxCaseEngine and `bpos_orchestrator` | Production read access (holder unknown); step 3 | No |
@@ -246,3 +249,4 @@ autonomy level, and every capability stays `draft` until K.D. reviews it.
 ## Version history
 
 - **Version 1 (approved by K.D. 2026-10-22):** all 38 records accounted for with a reason; replayable two-phase migration on the platform's existing `RETIRED_AGENTS` mechanism; a hold-and-report rule for any record that cannot be classified. Approved on these conditions: phase B switch-offs each need separate approval, the four held records stay held, and the 29 migrated records keep running unchanged.
+- **Version 1.1 (2026-10-26):** TicketManagementAgent moved from held to superseded. A.M. confirmed its two uncovered jobs (dispatching unassigned tickets, escalating tickets stuck 48+ hours) are no longer needed, and K.D. agreed by email, so they are not carried forward. Three records remain held.
