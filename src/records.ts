@@ -23,6 +23,9 @@ export interface ActivityLogRow {
   action: string;
   result: ActivityResult | null;
   created_at: string;
+  // Set when the row records a state change, e.g. a repair (logAgentActivity callers).
+  before_state?: Record<string, unknown> | null;
+  after_state?: Record<string, unknown> | null;
   // runAgent stores the run's actions here (backend/src/services/aiOrchestrator.ts:247-251).
   details?: { actions?: Array<{ action?: string; result?: string; after_state?: Record<string, unknown> | null }>; errors?: string[] } | null;
 }

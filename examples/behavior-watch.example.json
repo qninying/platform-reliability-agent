@@ -1,0 +1,27 @@
+{
+  "captured_at": "2026-10-26T18:00:00Z",
+  "captured_by": "example, not production data: shows the export format and each kind of finding",
+  "ai_agents": [
+    { "id": "example-orch-health", "agent_name": "OrchestrationHealthAgent", "status": "idle", "enabled": true, "schedule": "*/5 * * * *", "last_run_at": null, "updated_at": null },
+    { "id": "example-repair", "agent_name": "OrchestrationAutoRepairAgent", "status": "idle", "enabled": true, "schedule": null, "last_run_at": null, "updated_at": null },
+    { "id": "example-curriculum", "agent_name": "CurriculumArchitectAgent", "status": "idle", "enabled": true, "schedule": null, "last_run_at": null, "updated_at": null },
+    { "id": "example-ops-director", "agent_name": "WorkforceOperationsDirector", "status": "idle", "enabled": true, "schedule": null, "last_run_at": null, "updated_at": null },
+    { "id": "example-behavior-monitor", "agent_name": "AgentBehaviorMonitorAgent", "status": "idle", "enabled": true, "schedule": null, "last_run_at": null, "updated_at": null }
+  ],
+  "agent_write_audits": [
+    { "id": "example-wa-1", "agent_id": "example-ops-director", "agent_name": "WorkforceOperationsDirector", "operation": "flag_operations", "target_table": "workforce_tasks", "was_allowed": true, "blocked_reason": null, "created_at": "2026-10-26T12:00:00Z" },
+    { "id": "example-wa-2", "agent_id": "example-curriculum", "agent_name": "CurriculumArchitectAgent", "operation": "close_ticket", "target_table": "tickets", "was_allowed": true, "blocked_reason": null, "created_at": "2026-10-26T13:00:00Z" },
+    { "id": "example-wa-3", "agent_id": "example-unknown-id", "agent_name": "GhostAgent", "operation": "update", "target_table": "tickets", "was_allowed": false, "blocked_reason": "suggest_only_direct_write_blocked", "created_at": "2026-10-26T14:00:00Z" }
+  ],
+  "ai_agent_activity_logs": [
+    { "id": "example-al-1", "agent_id": "example-repair", "action": "reactivate_prompt", "result": "success", "created_at": "2026-10-26T15:00:00Z", "before_state": { "is_active": false }, "after_state": { "is_active": true } },
+    { "id": "example-al-2", "agent_id": "example-orch-health", "action": "store_health_snapshot", "result": "success", "created_at": "2026-10-26T15:05:00Z", "before_state": {}, "after_state": { "health_score": 92 } },
+    { "id": "example-al-3", "agent_id": "example-orch-health", "action": "1 action(s): finding_info", "result": "success", "created_at": "2026-10-26T15:05:00Z" }
+  ],
+  "ai_events": [
+    { "id": "example-ev-1", "event_type": "agent.authorization", "agent_id": "example-curriculum", "created_at": "2026-10-26T16:00:00Z",
+      "metadata": { "agent_name": "CurriculumArchitectAgent", "action": "ticket_dispatch", "category": "write", "level": "suggest", "verdict": "block", "reason": "level_forbids:write", "enforced": false } },
+    { "id": "example-ev-2", "event_type": "agent.authorization", "agent_id": "example-curriculum", "created_at": "2026-10-26T16:05:00Z",
+      "metadata": { "agent_name": "CurriculumArchitectAgent", "action": "send_email", "category": "communicate", "level": "act_audited", "verdict": "approval", "reason": "requires_approval:external_send", "enforced": false } }
+  ]
+}

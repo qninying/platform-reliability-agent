@@ -19,13 +19,25 @@
       "criteria": [
         {
           "text": "Every finding names the specific grant that was missing; a finding with no named grant is not emitted.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/agentBehaviorSafetyWatch.ts",
+        "src/grants/agentGrants.ts",
+        "src/cli/behaviorWatch.ts",
+        "src/records.ts",
+        "test/agentBehaviorSafetyWatch.test.ts",
+        "examples/behavior-watch.example.json",
+        "docs/capabilities/agent-behavior-safety-watch.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/agentBehaviorSafetyWatch.test.ts"
+      ],
+      "notes": "Read-only check of agent_write_audits, state-changing activity rows and agent.authorization events against the platform's grant map (AGENT_PERMISSIONS, pinned at c860274). Tests 'acceptance: every finding names the specific grant that was missing' and 'acceptance: a verdict that names no missing grant is not emitted as a finding' pass; emitting an unnamed finding fails the second. Unattributable actions are reported, not dropped; the watchers' own actions are excluded. 12 tests. Not yet run on a live export.",
+      "updated_at": "2026-10-26",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
