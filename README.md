@@ -2,7 +2,7 @@
 
 Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninying. **Manager and stakeholder:** K.D. (AI Engineer). **Approvals:** K.D. gives sign-off, including on agent actions in production. A.M. oversees PR approvals, tool access and governance review.
 
-**Status (2026-10-22):** discovery stories 1 to 4 verified on the Colaberry platform; story 5 in review with K.D. Release 1 (discovery and validation) is in progress at autonomy level R0 (define the workflow, requirements, risks and human decisions). Work is a draft until K.D. approves it; approved work is kept in `discovery/`.
+**Status (2026-10-26):** discovery stories 1 to 5 complete on the Colaberry platform; K.D. has asked to move on to building the agent. Release 1 (discovery and validation) is in progress at autonomy level R0 (define the workflow, requirements, risks and human decisions). Work is a draft until K.D. approves it; approved work is kept in `discovery/`.
 
 ## Release 1: discovery and validation
 | # | Story | Status |
@@ -11,7 +11,7 @@ Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninyi
 | 2 | Map the nine anatomy elements onto this domain's agent | Approved by K.D. 2026-10-21, version 4 (`docs/discovery/02-agent-anatomy.md`) |
 | 3 | Document the role and which DA responsibilities transition | Approved by K.D. 2026-10-21, version 2 (`docs/discovery/03-role-and-da-transition.md`) |
 | 4 | 30-minute manager interview and weekly check-in | Interview plan ready; weekly check-in proposed for Mondays 1:30 pm Central (`docs/discovery/04-manager-interview.md`) |
-| 5 | Three proposed agent tasks with boundaries and completion evidence | In review with K.D. |
+| 5 | Three proposed agent tasks with boundaries and completion evidence | Version 3; K.D. asked to proceed with building 2026-10-26 (`docs/discovery/05-three-proposed-tasks.md`) |
 
 ## Contents
 | Path | What |
@@ -26,6 +26,8 @@ Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninyi
 | `docs/discovery/02-agent-anatomy.md` | Story 2: the nine anatomy elements mapped to platform surfaces |
 | `docs/discovery/03-role-and-da-transition.md` | Story 3: the accountable human's role and which responsibilities transition |
 | `docs/discovery/04-manager-interview.md` | Story 4: 30-minute interview plan, what each answer changes, and the weekly check-in |
+| `docs/discovery/05-three-proposed-tasks.md` | Story 5: three proposed agent tasks, their boundaries and completion evidence |
+| `docs/migration/legacy-migration-plan.md` | Legacy migration plan for the 38 inherited platform records (version 1 approved by K.D.) |
 | `brd/brd-draft-v0.7.pdf` | Business requirement document, early draft v0.7 (2026-10-14, written before platform access) |
 
 ## First deliverable checklist
@@ -33,5 +35,5 @@ Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninyi
 - [x] Component map: `docs/discovery/02-agent-anatomy.md` (version 5; version 4 approved by K.D. 2026-10-21)
 - [x] Role summary: `docs/discovery/03-role-and-da-transition.md` (version 2, approved by K.D. 2026-10-21)
 - [x] Manager meeting notes (kept private; interview held 2026-10-19, `docs/discovery/04-manager-interview.md`)
-- [ ] First three proposed agent tasks (info, tools, approvals, proof of completion)
+- [x] First three proposed agent tasks (info, tools, approvals, proof of completion): `docs/discovery/05-three-proposed-tasks.md`
 - [x] Recurring weekly meeting with K.D.: Mondays, 1:30 pm Central (`docs/discovery/04-manager-interview.md`)
