@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 8,
+    "stories_verified": 10,
     "stories_submitted": 0,
-    "stories_in_progress": 46,
+    "stories_in_progress": 44,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 20,
-    "points_awarded": 120
+    "criteria_passed": 22,
+    "points_awarded": 150
   },
   "stories": [
     {
@@ -1097,17 +1097,15 @@
       "notes": "Read-only sweep of admin_users, staff management roles, org_members and audit_logs using the platform's role-to-section rules pinned at 13cb098. Test \"acceptance: 'no admin_users row' and 'admin_users row with no sections' are different answers with different remedies\" passes; merging the two statuses makes it fail. The manager-access gap is labelled a known gap, not drift, and is never resolved by creating a login. Changes since the last sweep come from comparing saved sweeps; with none, 'unknown', not 'nothing'. 11 tests. Not yet run on a live export.",
       "updated_at": "2026-10-26",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "The answer distinguishes 'no admin_users row' from 'admin_users row with no sections', because they have different remedies."
-        ]
+        "verified_at": "2026-10-26T19:38:07.268Z",
+        "commit_sha": "8263fa2034f200bc66c49f28d3a47339960c95f4",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/8263fa2034f200bc66c49f28d3a47339960c95f4",
+        "commit_at": "2026-10-26T19:37:58Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
@@ -1250,17 +1248,15 @@
       "notes": "Read-only answer per scan kind (secret, code, dependency) from the activity log and department_events. Test \"acceptance: a scan that has never run returns 'unknown', not 'no findings', for all three kinds\" passes. A scan of 0 files or projects, a skipped scan, only failed runs, or a stale scan is also 'unknown'. Findings pass through a field whitelist, so the secret scanner's stored snippet is never repeated (tested with a planted key-shaped value). 13 tests; mutating the never-run, 0-coverage and redaction rules fails 3, 2 and 1 tests. Not yet run on a live export.",
       "updated_at": "2026-10-26",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "A scan that has never run returns 'unknown' rather than 'no findings'."
-        ]
+        "verified_at": "2026-10-26T19:13:05.558Z",
+        "commit_sha": "8ad3ba90ccaeabdce88a312f57abf7defe68da68",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/8ad3ba90ccaeabdce88a312f57abf7defe68da68",
+        "commit_at": "2026-10-26T19:12:56Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
