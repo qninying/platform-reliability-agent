@@ -1077,13 +1077,25 @@
       "criteria": [
         {
           "text": "The answer distinguishes 'no admin_users row' from 'admin_users row with no sections', because they have different remedies.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/runtimeThreatAccessWatch.ts",
+        "src/access/sectionMap.ts",
+        "src/access/accessSnapshot.ts",
+        "src/cli/accessWatch.ts",
+        "test/runtimeThreatAccessWatch.test.ts",
+        "examples/access-watch.example.json",
+        "docs/capabilities/runtime-threat-and-access-watch.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/runtimeThreatAccessWatch.test.ts"
+      ],
+      "notes": "Read-only sweep of admin_users, staff management roles, org_members and audit_logs using the platform's role-to-section rules pinned at 13cb098. Test \"acceptance: 'no admin_users row' and 'admin_users row with no sections' are different answers with different remedies\" passes; merging the two statuses makes it fail. The manager-access gap is labelled a known gap, not drift, and is never resolved by creating a login. Changes since the last sweep come from comparing saved sweeps; with none, 'unknown', not 'nothing'. 11 tests. Not yet run on a live export.",
+      "updated_at": "2026-10-26",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

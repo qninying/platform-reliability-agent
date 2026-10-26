@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "orchestration-health": "node src/cli/orchestrationHealth.ts",
     "orchestration-repair": "node src/cli/orchestrationRepair.ts",
-    "security-posture": "node src/cli/securityPosture.ts"
+    "security-posture": "node src/cli/securityPosture.ts",
+    "access-watch": "node src/cli/accessWatch.ts"
   },
   "devDependencies": {
     "@types/node": "22.15.3",

@@ -32,6 +32,7 @@ Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninyi
 | `docs/capabilities/orchestration-health-watch.md` | Capability: orchestration health watch, what it answers and the evidence |
 | `docs/capabilities/orchestration-auto-repair.md` | Capability: orchestration auto-repair in a sandbox, replay safety and the evidence |
 | `docs/capabilities/security-posture-scan.md` | Capability: what the last security scan of each kind found, and when, never mistaking a silent scanner for a clean one |
+| `docs/capabilities/runtime-threat-and-access-watch.md` | Capability: who holds which admin section today and what changed, telling 'no login' from 'login with no sections' |
 | `brd/brd-draft-v0.7.pdf` | Business requirement document, early draft v0.7 (2026-10-14, written before platform access) |
 
 ## First deliverable checklist

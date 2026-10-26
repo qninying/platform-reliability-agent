@@ -1,0 +1,19 @@
+{
+  "captured_at": "2026-10-26T05:00:00Z",
+  "captured_by": "example, not production data: shows the export format and each status",
+  "admin_users": [
+    { "id": "example-au-1", "email": "owner@example.invalid", "role": "super_admin", "display_name": "Example owner" },
+    { "id": "example-au-2", "email": "rep@example.invalid", "role": "sales", "display_name": "Example sales rep" },
+    { "id": "example-au-3", "email": "former@example.invalid", "role": "participant", "display_name": "Example login with no sections" }
+  ],
+  "community_members": [
+    { "id": "example-cm-1", "enrollment_id": "example-enr-1", "email": "curriculum.lead@example.invalid", "role": "staff", "mgmt_role": "curriculum" },
+    { "id": "example-cm-2", "enrollment_id": "example-enr-2", "email": "moved.on@example.invalid", "role": "member", "mgmt_role": "admin" }
+  ],
+  "org_members": [
+    { "id": "example-om-1", "email": "manager@example.invalid", "role": "manager" }
+  ],
+  "audit_logs": [
+    { "id": "example-audit-1", "admin_user_id": "example-enr-9", "action": "update", "entity_type": "members", "entity_id": "example-cm-1", "new_values": { "mgmt_role": "curriculum" }, "created_at": "2026-10-25T16:00:00Z" }
+  ]
+}
