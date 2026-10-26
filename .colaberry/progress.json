@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 7,
+    "stories_verified": 8,
     "stories_submitted": 0,
-    "stories_in_progress": 47,
+    "stories_in_progress": 46,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 19,
-    "points_awarded": 105
+    "criteria_passed": 20,
+    "points_awarded": 120
   },
   "stories": [
     {
@@ -794,17 +794,15 @@
       "notes": "Runs the platform's authorized repair set (SAFE_REPAIR_TYPES, orchestrationAutoRepairAgent.ts:8-11) against a sandbox fixture only, with a journal of every write. Test 'acceptance: the same repair twice on the same fixture leaves one change, and the second run reports no-op' passes, and on the seeded demo fixture run 1 makes 4 changes, run 2 is a no-op, journal 4. Out-of-set faults and disallowed columns are left alone and reported; duplicate signals collapse to one change; a cap of 0 means 0; a mid-run write failure reports partial and a re-run completes without doubling. 12 tests; removing the precondition check or the active-row scope fails 4 tests each.",
       "updated_at": "2026-10-26",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "Running the same repair twice against the same fixture leaves one change, not two, and the second run reports no-op."
-        ]
+        "verified_at": "2026-10-26T18:51:20.711Z",
+        "commit_sha": "add84c905fd550b798a99696da5ab70ba90361f1",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/add84c905fd550b798a99696da5ab70ba90361f1",
+        "commit_at": "2026-10-26T18:51:13Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
