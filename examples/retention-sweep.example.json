@@ -1,0 +1,30 @@
+{
+  "captured_at": "2026-10-27T12:00:00Z",
+  "captured_by": "example, not production data: registry descriptions are copied from the platform seed; runs and counts are invented",
+  "ai_agents": [
+    { "id": "example-page", "agent_name": "PageEventCleanup", "status": "idle", "enabled": true, "schedule": "0 3 * * *", "last_run_at": "2026-10-27T03:00:02Z", "updated_at": null,
+      "description": "Data retention: deletes PageEvent records older than 90 days to manage database size." },
+    { "id": "example-chat", "agent_name": "ChatMessageCleanup", "status": "idle", "enabled": true, "schedule": "30 3 * * *", "last_run_at": "2026-10-27T03:30:01Z", "updated_at": null,
+      "description": "Data retention: deletes ChatMessage records older than 180 days to manage database size." },
+    { "id": "example-intel", "agent_name": "IntelligenceRetentionCycle", "status": "idle", "enabled": true, "schedule": "15 3 * * *", "last_run_at": "2026-10-27T03:15:04Z", "updated_at": null,
+      "description": "Daily intelligence-data retention cleanup cycle." },
+    { "id": "example-news", "agent_name": "AiNewsRefresh", "status": "idle", "enabled": true, "schedule": "15 3 * * *", "last_run_at": "2026-10-25T03:15:00Z", "updated_at": null,
+      "description": "AI News Flash intelligence pipeline. Daily 03:15 CT: fetches free AI-lab RSS feeds, dedup-upserts the library, materializes up to AI_NEWS_MAX_PER_RUN news cards (cost-gated by AI_NEWS_INGEST_ENABLED), then prunes generated cards older than 30 days." },
+    { "id": "example-proposals", "agent_name": "ProposalCleanupService", "status": "idle", "enabled": true, "schedule": "0 2 * * *", "last_run_at": "2026-10-27T02:00:01Z", "updated_at": null,
+      "description": "Expires stale governance proposals past their review window." }
+  ],
+  "ai_agent_activity_logs": [
+    { "id": "example-run-page", "agent_id": "example-page", "action": "cron_run", "result": "success", "created_at": "2026-10-27T03:00:09Z" },
+    { "id": "example-run-chat", "agent_id": "example-chat", "action": "cron_run", "result": "success", "created_at": "2026-10-27T03:30:05Z" },
+    { "id": "example-run-intel", "agent_id": "example-intel", "action": "cron_run", "result": "success", "created_at": "2026-10-27T03:15:06Z" },
+    { "id": "example-run-news", "agent_id": "example-news", "action": "cron_run", "result": "success", "created_at": "2026-10-25T03:15:40Z" },
+    { "id": "example-run-proposals", "agent_id": "example-proposals", "action": "cron_run", "result": "success", "created_at": "2026-10-27T02:00:02Z" }
+  ],
+  "ai_system_events": [
+    { "id": "example-ev-cycle", "source": "IntelligenceRetention", "event_type": "RETENTION_CYCLE", "created_at": "2026-10-26T03:15:05Z",
+      "details": { "archived": 5000, "deleted": 5000, "duration_ms": 812, "retention_days": 30, "batch_limit": 5000 } },
+    { "id": "example-ev-error", "source": "IntelligenceRetention", "event_type": "RETENTION_ERROR", "created_at": "2026-10-27T03:15:05Z",
+      "details": { "error": "example error", "duration_ms": 40 } }
+  ],
+  "retention_policy": []
+}

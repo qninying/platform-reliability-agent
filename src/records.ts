@@ -12,6 +12,8 @@ export interface AiAgentRow {
   schedule: string | null;
   last_run_at: string | null;
   updated_at: string | null;
+  // Free text shown in the admin registry; some cleanup rows state their retention window here.
+  description?: string | null;
 }
 
 // backend/src/models/AiAgentActivityLog.ts:4 (result values), table 'ai_agent_activity_logs' (:119)

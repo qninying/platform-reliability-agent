@@ -393,13 +393,26 @@
       "criteria": [
         {
           "text": "A table whose window is not recorded anywhere returns 'unknown', never a guessed number of days.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/dataRetentionSweep.ts",
+        "src/retention/sweepCatalogue.ts",
+        "src/cli/retentionSweep.ts",
+        "src/records.ts",
+        "src/capabilities/orchestrationHealthWatch.ts",
+        "test/dataRetentionSweep.test.ts",
+        "examples/retention-sweep.example.json",
+        "docs/capabilities/data-retention-sweep.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/dataRetentionSweep.test.ts"
+      ],
+      "notes": "Read-only report over the platform's five retention sweeps (catalogue pinned at 769ff4e). A window counts only when stated by an approved policy entry, a run record's retention_days, or the job's registry description; a window found only in code is 'unknown' with days null. Disagreeing sources are 'conflicting' with no number chosen. Tests 'acceptance: a table whose window is not recorded anywhere returns unknown, never a guessed number of days' and 'acceptance: with no records at all, every table in the catalogue is unknown, with no days' pass; filling unknown windows from the code's days fails both. 13 tests. Not yet run on a live export.",
+      "updated_at": "2026-10-27",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
