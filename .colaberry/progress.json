@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 11,
+    "stories_verified": 12,
     "stories_submitted": 0,
-    "stories_in_progress": 43,
+    "stories_in_progress": 42,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 23,
-    "points_awarded": 165
+    "criteria_passed": 24,
+    "points_awarded": 180
   },
   "stories": [
     {
@@ -1227,17 +1227,15 @@
       "notes": "Read-only rollup over the security director's seven subordinate timers (aiOpsScheduler.ts:329-335 at 769ff4e). A scanner with no ai_agents row, no last_run_at, disabled, paused, errored, overdue, or whose latest run failed or carried errors is unknown before any result is read. Verdict is green only when all seven are clean; any unknown escalates. Tests 'acceptance: a scanner with no last_run_at renders as unknown, and the rollup is not green' and 'acceptance: the rollup is never green while any contribution is unknown, for each contributor in turn' pass; removing the last_run_at check fails the first, letting unknowns reach green fails 4. 14 tests. Not yet run on a live export.",
       "updated_at": "2026-10-26",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "A scanner with no last_run_at renders as unknown; the rollup can never be green while any contribution is unknown."
-        ]
+        "verified_at": "2026-10-26T20:51:55.762Z",
+        "commit_sha": "a520ec200c01f98fc7e0506869e5baa5efa85fd0",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/a520ec200c01f98fc7e0506869e5baa5efa85fd0",
+        "commit_at": "2026-10-26T20:51:46Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
