@@ -79,7 +79,7 @@ scan has a known result, 3 means at least one is `unknown`, and 1 means bad inpu
 ## Evidence
 
 - **Named passing test:** "acceptance: a scan that has never run returns 'unknown', not 'no findings',
-  for all three kinds". 12 tests in this file, 38 in the repo, all passing under `npm test`.
+  for all three kinds". 13 tests in this file, 39 in the repo, all passing under `npm test`.
 - **The tests catch defects:** making a never-run scan `clean` fails 3 tests, including the acceptance
   test; removing the 0-coverage rule fails 2; removing the redaction fails the secret test (each
   checked by editing the code, running `npm test`, and restoring it).
