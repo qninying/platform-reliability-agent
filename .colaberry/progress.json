@@ -803,13 +803,28 @@
       "criteria": [
         {
           "text": "Every answer cites the ai_agents row and activity-log rows it was derived from; no answer is produced for an agent name with no row.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/orchestrationHealthWatch.ts",
+        "src/readSource.ts",
+        "src/records.ts",
+        "src/cli/orchestrationHealth.ts",
+        "test/orchestrationHealthWatch.test.ts",
+        "docs/capabilities/orchestration-health-watch.md",
+        "examples/orchestration-health.example.json",
+        "package.json",
+        "package-lock.json",
+        "tsconfig.json",
+        "README.md",
+        ".gitignore"
+      ],
+      "tests_added": [
+        "test/orchestrationHealthWatch.test.ts"
+      ],
+      "notes": "Read-only watch over the ai_agents row and activity log for OrchestrationHealthAgent. Every answer cites the ai_agents row id and each activity-log row id used; a name with no row gets a refusal with no verdict. A failed run is decided by result, not the 'scan_completed_no_issues' action text the platform writes on failure (aiOrchestrator.ts:233-238). 14 named tests pass under node --test; removing the failed check or the no-row refusal makes tests fail. Not yet run on a live export: waiting on admin read access.",
+      "updated_at": "2026-10-26",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

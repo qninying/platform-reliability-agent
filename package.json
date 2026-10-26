@@ -1,0 +1,16 @@
+{
+  "name": "platform-reliability-agent",
+  "private": true,
+  "type": "module",
+  "description": "Ellis, the Platform Automation & Reliability agent for the Colaberry Project Factory",
+  "engines": { "node": ">=23.6" },
+  "scripts": {
+    "test": "node --test \"test/**/*.test.ts\"",
+    "typecheck": "tsc --noEmit",
+    "orchestration-health": "node src/cli/orchestrationHealth.ts"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.3",
+    "typescript": "5.8.3"
+  }
+}

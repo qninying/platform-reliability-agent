@@ -28,6 +28,8 @@ Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninyi
 | `docs/discovery/04-manager-interview.md` | Story 4: 30-minute interview plan, what each answer changes, and the weekly check-in |
 | `docs/discovery/05-three-proposed-tasks.md` | Story 5: three proposed agent tasks, their boundaries and completion evidence |
 | `docs/migration/legacy-migration-plan.md` | Legacy migration plan for the 38 inherited platform records (version 1 approved by K.D.) |
+| `src/`, `test/` | Ellis's code and tests (`npm test`); one file per capability in `src/capabilities/` |
+| `docs/capabilities/orchestration-health-watch.md` | Capability: orchestration health watch, what it answers and the evidence |
 | `brd/brd-draft-v0.7.pdf` | Business requirement document, early draft v0.7 (2026-10-14, written before platform access) |
 
 ## First deliverable checklist
