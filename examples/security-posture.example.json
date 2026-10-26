@@ -1,0 +1,23 @@
+{
+  "captured_at": "2026-10-26T12:00:00Z",
+  "captured_by": "example, not production data: shows the export format and the three cases",
+  "ai_agents": [
+    { "id": "example-secret", "agent_name": "SecretDetectionAgent", "status": "idle", "enabled": true, "schedule": "0 */4 * * *", "last_run_at": "2026-10-26T08:00:00Z", "updated_at": "2026-10-26T08:00:00Z" },
+    { "id": "example-code", "agent_name": "CodeSecurityAuditAgent", "status": "idle", "enabled": true, "schedule": "0 3 * * *", "last_run_at": "2026-10-26T03:00:00Z", "updated_at": "2026-10-26T03:00:00Z" },
+    { "id": "example-deps", "agent_name": "DependencySecurityAgent", "status": "idle", "enabled": true, "schedule": "0 4 * * *", "last_run_at": null, "updated_at": null }
+  ],
+  "ai_agent_activity_logs": [
+    { "id": "example-run-secret", "agent_id": "example-secret", "action": "1 action(s): secret_scan", "result": "success", "created_at": "2026-10-26T08:00:00Z",
+      "details": { "actions": [ { "action": "secret_scan", "result": "success", "after_state": { "files_scanned": 0, "findings_count": 0 } } ] } },
+    { "id": "example-run-code", "agent_id": "example-code", "action": "1 action(s): code_security_audit", "result": "success", "created_at": "2026-10-26T03:00:00Z",
+      "details": { "actions": [ { "action": "code_security_audit", "result": "flagged", "after_state": { "files_scanned": 412, "findings_count": 2 } } ] } }
+  ],
+  "department_events": [
+    { "id": "example-event-secret", "department_id": "example-dept", "event_type": "security_scan", "title": "Secret Scan: 0 finding(s) in 0 files", "description": "Clean scan, no secrets detected in 0 files", "severity": "normal", "created_at": "2026-10-26T08:00:01Z",
+      "metadata": { "agent": "SecretDetectionAgent", "files_scanned": 0, "findings_count": 0, "top_findings": [] } },
+    { "id": "example-event-code", "department_id": "example-dept", "event_type": "security_scan", "title": "Code Audit: 2 finding(s) in 412 files", "severity": "high", "created_at": "2026-10-26T03:00:01Z",
+      "metadata": { "agent": "CodeSecurityAuditAgent", "files_scanned": 412, "findings": [
+        { "file": "backend/src/routes/example.ts", "line": 40, "vuln_name": "Raw SQL with interpolation", "category": "sql_injection", "severity": "high", "description": "example" },
+        { "file": "backend/src/services/example.ts", "line": 12, "vuln_name": "eval usage", "category": "code_injection", "severity": "high", "description": "example" } ] } }
+  ]
+}

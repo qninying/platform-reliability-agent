@@ -1217,13 +1217,26 @@
       "criteria": [
         {
           "text": "A scan that has never run returns 'unknown' rather than 'no findings'.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/securityPostureScan.ts",
+        "src/cli/securityPosture.ts",
+        "src/records.ts",
+        "src/readSource.ts",
+        "src/capabilities/orchestrationHealthWatch.ts",
+        "test/securityPostureScan.test.ts",
+        "examples/security-posture.example.json",
+        "docs/capabilities/security-posture-scan.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/securityPostureScan.test.ts"
+      ],
+      "notes": "Read-only answer per scan kind (secret, code, dependency) from the activity log and department_events. Test \"acceptance: a scan that has never run returns 'unknown', not 'no findings', for all three kinds\" passes. A scan of 0 files or projects, a skipped scan, only failed runs, or a stale scan is also 'unknown'. Findings pass through a field whitelist, so the secret scanner's stored snippet is never repeated (tested with a planted key-shaped value). 12 tests; mutating the never-run, 0-coverage and redaction rules fails 3, 2 and 1 tests. Not yet run on a live export.",
+      "updated_at": "2026-10-26",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

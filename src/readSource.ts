@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import type { ActivityLogRow, AiAgentRow } from './records.ts';
+import type { ActivityLogRow, AiAgentRow, DepartmentEventRow } from './records.ts';
 
 // Read-only access to platform records. There is deliberately no write method: a capability that
 // is handed a ReadSource has no way to change the platform.
@@ -9,6 +9,8 @@ export interface ReadSource {
   findAgentsByName(agentName: string): AiAgentRow[];
   // Activity rows for one agent id, newest first, at most `limit` rows.
   recentActivity(agentId: string, limit: number): ActivityLogRow[];
+  // department_events rows whose metadata.agent is this agent name, newest first, at most `limit`.
+  departmentEvents(agentName: string, limit: number): DepartmentEventRow[];
 }
 
 // A dated export of the two tables, as a person with admin access would pull them from
@@ -18,6 +20,7 @@ export interface Snapshot {
   captured_by: string;
   ai_agents: AiAgentRow[];
   ai_agent_activity_logs: ActivityLogRow[];
+  department_events?: DepartmentEventRow[];
 }
 
 export class SnapshotSourceError extends Error {
@@ -56,11 +59,16 @@ export function snapshotSource(snapshot: Snapshot): ReadSource {
         .filter((r) => r.agent_id === agentId)
         .sort(newestFirst)
         .slice(0, limit),
+    departmentEvents: (agentName, limit) =>
+      (snapshot.department_events ?? [])
+        .filter((e) => e.metadata?.agent === agentName)
+        .sort(newestFirst)
+        .slice(0, limit),
   };
 }
 
 // Newest first; ties broken by id so the same input always gives the same order.
-export function newestFirst(a: ActivityLogRow, b: ActivityLogRow): number {
+export function newestFirst(a: { id: string; created_at: string }, b: { id: string; created_at: string }): number {
   const byTime = Date.parse(b.created_at) - Date.parse(a.created_at);
   return byTime !== 0 ? byTime : a.id < b.id ? 1 : a.id > b.id ? -1 : 0;
 }
