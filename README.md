@@ -2,7 +2,7 @@
 
 Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninying. **Manager and stakeholder:** K.D. (AI Engineer). **Approvals:** K.D. gives sign-off, including on agent actions in production. A.M. oversees PR approvals, tool access and governance review.
 
-**Status (2026-10-26):** discovery stories 1 to 5 complete on the Colaberry platform; K.D. has asked to move on to building the agent. Release 1 (discovery and validation) is in progress at autonomy level R0 (define the workflow, requirements, risks and human decisions). Work is a draft until K.D. approves it; approved work is kept in `discovery/`.
+**Status (2026-10-26):** Release 1 (discovery and validation) is complete: all five discovery stories are verified on the Colaberry platform. Release 2 (capability development) has started, at K.D.'s request: 6 of 48 capabilities are built and verified. Every capability so far only reads records or works on a sandbox copy; none changes the live platform. Discovery documents are drafts until K.D. approves them; approved versions are kept in `discovery/`.
 
 ## The platform Ellis watches
 
@@ -37,6 +37,20 @@ Links below are pinned to commit `c860274`, the version Ellis's capabilities wer
 | 3 | Document the role and which DA responsibilities transition | Approved by K.D. 2026-10-21, version 2 (`docs/discovery/03-role-and-da-transition.md`) |
 | 4 | 30-minute manager interview and weekly check-in | Interview plan ready; weekly check-in proposed for Mondays 1:30 pm Central (`docs/discovery/04-manager-interview.md`) |
 | 5 | Three proposed agent tasks with boundaries and completion evidence | Version 3; K.D. asked to proceed with building 2026-10-26 (`docs/discovery/05-three-proposed-tasks.md`) |
+
+## Release 2: capability development
+Each capability is built with tests, and the platform verifies it from this repo. Each one starts at autonomy level R0, and its first release is R2: it reports and recommends, and changes nothing live.
+
+| # | Capability | Write-up | Status |
+|---|---|---|---|
+| 1 | Orchestration health watch | [orchestration-health-watch.md](docs/capabilities/orchestration-health-watch.md) | Verified 2026-10-26 (commit `cd225af`) |
+| 2 | Orchestration auto-repair (sandbox only) | [orchestration-auto-repair.md](docs/capabilities/orchestration-auto-repair.md) | Verified 2026-10-26 (commit `add84c9`) |
+| 3 | Static security posture scanning | [security-posture-scan.md](docs/capabilities/security-posture-scan.md) | Verified 2026-10-26 (commit `8ad3ba9`) |
+| 4 | Runtime threat and access-control watch | [runtime-threat-and-access-watch.md](docs/capabilities/runtime-threat-and-access-watch.md) | Verified 2026-10-26 (commit `8263fa2`) |
+| 5 | Agent behaviour and AI-safety watch | [agent-behavior-safety-watch.md](docs/capabilities/agent-behavior-safety-watch.md) | Verified 2026-10-26 (commit `f010814`) |
+| 6 | Security oversight rollup | [security-oversight-rollup.md](docs/capabilities/security-oversight-rollup.md) | Verified 2026-10-26 (commit `a520ec2`) |
+
+42 more capabilities are planned. They are listed in the platform's build plan for this domain.
 
 ## Contents
 | Path | What |
