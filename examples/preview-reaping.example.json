@@ -1,0 +1,22 @@
+{
+  "captured_at": "2026-10-27T15:00:00Z",
+  "captured_by": "example, not production data: shows each idle state, a stuck teardown and the reaper's run",
+  "preview_stacks": [
+    { "id": "example-stack-1", "slug": "example-active", "status": "running", "last_accessed_at": "2026-10-27T14:56:00Z", "last_started_at": "2026-10-27T13:00:00Z", "updated_at": "2026-10-27T13:00:00Z" },
+    { "id": "example-stack-2", "slug": "example-idle", "status": "running", "last_accessed_at": "2026-10-27T14:10:00Z", "last_started_at": "2026-10-27T12:00:00Z", "updated_at": "2026-10-27T12:00:00Z" },
+    { "id": "example-stack-3", "slug": "example-never-opened", "status": "running", "last_accessed_at": null, "last_started_at": "2026-10-27T13:40:00Z", "updated_at": "2026-10-27T13:40:00Z" },
+    { "id": "example-stack-4", "slug": "example-no-start-time", "status": "running", "last_accessed_at": null, "last_started_at": null, "updated_at": "2026-10-20T09:00:00Z" },
+    { "id": "example-stack-5", "slug": "example-stopped", "status": "stopped", "last_accessed_at": "2026-10-26T18:00:00Z", "last_started_at": "2026-10-26T17:00:00Z", "last_stopped_at": "2026-10-26T18:35:00Z", "updated_at": "2026-10-26T18:35:00Z" },
+    { "id": "example-stack-6", "slug": "example-stuck-teardown", "status": "tearing_down", "last_accessed_at": "2026-10-25T10:00:00Z", "last_started_at": "2026-10-25T09:00:00Z", "updated_at": "2026-10-27T11:00:00Z" }
+  ],
+  "preview_events": [
+    { "id": "example-ev-1", "preview_stack_id": "example-stack-5", "event_type": "stop", "created_at": "2026-10-26T18:35:00Z" },
+    { "id": "example-ev-2", "preview_stack_id": "example-stack-1", "event_type": "boot", "created_at": "2026-10-27T13:00:00Z" }
+  ],
+  "ai_agents": [
+    { "id": "example-reaper", "agent_name": "PreviewStackReaper", "status": "idle", "enabled": true, "schedule": "*/5 * * * *", "last_run_at": "2026-10-27T14:55:01Z", "updated_at": null }
+  ],
+  "ai_agent_activity_logs": [
+    { "id": "example-run-1", "agent_id": "example-reaper", "action": "cron_run", "result": "success", "created_at": "2026-10-27T14:55:01Z" }
+  ]
+}

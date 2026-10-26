@@ -902,13 +902,24 @@
       "criteria": [
         {
           "text": "A stack with no activity signal at all is reported as unknown-idle, not as idle.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/previewStackReaping.ts",
+        "src/cli/previewReaping.ts",
+        "src/capabilities/orchestrationHealthWatch.ts",
+        "test/previewStackReaping.test.ts",
+        "examples/preview-reaping.example.json",
+        "docs/capabilities/preview-stack-reaping.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/previewStackReaping.test.ts"
+      ],
+      "notes": "Read-only report over the preview stack inventory (GET /api/admin/preview-stacks), preview_events and the PreviewStackReaper run (platform commit 4a34e9e). Idle is measured only from last_accessed_at; a live stack with no access recorded is unknown_idle, never idle and never a reap candidate, and the report says whether the platform would stop it by age. Tests 'acceptance: a stack with no activity signal at all is reported as unknown-idle, not as idle' and 'acceptance: stack age is not activity...' pass; measuring idle from stack age fails the second, treating a missing signal as idle fails both. 11 tests. Not yet run on a live export.",
+      "updated_at": "2026-10-27",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
