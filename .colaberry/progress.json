@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 10,
+    "stories_verified": 11,
     "stories_submitted": 0,
-    "stories_in_progress": 44,
+    "stories_in_progress": 43,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 22,
-    "points_awarded": 150
+    "criteria_passed": 23,
+    "points_awarded": 165
   },
   "stories": [
     {
@@ -39,17 +39,15 @@
       "notes": "Read-only check of agent_write_audits, state-changing activity rows and agent.authorization events against the platform's grant map (AGENT_PERMISSIONS, pinned at c860274). Tests 'acceptance: every finding names the specific grant that was missing' and 'acceptance: a verdict that names no missing grant is not emitted as a finding' pass; emitting an unnamed finding fails the second. Unattributable actions are reported, not dropped; the watchers' own actions are excluded. 12 tests. Not yet run on a live export.",
       "updated_at": "2026-10-26",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "Every finding names the specific grant that was missing; a finding with no named grant is not emitted."
-        ]
+        "verified_at": "2026-10-26T20:34:58.771Z",
+        "commit_sha": "f01081468dba747a45178f254e516fdfd691520a",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/f01081468dba747a45178f254e516fdfd691520a",
+        "commit_at": "2026-10-26T20:34:49Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
