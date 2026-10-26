@@ -1,0 +1,27 @@
+{
+  "fixture_id": "orchestration-repair-seeded-v1",
+  "description": "Sandbox fixture, not production data. Seeds one fault of each authorized kind, a duplicate signal (the prompt monitor runs every minute), an inactive mini-section the detector would not flag, an FK outside the allowlist, and a fault type outside the authorized set.",
+  "tables": {
+    "prompt_templates": [
+      { "id": "prompt-active", "name": "Concept prompt", "is_active": true },
+      { "id": "prompt-off", "name": "Build prompt", "is_active": false }
+    ],
+    "mini_sections": [
+      { "id": "ms-1", "title": "Lesson 1", "is_active": true, "concept_prompt_template_id": "prompt-active", "build_prompt_template_id": "prompt-off", "mentor_prompt_template_id": null },
+      { "id": "ms-2", "title": "Lesson 2", "is_active": true, "concept_prompt_template_id": "prompt-gone", "build_prompt_template_id": null, "mentor_prompt_template_id": null },
+      { "id": "ms-3", "title": "Lesson 3", "is_active": true, "concept_prompt_template_id": "prompt-gone", "build_prompt_template_id": null, "mentor_prompt_template_id": null },
+      { "id": "ms-4", "title": "Archived lesson", "is_active": false, "concept_prompt_template_id": "prompt-gone", "build_prompt_template_id": null, "mentor_prompt_template_id": null }
+    ],
+    "artifact_definitions": [
+      { "id": "art-1", "name": "Project brief", "instruction_prompt_id": "prompt-missing", "auto_generate_prompt_id": null }
+    ]
+  },
+  "faults": [
+    { "id": "evt-1", "source": "prompt_monitor", "event_type": "inactive_prompt_referenced", "entity_type": "prompt_template", "entity_id": "prompt-off", "details": { "fk_field": "build_prompt_template_id", "repairable": true }, "created_at": "2026-10-26T15:00:00Z" },
+    { "id": "evt-2", "source": "prompt_monitor", "event_type": "inactive_prompt_referenced", "entity_type": "prompt_template", "entity_id": "prompt-off", "details": { "fk_field": "build_prompt_template_id", "repairable": true }, "created_at": "2026-10-26T15:01:00Z" },
+    { "id": "evt-3", "source": "prompt_monitor", "event_type": "broken_prompt_fk", "entity_type": "mini_section", "entity_id": "ms-2", "details": { "broken_prompt_id": "prompt-gone", "fk_field": "concept_prompt_template_id", "repairable": true }, "created_at": "2026-10-26T15:00:00Z" },
+    { "id": "evt-4", "source": "prompt_monitor", "event_type": "broken_artifact_prompt_fk", "entity_type": "artifact_definition", "entity_id": "art-1", "details": { "broken_prompt_id": "prompt-missing", "fk_field": "instruction_prompt_id", "repairable": true }, "created_at": "2026-10-26T15:00:00Z" },
+    { "id": "evt-5", "source": "prompt_monitor", "event_type": "broken_prompt_fk", "entity_type": "mini_section", "entity_id": "ms-1", "details": { "broken_prompt_id": "prompt-gone", "fk_field": "title", "repairable": true }, "created_at": "2026-10-26T15:00:00Z" },
+    { "id": "evt-6", "source": "orchestration_health", "event_type": "gating_deadlock", "entity_type": "enrollment", "entity_id": "enr-1", "details": {}, "created_at": "2026-10-26T15:00:00Z" }
+  ]
+}
