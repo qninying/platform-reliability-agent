@@ -1,0 +1,27 @@
+{
+  "captured_at": "2026-10-26T12:00:00Z",
+  "captured_by": "example, not production data: the platform director says 'normal' while one scanner has never run and one has stopped",
+  "ai_agents": [
+    { "id": "example-secret", "agent_name": "SecretDetectionAgent", "status": "idle", "enabled": true, "schedule": "0 */4 * * *", "last_run_at": "2026-10-26T08:00:05Z", "updated_at": null },
+    { "id": "example-code", "agent_name": "CodeSecurityAuditAgent", "status": "idle", "enabled": true, "schedule": "0 3 * * *", "last_run_at": "2026-10-26T03:00:04Z", "updated_at": null },
+    { "id": "example-dependency", "agent_name": "DependencySecurityAgent", "status": "idle", "enabled": true, "schedule": "0 4 * * *", "last_run_at": null, "updated_at": null },
+    { "id": "example-runtime", "agent_name": "RuntimeThreatMonitorAgent", "status": "idle", "enabled": true, "schedule": "*/5 * * * *", "last_run_at": "2026-10-26T11:55:02Z", "updated_at": null },
+    { "id": "example-guardian", "agent_name": "AccessControlGuardianAgent", "status": "idle", "enabled": true, "schedule": "0 5 * * *", "last_run_at": "2026-10-26T05:00:03Z", "updated_at": null },
+    { "id": "example-ai-safety", "agent_name": "AISafetyMonitorAgent", "status": "paused", "enabled": true, "schedule": null, "last_run_at": "2026-10-24T09:57:00Z", "updated_at": null },
+    { "id": "example-behavior", "agent_name": "AgentBehaviorMonitorAgent", "status": "idle", "enabled": true, "schedule": null, "last_run_at": "2026-10-26T11:55:01Z", "updated_at": null },
+    { "id": "example-director", "agent_name": "SecurityDirectorAgent", "status": "idle", "enabled": true, "schedule": "*/10 * * * *", "last_run_at": "2026-10-26T11:50:00Z", "updated_at": null }
+  ],
+  "ai_agent_activity_logs": [
+    { "id": "example-run-secret", "agent_id": "example-secret", "action": "1 action(s): secret_scan", "result": "success", "created_at": "2026-10-26T08:00:05Z",
+      "details": { "actions": [{ "action": "secret_scan", "after_state": { "files_scanned": 412, "findings_count": 0 } }] } },
+    { "id": "example-run-code", "agent_id": "example-code", "action": "1 action(s): code_security_audit", "result": "success", "created_at": "2026-10-26T03:00:04Z",
+      "details": { "actions": [{ "action": "code_security_audit", "after_state": { "files_scanned": 980, "findings_count": 0 } }] } },
+    { "id": "example-run-runtime", "agent_id": "example-runtime", "action": "1 action(s): runtime_scan", "result": "success", "created_at": "2026-10-26T11:55:02Z", "details": { "actions": [] } },
+    { "id": "example-run-guardian", "agent_id": "example-guardian", "action": "0 action(s)", "result": "success", "created_at": "2026-10-26T05:00:03Z", "details": { "actions": [], "errors": ["Security department not found"] } },
+    { "id": "example-run-behavior", "agent_id": "example-behavior", "action": "1 action(s): behavior_scan", "result": "success", "created_at": "2026-10-26T11:55:01Z", "details": { "actions": [] } }
+  ],
+  "department_events": [
+    { "id": "example-ev-threat", "department_id": "example-security", "event_type": "threat_detected", "title": "Suspicious visitor activity", "severity": "high", "created_at": "2026-10-26T11:55:02Z", "metadata": { "agent": "RuntimeThreatMonitorAgent" } },
+    { "id": "example-ev-director", "department_id": "example-security", "event_type": "security_scan", "title": "Security Director: 0 event(s), 0 open ticket(s)", "severity": "normal", "created_at": "2026-10-26T11:50:00Z", "metadata": { "agent": "SecurityDirectorAgent" } }
+  ]
+}

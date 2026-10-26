@@ -1209,13 +1209,23 @@
       "criteria": [
         {
           "text": "A scanner with no last_run_at renders as unknown; the rollup can never be green while any contribution is unknown.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/securityOversightRollup.ts",
+        "src/cli/securityRollup.ts",
+        "test/securityOversightRollup.test.ts",
+        "examples/security-rollup.example.json",
+        "docs/capabilities/security-oversight-rollup.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/securityOversightRollup.test.ts"
+      ],
+      "notes": "Read-only rollup over the security director's seven subordinate timers (aiOpsScheduler.ts:329-335 at 769ff4e). A scanner with no ai_agents row, no last_run_at, disabled, paused, errored, overdue, or whose latest run failed or carried errors is unknown before any result is read. Verdict is green only when all seven are clean; any unknown escalates. Tests 'acceptance: a scanner with no last_run_at renders as unknown, and the rollup is not green' and 'acceptance: the rollup is never green while any contribution is unknown, for each contributor in turn' pass; removing the last_run_at check fails the first, letting unknowns reach green fails 4. 14 tests. Not yet run on a live export.",
+      "updated_at": "2026-10-26",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

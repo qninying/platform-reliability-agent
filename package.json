@@ -13,7 +13,8 @@
     "orchestration-repair": "node src/cli/orchestrationRepair.ts",
     "security-posture": "node src/cli/securityPosture.ts",
     "access-watch": "node src/cli/accessWatch.ts",
-    "behavior-watch": "node src/cli/behaviorWatch.ts"
+    "behavior-watch": "node src/cli/behaviorWatch.ts",
+    "security-rollup": "node src/cli/securityRollup.ts"
   },
   "devDependencies": {
     "@types/node": "22.15.3",
