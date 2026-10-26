@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 6,
+    "stories_verified": 7,
     "stories_submitted": 0,
-    "stories_in_progress": 48,
+    "stories_in_progress": 47,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 18,
-    "points_awarded": 90
+    "criteria_passed": 19,
+    "points_awarded": 105
   },
   "stories": [
     {
@@ -826,17 +826,15 @@
       "notes": "Read-only watch over the ai_agents row and activity log for OrchestrationHealthAgent. Every answer cites the ai_agents row id and each activity-log row id used; a name with no row gets a refusal with no verdict. A failed run is decided by result, not the 'scan_completed_no_issues' action text the platform writes on failure (aiOrchestrator.ts:233-238). 14 named tests pass under node --test; removing the failed check or the no-row refusal makes tests fail. Not yet run on a live export: waiting on admin read access.",
       "updated_at": "2026-10-26",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "Every answer cites the ai_agents row and activity-log rows it was derived from; no answer is produced for an agent name with no row."
-        ]
+        "verified_at": "2026-10-26T18:34:15.830Z",
+        "commit_sha": "cd225afb5c023d414572c58b53927efafdf8f3d7",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/cd225afb5c023d414572c58b53927efafdf8f3d7",
+        "commit_at": "2026-10-26T18:34:08Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
