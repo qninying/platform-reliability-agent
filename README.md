@@ -51,14 +51,21 @@ platform often merges: *healthy*, *broken*, and *unknown*.
 
 ```mermaid
 flowchart LR
-  P[("Colaberry platform<br/>records and source code")] -- "dated export, pulled by an admin" --> RS["Read boundary<br/>no write method"]
-  P -- "rules copied at a named commit" --> PIN["Pinned rules<br/>commit and file:line"]
-  RS --> CAP["20 capability modules<br/>one question each"]
-  PIN --> CAP
-  CAP -- "changes, sandbox only" --> SB["Sandbox copies<br/>every write journaled"]
-  CAP --> OUT["Verdict, citations,<br/>explicit unknowns, exit code"]
-  OUT --> H(["People: K.D. approves,<br/>A.M. reviews findings"])
-  H -- "upstream fixes" --> P
+  PLATFORM["Colaberry platform<br/>records and source code"]
+  READ["Read boundary<br/>no write method"]
+  PINNED["Pinned rules<br/>commit and file:line"]
+  MODULES["20 capability modules<br/>one question each"]
+  SANDBOX["Sandbox copies<br/>every write journaled"]
+  REPORT["Verdict, citations,<br/>explicit unknowns, exit code"]
+  PEOPLE["People: K.D. approves,<br/>A.M. reviews findings"]
+  PLATFORM -->|dated export, pulled by an admin| READ
+  PLATFORM -->|rules copied at a named commit| PINNED
+  READ --> MODULES
+  PINNED --> MODULES
+  MODULES -->|changes, sandbox only| SANDBOX
+  MODULES --> REPORT
+  REPORT --> PEOPLE
+  PEOPLE -->|upstream fixes| PLATFORM
 ```
 
 Ellis holds no credentials and has no network path to the platform. Detail, layers and the sandbox
