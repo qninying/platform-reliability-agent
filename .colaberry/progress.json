@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 22,
+    "stories_verified": 23,
     "stories_submitted": 0,
-    "stories_in_progress": 32,
+    "stories_in_progress": 31,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 34,
-    "points_awarded": 330
+    "criteria_passed": 35,
+    "points_awarded": 345
   },
   "stories": [
     {
@@ -222,17 +222,15 @@
       "notes": "Read-only (platform commit bb1d3c3): answers per name from ai_agents, the activity log and the capability-13 timer inventory. A name with no row is 'not registered' with enabled null and runs null, never 'disabled' and never 'zero runs'; Ellis says whether a timer by that name runs untracked or checks a differently named row, and lists similar registered names without answering for them. For a registered row: enabled, status, the live schedule (timers that read the row, governance overrides, a declared schedule that is not what fires, no timer at all), and run attribution (pooled across timers, counted under another row for an inner gate, not from a scheduled timer). Two rows with one name give no single answer. Test 'acceptance: a question about a name with no ai_agents row returns 'not registered', never 'disabled' and never 'zero runs'' passes; 10 tests in the file, 213 in the repo (npm test). 16 mutations each fail at least one test. CLI: npm run registry-ask -- --snapshot examples/registry-ask.example.json --name AliPersonalOutreach exits 3 (not registered).",
       "updated_at": "2026-10-27T21:00:00Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "A question about a name with no ai_agents row returns 'not registered', never 'disabled' and never 'zero runs' — those are three different facts and the surface must not merge them."
-        ]
+        "verified_at": "2026-10-27T16:17:25.525Z",
+        "commit_sha": "b4618072580ab0a475ca4b9e6ed7812a66174054",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/b4618072580ab0a475ca4b9e6ed7812a66174054",
+        "commit_at": "2026-10-27T16:17:09Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
