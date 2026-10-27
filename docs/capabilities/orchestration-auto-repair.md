@@ -10,7 +10,7 @@ proves the property that matters most for anything on a timer: **running the sam
 changes things once, and the second run reports no-op.**
 
 Platform facts cite the public Colaberry platform repository at commit `c99021d`; the repair agent and
-the counter below are unchanged at upstream `13cb098`.
+the counter below are unchanged at upstream `13cb098`. Where a finding has since been fixed upstream (PR 3410, merged as `3ffea7c`), the fix is cited at that commit.
 
 ## What it does
 
@@ -45,16 +45,20 @@ the platform's set, not an approved one.
    activity rows whose action contains "repair" (`backend/src/services/aiOpsService.ts:33-38`). This
    agent logs `reactivate_prompt`, `null_broken_fk` and `null_broken_artifact_fk`
    (`orchestrationAutoRepairAgent.ts:60`, `:108`, `:152`). Ellis's action names all contain "repair". Tested.
+   **Fixed upstream in `3ffea7c`:** the counter now also matches the three action names, which live in one
+   shared list (`aiOpsService.ts:45`, `agents/repairActions.ts:26-30`).
 2. **It undoes a person's decision.** If someone switches a prompt off on purpose while an active lesson
    still uses it, the prompt monitor flags it within a minute (`promptMonitorAgent.ts:59-63`) and the
    repair switches it back on at the next five-minute tick (`orchestrationAutoRepairAgent.ts:54`). Ellis
    does the same in the sandbox, because it is in the platform's set, but this needs K.D.'s decision
-   before any production pilot.
+   before any production pilot. Still open upstream at `3ffea7c`.
 3. **The repair reaches rows the detector never flagged.** The detector checks only active
    mini-sections (`promptMonitorAgent.ts:39`); the repair clears the link on every mini-section
    (`orchestrationAutoRepairAgent.ts:95`). Ellis repairs only rows in the detector's scope. Tested.
+   **Fixed upstream in `3ffea7c`:** the repair is limited to active mini-sections (`orchestrationAutoRepairAgent.ts:114`).
 4. **A cap of 0 becomes 10.** `config.max_repairs_per_run || 10` (`orchestrationAutoRepairAgent.ts:20`).
    In Ellis, 0 means no repairs. Tested.
+   **Fixed upstream in `3ffea7c`:** 0 now means zero (`orchestrationAutoRepairAgent.ts:28-31`).
 5. **Replay safety is real but unstated.** Each platform repair re-reads current state before writing
    (`:51`, `:94-97`), so a second tick finds nothing to do. Nothing asserts it, and the five-minute run
    re-reads ten minutes of signals (`:25`), so every fault is seen at least twice. Ellis's tests assert it.

@@ -9,7 +9,7 @@ Ellis answers **"what did the last scan of each kind find, and when?"** from wha
 It is read-only: it runs no scan, fixes nothing, and never repeats a secret.
 
 Platform facts cite the public Colaberry platform repository at commit `c99021d`; every file cited
-below is unchanged at upstream `13cb098`.
+below is unchanged at upstream `13cb098`. Where a finding has since been fixed upstream (PR 3410, merged as `3ffea7c`), the fix is cited at that commit.
 
 ## What an answer looks like
 
@@ -47,18 +47,26 @@ key-shaped value in a stored finding and checks it appears nowhere in the output
    (`secretDetectionAgent.ts:69-73`, `dependencySecurityAgent.ts:79-83`). So they examine nothing and
    record "Clean scan, no secrets detected in 0 files" (`secretDetectionAgent.ts:141`) and "0
    vulnerabilities across 0 project(s)". Ellis reports both as `unknown`. Tested.
+   **Fixed upstream in `3ffea7c`:** both scanners now use `resolveProjectRoot` and record a skip
+   (`secretDetectionAgent.ts:92`, `dependencySecurityAgent.ts:103`), and a secret scan of 0 files is
+   described as unknown, not clean (`secretDetectionAgent.ts:191`).
 2. **The secret ticket stores part of the secret.** The scanner keeps the first 80 characters of the
    matching line as `snippet` (`secretDetectionAgent.ts:104`) and puts up to five findings, snippets
    included, into the ticket's metadata (`:167`). The brief and the platform's own policy say the value
    must never reach a ticket. Ellis drops the snippet. Tested.
+   **Fixed upstream in `3ffea7c`:** the `snippet` field is removed from the finding type
+   (`secretDetectionAgent.ts:51-69`). Ellis still drops it, because rows stored before the fix carry it.
 3. **Only one security ticket can be open at a time.** Ticket creation reuses any open ticket with the
    same entity and type, with no time limit (`backend/src/services/ticketService.ts:95-107`). All 8
    security agents file tickets as entity `system`, the security department's id, type `bug`
    (for example `secretDetectionAgent.ts:161-166`). So while any security ticket is open, a new one
    (a new leaked key, a new critical CVE) is merged into the old one instead of being raised.
+   Still open upstream at `3ffea7c`.
 4. **A failed dependency audit can look clean.** `npm audit` runs with errors discarded and `|| true`
    (`dependencySecurityAgent.ts:25`), and any failure returns nothing (`:65-66`), so a failed audit
    simply drops out of the count. Ellis counts projects examined, so 0 projects is `unknown`.
+   **Fixed upstream in `3ffea7c`:** a failed audit is now counted, and the run records its coverage as
+   none, partial or complete (`dependencySecurityAgent.ts:148-165`).
 5. **The secret scanner skips silently.** Unreadable folders and files are skipped with an empty catch
    (`secretDetectionAgent.ts:44`, `:110`), and lines containing "example", "placeholder" or "xxx" are
    never checked (`:97`).

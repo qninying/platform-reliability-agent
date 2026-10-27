@@ -7,7 +7,7 @@ Answers one question for K.D. or the on-call admin: **is orchestration healthy r
 last change?** It reads the `ai_agents` row for `OrchestrationHealthAgent` and that agent's rows in
 `ai_agent_activity_logs`, and nothing else. It writes nothing.
 
-Platform facts cite the public Colaberry platform repository at commit `c99021d`.
+Platform facts cite the public Colaberry platform repository at commit `c99021d`. Where a finding has since been fixed upstream (PR 3410, merged as `3ffea7c`), the fix is cited at that commit.
 
 ## What an answer looks like
 
@@ -36,6 +36,9 @@ The severity rule is the platform's own: any critical finding is critical, else 
    `scan_completed_no_issues` (`backend/src/services/aiOrchestrator.ts:233`, `:238`) and sets the
    `ai_agents` row back to `idle` (`aiOrchestrator.ts:216`). So the watch decides a failed run from
    `result` only, never from the action text or the row's status. Tested.
+   **Fixed upstream in `3ffea7c`:** a run that returns errors now sets the row to `error`, adds to
+   `error_count` and logs `scan_failed_with_errors` (`aiOrchestrator.ts:231-262`). The watch still decides
+   from `result`, so rows written before the fix are judged the same way.
 2. **The brief's exception does not apply to this agent.** The brief says a disabled or paused row logs
    `cron_job_skipped_disabled`. That event comes from `cronInstrumentation.ts`, which this agent does not
    go through: it runs through `runAgent`, which skips with a console line only and writes no activity

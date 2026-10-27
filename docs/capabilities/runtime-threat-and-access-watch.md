@@ -7,7 +7,7 @@ Ellis answers **"who holds which admin section today, and what changed since the
 detection only: changing anyone's access is a privilege grant, and Ellis never grants, removes or
 creates access.
 
-Platform facts cite the public Colaberry platform repository at upstream commit `13cb098`.
+Platform facts cite the public Colaberry platform repository at upstream commit `13cb098`. Where a finding has since been fixed upstream (PR 3410, merged as `3ffea7c`), the fix is cited at that commit.
 
 ## Why Ellis works this out itself
 
@@ -49,9 +49,14 @@ that changed a management role. With no previous sweep, it says what changed is 
    So the `curriculum` and `admin` roles, which hold `program`, can set any staff member's role, their
    own included, to `owner`, the only role that reaches `inbox_content`. Found by reading the code, not
    tested live. Ellis flags every scoped role holding `program`. Tested.
+   **Fixed upstream in `3ffea7c`:** the route now refuses to grant a role with more access than the
+   caller's own, or to change the role of someone who holds more (`communityMemberRoutes.ts:117-129`,
+   `backend/src/services/access/mgmtRoleGrant.ts:75-93`). Ellis still flags these roles, because a
+   grant made before the fix stays in place.
 2. **Removing a role does not remove access at once.** A staff admin token lasts 12 hours
    (`mgmtBridgeService.ts:92`), and the gate reads the role from the token, not the database
    (`mgmtSectionGate.ts:250`). Removing a role leaves the old sections working until the token expires.
+   Still open upstream at `3ffea7c`.
 3. **A role left on a non-staff member is dormant, not gone.** The role is checked against `staff` only
    when it is used (`mgmtBridgeService.ts:26`). Ellis reports it, because making the member staff again
    brings the access straight back. Tested.
@@ -59,7 +64,8 @@ that changed a management role. With no previous sweep, it says what changed is 
    (`backend/src/services/adminService.ts:78`), which only the seed script calls
    (`backend/src/seeds/seedAdmin.ts:19`), outside the audited admin routes. And audited changes record
    only the new value; `old_values` is always null (`backend/src/middlewares/auditMiddleware.ts:82`).
-   This is why Ellis compares whole sweeps rather than relying on the audit log.
+   This is why Ellis compares whole sweeps rather than relying on the audit log. Still open upstream
+   at `3ffea7c`.
 5. **The runtime monitor does not read auth signals.** It counts page events per visitor and failed
    agent runs (`runtimeThreatMonitorAgent.ts:26`, `:46`). Auth failures go only to the console
    (`backend/src/middlewares/authFailureLog.ts:74`), so a burst of failed admin logins is not one of its
