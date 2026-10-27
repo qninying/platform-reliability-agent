@@ -60,7 +60,8 @@ Ellis does not.
      and "too little to judge". Ellis counts a CLOSED breaker only when it had at least 5 tasks.
    - Reading the status recomputes it. The status route (`backend/src/routes/admin/openclawRoutes.ts:2133-2136`)
      calls `checkCircuitBreaker` for every platform (`:206-214`), which can open a breaker and send a
-     critical alert (`:151`, `:159`). Opening a dashboard can change what it shows.
+     critical alert (`:151`, `:159`). Opening a dashboard can change what it shows. It only applies a change
+   the error counts already justify, so it cannot trip a healthy breaker, but it can be what sends the alert.
 5. **Three timers still share one counter.** Dara's curriculum, certification and research timers all
    write one row (`aiOpsScheduler.ts:367`, `:369`, `:375`), so a failure in one cannot be told from
    success in the others. This is the platform's own audit finding D7, still open at `a284987`.
