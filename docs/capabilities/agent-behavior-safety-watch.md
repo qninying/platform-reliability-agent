@@ -54,7 +54,10 @@ the action, blocked it, would have denied it in shadow mode, or never checked it
    `last_run_at` (`backend/src/services/aiOrchestrator.ts:197`), but the monitor measures running time from
    `last_run_at` (`agentBehaviorMonitorAgent.ts:34-35`), which is when the previous run finished. So any
    agent that runs less often than every 15 minutes, caught mid-run, is reported stuck at critical
-   severity and gets a ticket.
+   severity and gets a ticket. The shared cron wrapper does the same: it sets `running` and writes
+   `last_run_at` only when the run completes (`backend/src/services/cronInstrumentation.ts:60`, `:78`). So
+   every instrumented cron job, including the daily ones, is a false stuck candidate when a scan lands
+   mid-run.
 4. **Error spikes on disabled agents show as "Unknown".** The monitor looks up names among enabled agents
    only (`agentBehaviorMonitorAgent.ts:29`, `:68`).
 5. **`tools_granted` is descriptive only.** It is free text used to classify autonomy levels, no action

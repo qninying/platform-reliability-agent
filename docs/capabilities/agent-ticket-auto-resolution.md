@@ -50,7 +50,7 @@ For each of these, Ellis leaves the ticket open and reports `platform_would_clos
 
 | Resolver | Case | The platform reads it as |
 |---|---|---|
-| Workforce | the agent has 0 runs recorded | 0% error rate, recovered |
+| Workforce | the agent has 0 runs recorded, or was disabled | 0% error rate, recovered |
 | Cory engine | the failing agent was disabled, deleted or paused | recovered |
 | Cory engine | the lead query failed | drop cleared |
 | Cory engine | fewer than 7 leads in 7 days (no baseline) | drop cleared |
@@ -64,16 +64,21 @@ For each of these, Ellis leaves the ticket open and reports `platform_would_clos
 2. **A failed lead query or a quiet week closes a lead-drop ticket as "cleared".**
    - The query's failure is swallowed and returns no problems (`ProblemDiscoveryAgent.ts:86-88`), and
      no problems means cleared (`coryEngineTicketAutoResolver.ts:162`).
-   - The daily average is `COUNT(*) / 7` in Postgres, which is whole-number division (`:65`). Under 7
-     leads a week the expected count is 0, and a drop is never reported (`:75`).
-3. **An agent with no runs closes as 0% errors** (`backend/src/services/company/workforceTicketAutoResolver.ts:82-89`).
-4. **The platform's own fix wipes the evidence the resolver checks.**
-   - The action planner's default response to an agent failure resets its error count
-     (`backend/src/intelligence/agents/ActionPlannerAgent.ts:37-45`).
-   - That reset sets `error_count = 0` and `status = 'idle'` (`ExecutionAgent.ts:45-48`).
-   - So the next pass closes the ticket as "recovered" whether or not anything was fixed.
-
-   Ellis cannot tell this apart from a real recovery in the records. It is reported, not handled.
+   - The daily average is `COUNT(*) / 7` in Postgres, which is whole-number division
+     (`ProblemDiscoveryAgent.ts:65`, and again in the resolver at `coryEngineTicketAutoResolver.ts:69`).
+     Under 7 leads a week the expected count is 0, so a drop is never reported (`ProblemDiscoveryAgent.ts:72-73`).
+     Drop detection is off for exactly the weeks when a drop matters most.
+3. **An agent with no runs, or a disabled one, closes as 0% errors** (`backend/src/services/company/workforceTicketAutoResolver.ts:82-89`).
+   This resolver skips a missing agent explicitly (`:154-156`) but never reads `enabled`.
+4. **Latent, not live: a planned fix would wipe the evidence the resolver checks.**
+   - The reset sets `error_count = 0` and `status = 'idle'` (`ExecutionAgent.ts:45-48`). If it ran, the next
+     pass would close the ticket as "recovered" whether or not anything was fixed.
+   - It cannot run today. The planner picks it only when the problem type and a root-cause pattern both
+     match (`backend/src/intelligence/agents/ActionPlannerAgent.ts:37-45`, `:107-113`); otherwise it falls
+     back to `launch_ab_test` when confidence is under 0.7, or recommends nothing (`:137-140`). And the
+     executor returns early when `agent_name` is missing (`ExecutionAgent.ts:35-36`), which the stored
+     default parameters never supply.
+   - Reported so the fuse is not added without the evidence problem being fixed first.
 5. **A close and its evidence are two separate writes.** `updateTicketStatus` sets the status, then adds
    the comment, with no transaction and no check that the ticket is still open
    (`backend/src/services/company/ticketOrchestrator.ts:161-182`). If the comment write fails, the ticket

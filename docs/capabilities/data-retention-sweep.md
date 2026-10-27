@@ -68,9 +68,15 @@ For each table, Ellis also reports:
    (`schedulerService.ts:2122-2137`). A failed news refresh skips the prune (`:2106-2107`).
 5. **Proposal cleanup deletes nothing.** It marks pending proposals expired, so it does not bound the
    table (`proposalCleanupService.ts:21-29`).
-6. **No retention window is written down as a policy.** Every window is a constant in code or an
-   environment setting. Two of them are repeated in free-text registry descriptions, and one of those
-   repeats is wrong (finding 4).
+6. **The written retention policy disagrees with the code, and does not run.** A central policy lists nine
+   PII classes, each with a time to live and an action (`backend/src/services/retentionReportService.ts:35-45`).
+   It says `chat_messages` purge at 24 months (`:37`). The scheduler deletes the same table at 180 days
+   (`schedulerService.ts:2490-2505`). So one table has two authorities that differ fourfold, and the
+   shorter one is the one that runs. The enforcement service behind the policy is on no schedule: it
+   runs only from an admin endpoint (`backend/src/routes/admin/trustRoutes.ts:39`,
+   `backend/src/controllers/trustController.ts:125`). The policy file's own header says these tables
+   have no retention at all (`retentionReportService.ts:4-5`). Every other window is a constant in
+   code or an environment setting.
 
 ## How to run it
 

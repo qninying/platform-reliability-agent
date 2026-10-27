@@ -56,6 +56,8 @@ The report also gives the timer's own run: ran, overdue, failed, disabled or unt
    - The first batch sends from its in-memory copy and marks it sent without re-reading the row
      (`:1100-1105`). The only remaining guard is one outbound message per lead per day, which is lifted
      when the lead replied that day (`:680-695`).
+   - So the duplicate does not land on an arbitrary lead. It lands on the lead who just answered: the
+     warmest person in the list. That makes this a commercial defect, not only a scheduling one.
 
    Found by reading the code; not tried.
 3. **The recovery keeps no record of what it recovered.** The count goes only to the server log (`:843`);

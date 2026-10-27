@@ -53,10 +53,14 @@ department (finding 2).
    - So the only decision trail is a person moving the proposal's ticket. Ellis reads that.
    - Because duplicates are checked only against planned and active proposals, each department can hold
      one open proposal per idea type, and it stays open forever.
-2. **A rejected idea can be proposed again.**
-   - The brief says existing proposals in open or rejected state are checked first.
-   - The code checks only `planned` and `active` (`backend/src/services/agents/strategy/strategyArchitectAgent.ts:120-123`,
-     `backend/src/services/departmentInitiativeEngine.ts:205-215`).
+2. **No idea can ever be proposed again.**
+   - The brief says existing proposals in open or rejected state are checked first. The model has no
+     rejected state: its statuses are planned, active, completed, on_hold and cancelled
+     (`backend/src/models/Initiative.ts:4`).
+   - The duplicate check covers `planned` and `active` (`backend/src/services/agents/strategy/strategyArchitectAgent.ts:120-123`,
+     `backend/src/services/departmentInitiativeEngine.ts:205-215`). Because nothing writes the status
+     (finding 1), every proposal stays `planned` forever, inside the duplicate window. So no idea of the
+     same type can be proposed again, including one finished or abandoned on purpose.
 3. **Proposing raises the department's health score.**
    - Each cycle that creates a proposal adds 2 to the department's health score and 3 to its innovation
      score (`strategyArchitectAgent.ts:241-247`).
@@ -69,6 +73,10 @@ department (finding 2).
      eventually lifts it over the threshold, and the proposals stop.
 4. **The grant does not cover every write.** The registry grant lists five tools (`agentRegistrySeed.ts:1874`,
    `:1969`, `:1981`). The department score update in finding 3 is a write none of them names.
+   This is the first visible effect of an unenforced grant map (see agent-behavior-safety-watch.md,
+   finding 2): an agent quietly moves a number nobody authorised it to touch, and the number decides
+   whether it keeps proposing. The fix is to remove the write, not widen the grant. If an agent needs to
+   move a score, a person adds that tool on purpose.
 5. **The three architects are not specialised.** All sixteen architects, including these three, run the
    same function with a different department slug (`backend/src/services/aiOrchestrator.ts:798-828`).
 6. **The person who should decide cannot open the list.** The initiatives list is admin-only

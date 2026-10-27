@@ -43,7 +43,8 @@ A scanner is **unknown** before any result is read if any of these is true:
 
 SecurityDirectorAgent calls a scanner healthy when `status !== 'error' && enabled`
 (`backend/src/services/agents/security/securityDirectorAgent.ts:63`). Its verdict is `normal` whenever no
-threat or alert arrived in the last ten minutes (`:119-123`). It never reads `last_run_at`. So a
+threat or alert arrived in the last ten minutes (`:119-123`). It reads `last_run_at` only to display it
+in the summary (`:111`); no health or severity decision uses it. So a
 scanner that never ran, or stopped, leaves the platform saying `normal`. This is the same class of
 unfalsifiable green that the platform's supervisor audit found
 (`docs/architecture/ai-workforce-management/SUPERVISOR_HEALTH_AUDIT_2026-10-06.md`).

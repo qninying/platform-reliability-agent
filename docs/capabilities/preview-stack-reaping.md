@@ -47,8 +47,11 @@ The brief listed it as unknown whether the reaper has an `ai_agents` row. It doe
    must come from real activity. A running stack with neither time set is never selected, so it runs
    until someone stops it.
 3. **Reaping does not release resources.** The reaper stops containers, but the database volume and repo
-   clone stay on disk (`previewStackReaper.ts:4-7`). Only a manual admin archive or delete removes them
-   (`backend/src/routes/admin/previewStackRoutes.ts:128`, `:142`). No timer does it, so disk use only grows.
+   clone stay on disk (`previewStackReaper.ts:4-7`). Only a manual admin delete frees them
+   (`backend/src/routes/admin/previewStackRoutes.ts:142`, `previewStackService.ts:374`). Archive runs
+   `docker compose down` without the volume flag (`previewStackService.ts:356`), so the database volume and
+   the repo clone both survive it, though archive is the button an operator reaches for to clean up. No
+   timer does either, so disk use only grows.
 4. **The reaped set is not recorded.**
    - The list of stopped stacks goes only to the server log (`schedulerService.ts:2336-2338`).
    - A stop that throws is caught for each stack separately, so the run is still recorded as a success
