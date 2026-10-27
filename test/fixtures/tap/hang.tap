@@ -1,0 +1,20 @@
+TAP version 13
+# Subtest: hangs
+not ok 1 - hangs
+  ---
+  duration_ms: 505.060834
+  type: 'test'
+  location: '/sandbox/hang.test.mjs:1:35'
+  failureType: 'testTimeoutFailure'
+  error: 'test timed out after 500ms'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 0
+# cancelled 1
+# skipped 0
+# todo 0
+# duration_ms 512.580084

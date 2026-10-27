@@ -901,13 +901,32 @@
       "criteria": [
         {
           "text": "The baseline test fails for the reported reason before any fix and is shown to fail — a test that passes before the fix proves nothing.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/bugBaseline.ts",
+        "src/sandbox/baselineRunner.ts",
+        "src/cli/bugBaseline.ts",
+        "src/capabilities/orchestrationHealthWatch.ts",
+        "test/bugBaseline.test.ts",
+        "test/fixtures/tap/a.tap",
+        "test/fixtures/tap/hang.tap",
+        "test/fixtures/tap/missing.tap",
+        "test/fixtures/tap/missing.child.tap",
+        "test/fixtures/tap/syntax.tap",
+        "test/fixtures/tap/syntax.child.tap",
+        "test/fixtures/tap/write.tap",
+        "examples/bug-baseline/risk-tier.spec.json",
+        "examples/bug-baseline/risk-tier.baseline.test.mjs",
+        "docs/capabilities/platform-bug-fix-dispatch.md",
+        "package.json"
+      ],
+      "tests_added": [
+        "test/bugBaseline.test.ts"
+      ],
+      "notes": "R1 only, changes nothing else (platform commit c35fbc5): for a ticket of type 'bug' with a stated reported reason (error name and message fragment), Ellis copies the cited platform lines from a read-only checkout into a fresh sandbox (each with a sha256 of the exact lines), runs the baseline test twice under Node's permission model (read and write only the sandbox, no child processes, no network), and reads the runner's TAP. Accepted only when every run fails, every failure is the reported one, and the runs agree. A passing test is 'passes_before_fix' (proves nothing); a load error (no failureType, or an exitCode), timeout, refused access, mismatch or disagreement is rejected. Test 'acceptance: the baseline test fails for the reported reason before any fix and is shown to fail; a test that passes before the fix proves nothing' runs the real runner on the platform's capabilityRouter.ts:26-36 (confirmed on both runs) and on the same lines fixed (passes_before_fix); 9 tests in the file, 203 in the repo (npm test). 16 of 17 mutations fail a test; the 17th is equivalent. Live demonstration: npm run bug-baseline -- --spec examples/bug-baseline/risk-tier.spec.json against the platform checkout exits 0 (baseline_confirmed).",
+      "updated_at": "2026-10-27T19:00:00Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

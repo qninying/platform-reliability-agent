@@ -1,0 +1,13 @@
+{
+  "ticket": {
+    "id": "example-bug-1",
+    "type": "bug",
+    "title": "An unrecognised ticket risk tier clears every capability ceiling",
+    "description": "riskTierIndex() returns 0 for a tier it does not recognise, so a ticket with risk_tier 'high' passes an R0 ceiling as though it were read-only. Example ticket written for this demonstration, not a production ticket."
+  },
+  "reported_reason": { "error_name": "AssertionError", "message_includes": "unrecognised tier cleared the R0 ceiling" },
+  "excerpts": [
+    { "from": "backend/src/services/workGraph/capabilityRouter.ts", "lines": [26, 36], "to": "capabilityRouter.excerpt.ts", "exports": ["riskTierAllowed"] }
+  ],
+  "test": { "file": "risk-tier.baseline.test.mjs", "path": "risk-tier.baseline.test.mjs" }
+}

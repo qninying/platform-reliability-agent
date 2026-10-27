@@ -1,0 +1,31 @@
+TAP version 13
+# Subtest: missing.test.mjs
+not ok 1 - missing.test.mjs
+  ---
+  duration_ms: 0.641916
+  type: 'test'
+  location: '/sandbox/missing.test.mjs:1:1'
+  url: 'file:///sandbox/missing.mjs'
+  error: "Cannot find module '/sandbox/missing.mjs' imported from /sandbox/missing.test.mjs"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    finalizeResolution (node:internal/modules/esm/resolve:271:11)
+    moduleResolve (node:internal/modules/esm/resolve:861:10)
+    defaultResolve (node:internal/modules/esm/resolve:988:11)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:697:20)
+    #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:714:38)
+    ModuleLoader.resolveSync (node:internal/modules/esm/loader:746:52)
+    #resolve (node:internal/modules/esm/loader:679:17)
+    ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:599:35)
+    ModuleJob.syncLink (node:internal/modules/esm/module_job:162:33)
+    ModuleJob.link (node:internal/modules/esm/module_job:252:17)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 9.103625

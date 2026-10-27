@@ -1,0 +1,35 @@
+TAP version 13
+# file:///sandbox/syntax.test.mjs:2
+# SyntaxError: Unexpected end of input
+#     at compileSourceTextModule (node:internal/modules/esm/utils:354:16)
+#     at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:91:18)
+#     at \#translate (node:internal/modules/esm/loader:451:20)
+#     at afterLoad (node:internal/modules/esm/loader:507:29)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:512:12)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:555:36)
+#     at afterResolve (node:internal/modules/esm/loader:603:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:609:12)
+#     at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:628:32)
+#     at TracingChannel.tracePromise (node:diagnostics_channel:362:14)
+# Node.js v25.9.0
+# Subtest: syntax.test.mjs
+not ok 1 - syntax.test.mjs
+  ---
+  duration_ms: 49.061167
+  type: 'test'
+  location: '/sandbox/syntax.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 52.943625
