@@ -1,0 +1,138 @@
+{
+  "captured_at": "2026-10-27T12:00:00Z",
+  "captured_by": "example, not production data: a silent supervisor, a stale one, a degraded one, a one-minute timer silent for 20 minutes, three timers on one row, and thin CLOSED breakers",
+  "ai_agents": [
+    {
+      "id": "example-agent-1",
+      "agent_name": "PromptMonitorAgent",
+      "enabled": true,
+      "status": "idle",
+      "last_run_at": "2026-10-27T11:40:00Z",
+      "run_count": 4200,
+      "error_count": 3
+    },
+    {
+      "id": "example-agent-2",
+      "agent_name": "OrchestrationHealthAgent",
+      "enabled": true,
+      "status": "idle",
+      "last_run_at": "2026-10-27T11:56:00Z",
+      "run_count": 900,
+      "error_count": 2
+    },
+    {
+      "id": "example-agent-3",
+      "agent_name": "OrchestrationAutoRepairAgent",
+      "enabled": true,
+      "status": "idle",
+      "last_run_at": "2026-10-27T11:57:00Z",
+      "run_count": 880,
+      "error_count": 0
+    },
+    {
+      "id": "example-agent-4",
+      "agent_name": "Dara",
+      "enabled": true,
+      "status": "idle",
+      "last_run_at": "2026-10-27T06:30:00Z",
+      "run_count": 57,
+      "error_count": 0
+    }
+  ],
+  "department_reports": [
+    {
+      "id": "example-report-1",
+      "department": "CampaignOps",
+      "source_agent": "CampaignOpsSuperAgent",
+      "created_at": "2026-10-27T11:48:00Z",
+      "metrics": {
+        "health": "healthy",
+        "collection_ok": true,
+        "total": 3
+      }
+    },
+    {
+      "id": "example-report-2",
+      "department": "LeadIntelligence",
+      "source_agent": "LeadIntelligenceSuperAgent",
+      "created_at": "2026-10-27T11:48:00Z",
+      "metrics": {
+        "health": "healthy",
+        "collection_ok": true,
+        "total": 3
+      }
+    },
+    {
+      "id": "example-report-3",
+      "department": "ContentEngine",
+      "source_agent": "ContentEngineSuperAgent",
+      "created_at": "2026-10-27T11:48:00Z",
+      "metrics": {
+        "health": "healthy",
+        "collection_ok": true,
+        "total": 3
+      }
+    },
+    {
+      "id": "example-report-4",
+      "department": "AnalyticsEngine",
+      "source_agent": "AnalyticsEngineSuperAgent",
+      "created_at": "2026-10-27T11:48:00Z",
+      "metrics": {
+        "health": "healthy",
+        "collection_ok": true,
+        "total": 3
+      }
+    },
+    {
+      "id": "example-report-5",
+      "department": "SystemResilience",
+      "source_agent": "SystemResilienceSuperAgent",
+      "created_at": "2026-10-27T11:48:00Z",
+      "metrics": {
+        "health": "healthy",
+        "collection_ok": true,
+        "total": 3
+      }
+    },
+    {
+      "id": "example-report-6",
+      "department": "Admissions",
+      "source_agent": "AdmissionsSuperAgent",
+      "created_at": "2026-10-27T11:48:00Z",
+      "metrics": {
+        "health": "degraded",
+        "collection_ok": true,
+        "total": 3
+      }
+    },
+    {
+      "id": "example-report-8",
+      "department": "Finance",
+      "source_agent": "FinanceSuperAgent",
+      "created_at": "2026-10-27T09:40:00Z",
+      "metrics": {
+        "health": "healthy",
+        "collection_ok": true,
+        "total": 3
+      }
+    }
+  ],
+  "circuit_status": {
+    "captured_at": "2026-10-27T11:55:00Z",
+    "statuses": [
+      {
+        "platform": "devto",
+        "state": "CLOSED",
+        "error_count": 0,
+        "total_count": 2
+      },
+      {
+        "platform": "reddit",
+        "state": "CLOSED",
+        "error_count": 0,
+        "total_count": 3
+      }
+    ]
+  }
+}

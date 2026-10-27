@@ -24,7 +24,7 @@ export type RunVerdict = 'healthy' | 'degraded' | 'critical' | 'run_failed' | 'u
 export type Verdict = RunVerdict | 'stalled' | 'not_running';
 
 export interface Citation {
-  table: 'ai_agents' | 'ai_agent_activity_logs' | 'department_events' | 'ai_system_events' | 'retention_policy' | 'preview_stacks' | 'preview_events' | 'scheduled_emails' | 'initiatives' | 'tickets' | 'ticket_activities';
+  table: 'ai_agents' | 'ai_agent_activity_logs' | 'department_events' | 'ai_system_events' | 'retention_policy' | 'preview_stacks' | 'preview_events' | 'scheduled_emails' | 'initiatives' | 'tickets' | 'ticket_activities' | 'department_reports' | 'circuit_status_export';
   id: string;
   fields: string[];
 }

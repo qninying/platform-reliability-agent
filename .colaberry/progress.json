@@ -1388,13 +1388,24 @@
       "criteria": [
         {
           "text": "A subsystem with no signal is reported as unknown and prevents a healthy overall verdict.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/systemResilienceSupervision.ts",
+        "src/cli/resiliencePosture.ts",
+        "src/capabilities/orchestrationHealthWatch.ts",
+        "test/systemResilienceSupervision.test.ts",
+        "examples/resilience-posture.example.json",
+        "docs/capabilities/system-resilience-supervision.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/systemResilienceSupervision.test.ts"
+      ],
+      "notes": "Read-only posture over 13 subsystems (platform commit a284987): the eight department supervisors' latest department_reports, three orchestration timers and Dara's shared row in ai_agents, and an OpenClaw circuit-status export. Each subsystem gives a state, a reason, its last signal time and that signal's age. No row, a signal older than two of its own intervals, an unreadable or future time, a supervisor that could not read its agents or reports on 0 agents, or no circuit export reads as unknown, and any unknown keeps the overall verdict off healthy. Dara's three timers share one row, so attribution is reported as unavailable. Test 'acceptance: a subsystem with no signal is reported as unknown and prevents a healthy overall verdict' removes each of the 13 signals in turn and passes; letting degraded outrank unknown fails 3 tests, using one hour for every signal fails 1. 12 tests, 149 in the repo. Not yet run on live records.",
+      "updated_at": "2026-10-26",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
