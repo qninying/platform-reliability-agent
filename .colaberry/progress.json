@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 18,
+    "stories_verified": 19,
     "stories_submitted": 0,
-    "stories_in_progress": 36,
+    "stories_in_progress": 35,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 30,
-    "points_awarded": 270
+    "criteria_passed": 31,
+    "points_awarded": 285
   },
   "stories": [
     {
@@ -103,17 +103,15 @@
       "notes": "Read-only recommendation (platform commit a284987): for a requested agent name, Ellis says whether it recommends a person disable it, with the evidence, and lists every timer the disable would and would not stop, from an inventory of each timer's schedule and every ai_agents row its wrappers read. Ellis never calls the control route. A shared name lists every timer that shares it (Dara's three). A name with no ai_agents row gets 'No disable flag exists... Ellis does not propose creating one' and no action. Timers named one thing but gated by another row, wrappers that never read the row or are not known, and wrappers that ignore pause are reported. Tests 'acceptance: a recommendation for a shared agent_name lists all timers that share it' and 'acceptance: a recommendation for an unregistered name states that no disable flag exists rather than proposing one' pass; listing only the first shared timer fails 1 test, proposing an action for an unregistered name fails 2. 11 tests, 160 in the repo. Not yet run on live records.",
       "updated_at": "2026-10-26",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "A recommendation for a shared agent_name lists all timers that share it; a recommendation for an unregistered name states that no disable flag exists for it rather than proposing one."
-        ]
+        "verified_at": "2026-10-27T02:01:08.961Z",
+        "commit_sha": "2cccba97dd46727a615d3b93869976cd30a6d12c",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/2cccba97dd46727a615d3b93869976cd30a6d12c",
+        "commit_at": "2026-10-27T02:00:57Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
