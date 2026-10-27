@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 20,
+    "stories_verified": 21,
     "stories_submitted": 0,
-    "stories_in_progress": 34,
+    "stories_in_progress": 33,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 32,
-    "points_awarded": 300
+    "criteria_passed": 33,
+    "points_awarded": 315
   },
   "stories": [
     {
@@ -1012,17 +1012,15 @@
       "notes": "Read-only (platform commit 8c16250): per prompt version (ai_events llm.call rows, metadata.prompt_version), total and per-run cost, p50/p95 latency and failures, each figure carrying the ids of the runs it was computed from. A known prompt with no recorded runs in the window has null cost and latency, state 'unknown', and is listed as not ranked, never zero. Runs with no cost (streamed or failed) make the figure 'partial' (a floor); all-uncosted is 'unknown'. Duplicates, unreadable or out-of-window times are excluded and counted; negative cost is not a measurement; a recorded 0 is. Untagged calls are counted with their cost. With no proposal record, open proposals are unknown; an open proposal without a before-measurement is flagged. Test 'acceptance: every cost or latency figure traces to recorded runs; a prompt with no recorded runs reports unknown rather than zero' passes; 11 tests in the file, 194 in the repo (npm test). 17 mutations each fail at least one test. CLI: npm run prompt-performance -- --snapshot examples/prompt-performance.example.json exits 3 (partial and unknown figures present).",
       "updated_at": "2026-10-27T17:00:00Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "Every cost or latency figure traces to recorded runs; a prompt with no recorded runs reports unknown rather than zero."
-        ]
+        "verified_at": "2026-10-27T14:47:43.548Z",
+        "commit_sha": "67e2bc0258ce6fce014df2c266e014ad6c421524",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/67e2bc0258ce6fce014df2c266e014ad6c421524",
+        "commit_at": "2026-10-27T14:47:29Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
