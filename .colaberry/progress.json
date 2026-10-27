@@ -225,13 +225,25 @@
       "criteria": [
         {
           "text": "Every must-not ticket is still open, and a second run closes zero additional tickets and adds zero duplicate comments.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/agentTicketAutoResolution.ts",
+        "src/tickets/resolverRules.ts",
+        "src/sandbox/ticketSandbox.ts",
+        "src/cli/ticketResolution.ts",
+        "test/agentTicketAutoResolution.test.ts",
+        "examples/ticket-resolution.fixture.json",
+        "docs/capabilities/agent-ticket-auto-resolution.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/agentTicketAutoResolution.test.ts"
+      ],
+      "notes": "Runs the five platform ticket resolvers' completion rules (platform commit efb0cfb) twice against a sandbox queue of tickets that should close and tickets that must not. A close and its evidence are one write; closing a closed ticket or closing without evidence is refused; each resolver needs a must-not ticket in scope or the run is not verified. Where the platform closes without evidence (0 runs, disabled or deleted agent, failed lead query, no lead baseline) Ellis leaves the ticket open and reports platform_would_close. Tests 'acceptance: every must-not ticket is still open, and a second run closes zero additional tickets and adds zero duplicate comments' and the per-resolver acceptance test pass; 9 code mutations each fail at least one test. 12 tests. Not yet run against a copy of the live queue.",
+      "updated_at": "2026-10-26",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

@@ -1,0 +1,56 @@
+{
+  "fixture_id": "ticket-resolution-example",
+  "description": "Example sandbox queue, not production data: for each of the five resolvers, tickets that should close and tickets that must stay open, including cases where the platform's own rule would close a ticket without evidence.",
+  "tickets": [
+    { "id": "t-wf-recovered", "expect": "close", "type": "workforce_decision", "entity_type": "agent", "entity_id": "example-agent-b:high_error_rate", "created_by_id": "workforce_intelligence_engine", "status": "backlog", "metadata": { "agent_name": "example-agent-b" } },
+    { "id": "t-wf-still-high", "expect": "stay_open", "type": "workforce_decision", "entity_type": "agent", "entity_id": "example-agent-a:high_error_rate", "created_by_id": "workforce_intelligence_engine", "status": "backlog", "metadata": { "agent_name": "example-agent-a" } },
+    { "id": "t-wf-no-runs", "expect": "stay_open", "type": "workforce_decision", "entity_type": "agent", "entity_id": "example-agent-c:high_error_rate", "created_by_id": "workforce_intelligence_engine", "status": "backlog", "metadata": { "agent_name": "example-agent-c" } },
+
+    { "id": "t-ce-recovered", "expect": "close", "type": "agent_action", "entity_type": "agent", "entity_id": null, "created_by_id": "cory-engine", "source": "cory_autonomous_cycle", "status": "backlog", "description": "**Problem:** Agent \"example-agent-f\" is in error state: timeout" },
+    { "id": "t-ce-still-failing", "expect": "stay_open", "type": "agent_action", "entity_type": "agent", "entity_id": null, "created_by_id": "cory-engine", "source": "cory_autonomous_cycle", "status": "backlog", "description": "**Problem:** Agent \"example-agent-e\" is in error state: timeout" },
+    { "id": "t-ce-disabled", "expect": "stay_open", "type": "agent_action", "entity_type": "agent", "entity_id": null, "created_by_id": "cory-engine", "source": "cory_autonomous_cycle", "status": "backlog", "description": "**Problem:** Agent \"example-agent-d\" is in error state: timeout" },
+    { "id": "t-ce-conversion", "expect": "close", "type": "agent_action", "entity_type": null, "entity_id": null, "created_by_id": "cory-engine", "source": "cory_autonomous_cycle", "status": "backlog", "description": "**Problem:** Lead generation dropped 60% in last 48h (2 vs expected 5)" },
+    { "id": "t-ce-error-spike", "expect": "stay_open", "type": "agent_action", "entity_type": null, "entity_id": null, "created_by_id": "cory-engine", "source": "cory_autonomous_cycle", "status": "backlog", "description": "**Problem:** Error spike: 40 errors in last hour" },
+
+    { "id": "t-cb-completed", "expect": "close", "type": "strategic_initiative", "entity_type": null, "entity_id": null, "created_by_id": "CoryBrain", "status": "in_progress" },
+    { "id": "t-cb-active", "expect": "stay_open", "type": "strategic_initiative", "entity_type": null, "entity_id": null, "created_by_id": "CoryBrain", "status": "in_progress" },
+    { "id": "t-cb-subtask-cancelled", "expect": "close", "type": "strategic_initiative", "entity_type": null, "entity_id": null, "created_by_id": "CoryBrain", "status": "backlog", "parent_ticket_id": "t-cb-elsewhere", "metadata": { "initiative_id": "init-cancelled" } },
+
+    { "id": "t-bp-verified", "expect": "close", "type": "bpos_execution", "entity_type": "capability", "entity_id": "cap-verified", "created_by_id": "bpos_orchestrator", "status": "in_progress" },
+    { "id": "t-bp-building", "expect": "stay_open", "type": "bpos_execution", "entity_type": "capability", "entity_id": "cap-building", "created_by_id": "bpos_orchestrator", "status": "in_progress" },
+    { "id": "t-bp-deleted", "expect": "close", "type": "bpos_execution", "entity_type": "capability", "entity_id": "cap-gone", "created_by_id": "bpos_orchestrator", "status": "in_progress" },
+
+    { "id": "t-human-owned", "expect": "stay_open", "type": "workforce_decision", "entity_type": "agent", "entity_id": "example-agent-b:high_error_rate", "created_by_id": "admin-user", "status": "backlog", "metadata": { "agent_name": "example-agent-b" } }
+  ],
+  "inbox_items": [
+    { "id": "i-completed", "expect": "close", "case_id": "case-1", "source_type": "basecamp_todo", "source_id": "bc-1", "inclusion_status": "INCLUDED", "disposition": null },
+    { "id": "i-active", "expect": "stay_open", "case_id": "case-1", "source_type": "basecamp_todo", "source_id": "bc-2", "inclusion_status": "INCLUDED", "disposition": null },
+    { "id": "i-trashed", "expect": "close", "case_id": "case-2", "source_type": "basecamp_todo", "source_id": "bc-3", "inclusion_status": "INCLUDED", "disposition": null },
+    { "id": "i-excluded", "expect": "stay_open", "case_id": "case-2", "source_type": "basecamp_todo", "source_id": "bc-1", "inclusion_status": "EXCLUDED", "disposition": null }
+  ],
+  "sources": {
+    "ai_agents": [
+      { "agent_name": "example-agent-a", "status": "error", "enabled": true, "run_count": 100, "error_count": 50 },
+      { "agent_name": "example-agent-b", "status": "idle", "enabled": true, "run_count": 100, "error_count": 5 },
+      { "agent_name": "example-agent-c", "status": "idle", "enabled": true, "run_count": 0, "error_count": 0 },
+      { "agent_name": "example-agent-d", "status": "idle", "enabled": false, "run_count": 40, "error_count": 12 },
+      { "agent_name": "example-agent-e", "status": "error", "enabled": true, "run_count": 40, "error_count": 30 },
+      { "agent_name": "example-agent-f", "status": "idle", "enabled": true, "run_count": 40, "error_count": 2 }
+    ],
+    "capabilities": [
+      { "id": "cap-verified", "name": "example verified capability", "user_status": "verified", "user_status_set_by": "example-admin", "user_status_set_at": "2026-10-20T12:00:00Z" },
+      { "id": "cap-building", "name": "example capability in progress", "user_status": "in_progress" }
+    ],
+    "strategic_initiatives": [
+      { "id": "init-completed", "ticket_id": "t-cb-completed", "status": "completed", "title": "example completed initiative" },
+      { "id": "init-active", "ticket_id": "t-cb-active", "status": "in_progress", "title": "example active initiative" },
+      { "id": "init-cancelled", "ticket_id": "t-cb-elsewhere", "status": "cancelled", "title": "example cancelled initiative" }
+    ],
+    "ops_bc_todos": [
+      { "bc_id": "bc-1", "status": "completed" },
+      { "bc_id": "bc-2", "status": "active" },
+      { "bc_id": "bc-3", "status": "trashed" }
+    ],
+    "leads": { "available": true, "recent_48h": 9, "last_7d": 28 }
+  }
+}
