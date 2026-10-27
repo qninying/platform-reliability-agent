@@ -18,7 +18,8 @@
     "retention-sweep": "node src/cli/retentionSweep.ts",
     "preview-reaping": "node src/cli/previewReaping.ts",
     "stale-actions": "node src/cli/staleActions.ts",
-    "ticket-resolution": "node src/cli/ticketResolution.ts"
+    "ticket-resolution": "node src/cli/ticketResolution.ts",
+    "evolution-proposals": "node src/cli/evolutionProposals.ts"
   },
   "devDependencies": {
     "@types/node": "22.15.3",

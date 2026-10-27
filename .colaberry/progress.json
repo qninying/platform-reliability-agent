@@ -694,13 +694,24 @@
       "criteria": [
         {
           "text": "Each proposal's current state is one of open, accepted, deferred or rejected; a proposal with no recorded outcome reads as open, not as accepted.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/evolutionProposals.ts",
+        "src/cli/evolutionProposals.ts",
+        "src/capabilities/orchestrationHealthWatch.ts",
+        "test/evolutionProposals.test.ts",
+        "examples/evolution-proposals.example.json",
+        "docs/capabilities/infrastructure-evolution-proposals.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/evolutionProposals.test.ts"
+      ],
+      "notes": "Read-only report over the initiatives the three platform architects write, their strategic tickets and those tickets' status-change activity (platform commit 3ffea7c). Each proposal is open, accepted, deferred or rejected; only a recorded outcome moves it off open: a person's ticket move (attributed) or a non-planned initiative status (unattributed). An agent's ticket move, a ticket status with no activity behind it, an unknown status, or outcomes that disagree all read as open. Tests 'acceptance: a proposal with no recorded outcome reads as open, not as accepted' and 'acceptance: every proposal's state is one of open, accepted, deferred or rejected, whatever the records hold' pass; reading planned as accepted fails 6 tests, reading no outcome as accepted fails 4. 13 tests. Not yet run on a live export.",
+      "updated_at": "2026-10-26",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
