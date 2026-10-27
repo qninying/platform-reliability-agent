@@ -77,6 +77,10 @@ Severity, in A.M.'s terms: findings 2 and 3 are new reporting gaps (wrong or mis
 damage). Finding 1 means the capability exists in name only. Findings 4 and 5 are why Ellis's answer is
 `unknown` today.
 
+**After A.M.'s review (2026-10-27).** Findings 2 and 3 (audit 39 and 40) are one finding: the director is pinned
+to the agent with the highest lifetime error count and is blind to every other unhealthy agent. That is why its
+tasks are always about the same agent. Findings 1, 4 and 5 (audit 38, 41 and 42) were accepted as already known.
+
 ## How to run it
 
 ```

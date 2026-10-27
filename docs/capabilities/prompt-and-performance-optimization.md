@@ -70,6 +70,13 @@ None of these is a live risk.
    prompt outputs, cost or latency. Running it every minute (`aiOpsScheduler.ts:203`) checks templates that
    change rarely.
 
+**After A.M.'s review (2026-10-27).** Findings 1, 3, 5 and 6 (audit 43, 45, 47 and 48) were confirmed as written.
+Two were relabelled:
+- **2 (audit 44)** is not a reporting gap. It is a dead subsystem that reports adoptions: the variant is empty
+  (`experimentAgent.ts:147`), experiments live in memory (`:59`), and "adopted" means the numbers drifted (`:225`).
+- **4 (audit 46)** is an absent check, not a weak one: nothing writes the field it reads. It belongs with
+  security rollup finding 8, a flag that nothing sets.
+
 **Already known**
 
 7. **Some model calls record no cost at all.** 12 places in `backend/src` create a raw OpenAI client, bypassing the

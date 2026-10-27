@@ -6,7 +6,7 @@ Colaberry Project Factory, **platform** domain. **Forward Deployed Engineer:** Q
 
 | Capabilities verified | Tests | Runtime dependencies | Changes to the live platform |
 |---|---|---|---|
-| 18 of 48 | 231 passing | none (Node 23.6+, TypeScript) | none: read-only, or a sandbox copy |
+| 18 of 48 | 238 passing | none (Node 23.6+, TypeScript) | none: read-only, or a sandbox copy |
 
 ## How Ellis is built
 - **Unknown is never reported as clean.** A scanner that did not run, scanned 0 files or is switched off reads "unknown", and a rollup over it can never be green.
