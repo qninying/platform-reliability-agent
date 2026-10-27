@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 21,
+    "stories_verified": 22,
     "stories_submitted": 0,
-    "stories_in_progress": 33,
+    "stories_in_progress": 32,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 33,
-    "points_awarded": 315
+    "criteria_passed": 34,
+    "points_awarded": 330
   },
   "stories": [
     {
@@ -928,17 +928,15 @@
       "notes": "R1 only, changes nothing else (platform commit c35fbc5): for a ticket of type 'bug' with a stated reported reason (error name and message fragment), Ellis copies the cited platform lines from a read-only checkout into a fresh sandbox (each with a sha256 of the exact lines), runs the baseline test twice under Node's permission model (read and write only the sandbox, no child processes, no network), and reads the runner's TAP. Accepted only when every run fails, every failure is the reported one, and the runs agree. A passing test is 'passes_before_fix' (proves nothing); a load error (no failureType, or an exitCode), timeout, refused access, mismatch or disagreement is rejected. Test 'acceptance: the baseline test fails for the reported reason before any fix and is shown to fail; a test that passes before the fix proves nothing' runs the real runner on the platform's capabilityRouter.ts:26-36 (confirmed on both runs) and on the same lines fixed (passes_before_fix); 9 tests in the file, 203 in the repo (npm test). 16 of 17 mutations fail a test; the 17th is equivalent. Live demonstration: npm run bug-baseline -- --spec examples/bug-baseline/risk-tier.spec.json against the platform checkout exits 0 (baseline_confirmed).",
       "updated_at": "2026-10-27T19:00:00Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "The baseline test fails for the reported reason before any fix and is shown to fail — a test that passes before the fix proves nothing."
-        ]
+        "verified_at": "2026-10-27T15:09:03.365Z",
+        "commit_sha": "872a5866f70310303e7edca0a02330665e6c1fab",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/872a5866f70310303e7edca0a02330665e6c1fab",
+        "commit_at": "2026-10-27T15:08:48Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
