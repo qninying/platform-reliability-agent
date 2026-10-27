@@ -8,7 +8,8 @@ Ellis answers **"should this agent be stopped, why, and what would stopping it a
 **Stopping a live timer is a human decision at every autonomy level.** Ellis recommends and shows the
 evidence. It never calls the control route, and every recommendation says a person performs the disable.
 
-Platform facts cite the public Colaberry platform repository at upstream commit `a284987`.
+Platform facts cite the public Colaberry platform repository at upstream commit `a284987`. Corrections from
+A.M.'s review on 2026-10-27 cite `7c70f0a`.
 
 ## What a recommendation contains
 
@@ -27,7 +28,7 @@ Platform facts cite the public Colaberry platform repository at upstream commit 
 ## Which timers obey the switch
 
 A disable only stops a timer if the wrapper it runs through reads the row. At `a284987`, of the 111
-scheduled timers:
+timers registered in `backend/src/services/aiOpsScheduler.ts`:
 
 | Wrapper | Timers | Disable | Pause | When the row is missing |
 |---|---|---|---|---|
@@ -36,6 +37,11 @@ scheduled timers:
 | `trackAgentRun` (`backend/src/services/agentRunTracker.ts:28-36`) | 4 | stops | **ignored** | runs anyway, untracked |
 | workforce director gate (`backend/src/services/workforce/workforceAgentRuntime.ts:66-73`) | 7 | stops the writes | stops the writes | writes nothing |
 | CampaignHealthScanner's own check (`aiOrchestrator.ts:108-112`) | 1 | stops | **ignored** | runs anyway, untracked |
+
+**This table covers `aiOpsScheduler.ts` only.** The cron wrapper also runs 66 timers in
+`backend/src/services/schedulerService.ts` and 3 in `backend/src/services/scheduling/growthJourneyCrons.ts`
+(`:48`, `:69`, `:90`), so about 85 timers in all go through `instrumentCronJob`. Ellis's inventory does not
+yet include those 69.
 
 Ellis takes this wiring as an inventory (each timer, its schedule and every row that can stop it) rather
 than guessing from names.
@@ -48,21 +54,43 @@ than guessing from names.
      `AdmissionsAssistant` checks row `AdmissionsAssistantAgent` (`aiOrchestrator.ts:539-541`).
    - For the other 8 (the six Skool timers, WeeklyReport and WorkforceIntelligence), the row they check
      is not seeded at all. Unless one was created outside the seed, `runAgent` finds no row and returns
-     without running (`aiOrchestrator.ts:177-181`), and there is no flag to disable. The platform's own
-     baseline notes WeeklyReport has no seed row (`backend/src/services/__tests__/fixtures/cronRegistryBaseline.ts:195`).
+     without running (`aiOrchestrator.ts:177-181`), and there is no flag to disable.
+   - **Already known:** the platform's cron registry baseline lists these names under a guard that fails
+     on new rot and on stale entries (`backend/src/services/__tests__/fixtures/cronRegistryBaseline.ts:114-116`,
+     `:195-196`). One difference: the baseline says they run. WeeklyReport goes straight to `runAgent`
+     (`aiOpsScheduler.ts:266`, `aiOrchestrator.ts:661-662`), which returns without running when the row is
+     missing. So unless production has a row the seed does not create, it does not run.
 2. **Pause is ignored by five timers.** `trackAgentRun` reads only `enabled` (`agentRunTracker.ts:33`),
    which covers AutonomousEngine, AICOOStrategicCycle, MetaAgentLoop and CoryEvolutionCycle, and so does
    CampaignHealthScanner's own check (`aiOrchestrator.ts:109`). Pausing them does nothing.
-3. **A pause clicked during a run is undone when the run ends.** Every wrapper writes the status back to
-   `idle` or `error` at the end of a run (`aiOrchestrator.ts:234`, `cronInstrumentation.ts:75`). So for a
-   misbehaving agent that is running, pause does not contain it. Ellis recommends disable.
-4. **Dara's directors have two switches, and the scheduler comment says otherwise.** The comment says the
+   Pause writes only `status` and leaves `enabled` true (`backend/src/services/aiOpsService.ts:296-297`), so
+   pause, the control an operator reaches for first, is the one these five cannot see. They include
+   AutonomousEngine and MetaAgentLoop, the self-modification loop. Live risk, and the first to fix.
+3. **A pause clicked during a run is undone when the run ends.** A pause set while the agent is idle
+   holds, because both wrappers check for it before running. But every wrapper writes the status back to
+   `idle` or `error` at the end of a run (`aiOrchestrator.ts:234`, `cronInstrumentation.ts:75`). For a job
+   that runs for minutes, mid-run is exactly when someone reaches for pause. The fix is a closing write that
+   only sets the status if it is still `running`. The same write computes `run_count` from the row loaded
+   at the start (`aiOrchestrator.ts:236`), so a concurrent increment is lost. Live risk; it has to follow
+   finding 2, because a pause checked at the start of a run is worthless if the last run's closing write
+   erased it. Ellis recommends disable.
+4. **Dara's directors have two switches, and the scheduler comment is false.** The comment says the
    directors gate on Dara's own row (`backend/src/services/aiOpsScheduler.ts:118-128`). The code gates
    them on `WorkforceCurriculumDirector` and `WorkforceCertificationDirector`
    (`backend/src/services/workforce/directorActions.ts:71`, `:73`). Disabling one of those rows leaves the
    timer firing, Dara's row counting a successful run, and nothing written.
-5. **A disable is not fail-safe.** If the registry lookup throws, `instrumentCronJob` runs the job anyway
-   (`cronInstrumentation.ts:28-31`), so a disabled agent can still run during a database fault.
+5. **A disable is not fail-safe, by design.** If the registry lookup throws, `instrumentCronJob` runs the
+   job anyway (`cronInstrumentation.ts:28-31`). This is deliberate and pinned by the test "failure path: a
+   registry lookup failure still runs the job untracked rather than skipping it"
+   (`backend/src/services/__tests__/cronInstrumentation.test.ts:98`). A fail-closed version once stopped
+   CoryEvolutionCycle from ever running (`backend/src/services/agentRunTracker.ts:22-24`).
+   - Failing closed everywhere would be the wrong fix. A brief lookup error would halt about 85 timers,
+     including the recovery jobs, and cron does not replay a skipped tick.
+   - The real exposure is narrow: a partial fault where only the gate's read fails and the job's own
+     work still succeeds. In a full outage most of these jobs fail on their own first query.
+   - The platform already has the right pattern: a lenient and a strict kill-switch reader over one key
+     (`backend/src/services/launchSafety.ts:124`, `:144`). Only jobs with an irreversible external effect
+     (outreach, messaging, publishing, posting) need the strict reading.
 6. **Most skips are not the structured event the brief describes.** Only `instrumentCronJob` logs
    `cron_job_skipped_disabled`. `runAgent` and `trackAgentRun` log a plain console line, and the director
    gate returns a reason with no log.

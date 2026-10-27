@@ -6,7 +6,8 @@
 Ellis answers **"how resilient is the platform right now, and what is each part's state and the age of its
 last signal?"** It is read-only: it restarts nothing and changes nothing.
 
-Platform facts cite the public Colaberry platform repository at upstream commit `a284987`.
+Platform facts cite the public Colaberry platform repository at upstream commit `a284987`. Corrections from
+A.M.'s review on 2026-10-27 cite `7c70f0a`.
 
 ## How the posture is decided
 
@@ -39,10 +40,10 @@ Ellis does not.
 
 1. **The "System Resilience" supervisor watches three course-content agents and nothing else.**
    - Its group holds OrchestrationHealthAgent, OrchestrationAutoRepairAgent and PromptMonitorAgent
-     (`backend/src/services/agentRegistrySeed.ts:3411-3413`).
-   - Its header says it covers ErrorRecovery, SystemHealth, DatabaseOptimizer and CacheManager agents
-     (`backend/src/services/agents/departments/superAgents/systemResilienceSuperAgent.ts:4`). No agent by
-     any of those names is registered.
+     (`backend/src/services/agentRegistrySeed.ts:3411-3413`). It reads that group, so its cycle is not blind.
+   - Its header names ErrorRecovery, SystemHealth, DatabaseOptimizer and CacheManager agents
+     (`backend/src/services/agents/departments/superAgents/systemResilienceSuperAgent.ts:4`), which match no
+     registered agent. That is a stale comment, not a defect.
    - It reads no security, timer or circuit-breaker signal, and nothing correlates failures across
      subsystems. The business outcome in the brief is not built yet.
 2. **One hour of silence is allowed for every agent.** The staleness rule is one hour whatever the
@@ -50,10 +51,12 @@ Ellis does not.
    (`aiOpsScheduler.ts:203`), so it can be silent for 59 minutes and the department still reads healthy.
    Ellis measures each signal against twice its own interval. The example shows it: the supervisor says
    healthy while the prompt monitor has been silent for 20 minutes.
-3. **A blind cycle is logged as a successful run.** The supervisor's wrapper always returns
-   `errors: []` and `result: 'success'` (`systemResilienceSuperAgent.ts:15-17`). A run only counts as
-   failed when it returns errors (`backend/src/services/aiOrchestrator.ts:231`), so the supervisor's own
-   row looks healthy even when its report says "unknown".
+3. **The department report tells the truth, and the supervisor's agent row does not.** When a supervisor
+   cannot read its agents, its report says health unknown with the error class, stores `collection_ok`
+   false and logs the outcome as partial (`superAgents/superAgentBase.ts:134`, `:152-153`, `:167`). But all
+   eight supervisors' wrappers return `errors: []` (`systemResilienceSuperAgent.ts:15-17`), and a run only
+   counts as failed when it returns errors (`backend/src/services/aiOrchestrator.ts:231`). So the
+   supervisor's own `ai_agents` row goes back to idle with its error count untouched.
 4. **Circuit breaker state cannot be read from any record.**
    - It is held in server memory and lost on restart (`agents/openclaw/openclawCircuitBreaker.ts:42-43`).
    - A breaker with fewer than 5 tasks in the hour reads `CLOSED` (`:61-63`), so CLOSED means both "fine"
@@ -62,9 +65,14 @@ Ellis does not.
      calls `checkCircuitBreaker` for every platform (`:206-214`), which can open a breaker and send a
      critical alert (`:151`, `:159`). Opening a dashboard can change what it shows. It only applies a change
    the error counts already justify, so it cannot trip a healthy breaker, but it can be what sends the alert.
+   - **It can also reset an open breaker.** The small-sample check returns `CLOSED` before the cooldown is
+     looked at (`openclawCircuitBreaker.ts:61`, `:68`), and `CLOSED` deletes the stored state (`:186`). Once
+     an open breaker's task window drains below 5, the next read, a dashboard view included, silently
+     resets it mid-cooldown.
 5. **Three timers still share one counter.** Dara's curriculum, certification and research timers all
    write one row (`aiOpsScheduler.ts:367`, `:369`, `:375`), so a failure in one cannot be told from
-   success in the others. This is the platform's own audit finding D7, still open at `a284987`.
+   success in the others. This is the platform's own audit finding D7, still open at `a284987`, and already
+   recorded in the cron registry baseline (`backend/src/services/__tests__/fixtures/cronRegistryBaseline.ts:214-222`).
 
 Not in this release: cross-subsystem failure patterns. They need failure records with a shared error
 class and time, which the supervisors do not keep.

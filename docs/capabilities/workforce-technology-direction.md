@@ -45,7 +45,9 @@ and only then `no_divergence`. A divergent answer also says how much of the flee
    highest error count and flags it as a task (`backend/src/services/workforce/directorActions.ts:80-116`).
    Its registry row says so (`backend/src/services/agentRegistrySeed.ts:2324`). It reads no tooling
    inventory, grant records or workforce intelligence output, which are the brief's inputs. The capability
-   the brief describes is not built.
+   the brief describes is not built. **Already known:** this is the director's intended behaviour, pinned by
+   the test "happy path: flags the worst unhealthy agent by error_count"
+   (`backend/src/services/workforce/__tests__/directorActions.test.ts:105`). Only the brief differs.
 2. **"Unhealthy" means five or more errors, ever.** `error_count` is a lifetime total
    (`backend/src/services/aiOrchestrator.ts:242`, `backend/src/services/cronInstrumentation.ts:81`). In normal
    running nothing resets it: the only resets are a manual boot script (`backend/src/scripts/coryProductionBoot.ts:315`)
@@ -58,7 +60,8 @@ and only then `no_divergence`. A divergent answer also says how much of the flee
    that agent already has an open task, the run stops as `already_flagged` (`workforceAgentRuntime.ts:155-158`)
    instead of moving to the next one.
 4. **Most of the fleet's tooling is not recorded.**
-   - Of 242 seeded agents, 31 set `tools_granted`.
+   - Of 242 seeded agents, 31 set `tools_granted`. **Already known:** the platform's fleet reconciliation
+     counted 28 (`docs/architecture/ai-workforce-management/FLEET_RECONCILIATION_2026-09-15.md:92`).
    - 36 appear in the grant map. Any other agent gets a default `suggest_only` grant
      (`backend/src/services/agentPermissionService.ts:102-116`), and the map is not enforced. So a tier is
      what is declared, not what the agent can do.
@@ -70,7 +73,7 @@ and only then `no_divergence`. A divergent answer also says how much of the flee
    a few queries. But the work it does (finding 2) does not change every 15 minutes, and direction would
    change even less often.
 
-Severity, in A.M.'s terms: findings 2 and 3 are reporting gaps (wrong or missing flags, no runtime
+Severity, in A.M.'s terms: findings 2 and 3 are new reporting gaps (wrong or missing flags, no runtime
 damage). Finding 1 means the capability exists in name only. Findings 4 and 5 are why Ellis's answer is
 `unknown` today.
 
