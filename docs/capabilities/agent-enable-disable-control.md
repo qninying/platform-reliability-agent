@@ -99,10 +99,34 @@ than guessing from names.
    So "who disabled this, and was it on before?" needs the body. Without it, a disable that was never
    re-enabled cannot be told from a row seeded off.
 
+## Which controls actually contain an agent
+
+Added after A.M.'s review, which suggested it. For any agent, Ellis answers **"if I press disable, or
+pause, does this agent actually stop?"**, timer by timer:
+
+| Effect | Meaning |
+|---|---|
+| stops | the run does not start |
+| stops writes only | an inner gate: the timer fires and an earlier row counts the run, but nothing is written |
+| holds only between runs | a pause set during a run is undone when that run ends, because the wrapper writes the status back (`aiOrchestrator.ts:234`, `cronInstrumentation.ts:75`) |
+| does not stop | the wrapper reads only `enabled`, and pause leaves `enabled` true (`aiOpsService.ts:296-297`) |
+| unknown | how the wrapper treats the row is not known |
+
+It sums these up for disable and for pause (yes, only between runs, partly, no, unknown), names the timers
+where pause is inert, and says "use disable, not pause" when that is the honest advice. A name with no row
+gets "no control contains it". The governance schedule row is listed as a separate switch.
+
+It also lists every registered agent that pause does not fully contain, so an operator knows before
+reaching for it. In the example that is AutonomousEngine and CampaignHealthScanner (pause does nothing),
+and Dara and AdmissionsAssistantAgent (pause holds only between runs). Like the table above, this covers
+the timers in `aiOpsScheduler.ts` only.
+
 ## How to run it
 
 ```
 npm run disable-recommendation -- --snapshot examples/disable-recommendation.example.json
+npm run disable-recommendation -- --snapshot examples/disable-recommendation.example.json --agent AutonomousEngine
+npm run disable-recommendation -- --snapshot examples/disable-recommendation.example.json --pause-gaps
 ```
 
 The example is not production data. It uses the real wiring for:
@@ -116,13 +140,16 @@ Exit codes:
 - 3: any request yields none (no flag, already disabled, or no evidence)
 - 1: bad input
 
+With `--agent`: 0 when pause contains the agent as fully as disable, 3 otherwise. With `--pause-gaps`: 0
+when every agent is fully contained by pause, 3 when any is not.
+
 ## Evidence
 
 - **Named passing tests:**
   - "acceptance: a recommendation for a shared agent_name lists all timers that share it"
   - "acceptance: a recommendation for an unregistered name states that no disable flag exists rather than proposing one"
 
-  There are 11 tests in this file and 160 in the repo, all passing under `npm test`.
+  There are 17 tests in this file and 177 in the repo, all passing under `npm test`.
 - **The tests catch defects.** Each check was done by editing the code, running the tests and restoring
   the code:
   - listing only the first timer of a shared name fails 1;
@@ -137,6 +164,19 @@ Exit codes:
   - recommending for an agent already disabled fails 1;
   - dropping the governance switch fails 1;
   - leaving requests unsorted fails 1.
+
+  For containment:
+  - ignoring the cron wrapper's closing write fails 2;
+  - ignoring runAgent's closing write fails 1;
+  - counting an inner gate as a full stop fails 1;
+  - counting a wrapper that reads only `enabled` as stopping a pause fails 3;
+  - reading "partly" as "yes" fails 1;
+  - ignoring an unknown wrapper fails 2;
+  - treating a name with no row as containable fails 1;
+  - dropping the list of timers where pause is inert fails 1;
+  - listing fully contained agents as pause gaps fails 1;
+  - dropping the "use disable, not pause" advice fails 1;
+  - changing the no-row statement fails 1.
 - **Not yet run on live records.** K.D. cannot reach the control route (`backend/src/routes/admin/aiOpsRoutes.ts:72`).
   The first live check is one export of `ai_agents` and `cron_schedule_configs`, checked against this
   inventory.

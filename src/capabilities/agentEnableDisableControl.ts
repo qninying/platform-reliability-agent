@@ -27,14 +27,17 @@ export type Gate = 'run_agent' | 'instrument_cron_job' | 'track_agent_run' | 'di
 // What each wrapper does with the row's flags. null means it cannot be said from the records.
 // noRow is what the wrapper does when the row it reads does not exist (aiOrchestrator.ts:177-181,
 // cronInstrumentation.ts:34-38, agentRunTracker.ts:29-31, workforceAgentRuntime.ts:68, aiOrchestrator.ts:108).
-export const GATES: Record<Gate, { disable: boolean | null; pause: boolean | null; skip: string; noRow: string }> = {
-  run_agent: { disable: true, pause: true, skip: 'a plain console line', noRow: 'returns without running, so this timer does nothing today' },
-  instrument_cron_job: { disable: true, pause: true, skip: "a structured 'cron_job_skipped_disabled' line", noRow: 'runs it anyway, untracked' },
-  track_agent_run: { disable: true, pause: false, skip: 'a plain console line', noRow: 'runs it anyway, untracked' },
-  director_gate: { disable: true, pause: true, skip: 'a returned reason, with no log line', noRow: 'blocks every write as not registered' },
-  own_check: { disable: true, pause: false, skip: 'a plain console line', noRow: 'runs it anyway, untracked' },
-  none: { disable: false, pause: false, skip: 'nothing: the row is never read', noRow: 'never reads a row' },
-  unknown: { disable: null, pause: null, skip: 'unknown', noRow: 'cannot be said' },
+// closingWrite is whether the wrapper writes the row's status back at the end of a run, which erases a pause
+// set mid-run (aiOrchestrator.ts:234, cronInstrumentation.ts:75, aiOrchestrator.ts:124-125); trackAgentRun and
+// the director gate never write status.
+export const GATES: Record<Gate, { disable: boolean | null; pause: boolean | null; closingWrite: boolean | null; skip: string; noRow: string }> = {
+  run_agent: { disable: true, pause: true, closingWrite: true, skip: 'a plain console line', noRow: 'returns without running, so this timer does nothing today' },
+  instrument_cron_job: { disable: true, pause: true, closingWrite: true, skip: "a structured 'cron_job_skipped_disabled' line", noRow: 'runs it anyway, untracked' },
+  track_agent_run: { disable: true, pause: false, closingWrite: false, skip: 'a plain console line', noRow: 'runs it anyway, untracked' },
+  director_gate: { disable: true, pause: true, closingWrite: false, skip: 'a returned reason, with no log line', noRow: 'blocks every write as not registered' },
+  own_check: { disable: true, pause: false, closingWrite: true, skip: 'a plain console line', noRow: 'runs it anyway, untracked' },
+  none: { disable: false, pause: false, closingWrite: false, skip: 'nothing: the row is never read', noRow: 'never reads a row' },
+  unknown: { disable: null, pause: null, closingWrite: null, skip: 'unknown', noRow: 'cannot be said' },
 };
 
 export interface TimerRow {
@@ -134,4 +137,105 @@ export function recommendDisable(snap: ControlSnapshot, req: ControlRequest): Re
 
 export function recommendAll(snap: ControlSnapshot): Recommendation[] {
   return [...snap.requests].sort((a, b) => (a.agent_name < b.agent_name ? -1 : 1)).map((r) => recommendDisable(snap, r));
+}
+
+// Which controls actually contain an agent. For every timer that reads the row, each control either stops the
+// run, stops only the writes (an inner gate), holds only between runs (a pause the run's closing write
+// erases), does not stop it, or cannot be said. Pause writes only status and leaves enabled true
+// (aiOpsService.ts:296-297), so a wrapper that reads only enabled never sees it.
+
+export type ControlEffect = 'stops' | 'stops_writes_only' | 'holds_only_between_runs' | 'does_not_stop' | 'unknown';
+export type ContainmentAnswer = 'yes' | 'only_between_runs' | 'partly' | 'no' | 'unknown' | 'no_timers';
+
+export interface TimerControl { timer: string; schedule: string; label: string; ref: string; disable: ControlEffect; pause: ControlEffect; why: string }
+
+export interface Containment {
+  agent_name: string;
+  decided_by: 'a named human';
+  row_exists: boolean;
+  disable: ContainmentAnswer;
+  pause: ContainmentAnswer;
+  timers: TimerControl[];
+  pause_inert: string[];
+  governance: Recommendation['governance'];
+  statement: string;
+  citations: Citation[];
+}
+
+function effectFor(g: (typeof GATES)[Gate], control: 'disable' | 'pause', inner: boolean): ControlEffect {
+  const reads = g[control];
+  if (reads === null) return 'unknown';
+  if (!reads) return 'does_not_stop';
+  if (inner) return 'stops_writes_only';
+  if (control === 'pause') return g.closingWrite === null ? 'unknown' : g.closingWrite ? 'holds_only_between_runs' : 'stops';
+  return 'stops';
+}
+
+function summarise(effects: ControlEffect[]): ContainmentAnswer {
+  if (effects.length === 0) return 'no_timers';
+  if (effects.includes('unknown')) return 'unknown';
+  const off = effects.filter((e) => e === 'does_not_stop').length;
+  if (off === effects.length) return 'no';
+  if (off > 0) return 'partly';
+  return effects.includes('holds_only_between_runs') ? 'only_between_runs' : 'yes';
+}
+
+const ANSWER_TEXT: Record<ContainmentAnswer, string> = {
+  yes: 'stops every timer that reads this row',
+  only_between_runs: 'holds only between runs: a pause set during a run is undone when that run ends',
+  partly: 'stops some of its timers and not others',
+  no: 'stops none of its timers',
+  unknown: 'cannot be said for every timer',
+  no_timers: 'has nothing to stop: no scheduled timer reads this row',
+};
+
+export function containment(snap: ControlSnapshot, agentName: string): Containment {
+  const row = snap.ai_agents.some((a) => a.agent_name === agentName);
+  const timers: TimerControl[] = [];
+  for (const t of [...snap.timers].sort((a, b) => (a.timer < b.timer ? -1 : a.timer > b.timer ? 1 : a.ref < b.ref ? -1 : 1))) {
+    const i = t.gates.findIndex((g) => g.flag === agentName);
+    if (i === -1) continue;
+    const g = GATES[t.gates[i].gate];
+    const base = { timer: t.timer, schedule: t.schedule, label: t.label, ref: t.ref };
+    if (!row) {
+      timers.push({ ...base, disable: 'does_not_stop', pause: 'does_not_stop', why: `there is no ${agentName} row to switch; finding none, the wrapper ${g.noRow}` });
+      continue;
+    }
+    const disable = effectFor(g, 'disable', i > 0);
+    const pause = effectFor(g, 'pause', i > 0);
+    const why = pause === 'does_not_stop' && disable !== 'does_not_stop'
+      ? 'its wrapper reads only enabled, and pause leaves enabled true'
+      : pause === 'holds_only_between_runs' ? 'its wrapper writes the status back at the end of every run'
+      : i > 0 ? 'an inner gate: the timer still fires and an earlier row counts the run, but the writes are blocked'
+      : disable === 'unknown' ? 'how its wrapper treats the row is not known'
+      : disable === 'does_not_stop' ? 'its wrapper never reads the row' : 'its wrapper checks both flags before running';
+    timers.push({ ...base, disable, pause, why });
+  }
+  const disableAnswer = summarise(timers.map((t) => t.disable));
+  const pauseAnswer = summarise(timers.map((t) => t.pause));
+  const pause_inert = timers.filter((t) => t.pause === 'does_not_stop' && t.disable !== 'does_not_stop').map((t) => t.label);
+  const governance = snap.cron_schedule_configs
+    .filter((g) => timers.some((t) => t.timer === g.agent_name) || g.agent_name === agentName)
+    .sort((a, b) => (a.agent_name < b.agent_name ? -1 : 1))
+    .map((g) => ({ timer: g.agent_name, enabled: g.enabled, note: `a separate switch: turning this governance row off stops every registration of timer ${g.agent_name} itself` }));
+
+  const use = disableAnswer === 'yes' && pauseAnswer !== 'yes' ? ' Use disable, not pause.' : '';
+  const statement = !row
+    ? `No control contains ${agentName}: there is no ai_agents row for disable or pause to act on.${governance.length ? ' Only the governance schedule row can stop its timer.' : ''}`
+    : `For ${agentName}, disable ${ANSWER_TEXT[disableAnswer]}; pause ${ANSWER_TEXT[pauseAnswer]}.${pause_inert.length ? ` Pause does nothing for: ${pause_inert.join('; ')}.` : ''}${use}`;
+  return {
+    agent_name: agentName, decided_by: 'a named human', row_exists: row,
+    disable: row ? disableAnswer : (timers.length ? 'no' : 'no_timers'),
+    pause: row ? pauseAnswer : (timers.length ? 'no' : 'no_timers'),
+    timers, pause_inert, governance, statement,
+    citations: snap.ai_agents.filter((a) => a.agent_name === agentName).map((a) => ({ table: 'ai_agents' as const, id: a.id, fields: ['agent_name', 'enabled', 'status'] })),
+  };
+}
+
+// Every registered row whose pause does not fully contain it, so an operator knows before reaching for it.
+export function pauseGaps(snap: ControlSnapshot): Array<{ agent_name: string; pause: ContainmentAnswer; pause_inert: string[] }> {
+  return [...new Set(snap.ai_agents.map((a) => a.agent_name))].sort()
+    .map((n) => containment(snap, n))
+    .filter((c) => c.pause !== 'yes' && c.pause !== 'no_timers')
+    .map((c) => ({ agent_name: c.agent_name, pause: c.pause, pause_inert: c.pause_inert }));
 }

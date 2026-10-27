@@ -1,13 +1,16 @@
-// Usage: node src/cli/disableRecommendation.ts --snapshot <control.json>
+// Usage: node src/cli/disableRecommendation.ts --snapshot <control.json> [--agent <name> | --pause-gaps]
 // For each request in the snapshot, prints whether Ellis recommends a person disable that agent, the
 // evidence, and every timer the disable would and would not stop. Reads only; Ellis never disables
 // anything. Exit code 0 when every request yields a disable recommendation, 3 when any yields none
 // (no flag exists, already disabled, or no evidence), 1 for bad input.
+// --agent prints which controls (disable, pause, the governance row) actually contain that agent: exit 0
+// when pause contains it as fully as disable, 3 otherwise. --pause-gaps lists every registered agent that
+// pause does not fully contain: exit 0 when there are none, 3 when there are any.
 import { readFileSync } from 'node:fs';
 import { parseArgs } from 'node:util';
-import { recommendAll, type ControlSnapshot } from '../capabilities/agentEnableDisableControl.ts';
+import { recommendAll, containment, pauseGaps, type ControlSnapshot } from '../capabilities/agentEnableDisableControl.ts';
 
-const { values } = parseArgs({ options: { snapshot: { type: 'string' } } });
+const { values } = parseArgs({ options: { snapshot: { type: 'string' }, agent: { type: 'string' }, 'pause-gaps': { type: 'boolean' } } });
 
 class InputError extends Error {
   readonly errorClass: 'SourceUnavailable' | 'ContractViolation';
@@ -46,6 +49,18 @@ function load(path: string): ControlSnapshot {
 try {
   if (!values.snapshot) throw new InputError('ContractViolation', 'missing --snapshot <control.json>');
   const snap = load(values.snapshot);
+  if (values.agent && values['pause-gaps']) throw new InputError('ContractViolation', 'use --agent or --pause-gaps, not both');
+  const head = { captured_at: snap.captured_at, captured_by: snap.captured_by };
+  if (values.agent) {
+    const c = containment(snap, values.agent);
+    console.log(JSON.stringify({ snapshot: head, containment: c }, null, 2));
+    process.exit(c.row_exists && c.pause === c.disable ? 0 : 3);
+  }
+  if (values['pause-gaps']) {
+    const gaps = pauseGaps(snap);
+    console.log(JSON.stringify({ snapshot: head, pause_gaps: gaps }, null, 2));
+    process.exit(gaps.length === 0 ? 0 : 3);
+  }
   const recommendations = recommendAll(snap);
   console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, recommendations }, null, 2));
   process.exit(recommendations.every((r) => r.recommendation === 'disable') ? 0 : 3);
