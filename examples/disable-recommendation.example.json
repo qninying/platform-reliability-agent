@@ -1,0 +1,185 @@
+{
+  "captured_at": "2026-10-27T12:00:00Z",
+  "captured_by": "example, not production data: a shared name, a timer gated by a differently named row, an unregistered name, and a wrapper that ignores pause",
+  "timers": [
+    {
+      "timer": "Dara",
+      "schedule": "10 6 * * *",
+      "label": "AI Workforce: Curriculum director (Dara)",
+      "ref": "aiOpsScheduler.ts:367",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "Dara"
+        },
+        {
+          "gate": "director_gate",
+          "flag": "WorkforceCurriculumDirector"
+        }
+      ]
+    },
+    {
+      "timer": "Dara",
+      "schedule": "30 6 * * *",
+      "label": "AI Workforce: Certification director (Dara)",
+      "ref": "aiOpsScheduler.ts:369",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "Dara"
+        },
+        {
+          "gate": "director_gate",
+          "flag": "WorkforceCertificationDirector"
+        }
+      ]
+    },
+    {
+      "timer": "Dara",
+      "schedule": "15 6 * * *",
+      "label": "AI Workforce: Dara targeted research sweep",
+      "ref": "aiOpsScheduler.ts:375",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "Dara"
+        }
+      ]
+    },
+    {
+      "timer": "AdmissionsAssistant",
+      "schedule": "4,14,24,34,44,54 * * * *",
+      "label": "Admissions assistant",
+      "ref": "aiOpsScheduler.ts:240",
+      "gates": [
+        {
+          "gate": "run_agent",
+          "flag": "AdmissionsAssistantAgent"
+        }
+      ]
+    },
+    {
+      "timer": "AutonomousEngine",
+      "schedule": "5,15,25,35,45,55 * * * *",
+      "label": "Autonomous engine",
+      "ref": "aiOpsScheduler.ts:214",
+      "gates": [
+        {
+          "gate": "track_agent_run",
+          "flag": "AutonomousEngine"
+        }
+      ]
+    },
+    {
+      "timer": "WeeklyReport",
+      "schedule": "0 13 * * 0",
+      "label": "Weekly report email",
+      "ref": "aiOpsScheduler.ts:266",
+      "gates": [
+        {
+          "gate": "run_agent",
+          "flag": "WeeklyReport"
+        }
+      ]
+    },
+    {
+      "timer": "CampaignHealthScanner",
+      "schedule": "*/15 * * * *",
+      "label": "Campaign health scan",
+      "ref": "aiOpsScheduler.ts:174",
+      "gates": [
+        {
+          "gate": "own_check",
+          "flag": "CampaignHealthScanner"
+        }
+      ]
+    }
+  ],
+  "ai_agents": [
+    {
+      "id": "example-row-1",
+      "agent_name": "Dara",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "example-row-2",
+      "agent_name": "WorkforceCurriculumDirector",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "example-row-3",
+      "agent_name": "WorkforceCertificationDirector",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "example-row-4",
+      "agent_name": "AdmissionsAssistantAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "example-row-5",
+      "agent_name": "AutonomousEngine",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "example-row-6",
+      "agent_name": "CampaignHealthScanner",
+      "enabled": true,
+      "status": "idle"
+    }
+  ],
+  "cron_schedule_configs": [
+    {
+      "agent_name": "Dara",
+      "enabled": true,
+      "schedule": null
+    }
+  ],
+  "requests": [
+    {
+      "agent_name": "Dara",
+      "evidence": [
+        {
+          "source": "ai_agent_activity_logs",
+          "ref": "example-log-1",
+          "summary": "Example: 3 failed curriculum runs this week"
+        }
+      ]
+    },
+    {
+      "agent_name": "WeeklyReport",
+      "evidence": [
+        {
+          "source": "ai_agent_activity_logs",
+          "ref": "example-log-2",
+          "summary": "Example: no weekly report recorded"
+        }
+      ]
+    },
+    {
+      "agent_name": "AutonomousEngine",
+      "evidence": [
+        {
+          "source": "ai_agent_activity_logs",
+          "ref": "example-log-3",
+          "summary": "Example: error rate 40% over 24 hours"
+        }
+      ]
+    },
+    {
+      "agent_name": "AdmissionsAssistant",
+      "evidence": [
+        {
+          "source": "ai_agent_activity_logs",
+          "ref": "example-log-4",
+          "summary": "Example: repeated timeouts"
+        }
+      ]
+    }
+  ]
+}

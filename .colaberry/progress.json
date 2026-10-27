@@ -85,13 +85,23 @@
       "criteria": [
         {
           "text": "A recommendation for a shared agent_name lists all timers that share it; a recommendation for an unregistered name states that no disable flag exists for it rather than proposing one.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/agentEnableDisableControl.ts",
+        "src/cli/disableRecommendation.ts",
+        "test/agentEnableDisableControl.test.ts",
+        "examples/disable-recommendation.example.json",
+        "docs/capabilities/agent-enable-disable-control.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/agentEnableDisableControl.test.ts"
+      ],
+      "notes": "Read-only recommendation (platform commit a284987): for a requested agent name, Ellis says whether it recommends a person disable it, with the evidence, and lists every timer the disable would and would not stop, from an inventory of each timer's schedule and every ai_agents row its wrappers read. Ellis never calls the control route. A shared name lists every timer that shares it (Dara's three). A name with no ai_agents row gets 'No disable flag exists... Ellis does not propose creating one' and no action. Timers named one thing but gated by another row, wrappers that never read the row or are not known, and wrappers that ignore pause are reported. Tests 'acceptance: a recommendation for a shared agent_name lists all timers that share it' and 'acceptance: a recommendation for an unregistered name states that no disable flag exists rather than proposing one' pass; listing only the first shared timer fails 1 test, proposing an action for an unregistered name fails 2. 11 tests, 160 in the repo. Not yet run on live records.",
+      "updated_at": "2026-10-26",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
