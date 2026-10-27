@@ -1461,13 +1461,24 @@
       "criteria": [
         {
           "text": "Divergence is reported against a written intended direction; with no written direction on file, the answer is 'unknown', not 'no divergence'.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/workforceTechnologyDirection.ts",
+        "src/cli/technologyDirection.ts",
+        "src/capabilities/orchestrationHealthWatch.ts",
+        "test/workforceTechnologyDirection.test.ts",
+        "examples/technology-direction.example.json",
+        "examples/technology-direction.with-direction.example.json",
+        "docs/capabilities/workforce-technology-direction.md",
+        "package.json"
+      ],
+      "tests_added": [
+        "test/workforceTechnologyDirection.test.ts"
+      ],
+      "notes": "Read-only (platform commit 7c70f0a): lists each enabled agent's recorded tools (ai_agents.tools_granted) and declared tier (grant map, or the default suggest_only grant) and compares them with a written, approved technology direction: allowed or ruled-out tools, a maximum tier, allowed models. With no direction on file, one with no recorded approval, one dated after the snapshot, or one with no rules, the verdict is 'unknown' and every agent is 'not_assessed', never 'no divergence'. An empty tools_granted list is the column default (models/AiAgent.ts:480-484), so it reads as not recorded and keeps the verdict unknown. A model outside the direction is raised as an escalation for a person, never an action. Tests 'acceptance: with no written direction on file, the answer is 'unknown', not 'no divergence'' and 'acceptance: divergence is reported against a written intended direction' pass; 11 tests in the file, 171 in the repo (npm test). 14 mutations each fail at least one test. CLI: npm run technology-direction -- --snapshot examples/technology-direction.example.json exits 3 (unknown).",
+      "updated_at": "2026-10-27T14:00:00Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
