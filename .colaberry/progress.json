@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 23,
+    "stories_verified": 24,
     "stories_submitted": 0,
-    "stories_in_progress": 31,
+    "stories_in_progress": 30,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 35,
-    "points_awarded": 345
+    "criteria_passed": 36,
+    "points_awarded": 360
   },
   "stories": [
     {
@@ -407,17 +407,15 @@
       "notes": "Read-only (platform commit bb1d3c3): answers 'did this job run, when, how long did it take, and did it fail' from ai_agents, the activity log and the capability-13 timer inventory, and names what it cannot say. A name with no ai_agents row is 'not instrumented, no record exists' with ran null, never 'did not run' (the wrapper runs it and writes nothing, cronInstrumentation.ts:34-38). A registered row gets its last finish, duration, derived start, result, error message and trace id; trackAgentRun timers are read from counters only, with a failure read from last_error_at. Each answer lists what the records cannot show: error class, skipped ticks of a disabled or paused job, the current run when status is running, whether a failed run started its job, which pooled timer ran, counted runs with no run row. --coverage groups every timer; on the real inventory 33 are not instrumented, matching the platform baseline. Tests 'acceptance: for an untracked timer the answer is 'not instrumented, no record exists', never 'did not run'' and 'acceptance, positive control: a name known to have no ai_agents row returns the not-instrumented answer' (ReliabilityAlerting, from the real inventory, checked to have no row) pass; 18 tests in the file, 231 in the repo (npm test). 16 mutations each fail at least one test. CLI: npm run cron-runs -- --snapshot examples/cron-runs.example.json --name ReliabilityAlerting exits 3 (not instrumented).",
       "updated_at": "2026-10-27T23:00:00Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "For an untracked timer the answer is 'not instrumented — no record exists', never 'did not run'. A positive control: asking about a name known to have no ai_agents row must return the not-instrumented answer."
-        ]
+        "verified_at": "2026-10-27T18:46:08.211Z",
+        "commit_sha": "b1eba8878347062bcdd61e9a063ee45fe069a349",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/b1eba8878347062bcdd61e9a063ee45fe069a349",
+        "commit_at": "2026-10-27T18:45:51Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
