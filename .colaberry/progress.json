@@ -4,11 +4,11 @@
   "totals": {
     "stories_total": 55,
     "stories_verified": 24,
-    "stories_submitted": 1,
-    "stories_in_progress": 29,
+    "stories_submitted": 2,
+    "stories_in_progress": 28,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 37,
+    "criteria_passed": 38,
     "points_awarded": 360
   },
   "stories": [
@@ -137,17 +137,15 @@
       "notes": "Read-only (platform commit 4443087): reproduces the registry tab health score exactly (aiOpsService.ts:466-484) and reports it worst first. Every score derived from run_count 0 is labelled unscored with score null, never 100; what a zero-run agent should score is left to K.D. A zero-run agent with failures on record (thrown failures add to error_count but not run_count, aiOrchestrator.ts:158-166, :300-306) is unscored and placed first in triage, not buried. trackAgentRun agents with no errors are reported as score_cannot_fall (agentRunTracker.ts:58-70); timers with no row are listed as having no score. With --source the live formula is confirmed or the run fails. On the real fleet (259 rows built from code) all 259 are unscored, and the tab would show 100 for all 259. Tests acceptance: every score derived from run_count 0 is labelled unscored rather than 100 and acceptance, on the real fleet: all 259 rows created in code at 4443087 have run_count 0, and none is scored 100 pass; 12 tests in the file, 262 in the repo (npm test). 14 mutations each fail at least one test. CLI: npm run agent-health -- --snapshot examples/cron-health.example.json exits 3.",
       "updated_at": "2026-10-27T23:14:03Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "submitted",
+        "criteria_passed": 1,
         "criteria_total": 1,
         "verified_at": null,
         "commit_sha": null,
         "commit_url": null,
         "commit_at": null,
         "points_awarded": null,
-        "outstanding": [
-          "Every score derived from run_count 0 is labelled unscored rather than 100."
-        ]
+        "outstanding": []
       }
     },
     {
