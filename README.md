@@ -52,11 +52,11 @@ platform often merges: *healthy*, *broken*, and *unknown*.
 ```mermaid
 flowchart LR
   P[("Colaberry platform<br/>records and source code")] -- "dated export, pulled by an admin" --> RS["Read boundary<br/>no write method"]
-  P -- "rules copied at a named commit" --> PIN["Pinned rules<br/>commit + file:line"]
+  P -- "rules copied at a named commit" --> PIN["Pinned rules<br/>commit and file:line"]
   RS --> CAP["20 capability modules<br/>one question each"]
   PIN --> CAP
-  SB["Sandbox copies<br/>every write journaled"] <--> CAP
-  CAP --> OUT["Verdict + citations<br/>+ explicit unknowns + exit code"]
+  CAP -- "changes, sandbox only" --> SB["Sandbox copies<br/>every write journaled"]
+  CAP --> OUT["Verdict, citations,<br/>explicit unknowns, exit code"]
   OUT --> H(["People: K.D. approves,<br/>A.M. reviews findings"])
   H -- "upstream fixes" --> P
 ```
