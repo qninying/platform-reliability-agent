@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 17,
+    "stories_verified": 18,
     "stories_submitted": 0,
-    "stories_in_progress": 37,
+    "stories_in_progress": 36,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 29,
-    "points_awarded": 255
+    "criteria_passed": 30,
+    "points_awarded": 270
   },
   "stories": [
     {
@@ -1407,17 +1407,15 @@
       "notes": "Read-only posture over 13 subsystems (platform commit a284987): the eight department supervisors' latest department_reports, three orchestration timers and Dara's shared row in ai_agents, and an OpenClaw circuit-status export. Each subsystem gives a state, a reason, its last signal time and that signal's age. No row, a signal older than two of its own intervals, an unreadable or future time, a supervisor that could not read its agents or reports on 0 agents, or no circuit export reads as unknown, and any unknown keeps the overall verdict off healthy. Dara's three timers share one row, so attribution is reported as unavailable. Test 'acceptance: a subsystem with no signal is reported as unknown and prevents a healthy overall verdict' removes each of the 13 signals in turn and passes; letting degraded outrank unknown fails 3 tests, using one hour for every signal fails 1. 12 tests, 149 in the repo. Not yet run on live records.",
       "updated_at": "2026-10-26",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "A subsystem with no signal is reported as unknown and prevents a healthy overall verdict."
-        ]
+        "verified_at": "2026-10-27T01:45:27.227Z",
+        "commit_sha": "9b251a186e1e52e8e2aed0e8f2fc76a390fd1d2d",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/9b251a186e1e52e8e2aed0e8f2fc76a390fd1d2d",
+        "commit_at": "2026-10-27T01:45:14Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
