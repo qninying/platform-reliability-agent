@@ -1,8 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { recommendDisable, recommendAll, containment, pauseGaps, type ControlSnapshot, type TimerRow, type ControlAgentRow } from '../src/capabilities/agentEnableDisableControl.ts';
+import { recommendDisable, recommendAll, containment, pauseGaps, timersWithNoRow, GATES, type ControlSnapshot, type TimerRow, type ControlAgentRow } from '../src/capabilities/agentEnableDisableControl.ts';
 
-// Timers mirror the platform's scheduler wiring at a284987; rows are test inputs, not production data.
+// Timers mirror the platform's scheduler wiring at a284987, wrappers as re-measured at c699e58 (PR 3430);
+// rows are test inputs, not production data.
 const EVIDENCE = [{ source: 'ai_agent_activity_logs', ref: 'log-1', summary: '12 failed runs in the last hour' }];
 const timer = (t: string, gates: TimerRow['gates'], over: Partial<TimerRow> = {}): TimerRow => ({ timer: t, schedule: '0 6 * * *', label: `${t} timer`, ref: `aiOpsScheduler.ts:${t.length}`, gates, ...over });
 const row = (name: string, over: Partial<ControlAgentRow> = {}): ControlAgentRow => ({ id: `row-${name}`, agent_name: name, enabled: true, status: 'idle', ...over });
@@ -69,11 +70,14 @@ test("disabling an inner row stops the writes, not the run, and says so", () => 
   assert.match(rec('Dara').would_stop[0].effect, /^the run stops/);
 });
 
-test('pause is flagged where the wrapper ignores it, and the in-run reset is always noted', () => {
-  const r = rec('AutonomousEngine');
-  assert.ok(r.notes.some((n) => /pause would not stop AutonomousEngine/.test(n)));
-  assert.ok(r.notes.some((n) => /undone when that run finishes/.test(n)));
-  assert.ok(!rec('Dara').notes.some((n) => /pause would not stop/.test(n)));
+test('after PR 3430 every wrapper that honours disable also honours pause', () => {
+  for (const [gate, g] of Object.entries(GATES)) if (g.disable) assert.equal(g.pause, true, gate);
+  assert.ok(!rec('AutonomousEngine').notes.some((n) => /pause would not stop/.test(n)));
+});
+
+test("a mid-run pause note appears only where a wrapper can still erase it: runAgent's failure path", () => {
+  assert.ok(rec('AdmissionsAssistantAgent').notes.some((n) => /erased if that run fails \(aiOrchestrator\.ts:303-309\)/.test(n)));
+  for (const n of ['AutonomousEngine', 'Dara']) assert.ok(!rec(n).notes.some((x) => /pause set while a run is in progress/.test(x)), n);
 });
 
 test('a wrapper that never reads the row, or one that is not known, is never counted as stopped', () => {
@@ -127,23 +131,32 @@ test('idempotent: the same rows and requests in any order give the same recommen
   assert.deepEqual(recommendAll(s).map((r) => r.agent_name), ['AutonomousEngine', 'Dara', 'WeeklyReport']);
 });
 
-test('containment: for any agent, it names which controls actually stop it, and where pause is inert', () => {
-  const c = containment(snap(), 'AutonomousEngine');
-  assert.equal(c.disable, 'yes');
-  assert.equal(c.pause, 'no');
-  assert.deepEqual(c.pause_inert, ['AutonomousEngine timer']);
-  assert.equal(c.timers[0].why, 'its wrapper reads only enabled, and pause leaves enabled true');
-  assert.match(c.statement, /Pause does nothing for: AutonomousEngine timer\. Use disable, not pause\./);
-  assert.equal(c.decided_by, 'a named human');
+test('containment: the five agents pause used to miss are now contained by it (re-measured at c699e58)', () => {
+  const s = snap();
+  s.timers.push(timer('CampaignHealthScanner', [{ gate: 'own_check', flag: 'CampaignHealthScanner' }]));
+  s.ai_agents.push(row('CampaignHealthScanner'));
+  for (const n of ['AutonomousEngine', 'CampaignHealthScanner']) {
+    const c = containment(s, n);
+    assert.deepEqual([c.disable, c.pause], ['yes', 'yes'], n);
+    assert.deepEqual(c.pause_inert, [], n);
+    assert.doesNotMatch(c.statement, /Use disable/, n);
+  }
+  assert.equal(containment(s, 'AutonomousEngine').decided_by, 'a named human');
 });
 
-test('containment: a pause holds only between runs where the wrapper writes the status back', () => {
+test('containment: instrumentCronJob keeps a mid-run pause now, so Dara is fully contained', () => {
   const c = containment(snap(), 'Dara');
-  assert.equal(c.disable, 'yes');
-  assert.equal(c.pause, 'only_between_runs');
-  assert.deepEqual(c.timers.map((t) => t.pause), ['holds_only_between_runs', 'holds_only_between_runs', 'holds_only_between_runs']);
-  assert.match(c.statement, /a pause set during a run is undone when that run ends/);
+  assert.deepEqual([c.disable, c.pause], ['yes', 'yes']);
+  assert.deepEqual(c.timers.map((t) => t.pause), ['stops', 'stops', 'stops']);
   assert.deepEqual(c.governance.map((g) => g.timer), ['Dara']);
+});
+
+test("containment: runAgent's pause holds unless a run fails, and the advice stays disable, not pause", () => {
+  const c = containment(snap(), 'AdmissionsAssistantAgent');
+  assert.equal(c.pause, 'unless_a_run_fails');
+  assert.deepEqual(c.timers.map((t) => t.pause), ['holds_unless_the_run_fails']);
+  assert.match(c.timers[0].why, /writes status error back unconditionally when a run fails/);
+  assert.match(c.statement, /erased if that run fails.*aiOrchestrator\.ts:303-309.*Use disable, not pause\./);
 });
 
 test('containment: an inner gate stops only the writes, and pause holds there because nothing writes it back', () => {
@@ -158,6 +171,7 @@ test('containment: no row, an unknown wrapper, a wrapper that never reads the ro
   assert.equal(none.row_exists, false);
   assert.equal(none.disable, 'no');
   assert.match(none.statement, /No control contains WeeklyReport/);
+  assert.match(none.statement, /No other registry control reaches it either, so this is a gap in the fleet's registration, not in the controls\./);
   assert.deepEqual([none.timers[0].disable, none.timers[0].pause], ['does_not_stop', 'does_not_stop']);
   assert.match(none.timers[0].why, /no WeeklyReport row to switch/);
   assert.equal(containment(snap(), 'Mystery').pause, 'unknown');
@@ -167,15 +181,13 @@ test('containment: no row, an unknown wrapper, a wrapper that never reads the ro
   assert.equal(containment(s, 'Orphan').disable, 'no');
   s.timers.push(timer('CampaignHealthScanner', [{ gate: 'own_check', flag: 'CampaignHealthScanner' }]));
   s.ai_agents.push(row('CampaignHealthScanner'));
-  assert.equal(containment(s, 'CampaignHealthScanner').pause, 'no');
+  assert.equal(containment(s, 'CampaignHealthScanner').pause, 'yes');
 });
 
 test('pause gaps list every registered agent that pause does not fully contain, sorted and order-independent', () => {
   const gaps = pauseGaps(snap());
   assert.deepEqual(gaps.map((g) => [g.agent_name, g.pause]), [
-    ['AdmissionsAssistantAgent', 'only_between_runs'],
-    ['AutonomousEngine', 'no'],
-    ['Dara', 'only_between_runs'],
+    ['AdmissionsAssistantAgent', 'unless_a_run_fails'],
     ['Mystery', 'unknown'],
   ]);
   const s = snap();
@@ -184,8 +196,16 @@ test('pause gaps list every registered agent that pause does not fully contain, 
 
 test('containment: pause that stops one timer and not another on the same row is partly', () => {
   const s = snap();
-  s.timers.push(timer('AutonomousEngine', [{ gate: 'director_gate', flag: 'AutonomousEngine' }], { label: 'second duty', ref: 'x.ts:2' }));
+  s.timers.push(timer('AutonomousEngine', [{ gate: 'none', flag: 'AutonomousEngine' }], { label: 'second duty', ref: 'x.ts:2' }));
   const c = containment(s, 'AutonomousEngine');
   assert.equal(c.pause, 'partly');
   assert.match(c.statement, /pause stops some of its timers and not others/);
+});
+
+test('a timer with no row says whether it still runs, and that no registry control reaches it', () => {
+  const s = snap();
+  s.timers.push(timer('Untracked', [{ gate: 'instrument_cron_job', flag: 'Untracked' }]));
+  const t = timersWithNoRow(s);
+  assert.deepEqual(t.map((x) => [x.timer, x.runs]), [['Untracked', 'untracked'], ['WeeklyReport', 'never']]);
+  for (const x of t) assert.match(x.effect, /no disable, pause or other registry control reaches it/);
 });

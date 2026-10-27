@@ -4,7 +4,8 @@
 // level. For a name with no ai_agents row, it says no disable flag exists rather than proposing one.
 // Read-only.
 //
-// Platform behaviour this rests on (platform repo, commit a284987):
+// Platform behaviour this rests on (platform repo, commit a284987; the pause facts below were true until
+// PR 3430 and are superseded by the re-measurement that follows):
 // - The control route sets ai_agents.status (pause, resume) or .enabled (enable, disable) on one row
 //   (backend/src/services/aiOpsService.ts:291-313, routes/admin/aiOpsRoutes.ts:72).
 // - A timer only stops if the wrapper it runs through reads that row, and the wrappers differ:
@@ -17,8 +18,14 @@
 //   runs runAgent('AdmissionsAssistantAgent'), aiOrchestrator.ts:539-541), and one timer can be gated by
 //   two rows (Dara's outer row and a director's inner row, aiOpsScheduler.ts:367 with
 //   workforce/directorActions.ts:71). So the inventory lists, per timer, every row that can stop it.
-// - A run that finishes writes status back to idle or error (aiOrchestrator.ts:234,
-//   cronInstrumentation.ts:75), so a pause set during a run is undone when the run ends.
+//
+// Re-measured against platform main c699e58 (PR 3430, "make pause actually contain an agent"): runAgent,
+// CampaignHealthScanner, instrumentCronJob and trackAgentRun now share one predicate that honours both flags
+// and logs 'cron_job_skipped_disabled' (agents/agentControlGate.ts:12-17, :22-40; callers
+// aiOrchestrator.ts:114, :192, cronInstrumentation.ts:47, agentRunTracker.ts:38). The closing status write
+// is conditional on the row still being 'running' (agentControlGate.ts completeRunPreservingControls), so a
+// pause set mid-run survives, except on runAgent's failure path, which still writes status 'error'
+// unconditionally (aiOrchestrator.ts:303-309): a pause set during a run that then throws is erased.
 
 import type { Citation } from './orchestrationHealthWatch.ts';
 
@@ -27,15 +34,16 @@ export type Gate = 'run_agent' | 'instrument_cron_job' | 'track_agent_run' | 'di
 // What each wrapper does with the row's flags. null means it cannot be said from the records.
 // noRow is what the wrapper does when the row it reads does not exist (aiOrchestrator.ts:177-181,
 // cronInstrumentation.ts:34-38, agentRunTracker.ts:29-31, workforceAgentRuntime.ts:68, aiOrchestrator.ts:108).
-// closingWrite is whether the wrapper writes the row's status back at the end of a run, which erases a pause
-// set mid-run (aiOrchestrator.ts:234, cronInstrumentation.ts:75, aiOrchestrator.ts:124-125); trackAgentRun and
-// the director gate never write status.
-export const GATES: Record<Gate, { disable: boolean | null; pause: boolean | null; closingWrite: boolean | null; skip: string; noRow: string }> = {
-  run_agent: { disable: true, pause: true, closingWrite: true, skip: 'a plain console line', noRow: 'returns without running, so this timer does nothing today' },
-  instrument_cron_job: { disable: true, pause: true, closingWrite: true, skip: "a structured 'cron_job_skipped_disabled' line", noRow: 'runs it anyway, untracked' },
-  track_agent_run: { disable: true, pause: false, closingWrite: false, skip: 'a plain console line', noRow: 'runs it anyway, untracked' },
+// closingWrite is whether the wrapper writes the row's status back unconditionally at the end of a run, which
+// erases a pause set mid-run: false where the write is conditional on the row still being 'running' or never
+// made, 'on_failure' where only the failure path is unconditional (aiOrchestrator.ts:303-309).
+const SKIP = "a structured 'cron_job_skipped_disabled' line";
+export const GATES: Record<Gate, { disable: boolean | null; pause: boolean | null; closingWrite: boolean | 'on_failure' | null; skip: string; noRow: string }> = {
+  run_agent: { disable: true, pause: true, closingWrite: 'on_failure', skip: SKIP, noRow: 'returns without running, so this timer does nothing today' },
+  instrument_cron_job: { disable: true, pause: true, closingWrite: false, skip: SKIP, noRow: 'runs it anyway, untracked' },
+  track_agent_run: { disable: true, pause: true, closingWrite: false, skip: SKIP, noRow: 'runs it anyway, untracked' },
   director_gate: { disable: true, pause: true, closingWrite: false, skip: 'a returned reason, with no log line', noRow: 'blocks every write as not registered' },
-  own_check: { disable: true, pause: false, closingWrite: true, skip: 'a plain console line', noRow: 'runs it anyway, untracked' },
+  own_check: { disable: true, pause: true, closingWrite: false, skip: SKIP, noRow: 'runs it anyway, untracked' },
   none: { disable: false, pause: false, closingWrite: false, skip: 'nothing: the row is never read', noRow: 'never reads a row' },
   unknown: { disable: null, pause: null, closingWrite: null, skip: 'unknown', noRow: 'cannot be said' },
 };
@@ -88,6 +96,7 @@ export function recommendDisable(snap: ControlSnapshot, req: ControlRequest): Re
   const notes: string[] = [];
   const would_stop: TimerEffect[] = [];
   const would_not_stop: TimerEffect[] = [];
+  const erasing = new Set<(typeof GATES)[Gate]['closingWrite']>();
   const view = (t: TimerRow, effect: string): TimerEffect => ({ timer: t.timer, schedule: t.schedule, label: t.label, ref: t.ref, effect });
 
   for (const t of timers) {
@@ -105,8 +114,10 @@ export function recommendDisable(snap: ControlSnapshot, req: ControlRequest): Re
     else if (i === 0) would_stop.push(view(t, `the run stops; the skip shows as ${g.skip}`));
     else would_stop.push(view(t, `the timer still fires and an earlier row counts the run, but its writes are blocked; the skip shows as ${g.skip}`));
     if (row && g.disable && !g.pause) notes.push(`pause would not stop ${t.timer}: its wrapper only reads enabled, so disable, do not pause`);
+    if (row && g.disable && g.pause && i === 0) erasing.add(g.closingWrite);
   }
-  if (row && would_stop.length > 0) notes.push('a pause set while a run is in progress is undone when that run finishes, so a pause cannot be relied on to contain a misbehaving agent');
+  if (erasing.has(true)) notes.push('a pause set while a run is in progress is undone when that run finishes, so a pause cannot be relied on to contain a misbehaving agent');
+  else if (erasing.has('on_failure')) notes.push('a pause set while a run is in progress is erased if that run fails (aiOrchestrator.ts:303-309), so disable, not pause, is the reliable switch for a misbehaving agent');
 
   const governance = snap.cron_schedule_configs
     .filter((g) => would_stop.some((w) => w.timer === g.agent_name) || g.agent_name === name)
@@ -144,8 +155,8 @@ export function recommendAll(snap: ControlSnapshot): Recommendation[] {
 // erases), does not stop it, or cannot be said. Pause writes only status and leaves enabled true
 // (aiOpsService.ts:296-297), so a wrapper that reads only enabled never sees it.
 
-export type ControlEffect = 'stops' | 'stops_writes_only' | 'holds_only_between_runs' | 'does_not_stop' | 'unknown';
-export type ContainmentAnswer = 'yes' | 'only_between_runs' | 'partly' | 'no' | 'unknown' | 'no_timers';
+export type ControlEffect = 'stops' | 'stops_writes_only' | 'holds_only_between_runs' | 'holds_unless_the_run_fails' | 'does_not_stop' | 'unknown';
+export type ContainmentAnswer = 'yes' | 'only_between_runs' | 'unless_a_run_fails' | 'partly' | 'no' | 'unknown' | 'no_timers';
 
 export interface TimerControl { timer: string; schedule: string; label: string; ref: string; disable: ControlEffect; pause: ControlEffect; why: string }
 
@@ -167,7 +178,7 @@ function effectFor(g: (typeof GATES)[Gate], control: 'disable' | 'pause', inner:
   if (reads === null) return 'unknown';
   if (!reads) return 'does_not_stop';
   if (inner) return 'stops_writes_only';
-  if (control === 'pause') return g.closingWrite === null ? 'unknown' : g.closingWrite ? 'holds_only_between_runs' : 'stops';
+  if (control === 'pause') return g.closingWrite === null ? 'unknown' : g.closingWrite === 'on_failure' ? 'holds_unless_the_run_fails' : g.closingWrite ? 'holds_only_between_runs' : 'stops';
   return 'stops';
 }
 
@@ -177,12 +188,13 @@ function summarise(effects: ControlEffect[]): ContainmentAnswer {
   const off = effects.filter((e) => e === 'does_not_stop').length;
   if (off === effects.length) return 'no';
   if (off > 0) return 'partly';
-  return effects.includes('holds_only_between_runs') ? 'only_between_runs' : 'yes';
+  return effects.includes('holds_only_between_runs') ? 'only_between_runs' : effects.includes('holds_unless_the_run_fails') ? 'unless_a_run_fails' : 'yes';
 }
 
 const ANSWER_TEXT: Record<ContainmentAnswer, string> = {
   yes: 'stops every timer that reads this row',
   only_between_runs: 'holds only between runs: a pause set during a run is undone when that run ends',
+  unless_a_run_fails: 'holds, except that a pause set during a run is erased if that run fails, because the failure path writes status back unconditionally (aiOrchestrator.ts:303-309)',
   partly: 'stops some of its timers and not others',
   no: 'stops none of its timers',
   unknown: 'cannot be said for every timer',
@@ -206,6 +218,7 @@ export function containment(snap: ControlSnapshot, agentName: string): Containme
     const why = pause === 'does_not_stop' && disable !== 'does_not_stop'
       ? 'its wrapper reads only enabled, and pause leaves enabled true'
       : pause === 'holds_only_between_runs' ? 'its wrapper writes the status back at the end of every run'
+      : pause === 'holds_unless_the_run_fails' ? 'its wrapper writes status error back unconditionally when a run fails'
       : i > 0 ? 'an inner gate: the timer still fires and an earlier row counts the run, but the writes are blocked'
       : disable === 'unknown' ? 'how its wrapper treats the row is not known'
       : disable === 'does_not_stop' ? 'its wrapper never reads the row' : 'its wrapper checks both flags before running';
@@ -221,7 +234,7 @@ export function containment(snap: ControlSnapshot, agentName: string): Containme
 
   const use = disableAnswer === 'yes' && pauseAnswer !== 'yes' ? ' Use disable, not pause.' : '';
   const statement = !row
-    ? `No control contains ${agentName}: there is no ai_agents row for disable or pause to act on.${governance.length ? ' Only the governance schedule row can stop its timer.' : ''}`
+    ? `No control contains ${agentName}: there is no ai_agents row for disable or pause to act on.${governance.length ? ' Only the governance schedule row can stop its timer.' : ' No other registry control reaches it either, so this is a gap in the fleet\'s registration, not in the controls.'}`
     : `For ${agentName}, disable ${ANSWER_TEXT[disableAnswer]}; pause ${ANSWER_TEXT[pauseAnswer]}.${pause_inert.length ? ` Pause does nothing for: ${pause_inert.join('; ')}.` : ''}${use}`;
   return {
     agent_name: agentName, decided_by: 'a named human', row_exists: row,
@@ -240,12 +253,18 @@ export function pauseGaps(snap: ControlSnapshot): Array<{ agent_name: string; pa
     .map((c) => ({ agent_name: c.agent_name, pause: c.pause, pause_inert: c.pause_inert }));
 }
 
-// Timers whose row does not exist: the wrapper runs them anyway or skips them for good, and no disable or
-// pause can reach them. Only a switch outside ai_agents (a governance row, the kill switch) could.
-export function timersWithNoRow(snap: ControlSnapshot): Array<{ timer: string; schedule: string; ref: string; effect: string }> {
+// Timers whose row does not exist: the wrapper runs them anyway, untracked, or skips them for good (a dead
+// timer), and no disable or pause can reach them. No other registry control does either: only a switch outside
+// ai_agents (a governance row, a kill-switch check inside the job) or a code change could. That is a gap in the
+// fleet's registration, not in the controls.
+export function timersWithNoRow(snap: ControlSnapshot): Array<{ timer: string; schedule: string; ref: string; effect: string; runs: 'untracked' | 'never' | 'cannot_be_said' }> {
   const names = new Set(snap.ai_agents.map((a) => a.agent_name));
   return [...snap.timers]
     .filter((t) => t.gates.length > 0 && t.gates[0].flag !== null && !names.has(t.gates[0].flag))
     .sort((a, b) => (a.timer < b.timer ? -1 : a.timer > b.timer ? 1 : a.ref < b.ref ? -1 : 1))
-    .map((t) => ({ timer: t.timer, schedule: t.schedule, ref: t.ref, effect: `no ${t.gates[0].flag} row; finding none, the wrapper ${GATES[t.gates[0].gate].noRow}` }));
+    .map((t) => {
+      const gate = t.gates[0].gate;
+      const runs = gate === 'run_agent' || gate === 'director_gate' ? 'never' as const : gate === 'unknown' ? 'cannot_be_said' as const : 'untracked' as const;
+      return { timer: t.timer, schedule: t.schedule, ref: t.ref, effect: `no ${t.gates[0].flag} row; finding none, the wrapper ${GATES[gate].noRow}; no disable, pause or other registry control reaches it`, runs };
+    });
 }

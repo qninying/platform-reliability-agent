@@ -81,7 +81,7 @@ test('rows come from every seed list and the governance agents, with enabled as 
   assert.equal(rows[3].id, 'governance:visitor_tracker');
 });
 
-test('timers whose row does not exist are listed as beyond disable and pause; the rest are pause gaps', () => {
+test('timers whose row does not exist are listed as beyond disable and pause; a registered instrumentCronJob timer is no pause gap since PR 3430', () => {
   const { timers } = extractCronSites(SCHEDULER, 'services/schedulerService.ts', IMPORTED);
   const snap: ControlSnapshot = {
     captured_at: '2026-10-27T12:00:00Z', captured_by: 'test', timers,
@@ -91,6 +91,7 @@ test('timers whose row does not exist are listed as beyond disable and pause; th
   const none = timersWithNoRow(snap);
   assert.deepEqual(none.map((n) => n.timer), ['GrowthJourneyHandoffDigest', 'LocalNamed', 'ScheduledActionsProcessor']);
   assert.match(none[0].effect, /no GrowthJourneyHandoffDigest row; finding none, the wrapper runs it anyway, untracked/);
-  assert.deepEqual(pauseGaps(snap).map((g) => [g.agent_name, g.pause]), [['ChatMessageCleanup', 'only_between_runs']]);
+  assert.deepEqual(none.map((n) => n.runs), ['untracked', 'untracked', 'untracked']);
+  assert.deepEqual(pauseGaps(snap), []);
   assert.deepEqual(timersWithNoRow({ ...snap, timers: [...timers].reverse() }), none);
 });

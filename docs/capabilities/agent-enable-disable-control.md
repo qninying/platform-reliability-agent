@@ -60,12 +60,17 @@ than guessing from names.
      `:195-196`). One difference: the baseline says they run. WeeklyReport goes straight to `runAgent`
      (`aiOpsScheduler.ts:266`, `aiOrchestrator.ts:661-662`), which returns without running when the row is
      missing. So unless production has a row the seed does not create, it does not run.
+   - **Confirmed by A.M. (2026-10-27):** the Sunday report has not reached him in 45 days of mail. The
+     timer fires into nothing. A related PR the same week (3369, "a weekly report that is allowed to be
+     short") adds a separate commercialization report and does not touch this one.
 2. **Pause is ignored by five timers.** `trackAgentRun` reads only `enabled` (`agentRunTracker.ts:33`),
    which covers AutonomousEngine, AICOOStrategicCycle, MetaAgentLoop and CoryEvolutionCycle, and so does
    CampaignHealthScanner's own check (`aiOrchestrator.ts:109`). Pausing them does nothing.
    Pause writes only `status` and leaves `enabled` true (`backend/src/services/aiOpsService.ts:296-297`), so
    pause, the control an operator reaches for first, is the one these five cannot see. They include
    AutonomousEngine and MetaAgentLoop, the self-modification loop. Live risk, and the first to fix.
+   **Fixed upstream** in PR 3430 (merged at `c699e58`): all four run wrappers now share one predicate that
+   honours both flags (`backend/src/services/agents/agentControlGate.ts`).
 3. **A pause clicked during a run is undone when the run ends.** A pause set while the agent is idle
    holds, because both wrappers check for it before running. But every wrapper writes the status back to
    `idle` or `error` at the end of a run (`aiOrchestrator.ts:234`, `cronInstrumentation.ts:75`). For a job
@@ -74,6 +79,11 @@ than guessing from names.
    at the start (`aiOrchestrator.ts:236`), so a concurrent increment is lost. Live risk; it has to follow
    finding 2, because a pause checked at the start of a run is worthless if the last run's closing write
    erased it. Ellis recommends disable.
+   **Fixed upstream in PR 3430, except one path.** The closing write is now conditional on the row still
+   being `running` in `instrumentCronJob`, the CampaignHealthScanner path and runAgent's success path.
+   runAgent's failure path still writes `status: 'error'` unconditionally (`aiOrchestrator.ts:303-309` at
+   `c699e58`), so a pause set during a run that then throws is still erased; the new test pins the success
+   path only (`agentControlGate.test.ts:109`). Reported to A.M.
 4. **Dara's directors have two switches, and the scheduler comment is false.** The comment says the
    directors gate on Dara's own row (`backend/src/services/aiOpsScheduler.ts:118-128`). The code gates
    them on `WorkforceCurriculumDirector` and `WorkforceCertificationDirector`
@@ -91,7 +101,8 @@ than guessing from names.
    - The platform already has the right pattern: a lenient and a strict kill-switch reader over one key
      (`backend/src/services/launchSafety.ts:124`, `:144`). Only jobs with an irreversible external effect
      (outreach, messaging, publishing, posting) need the strict reading.
-6. **Most skips are not the structured event the brief describes.** Only `instrumentCronJob` logs
+6. **Most skips were not the structured event the brief describes** (all four run wrappers log it since PR
+   3430; the director gate still returns a reason with no log). Only `instrumentCronJob` logs
    `cron_job_skipped_disabled`. `runAgent` and `trackAgentRun` log a plain console line, and the director
    gate returns a reason with no log.
 7. **The audit row does not say what changed.** A control call is recorded as action `create` on entity
@@ -108,17 +119,26 @@ pause, does this agent actually stop?"**, timer by timer:
 |---|---|
 | stops | the run does not start |
 | stops writes only | an inner gate: the timer fires and an earlier row counts the run, but nothing is written |
-| holds only between runs | a pause set during a run is undone when that run ends, because the wrapper writes the status back (`aiOrchestrator.ts:234`, `cronInstrumentation.ts:75`) |
-| does not stop | the wrapper reads only `enabled`, and pause leaves `enabled` true (`aiOpsService.ts:296-297`) |
+| holds unless the run fails | a pause set during a run is kept if the run succeeds and erased if it fails, because the failure path writes the status back unconditionally (runAgent, `aiOrchestrator.ts:303-309`) |
+| holds only between runs | a pause set during a run is undone when that run ends, because the wrapper writes the status back unconditionally (no wrapper since PR 3430) |
+| does not stop | the wrapper never reads the row, or reads only `enabled` while pause leaves `enabled` true (`aiOpsService.ts:296-297`; no run wrapper since PR 3430) |
 | unknown | how the wrapper treats the row is not known |
 
-It sums these up for disable and for pause (yes, only between runs, partly, no, unknown), names the timers
+It sums these up for disable and for pause (yes, unless a run fails, only between runs, partly, no, unknown), names the timers
 where pause is inert, and says "use disable, not pause" when that is the honest advice. A name with no row
-gets "no control contains it". The governance schedule row is listed as a separate switch.
+gets "no control contains it", and, when no governance row applies, that no other registry control reaches
+it either: a gap in the fleet's registration, not in the controls. The governance schedule row is listed
+as a separate switch.
 
 It also lists every registered agent that pause does not fully contain, so an operator knows before
-reaching for it. In the example that is AutonomousEngine and CampaignHealthScanner (pause does nothing),
-and Dara and AdmissionsAssistantAgent (pause holds only between runs).
+reaching for it.
+
+**Re-measured against `c699e58` after PR 3430** (A.M. asked for a measurement, not his word for it):
+- AutonomousEngine, AICOOStrategicCycle, MetaAgentLoop, CoryEvolutionCycle and CampaignHealthScanner moved
+  from "pause does not stop" to "stops".
+- Every `instrumentCronJob` timer, Dara's included, moved from "holds only between runs" to "stops".
+- Every runAgent agent, such as AdmissionsAssistantAgent, moved to "holds unless the run fails", and the
+  advice stays "use disable, not pause".
 
 ## The timers outside aiOpsScheduler.ts
 
@@ -130,10 +150,11 @@ inside it, resolves names and schedules held in constants (including imported on
 at run time, such as the per-source intel timers (`schedulerService.ts:2143`), is reported as unresolved,
 never guessed.
 
-At `7c70f0a` it finds all 69 timers:
-- **36 have a row**, so disable stops them and pause holds only between runs.
-- **33 have no row in code, so no disable or pause can reach them.** The wrapper runs them anyway,
-  untracked. They include the billing jobs (PaySimplePaymentSync, RenewalReminders, AutopayDisclosure),
+At `c699e58` it finds all 69 timers, the same as at `7c70f0a`:
+- **36 have a row**, so disable and pause both stop them (pause held only between runs before PR 3430).
+- **33 have no row in code, so no disable or pause can reach them, and no other registry control does
+  either.** They are not dead: the wrapper runs them anyway, untracked. That is a gap in the fleet's
+  registration, not in the controls. They include the billing jobs (PaySimplePaymentSync, RenewalReminders, AutopayDisclosure),
   outreach (AliPersonalOutreach, HotLeadEscalation, ColdOutboundPhaseGraduation) and the two monitors that
   would report a silent failure (SystemHealthMonitor, ReliabilityAlerting). **Already known:** this is
   exactly the platform's own list (`cronRegistryBaseline.ts:114-130`), name for name, which is also a check
@@ -152,14 +173,14 @@ npm run timer-inventory -- --source <platform checkout> --commit <sha>
 npm run disable-recommendation -- --snapshot examples/timer-inventory.example.json --pause-gaps
 ```
 
-`examples/timer-inventory.example.json` is the inventory built from the platform at `7c70f0a`: code, not
+`examples/timer-inventory.example.json` is the inventory built from the platform at `c699e58`: code, not
 production data.
 
 The example is not production data. It uses the real wiring for:
 - Dara's three timers;
 - a timer gated by a differently named row (AdmissionsAssistant);
 - a name with no row (WeeklyReport);
-- a wrapper that ignores pause (AutonomousEngine).
+- a wrapper that ignored pause until PR 3430 (AutonomousEngine).
 
 Exit codes:
 - 0: every request yields a disable recommendation
@@ -176,7 +197,7 @@ exits 0 when every call site resolved, 3 when any did not, 1 for bad input.
   - "acceptance: a recommendation for a shared agent_name lists all timers that share it"
   - "acceptance: a recommendation for an unregistered name states that no disable flag exists rather than proposing one"
 
-  There are 17 tests in this file, 6 in `test/cronSites.test.ts`, and 183 in the repo, all passing under `npm test`.
+  There are 20 tests in this file, 6 in `test/cronSites.test.ts`, and 234 in the repo, all passing under `npm test`.
 - **The tests catch defects.** Each check was done by editing the code, running the tests and restoring
   the code:
   - listing only the first timer of a shared name fails 1;
@@ -204,6 +225,16 @@ exits 0 when every call site resolved, 3 when any did not, 1 for bad input.
   - listing fully contained agents as pause gaps fails 1;
   - dropping the "use disable, not pause" advice fails 1;
   - changing the no-row statement fails 1.
+
+  For the re-measurement against `c699e58`:
+  - treating runAgent's failure path as conditional fails 3;
+  - letting trackAgentRun ignore pause again fails 4;
+  - letting CampaignHealthScanner ignore pause again fails 3;
+  - letting instrumentCronJob erase a mid-run pause again fails 4;
+  - dropping the failure-path note fails 1;
+  - dropping "no other registry control reaches it" fails 1;
+  - reading a dead timer as running fails 1;
+  - summing "unless a run fails" up as "yes" fails 2.
 
   For the timer inventory:
   - reading a commented-out call as a timer fails 2;

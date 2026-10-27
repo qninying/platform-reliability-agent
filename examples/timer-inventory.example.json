@@ -1,6 +1,6 @@
 {
-  "captured_at": "2026-10-27T15:00:00Z",
-  "captured_by": "built from platform source at 7c70f0a: cron-wrapped timers outside aiOpsScheduler.ts, and the ai_agents rows created in code (seed and governance agents, enabled as seeded). Production may hold rows the code does not create.",
+  "captured_at": "2026-10-27T19:01:16.858Z",
+  "captured_by": "built from platform source at c699e58: cron-wrapped timers outside aiOpsScheduler.ts, and the ai_agents rows created in code (seed and governance agents, enabled as seeded). Production may hold rows the code does not create.",
   "timers": [
     {
       "timer": "ReesePresenceHeartbeat",
