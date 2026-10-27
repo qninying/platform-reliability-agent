@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 16,
+    "stories_verified": 17,
     "stories_submitted": 0,
-    "stories_in_progress": 38,
+    "stories_in_progress": 37,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 28,
-    "points_awarded": 240
+    "criteria_passed": 29,
+    "points_awarded": 255
   },
   "stories": [
     {
@@ -713,17 +713,15 @@
       "notes": "Read-only report over the initiatives the three platform architects write, their strategic tickets and those tickets' status-change activity (platform commit 3ffea7c). Each proposal is open, accepted, deferred or rejected; only a recorded outcome moves it off open: a person's ticket move (attributed) or a non-planned initiative status (unattributed). An agent's ticket move, a ticket status with no activity behind it, an unknown status, or outcomes that disagree all read as open. Tests 'acceptance: a proposal with no recorded outcome reads as open, not as accepted' and 'acceptance: every proposal's state is one of open, accepted, deferred or rejected, whatever the records hold' pass; reading planned as accepted fails 6 tests, reading no outcome as accepted fails 4. 13 tests. Not yet run on a live export.",
       "updated_at": "2026-10-26",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "Each proposal's current state is one of open, accepted, deferred or rejected; a proposal with no recorded outcome reads as open, not as accepted."
-        ]
+        "verified_at": "2026-10-27T00:28:09.787Z",
+        "commit_sha": "20f265e25c78d06e0d0296c200177b55c2d9ed04",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/20f265e25c78d06e0d0296c200177b55c2d9ed04",
+        "commit_at": "2026-10-27T00:27:58Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
