@@ -1,0 +1,129 @@
+{
+  "captured_at": "2026-10-27T12:00:00Z",
+  "captured_by": "example, not production data: prompt versions are real ones from the platform's instrumented call sites at 8c16250; the runs are illustrative",
+  "window_days": 7,
+  "prompts": [
+    {
+      "prompt": "maya-chat-v1",
+      "source": "backend/src/services/chatService.ts:32"
+    },
+    {
+      "prompt": "strategy-brief-v1",
+      "source": "backend/src/services/adminOs/strategyBriefService.ts:210"
+    },
+    {
+      "prompt": "landing-page-draft-v6",
+      "source": "backend/src/services/marketing/landingPageDraftService.ts:335"
+    },
+    {
+      "prompt": "landing-page-name-v1",
+      "source": "backend/src/services/marketing/landingPageNameService.ts:82"
+    },
+    {
+      "prompt": "composer-draft-v1",
+      "source": "backend/src/services/content/composerDraftService.ts:183"
+    }
+  ],
+  "llm_calls": [
+    {
+      "id": "ex-maya-1",
+      "created_at": "2026-10-26T15:00:00Z",
+      "outcome": "success",
+      "model": "gpt-4o-mini",
+      "prompt_version": "maya-chat-v1",
+      "cost_usd": 0.0011,
+      "duration_ms": 820
+    },
+    {
+      "id": "ex-maya-2",
+      "created_at": "2026-10-26T15:00:00Z",
+      "outcome": "success",
+      "model": "gpt-4o-mini",
+      "prompt_version": "maya-chat-v1",
+      "cost_usd": 0.0009,
+      "duration_ms": 760
+    },
+    {
+      "id": "ex-maya-3",
+      "created_at": "2026-10-26T15:00:00Z",
+      "outcome": "success",
+      "model": "gpt-4o-mini",
+      "prompt_version": "maya-chat-v1",
+      "cost_usd": 0.0013,
+      "duration_ms": 1140
+    },
+    {
+      "id": "ex-maya-4",
+      "created_at": "2026-10-26T15:00:00Z",
+      "outcome": "success",
+      "model": "gpt-4o-mini",
+      "prompt_version": "maya-chat-v1",
+      "cost_usd": 0.001,
+      "duration_ms": 900
+    },
+    {
+      "id": "ex-maya-5",
+      "created_at": "2026-10-26T15:00:00Z",
+      "outcome": "success",
+      "model": "gpt-4o-mini",
+      "prompt_version": "maya-chat-v1",
+      "cost_usd": null,
+      "duration_ms": 640
+    },
+    {
+      "id": "ex-lp-1",
+      "created_at": "2026-10-26T15:00:00Z",
+      "outcome": "success",
+      "model": "gpt-4o",
+      "prompt_version": "landing-page-draft-v6",
+      "cost_usd": 0.041,
+      "duration_ms": 14200
+    },
+    {
+      "id": "ex-lp-2",
+      "created_at": "2026-10-26T15:00:00Z",
+      "outcome": "success",
+      "model": "gpt-4o",
+      "prompt_version": "landing-page-draft-v6",
+      "cost_usd": 0.038,
+      "duration_ms": 12900
+    },
+    {
+      "id": "ex-brief-1",
+      "created_at": "2026-10-26T15:00:00Z",
+      "outcome": "success",
+      "model": "gpt-4o-mini",
+      "prompt_version": "strategy-brief-v1",
+      "cost_usd": 0.006,
+      "duration_ms": 5200
+    },
+    {
+      "id": "ex-brief-2",
+      "created_at": "2026-10-26T15:00:00Z",
+      "outcome": "failure",
+      "model": "gpt-4o-mini",
+      "prompt_version": "strategy-brief-v1",
+      "cost_usd": null,
+      "duration_ms": 30000
+    },
+    {
+      "id": "ex-untagged-1",
+      "created_at": "2026-10-26T15:00:00Z",
+      "outcome": "success",
+      "model": "gpt-4o-mini",
+      "prompt_version": null,
+      "cost_usd": 0.004,
+      "duration_ms": 2100
+    },
+    {
+      "id": "ex-untagged-2",
+      "created_at": "2026-10-26T15:00:00Z",
+      "outcome": "success",
+      "model": "gpt-4o-mini",
+      "prompt_version": null,
+      "cost_usd": 0.002,
+      "duration_ms": 1500
+    }
+  ],
+  "proposals": null
+}

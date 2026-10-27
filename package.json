@@ -23,7 +23,8 @@
     "resilience-posture": "node src/cli/resiliencePosture.ts",
     "disable-recommendation": "node src/cli/disableRecommendation.ts",
     "technology-direction": "node src/cli/technologyDirection.ts",
-    "timer-inventory": "node src/cli/timerInventory.ts"
+    "timer-inventory": "node src/cli/timerInventory.ts",
+    "prompt-performance": "node src/cli/promptPerformance.ts"
   },
   "devDependencies": {
     "@types/node": "22.15.3",

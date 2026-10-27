@@ -994,13 +994,23 @@
       "criteria": [
         {
           "text": "Every cost or latency figure traces to recorded runs; a prompt with no recorded runs reports unknown rather than zero.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/promptPerformance.ts",
+        "src/cli/promptPerformance.ts",
+        "src/capabilities/orchestrationHealthWatch.ts",
+        "test/promptPerformance.test.ts",
+        "examples/prompt-performance.example.json",
+        "docs/capabilities/prompt-and-performance-optimization.md",
+        "package.json"
+      ],
+      "tests_added": [
+        "test/promptPerformance.test.ts"
+      ],
+      "notes": "Read-only (platform commit 8c16250): per prompt version (ai_events llm.call rows, metadata.prompt_version), total and per-run cost, p50/p95 latency and failures, each figure carrying the ids of the runs it was computed from. A known prompt with no recorded runs in the window has null cost and latency, state 'unknown', and is listed as not ranked, never zero. Runs with no cost (streamed or failed) make the figure 'partial' (a floor); all-uncosted is 'unknown'. Duplicates, unreadable or out-of-window times are excluded and counted; negative cost is not a measurement; a recorded 0 is. Untagged calls are counted with their cost. With no proposal record, open proposals are unknown; an open proposal without a before-measurement is flagged. Test 'acceptance: every cost or latency figure traces to recorded runs; a prompt with no recorded runs reports unknown rather than zero' passes; 11 tests in the file, 194 in the repo (npm test). 17 mutations each fail at least one test. CLI: npm run prompt-performance -- --snapshot examples/prompt-performance.example.json exits 3 (partial and unknown figures present).",
+      "updated_at": "2026-10-27T17:00:00Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
