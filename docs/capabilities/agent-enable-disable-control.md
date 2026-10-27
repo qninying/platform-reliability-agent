@@ -40,8 +40,8 @@ timers registered in `backend/src/services/aiOpsScheduler.ts`:
 
 **This table covers `aiOpsScheduler.ts` only.** The cron wrapper also runs 66 timers in
 `backend/src/services/schedulerService.ts` and 3 in `backend/src/services/scheduling/growthJourneyCrons.ts`
-(`:48`, `:69`, `:90`), so about 85 timers in all go through `instrumentCronJob`. Ellis's inventory does not
-yet include those 69.
+(`:48`, `:69`, `:90`), so about 85 timers in all go through `instrumentCronJob`. Those 69 are covered by the
+timer inventory below.
 
 Ellis takes this wiring as an inventory (each timer, its schedule and every row that can stop it) rather
 than guessing from names.
@@ -118,8 +118,29 @@ gets "no control contains it". The governance schedule row is listed as a separa
 
 It also lists every registered agent that pause does not fully contain, so an operator knows before
 reaching for it. In the example that is AutonomousEngine and CampaignHealthScanner (pause does nothing),
-and Dara and AdmissionsAssistantAgent (pause holds only between runs). Like the table above, this covers
-the timers in `aiOpsScheduler.ts` only.
+and Dara and AdmissionsAssistantAgent (pause holds only between runs).
+
+## The timers outside aiOpsScheduler.ts
+
+`npm run timer-inventory` builds the same kind of snapshot from a read-only checkout of the platform
+source (`src/inventory/cronSites.ts`). It pairs each `cron.schedule(...)` with the `instrumentCronJob(...)`
+inside it, resolves names and schedules held in constants (including imported ones), and reads the
+`ai_agents` rows created in code: the registry seed with the two lists it spreads in
+(`agentRegistrySeed.ts:2846`, `:2876`) and the governance agents (`governanceService.ts:5-11`). A name built
+at run time, such as the per-source intel timers (`schedulerService.ts:2143`), is reported as unresolved,
+never guessed.
+
+At `7c70f0a` it finds all 69 timers:
+- **36 have a row**, so disable stops them and pause holds only between runs.
+- **33 have no row in code, so no disable or pause can reach them.** The wrapper runs them anyway,
+  untracked. They include the billing jobs (PaySimplePaymentSync, RenewalReminders, AutopayDisclosure),
+  outreach (AliPersonalOutreach, HotLeadEscalation, ColdOutboundPhaseGraduation) and the two monitors that
+  would report a silent failure (SystemHealthMonitor, ReliabilityAlerting). **Already known:** this is
+  exactly the platform's own list (`cronRegistryBaseline.ts:114-130`), name for name, which is also a check
+  on the extractor. What Ellis adds is the operator's view: for these, disable and pause do nothing. A switch
+  outside `ai_agents`, such as the outbound kill switch, may still stop a send; Ellis does not assess that yet.
+
+Production may hold rows the code does not create, so a missing row here means "no row in code".
 
 ## How to run it
 
@@ -127,7 +148,12 @@ the timers in `aiOpsScheduler.ts` only.
 npm run disable-recommendation -- --snapshot examples/disable-recommendation.example.json
 npm run disable-recommendation -- --snapshot examples/disable-recommendation.example.json --agent AutonomousEngine
 npm run disable-recommendation -- --snapshot examples/disable-recommendation.example.json --pause-gaps
+npm run timer-inventory -- --source <platform checkout> --commit <sha>
+npm run disable-recommendation -- --snapshot examples/timer-inventory.example.json --pause-gaps
 ```
+
+`examples/timer-inventory.example.json` is the inventory built from the platform at `7c70f0a`: code, not
+production data.
 
 The example is not production data. It uses the real wiring for:
 - Dara's three timers;
@@ -141,7 +167,8 @@ Exit codes:
 - 1: bad input
 
 With `--agent`: 0 when pause contains the agent as fully as disable, 3 otherwise. With `--pause-gaps`: 0
-when every agent is fully contained by pause, 3 when any is not.
+when every agent is fully contained by pause and every timer has a row, 3 otherwise. `timer-inventory`
+exits 0 when every call site resolved, 3 when any did not, 1 for bad input.
 
 ## Evidence
 
@@ -149,7 +176,7 @@ when every agent is fully contained by pause, 3 when any is not.
   - "acceptance: a recommendation for a shared agent_name lists all timers that share it"
   - "acceptance: a recommendation for an unregistered name states that no disable flag exists rather than proposing one"
 
-  There are 17 tests in this file and 177 in the repo, all passing under `npm test`.
+  There are 17 tests in this file, 6 in `test/cronSites.test.ts`, and 183 in the repo, all passing under `npm test`.
 - **The tests catch defects.** Each check was done by editing the code, running the tests and restoring
   the code:
   - listing only the first timer of a shared name fails 1;
@@ -177,6 +204,22 @@ when every agent is fully contained by pause, 3 when any is not.
   - listing fully contained agents as pause gaps fails 1;
   - dropping the "use disable, not pause" advice fails 1;
   - changing the no-row statement fails 1.
+
+  For the timer inventory:
+  - reading a commented-out call as a timer fails 2;
+  - missing a schedule on the next line fails 1;
+  - ignoring imported constants fails 3;
+  - not resolving a schedule constant fails 1;
+  - searching one line instead of fifteen fails 4;
+  - counting a nested `agent_name` as a row fails 1;
+  - ignoring a seeded `enabled: false` fails 1;
+  - dropping the governance rows fails 1;
+  - reading only the first seed list fails 1;
+  - accepting lowercase constants fails 1;
+  - inverting the no-row filter fails 1;
+  - leaving the no-row list unsorted fails 1.
+- **Checked against the platform's own list.** The 33 timers with no row match the platform's cron registry
+  baseline name for name (`diff` of the two sorted lists: identical).
 - **Not yet run on live records.** K.D. cannot reach the control route (`backend/src/routes/admin/aiOpsRoutes.ts:72`).
   The first live check is one export of `ai_agents` and `cron_schedule_configs`, checked against this
   inventory.

@@ -239,3 +239,13 @@ export function pauseGaps(snap: ControlSnapshot): Array<{ agent_name: string; pa
     .filter((c) => c.pause !== 'yes' && c.pause !== 'no_timers')
     .map((c) => ({ agent_name: c.agent_name, pause: c.pause, pause_inert: c.pause_inert }));
 }
+
+// Timers whose row does not exist: the wrapper runs them anyway or skips them for good, and no disable or
+// pause can reach them. Only a switch outside ai_agents (a governance row, the kill switch) could.
+export function timersWithNoRow(snap: ControlSnapshot): Array<{ timer: string; schedule: string; ref: string; effect: string }> {
+  const names = new Set(snap.ai_agents.map((a) => a.agent_name));
+  return [...snap.timers]
+    .filter((t) => t.gates.length > 0 && t.gates[0].flag !== null && !names.has(t.gates[0].flag))
+    .sort((a, b) => (a.timer < b.timer ? -1 : a.timer > b.timer ? 1 : a.ref < b.ref ? -1 : 1))
+    .map((t) => ({ timer: t.timer, schedule: t.schedule, ref: t.ref, effect: `no ${t.gates[0].flag} row; finding none, the wrapper ${GATES[t.gates[0].gate].noRow}` }));
+}

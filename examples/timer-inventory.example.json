@@ -1,0 +1,2398 @@
+{
+  "captured_at": "2026-10-27T15:00:00Z",
+  "captured_by": "built from platform source at 7c70f0a: cron-wrapped timers outside aiOpsScheduler.ts, and the ai_agents rows created in code (seed and governance agents, enabled as seeded). Production may hold rows the code does not create.",
+  "timers": [
+    {
+      "timer": "ReesePresenceHeartbeat",
+      "schedule": "*/1 * * * *",
+      "label": "ReesePresenceHeartbeat",
+      "ref": "backend/src/services/schedulerService.ts:1750",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ReesePresenceHeartbeat"
+        }
+      ]
+    },
+    {
+      "timer": "DaraPresenceHeartbeat",
+      "schedule": "*/1 * * * *",
+      "label": "DaraPresenceHeartbeat",
+      "ref": "backend/src/services/schedulerService.ts:1762",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "DaraPresenceHeartbeat"
+        }
+      ]
+    },
+    {
+      "timer": "ScheduledActionsProcessor",
+      "schedule": "*/5 * * * *",
+      "label": "ScheduledActionsProcessor",
+      "ref": "backend/src/services/schedulerService.ts:1772",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ScheduledActionsProcessor"
+        }
+      ]
+    },
+    {
+      "timer": "AgentReportSubscriptionDispatch",
+      "schedule": "*/15 * * * *",
+      "label": "AgentReportSubscriptionDispatch",
+      "ref": "backend/src/services/schedulerService.ts:1786",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "AgentReportSubscriptionDispatch"
+        }
+      ]
+    },
+    {
+      "timer": "ApprovalRequestTimeoutSweep",
+      "schedule": "*/15 * * * *",
+      "label": "ApprovalRequestTimeoutSweep",
+      "ref": "backend/src/services/schedulerService.ts:1800",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ApprovalRequestTimeoutSweep"
+        }
+      ]
+    },
+    {
+      "timer": "ExplorerGovernorDecide",
+      "schedule": "50 3 * * *",
+      "label": "ExplorerGovernorDecide",
+      "ref": "backend/src/services/schedulerService.ts:1837",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ExplorerGovernorDecide"
+        }
+      ]
+    },
+    {
+      "timer": "ExplorerContentSync",
+      "schedule": "50 2 * * *",
+      "label": "ExplorerContentSync",
+      "ref": "backend/src/services/schedulerService.ts:1861",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ExplorerContentSync"
+        }
+      ]
+    },
+    {
+      "timer": "ProgressionLadderSweep",
+      "schedule": "40 3 * * *",
+      "label": "ProgressionLadderSweep",
+      "ref": "backend/src/services/schedulerService.ts:1874",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ProgressionLadderSweep"
+        }
+      ]
+    },
+    {
+      "timer": "ExplorerProfileRecompute",
+      "schedule": "20 3 * * *",
+      "label": "ExplorerProfileRecompute",
+      "ref": "backend/src/services/schedulerService.ts:1886",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ExplorerProfileRecompute"
+        }
+      ]
+    },
+    {
+      "timer": "ReliabilityAlerting",
+      "schedule": "*/15 * * * *",
+      "label": "ReliabilityAlerting",
+      "ref": "backend/src/services/schedulerService.ts:1901",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ReliabilityAlerting"
+        }
+      ]
+    },
+    {
+      "timer": "ProofDeskOutcomeMeasurements",
+      "schedule": "0 4 * * *",
+      "label": "ProofDeskOutcomeMeasurements",
+      "ref": "backend/src/services/schedulerService.ts:1914",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ProofDeskOutcomeMeasurements"
+        }
+      ]
+    },
+    {
+      "timer": "GithubWriteAccessReconcile",
+      "schedule": "23 6 * * *",
+      "label": "GithubWriteAccessReconcile",
+      "ref": "backend/src/services/schedulerService.ts:1956",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "GithubWriteAccessReconcile"
+        }
+      ]
+    },
+    {
+      "timer": "GithubInvitationSweep",
+      "schedule": "7 * * * *",
+      "label": "GithubInvitationSweep",
+      "ref": "backend/src/services/schedulerService.ts:1968",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "GithubInvitationSweep"
+        }
+      ]
+    },
+    {
+      "timer": "ReeseAutonomousOutreachSweep",
+      "schedule": "0 15 * * *",
+      "label": "ReeseAutonomousOutreachSweep",
+      "ref": "backend/src/services/schedulerService.ts:1993",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ReeseAutonomousOutreachSweep"
+        }
+      ]
+    },
+    {
+      "timer": "ReeseOutreachFollowUps",
+      "schedule": "0 16 * * *",
+      "label": "ReeseOutreachFollowUps",
+      "ref": "backend/src/services/schedulerService.ts:2010",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ReeseOutreachFollowUps"
+        }
+      ]
+    },
+    {
+      "timer": "ReeseStudentSupportSupersessionResolver",
+      "schedule": "0 17 * * *",
+      "label": "ReeseStudentSupportSupersessionResolver",
+      "ref": "backend/src/services/schedulerService.ts:2029",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ReeseStudentSupportSupersessionResolver"
+        }
+      ]
+    },
+    {
+      "timer": "ReeseTicketFollowUpSweep",
+      "schedule": "0 18 * * *",
+      "label": "ReeseTicketFollowUpSweep",
+      "ref": "backend/src/services/schedulerService.ts:2049",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ReeseTicketFollowUpSweep"
+        }
+      ]
+    },
+    {
+      "timer": "PodcastRefresh",
+      "schedule": "0 3 * * 1",
+      "label": "PodcastRefresh",
+      "ref": "backend/src/services/schedulerService.ts:2066",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "PodcastRefresh"
+        }
+      ]
+    },
+    {
+      "timer": "BlogRefresh",
+      "schedule": "30 3 * * 1",
+      "label": "BlogRefresh",
+      "ref": "backend/src/services/schedulerService.ts:2082",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "BlogRefresh"
+        }
+      ]
+    },
+    {
+      "timer": "FeedReleaseTick",
+      "schedule": "*/15 * * * *",
+      "label": "FeedReleaseTick",
+      "ref": "backend/src/services/schedulerService.ts:2097",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "FeedReleaseTick"
+        }
+      ]
+    },
+    {
+      "timer": "AiNewsRefresh",
+      "schedule": "15 3 * * *",
+      "label": "AiNewsRefresh",
+      "ref": "backend/src/services/schedulerService.ts:2117",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "AiNewsRefresh"
+        }
+      ]
+    },
+    {
+      "timer": "LearnerMemoryDistill",
+      "schedule": "15 2 * * *",
+      "label": "LearnerMemoryDistill",
+      "ref": "backend/src/services/schedulerService.ts:2160",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "LearnerMemoryDistill"
+        }
+      ]
+    },
+    {
+      "timer": "PaySimplePaymentSync",
+      "schedule": "*/30 * * * *",
+      "label": "PaySimplePaymentSync",
+      "ref": "backend/src/services/schedulerService.ts:2175",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "PaySimplePaymentSync"
+        }
+      ]
+    },
+    {
+      "timer": "AppPaymentReconcile",
+      "schedule": "*/20 * * * *",
+      "label": "AppPaymentReconcile",
+      "ref": "backend/src/services/schedulerService.ts:2191",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "AppPaymentReconcile"
+        }
+      ]
+    },
+    {
+      "timer": "PaySimpleWebhookHealth",
+      "schedule": "*/15 * * * *",
+      "label": "PaySimpleWebhookHealth",
+      "ref": "backend/src/services/schedulerService.ts:2229",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "PaySimpleWebhookHealth"
+        }
+      ]
+    },
+    {
+      "timer": "RenewalReminders",
+      "schedule": "0 9 * * *",
+      "label": "RenewalReminders",
+      "ref": "backend/src/services/schedulerService.ts:2278",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "RenewalReminders"
+        }
+      ]
+    },
+    {
+      "timer": "AutopayDisclosure",
+      "schedule": "30 8 * * *",
+      "label": "AutopayDisclosure",
+      "ref": "backend/src/services/schedulerService.ts:2303",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "AutopayDisclosure"
+        }
+      ]
+    },
+    {
+      "timer": "BillingWatch",
+      "schedule": "0 8 * * *",
+      "label": "BillingWatch",
+      "ref": "backend/src/services/schedulerService.ts:2332",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "BillingWatch"
+        }
+      ]
+    },
+    {
+      "timer": "PreviewStackReaper",
+      "schedule": "*/5 * * * *",
+      "label": "PreviewStackReaper",
+      "ref": "backend/src/services/schedulerService.ts:2347",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "PreviewStackReaper"
+        }
+      ]
+    },
+    {
+      "timer": "StaleActionRecovery",
+      "schedule": "*/15 * * * *",
+      "label": "StaleActionRecovery",
+      "ref": "backend/src/services/schedulerService.ts:2360",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "StaleActionRecovery"
+        }
+      ]
+    },
+    {
+      "timer": "NoShowDetector",
+      "schedule": "2,17,32,47 * * * *",
+      "label": "NoShowDetector",
+      "ref": "backend/src/services/schedulerService.ts:2367",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "NoShowDetector"
+        }
+      ]
+    },
+    {
+      "timer": "CampaignWatchdog",
+      "schedule": "*/7 * * * *",
+      "label": "CampaignWatchdog",
+      "ref": "backend/src/services/schedulerService.ts:2374",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "CampaignWatchdog"
+        }
+      ]
+    },
+    {
+      "timer": "ICPInsightComputer",
+      "schedule": "0 2 * * *",
+      "label": "ICPInsightComputer",
+      "ref": "backend/src/services/schedulerService.ts:2384",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ICPInsightComputer"
+        }
+      ]
+    },
+    {
+      "timer": "BehavioralSignalDetector",
+      "schedule": "*/10 * * * *",
+      "label": "BehavioralSignalDetector",
+      "ref": "backend/src/services/schedulerService.ts:2410",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "BehavioralSignalDetector"
+        }
+      ]
+    },
+    {
+      "timer": "IntentScoreRecomputer",
+      "schedule": "7,22,37,52 * * * *",
+      "label": "IntentScoreRecomputer",
+      "ref": "backend/src/services/schedulerService.ts:2423",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "IntentScoreRecomputer"
+        }
+      ]
+    },
+    {
+      "timer": "BehavioralTriggerEvaluator",
+      "schedule": "5,15,25,35,45,55 * * * *",
+      "label": "BehavioralTriggerEvaluator",
+      "ref": "backend/src/services/schedulerService.ts:2436",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "BehavioralTriggerEvaluator"
+        }
+      ]
+    },
+    {
+      "timer": "MandrillOpenClickPoll",
+      "schedule": "5,35 * * * *",
+      "label": "MandrillOpenClickPoll",
+      "ref": "backend/src/services/schedulerService.ts:2454",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "MandrillOpenClickPoll"
+        }
+      ]
+    },
+    {
+      "timer": "PageEventCleanup",
+      "schedule": "0 3 * * *",
+      "label": "PageEventCleanup",
+      "ref": "backend/src/services/schedulerService.ts:2489",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "PageEventCleanup"
+        }
+      ]
+    },
+    {
+      "timer": "ChatMessageCleanup",
+      "schedule": "30 3 * * *",
+      "label": "ChatMessageCleanup",
+      "ref": "backend/src/services/schedulerService.ts:2506",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ChatMessageCleanup"
+        }
+      ]
+    },
+    {
+      "timer": "OpportunityScoreRecomputer",
+      "schedule": "3,23,43 * * * *",
+      "label": "OpportunityScoreRecomputer",
+      "ref": "backend/src/services/schedulerService.ts:2534",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "OpportunityScoreRecomputer"
+        }
+      ]
+    },
+    {
+      "timer": "EmailDigest",
+      "schedule": "0 * * * *",
+      "label": "EmailDigest",
+      "ref": "backend/src/services/schedulerService.ts:2547",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "EmailDigest"
+        }
+      ]
+    },
+    {
+      "timer": "CampaignGraduation",
+      "schedule": "0 */6 * * *",
+      "label": "CampaignGraduation",
+      "ref": "backend/src/services/schedulerService.ts:2574",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "CampaignGraduation"
+        }
+      ]
+    },
+    {
+      "timer": "InboxCaseAutoSync",
+      "schedule": "0 * * * *",
+      "label": "InboxCaseAutoSync",
+      "ref": "backend/src/services/schedulerService.ts:2593",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "InboxCaseAutoSync"
+        }
+      ]
+    },
+    {
+      "timer": "InboxLivenessReconcile",
+      "schedule": "2-57/5 * * * *",
+      "label": "InboxLivenessReconcile",
+      "ref": "backend/src/services/schedulerService.ts:2616",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "InboxLivenessReconcile"
+        }
+      ]
+    },
+    {
+      "timer": "MissedOpportunitiesReport",
+      "schedule": "0 20 * * *",
+      "label": "MissedOpportunitiesReport",
+      "ref": "backend/src/services/schedulerService.ts:2641",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "MissedOpportunitiesReport"
+        }
+      ]
+    },
+    {
+      "timer": "CurriculumVideoLinkHealth",
+      "schedule": "20 6 * * *",
+      "label": "CurriculumVideoLinkHealth",
+      "ref": "backend/src/services/schedulerService.ts:2667",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "CurriculumVideoLinkHealth"
+        }
+      ]
+    },
+    {
+      "timer": "InboxDeletedSync",
+      "schedule": "25 * * * *",
+      "label": "InboxDeletedSync",
+      "ref": "backend/src/services/schedulerService.ts:2695",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "InboxDeletedSync"
+        }
+      ]
+    },
+    {
+      "timer": "SessionReminders",
+      "schedule": "*/30 * * * *",
+      "label": "SessionReminders",
+      "ref": "backend/src/services/schedulerService.ts:2712",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "SessionReminders"
+        }
+      ]
+    },
+    {
+      "timer": "SessionLifecycle",
+      "schedule": "*/5 * * * *",
+      "label": "SessionLifecycle",
+      "ref": "backend/src/services/schedulerService.ts:2791",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "SessionLifecycle"
+        }
+      ]
+    },
+    {
+      "timer": "SessionRecordingIngest",
+      "schedule": "12,42 * * * *",
+      "label": "SessionRecordingIngest",
+      "ref": "backend/src/services/schedulerService.ts:2886",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "SessionRecordingIngest"
+        }
+      ]
+    },
+    {
+      "timer": "AlumniLifecycleProcessor",
+      "schedule": "0 11 * * *",
+      "label": "AlumniLifecycleProcessor",
+      "ref": "backend/src/services/schedulerService.ts:2989",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "AlumniLifecycleProcessor"
+        }
+      ]
+    },
+    {
+      "timer": "HotLeadEscalation",
+      "schedule": "3,18,33,48 14-22 * * 1-5",
+      "label": "HotLeadEscalation",
+      "ref": "backend/src/services/schedulerService.ts:3002",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "HotLeadEscalation"
+        }
+      ]
+    },
+    {
+      "timer": "AliPersonalOutreach",
+      "schedule": "20 14-22 * * 1-5",
+      "label": "AliPersonalOutreach",
+      "ref": "backend/src/services/schedulerService.ts:3234",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "AliPersonalOutreach"
+        }
+      ]
+    },
+    {
+      "timer": "ColdOutboundPhaseGraduation",
+      "schedule": "0 12 * * *",
+      "label": "ColdOutboundPhaseGraduation",
+      "ref": "backend/src/services/schedulerService.ts:3247",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ColdOutboundPhaseGraduation"
+        }
+      ]
+    },
+    {
+      "timer": "AutonomousRampEvaluator",
+      "schedule": "0 13 * * 1-5",
+      "label": "AutonomousRampEvaluator",
+      "ref": "backend/src/services/schedulerService.ts:3259",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "AutonomousRampEvaluator"
+        }
+      ]
+    },
+    {
+      "timer": "CampaignEvolutionEngine",
+      "schedule": "0 */4 * * *",
+      "label": "CampaignEvolutionEngine",
+      "ref": "backend/src/services/schedulerService.ts:3271",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "CampaignEvolutionEngine"
+        }
+      ]
+    },
+    {
+      "timer": "SystemHealthMonitor",
+      "schedule": "3,18,33,48 * * * 1-5",
+      "label": "SystemHealthMonitor",
+      "ref": "backend/src/services/schedulerService.ts:3285",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "SystemHealthMonitor"
+        }
+      ]
+    },
+    {
+      "timer": "BuildLogDraftGenerator",
+      "schedule": "0 11 * * 1",
+      "label": "BuildLogDraftGenerator",
+      "ref": "backend/src/services/schedulerService.ts:3435",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "BuildLogDraftGenerator"
+        }
+      ]
+    },
+    {
+      "timer": "AutonomousIngestInsights",
+      "schedule": "0 */6 * * *",
+      "label": "AutonomousIngestInsights",
+      "ref": "backend/src/services/schedulerService.ts:3468",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "AutonomousIngestInsights"
+        }
+      ]
+    },
+    {
+      "timer": "AnthropicContentWatcher",
+      "schedule": "0 2 * * *",
+      "label": "AnthropicContentWatcher",
+      "ref": "backend/src/services/schedulerService.ts:3480",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "AnthropicContentWatcher"
+        }
+      ]
+    },
+    {
+      "timer": "AnthropicChangeDetector",
+      "schedule": "30 2 * * *",
+      "label": "AnthropicChangeDetector",
+      "ref": "backend/src/services/schedulerService.ts:3494",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "AnthropicChangeDetector"
+        }
+      ]
+    },
+    {
+      "timer": "AnthropicCurriculumImpactAgent",
+      "schedule": "0 3 * * *",
+      "label": "AnthropicCurriculumImpactAgent",
+      "ref": "backend/src/services/schedulerService.ts:3508",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "AnthropicCurriculumImpactAgent"
+        }
+      ]
+    },
+    {
+      "timer": "AnthropicCatalogScraper",
+      "schedule": "45 1 * * 1",
+      "label": "AnthropicCatalogScraper",
+      "ref": "backend/src/services/schedulerService.ts:3527",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "AnthropicCatalogScraper"
+        }
+      ]
+    },
+    {
+      "timer": "PortfolioGitHubSyncAgent",
+      "schedule": "15 2 * * *",
+      "label": "PortfolioGitHubSyncAgent",
+      "ref": "backend/src/services/schedulerService.ts:3556",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "PortfolioGitHubSyncAgent"
+        }
+      ]
+    },
+    {
+      "timer": "ArchitectEvaluationAgent",
+      "schedule": "0 6 * * 6",
+      "label": "ArchitectEvaluationAgent",
+      "ref": "backend/src/services/schedulerService.ts:3577",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ArchitectEvaluationAgent"
+        }
+      ]
+    },
+    {
+      "timer": "CommunityDigest",
+      "schedule": "0 8 * * *",
+      "label": "CommunityDigest",
+      "ref": "backend/src/services/schedulerService.ts:3597",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "CommunityDigest"
+        }
+      ]
+    },
+    {
+      "timer": "GrowthJourneyShadowDecisions",
+      "schedule": "20 4 * * *",
+      "label": "GrowthJourneyShadowDecisions",
+      "ref": "backend/src/services/scheduling/growthJourneyCrons.ts:48",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "GrowthJourneyShadowDecisions"
+        }
+      ]
+    },
+    {
+      "timer": "GrowthJourneyExecutor",
+      "schedule": "*/15 14-22 * * 1-5",
+      "label": "GrowthJourneyExecutor",
+      "ref": "backend/src/services/scheduling/growthJourneyCrons.ts:69",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "GrowthJourneyExecutor"
+        }
+      ]
+    },
+    {
+      "timer": "GrowthJourneyHandoffDigest",
+      "schedule": "30 12 * * 1-5",
+      "label": "GrowthJourneyHandoffDigest",
+      "ref": "backend/src/services/scheduling/growthJourneyCrons.ts:90",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "GrowthJourneyHandoffDigest"
+        }
+      ]
+    }
+  ],
+  "ai_agents": [
+    {
+      "id": "seed:ExplorerContentSync",
+      "agent_name": "ExplorerContentSync",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ExplorerGovernorDecide",
+      "agent_name": "ExplorerGovernorDecide",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ExplorerProfileRecompute",
+      "agent_name": "ExplorerProfileRecompute",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ProgressionLadderSweep",
+      "agent_name": "ProgressionLadderSweep",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ScheduledActionsProcessor",
+      "agent_name": "ScheduledActionsProcessor",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ApprovalRequestTimeoutSweep",
+      "agent_name": "ApprovalRequestTimeoutSweep",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:NoShowDetector",
+      "agent_name": "NoShowDetector",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ICPInsightComputer",
+      "agent_name": "ICPInsightComputer",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:BehavioralSignalDetector",
+      "agent_name": "BehavioralSignalDetector",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:IntentScoreRecomputer",
+      "agent_name": "IntentScoreRecomputer",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:BehavioralTriggerEvaluator",
+      "agent_name": "BehavioralTriggerEvaluator",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:MandrillOpenClickPoll",
+      "agent_name": "MandrillOpenClickPoll",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:PageEventCleanup",
+      "agent_name": "PageEventCleanup",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:PreviewStackReaper",
+      "agent_name": "PreviewStackReaper",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:StaleActionRecovery",
+      "agent_name": "StaleActionRecovery",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AutonomousIngestInsights",
+      "agent_name": "AutonomousIngestInsights",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ChatMessageCleanup",
+      "agent_name": "ChatMessageCleanup",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OpportunityScoreRecomputer",
+      "agent_name": "OpportunityScoreRecomputer",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:EmailDigest",
+      "agent_name": "EmailDigest",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AiNewsRefresh",
+      "agent_name": "AiNewsRefresh",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Intel_ai_research_digest",
+      "agent_name": "Intel_ai_research_digest",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Intel_ai_architecture_breakdown",
+      "agent_name": "Intel_ai_architecture_breakdown",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Intel_build_breakdown",
+      "agent_name": "Intel_build_breakdown",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Intel_ai_tool_of_the_day",
+      "agent_name": "Intel_ai_tool_of_the_day",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Intel_ai_quote_of_the_day",
+      "agent_name": "Intel_ai_quote_of_the_day",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Intel_claude_code_technique",
+      "agent_name": "Intel_claude_code_technique",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Intel_mcp_server_spotlight",
+      "agent_name": "Intel_mcp_server_spotlight",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Intel_ai_video_stream",
+      "agent_name": "Intel_ai_video_stream",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Intel_market_intelligence",
+      "agent_name": "Intel_market_intelligence",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:SessionReminders",
+      "agent_name": "SessionReminders",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:SessionLifecycle",
+      "agent_name": "SessionLifecycle",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CampaignHealthScanner",
+      "agent_name": "CampaignHealthScanner",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CampaignRepairAgent",
+      "agent_name": "CampaignRepairAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ContentOptimizationAgent",
+      "agent_name": "ContentOptimizationAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ConversationOptimizationAgent",
+      "agent_name": "ConversationOptimizationAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OrchestrationHealthAgent",
+      "agent_name": "OrchestrationHealthAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:StudentProgressMonitor",
+      "agent_name": "StudentProgressMonitor",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:PromptMonitorAgent",
+      "agent_name": "PromptMonitorAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OrchestrationAutoRepairAgent",
+      "agent_name": "OrchestrationAutoRepairAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CampaignQAAgent",
+      "agent_name": "CampaignQAAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AutonomousRampEvaluator",
+      "agent_name": "AutonomousRampEvaluator",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CampaignEvolutionEngine",
+      "agent_name": "CampaignEvolutionEngine",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ApolloLeadIntelligenceAgent",
+      "agent_name": "ApolloLeadIntelligenceAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ApolloWeeklyEnrollmentAgent",
+      "agent_name": "ApolloWeeklyEnrollmentAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CampaignSelfHealingAgent",
+      "agent_name": "CampaignSelfHealingAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ProblemDiscoveryAgent",
+      "agent_name": "ProblemDiscoveryAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:RootCauseAgent",
+      "agent_name": "RootCauseAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ActionPlannerAgent",
+      "agent_name": "ActionPlannerAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ImpactEstimatorAgent",
+      "agent_name": "ImpactEstimatorAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:RiskEvaluatorAgent",
+      "agent_name": "RiskEvaluatorAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ExecutionAgent",
+      "agent_name": "ExecutionAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:MonitorAgent",
+      "agent_name": "MonitorAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AuditAgent",
+      "agent_name": "AuditAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:StrategicIntelligenceAgent",
+      "agent_name": "StrategicIntelligenceAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:RevenueOptimizationAgent",
+      "agent_name": "RevenueOptimizationAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CostOptimizationAgent",
+      "agent_name": "CostOptimizationAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:GrowthExperimentAgent",
+      "agent_name": "GrowthExperimentAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:GovernanceAgent",
+      "agent_name": "GovernanceAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:MemoryAgent",
+      "agent_name": "MemoryAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:KnowledgeGraphAgent",
+      "agent_name": "KnowledgeGraphAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:LearningAgent",
+      "agent_name": "LearningAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:PerformanceAgent",
+      "agent_name": "PerformanceAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ArchitectureAgent",
+      "agent_name": "ArchitectureAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:PromptOptimizationAgent",
+      "agent_name": "PromptOptimizationAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ExperimentAgent",
+      "agent_name": "ExperimentAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WebsiteUIVisibilityAgent",
+      "agent_name": "WebsiteUIVisibilityAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WebsiteBrokenLinkAgent",
+      "agent_name": "WebsiteBrokenLinkAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WebsiteConversionFlowAgent",
+      "agent_name": "WebsiteConversionFlowAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WebsiteUXHeuristicAgent",
+      "agent_name": "WebsiteUXHeuristicAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WebsiteBehaviorAgent",
+      "agent_name": "WebsiteBehaviorAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WebsiteAutoRepairAgent",
+      "agent_name": "WebsiteAutoRepairAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WebsiteImprovementStrategist",
+      "agent_name": "WebsiteImprovementStrategist",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsVisitorIdentityAgent",
+      "agent_name": "AdmissionsVisitorIdentityAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsVisitorActivityAgent",
+      "agent_name": "AdmissionsVisitorActivityAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsConversationMemoryAgent",
+      "agent_name": "AdmissionsConversationMemoryAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsIntentDetectionAgent",
+      "agent_name": "AdmissionsIntentDetectionAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsConversationPlanningAgent",
+      "agent_name": "AdmissionsConversationPlanningAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsKnowledgeAgent",
+      "agent_name": "AdmissionsKnowledgeAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsProactiveOutreachAgent",
+      "agent_name": "AdmissionsProactiveOutreachAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsPageContextAgent",
+      "agent_name": "AdmissionsPageContextAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsConversationContinuityAgent",
+      "agent_name": "AdmissionsConversationContinuityAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsHighIntentLeadAgent",
+      "agent_name": "AdmissionsHighIntentLeadAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsCEORecognitionAgent",
+      "agent_name": "AdmissionsCEORecognitionAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsInsightsAgent",
+      "agent_name": "AdmissionsInsightsAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsExecutiveUpdateAgent",
+      "agent_name": "AdmissionsExecutiveUpdateAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsDocumentDeliveryAgent",
+      "agent_name": "AdmissionsDocumentDeliveryAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsEmailAgent",
+      "agent_name": "AdmissionsEmailAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsSMSAgent",
+      "agent_name": "AdmissionsSMSAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsAppointmentSchedulingAgent",
+      "agent_name": "AdmissionsAppointmentSchedulingAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsSynthflowCallAgent",
+      "agent_name": "AdmissionsSynthflowCallAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsCallGovernanceAgent",
+      "agent_name": "AdmissionsCallGovernanceAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsCallComplianceMonitor",
+      "agent_name": "AdmissionsCallComplianceMonitor",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsCallbackManagementAgent",
+      "agent_name": "AdmissionsCallbackManagementAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsConversationTaskMonitor",
+      "agent_name": "AdmissionsConversationTaskMonitor",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsAssistantAgent",
+      "agent_name": "AdmissionsAssistantAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CoryStrategicAgent",
+      "agent_name": "CoryStrategicAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CurriculumArchitectAgent",
+      "agent_name": "CurriculumArchitectAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ArtifactGenerationAgent",
+      "agent_name": "ArtifactGenerationAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CurriculumQAAgent",
+      "agent_name": "CurriculumQAAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CurriculumOptimizerAgent",
+      "agent_name": "CurriculumOptimizerAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:StudentBehaviorIntelligenceAgent",
+      "agent_name": "StudentBehaviorIntelligenceAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:PlatformFixAgent",
+      "agent_name": "PlatformFixAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:TicketManagementAgent",
+      "agent_name": "TicketManagementAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Organization_Health_Agent",
+      "agent_name": "Organization_Health_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Executive_Briefing_Agent",
+      "agent_name": "Executive_Briefing_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AutonomousEngine",
+      "agent_name": "AutonomousEngine",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AICOOStrategicCycle",
+      "agent_name": "AICOOStrategicCycle",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:MetaAgentLoop",
+      "agent_name": "MetaAgentLoop",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Product_Strategy_Agent",
+      "agent_name": "Product_Strategy_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Human_Learning_Strategy_Agent",
+      "agent_name": "Human_Learning_Strategy_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Program_Evolution_Agent",
+      "agent_name": "Program_Evolution_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Content_Marketing_Agent",
+      "agent_name": "Content_Marketing_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Enterprise_Opportunity_Agent",
+      "agent_name": "Enterprise_Opportunity_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Alumni_Outreach_Agent",
+      "agent_name": "Alumni_Outreach_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Alumni_Reengagement_Agent",
+      "agent_name": "Alumni_Reengagement_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Alumni_Referral_Agent",
+      "agent_name": "Alumni_Referral_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Enterprise_Partnership_Agent",
+      "agent_name": "Enterprise_Partnership_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Corporate_Training_Agent",
+      "agent_name": "Corporate_Training_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Employer_Relationship_Agent",
+      "agent_name": "Employer_Relationship_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:UX_Optimization_Agent",
+      "agent_name": "UX_Optimization_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Deployment_Agent",
+      "agent_name": "Deployment_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Performance_Monitoring_Agent",
+      "agent_name": "Performance_Monitoring_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Data_Intelligence_Agent",
+      "agent_name": "Data_Intelligence_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Trend_Detection_Agent",
+      "agent_name": "Trend_Detection_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Analytics_Agent",
+      "agent_name": "Analytics_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Opportunity_Detection_Agent",
+      "agent_name": "Opportunity_Detection_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Policy_Agent",
+      "agent_name": "Policy_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Risk_Agent",
+      "agent_name": "Risk_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Approval_Agent",
+      "agent_name": "Approval_Agent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OpenclawSupervisorAgent",
+      "agent_name": "OpenclawSupervisorAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OpenclawMarketSignalAgent",
+      "agent_name": "OpenclawMarketSignalAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OpenclawConversationDetectionAgent",
+      "agent_name": "OpenclawConversationDetectionAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OpenclawContentResponseAgent",
+      "agent_name": "OpenclawContentResponseAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OpenclawQualityGateAgent",
+      "agent_name": "OpenclawQualityGateAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OpenclawBrowserWorkerAgent",
+      "agent_name": "OpenclawBrowserWorkerAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OpenclawLearningOptimizationAgent",
+      "agent_name": "OpenclawLearningOptimizationAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OpenclawInfraMonitorAgent",
+      "agent_name": "OpenclawInfraMonitorAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OpenclawTechResearchAgent",
+      "agent_name": "OpenclawTechResearchAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OpenclawAuthorityContentAgent",
+      "agent_name": "OpenclawAuthorityContentAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OpenclawEngagementMonitorAgent",
+      "agent_name": "OpenclawEngagementMonitorAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OpenclawResponseOrchestratorAgent",
+      "agent_name": "OpenclawResponseOrchestratorAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OpenclawFollowUpAgent",
+      "agent_name": "OpenclawFollowUpAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OpenclawLinkedInFlowAgent",
+      "agent_name": "OpenclawLinkedInFlowAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OpenclawLinkedInCommentMonitorAgent",
+      "agent_name": "OpenclawLinkedInCommentMonitorAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:KnowledgeGraphBuilderAgent",
+      "agent_name": "KnowledgeGraphBuilderAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ReportingIntelligenceAgent",
+      "agent_name": "ReportingIntelligenceAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:InsightDiscoveryAgent",
+      "agent_name": "InsightDiscoveryAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:VisualizationAgent",
+      "agent_name": "VisualizationAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:NarrativeAgent",
+      "agent_name": "NarrativeAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:TrendAnalysisAgent",
+      "agent_name": "TrendAnalysisAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:MarketingReportingAgent",
+      "agent_name": "MarketingReportingAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsReportingAgent",
+      "agent_name": "AdmissionsReportingAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:EducationReportingAgent",
+      "agent_name": "EducationReportingAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:StudentSuccessReportingAgent",
+      "agent_name": "StudentSuccessReportingAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:PlatformReportingAgent",
+      "agent_name": "PlatformReportingAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AlumniReportingAgent",
+      "agent_name": "AlumniReportingAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:PartnershipsReportingAgent",
+      "agent_name": "PartnershipsReportingAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ExecutiveBriefingReportingAgent",
+      "agent_name": "ExecutiveBriefingReportingAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ExperimentRecommendationAgent",
+      "agent_name": "ExperimentRecommendationAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:RevenueOpportunityAgent",
+      "agent_name": "RevenueOpportunityAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AgentPerformanceAnalyticsAgent",
+      "agent_name": "AgentPerformanceAnalyticsAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ExecutiveStrategyArchitect",
+      "agent_name": "ExecutiveStrategyArchitect",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:GovernanceStrategyArchitect",
+      "agent_name": "GovernanceStrategyArchitect",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:StrategyFuturesArchitect",
+      "agent_name": "StrategyFuturesArchitect",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:FinanceIntelligenceArchitect",
+      "agent_name": "FinanceIntelligenceArchitect",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OperationsOptimizationArchitect",
+      "agent_name": "OperationsOptimizationArchitect",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OrchestrationEcosystemArchitect",
+      "agent_name": "OrchestrationEcosystemArchitect",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:InsightArchitect",
+      "agent_name": "InsightArchitect",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:PartnershipExpansionArchitect",
+      "agent_name": "PartnershipExpansionArchitect",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:GrowthExperimentArchitect",
+      "agent_name": "GrowthExperimentArchitect",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:MarketingAutomationArchitect",
+      "agent_name": "MarketingAutomationArchitect",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:DeptCampaignPerformanceAgent",
+      "agent_name": "DeptCampaignPerformanceAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsConversionArchitect",
+      "agent_name": "AdmissionsConversionArchitect",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:InfrastructureEvolutionArchitect",
+      "agent_name": "InfrastructureEvolutionArchitect",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:PlatformInnovationArchitect",
+      "agent_name": "PlatformInnovationArchitect",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:LearningInnovationArchitect",
+      "agent_name": "LearningInnovationArchitect",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:StudentSuccessArchitect",
+      "agent_name": "StudentSuccessArchitect",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AlumniNetworkArchitect",
+      "agent_name": "AlumniNetworkArchitect",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:SecurityDirectorAgent",
+      "agent_name": "SecurityDirectorAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:SecretDetectionAgent",
+      "agent_name": "SecretDetectionAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CodeSecurityAuditAgent",
+      "agent_name": "CodeSecurityAuditAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:DependencySecurityAgent",
+      "agent_name": "DependencySecurityAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:RuntimeThreatMonitorAgent",
+      "agent_name": "RuntimeThreatMonitorAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AccessControlGuardianAgent",
+      "agent_name": "AccessControlGuardianAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AISafetyMonitorAgent",
+      "agent_name": "AISafetyMonitorAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AgentBehaviorMonitorAgent",
+      "agent_name": "AgentBehaviorMonitorAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsKnowledgeSyncAgent",
+      "agent_name": "AdmissionsKnowledgeSyncAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CampaignOpsSuperAgent",
+      "agent_name": "CampaignOpsSuperAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:LeadIntelligenceSuperAgent",
+      "agent_name": "LeadIntelligenceSuperAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ContentEngineSuperAgent",
+      "agent_name": "ContentEngineSuperAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AnalyticsEngineSuperAgent",
+      "agent_name": "AnalyticsEngineSuperAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:SystemResilienceSuperAgent",
+      "agent_name": "SystemResilienceSuperAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsSuperAgent",
+      "agent_name": "AdmissionsSuperAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:PartnershipSuperAgent",
+      "agent_name": "PartnershipSuperAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:FinanceSuperAgent",
+      "agent_name": "FinanceSuperAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:OfferRoutingAgent",
+      "agent_name": "OfferRoutingAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:PortfolioGitHubSyncAgent",
+      "agent_name": "PortfolioGitHubSyncAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WorkforceStudentSuccessDirector",
+      "agent_name": "WorkforceStudentSuccessDirector",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WorkforceCurriculumDirector",
+      "agent_name": "WorkforceCurriculumDirector",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WorkforceCareerDirector",
+      "agent_name": "WorkforceCareerDirector",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WorkforceCertificationDirector",
+      "agent_name": "WorkforceCertificationDirector",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WorkforceFinanceDirector",
+      "agent_name": "WorkforceFinanceDirector",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WorkforceOperationsDirector",
+      "agent_name": "WorkforceOperationsDirector",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WorkforceCommunityDirector",
+      "agent_name": "WorkforceCommunityDirector",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WorkforceTechnologyDirector",
+      "agent_name": "WorkforceTechnologyDirector",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WorkforceResearchDirector",
+      "agent_name": "WorkforceResearchDirector",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WorkforceMarketingDirector",
+      "agent_name": "WorkforceMarketingDirector",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AutonomousRequirementExpansion",
+      "agent_name": "AutonomousRequirementExpansion",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ProposalCleanupService",
+      "agent_name": "ProposalCleanupService",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CoryEvolutionCycle",
+      "agent_name": "CoryEvolutionCycle",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:DailyExecutiveBriefing",
+      "agent_name": "DailyExecutiveBriefing",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WeeklyStrategicBriefing",
+      "agent_name": "WeeklyStrategicBriefing",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CommercializationWeeklyReport",
+      "agent_name": "CommercializationWeeklyReport",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ExecutiveAwarenessEveningDigest",
+      "agent_name": "ExecutiveAwarenessEveningDigest",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:StrategicMetricCapture",
+      "agent_name": "StrategicMetricCapture",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:StrategicTrendAnalysis",
+      "agent_name": "StrategicTrendAnalysis",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:StrategicRecommendationCycle",
+      "agent_name": "StrategicRecommendationCycle",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CampaignTrafficEnforcement",
+      "agent_name": "CampaignTrafficEnforcement",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:IntelligenceRetentionCycle",
+      "agent_name": "IntelligenceRetentionCycle",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Reese",
+      "agent_name": "Reese",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Dara",
+      "agent_name": "Dara",
+      "enabled": false,
+      "status": "idle"
+    },
+    {
+      "id": "seed:DaraPresenceHeartbeat",
+      "agent_name": "DaraPresenceHeartbeat",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CurriculumVideoLinkHealth",
+      "agent_name": "CurriculumVideoLinkHealth",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:GithubInvitationSweep",
+      "agent_name": "GithubInvitationSweep",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ReesePresenceHeartbeat",
+      "agent_name": "ReesePresenceHeartbeat",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ReeseAutonomousOutreachSweep",
+      "agent_name": "ReeseAutonomousOutreachSweep",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ReeseOutreachFollowUps",
+      "agent_name": "ReeseOutreachFollowUps",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ReeseStudentSupportSupersessionResolver",
+      "agent_name": "ReeseStudentSupportSupersessionResolver",
+      "enabled": false,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ReeseTicketFollowUpSweep",
+      "agent_name": "ReeseTicketFollowUpSweep",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:cory-engine",
+      "agent_name": "cory-engine",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CoryBrain",
+      "agent_name": "CoryBrain",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:InboxCaseEngine",
+      "agent_name": "InboxCaseEngine",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:GrowthJourneyHandoffs",
+      "agent_name": "GrowthJourneyHandoffs",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:workforce_intelligence_engine",
+      "agent_name": "workforce_intelligence_engine",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WorkforceTicketAutoResolver",
+      "agent_name": "WorkforceTicketAutoResolver",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CoryEngineTicketAutoResolver",
+      "agent_name": "CoryEngineTicketAutoResolver",
+      "enabled": false,
+      "status": "idle"
+    },
+    {
+      "id": "seed:CoryBrainInitiativeTicketAutoResolver",
+      "agent_name": "CoryBrainInitiativeTicketAutoResolver",
+      "enabled": false,
+      "status": "idle"
+    },
+    {
+      "id": "seed:InboxCaseSourceCompletionResolver",
+      "agent_name": "InboxCaseSourceCompletionResolver",
+      "enabled": false,
+      "status": "idle"
+    },
+    {
+      "id": "seed:bpos_orchestrator",
+      "agent_name": "bpos_orchestrator",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:BposCapabilityTicketAutoResolver",
+      "agent_name": "BposCapabilityTicketAutoResolver",
+      "enabled": false,
+      "status": "idle"
+    },
+    {
+      "id": "seed:MarketingPublishingWorker",
+      "agent_name": "MarketingPublishingWorker",
+      "enabled": false,
+      "status": "idle"
+    },
+    {
+      "id": "seed:Maya",
+      "agent_name": "Maya",
+      "enabled": false,
+      "status": "idle"
+    },
+    {
+      "id": "seed:GrowthJourneyShadowDecisions",
+      "agent_name": "GrowthJourneyShadowDecisions",
+      "enabled": false,
+      "status": "idle"
+    },
+    {
+      "id": "seed:GrowthJourneyExecutor",
+      "agent_name": "GrowthJourneyExecutor",
+      "enabled": false,
+      "status": "idle"
+    },
+    {
+      "id": "seed:GrowthJourneyHandoffDigest",
+      "agent_name": "GrowthJourneyHandoffDigest",
+      "enabled": false,
+      "status": "idle"
+    },
+    {
+      "id": "seed:MarketingDomainAgent",
+      "agent_name": "MarketingDomainAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:AdmissionsDomainAgent",
+      "agent_name": "AdmissionsDomainAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:InternshipDomainAgent",
+      "agent_name": "InternshipDomainAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:SalesDomainAgent",
+      "agent_name": "SalesDomainAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:PlatformDomainAgent",
+      "agent_name": "PlatformDomainAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ProductExperienceDomainAgent",
+      "agent_name": "ProductExperienceDomainAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:LearnerSuccessDomainAgent",
+      "agent_name": "LearnerSuccessDomainAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:ExecutiveDomainAgent",
+      "agent_name": "ExecutiveDomainAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "seed:WebsiteDomainAgent",
+      "agent_name": "WebsiteDomainAgent",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "governance:visitor_tracker",
+      "agent_name": "visitor_tracker",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "governance:intent_scorer",
+      "agent_name": "intent_scorer",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "governance:revenue_aggregator",
+      "agent_name": "revenue_aggregator",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "governance:forecast_engine",
+      "agent_name": "forecast_engine",
+      "enabled": true,
+      "status": "idle"
+    },
+    {
+      "id": "governance:calendar_intent_booster",
+      "agent_name": "calendar_intent_booster",
+      "enabled": true,
+      "status": "idle"
+    }
+  ],
+  "cron_schedule_configs": [],
+  "requests": [],
+  "unresolved": [
+    {
+      "ref": "backend/src/services/schedulerService.ts:2143",
+      "reason": "name is built at run time (`Intel_${src.slug}`)"
+    }
+  ]
+}
