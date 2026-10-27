@@ -2,7 +2,7 @@
 
 **Ellis watches the AI agents that run the Colaberry platform. It tells a person, with evidence, what is healthy, what is broken, and what it cannot see.**
 
-Colaberry Project Factory, **platform** domain. **Builder:** Quincy Nkwain Ninying. **Manager and stakeholder:** K.D. (AI Engineer). **Approvals:** K.D. gives sign-off, including on agent actions in production. A.M. oversees PR approvals, tool access and governance review.
+Colaberry Project Factory, **platform** domain. **Forward Deployed Engineer:** Quincy Nkwain Ninying. **Manager and stakeholder:** K.D. (AI Engineer). **Approvals:** K.D. gives sign-off, including on agent actions in production. A.M. oversees PR approvals, tool access and governance review.
 
 | Capabilities verified | Tests | Runtime dependencies | Changes to the live platform |
 |---|---|---|---|
