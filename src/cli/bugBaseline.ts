@@ -2,8 +2,8 @@
 // Prepares an isolated reproduction for a bug ticket (the cited platform lines copied into a fresh sandbox,
 // the checkout only read), runs the baseline test under Node's permission model, and prints whether it fails
 // for the reported reason on every run. Changes nothing outside the sandbox. Exit code 0 when the baseline is
-// confirmed, 3 when it is not (passes, fails for another reason, did not run, inconsistent or refused), 1 for
-// bad input.
+// confirmed, 4 when it is unreproducible (kept on its own list, never read as "not a defect"), 3 when it is
+// rejected (passes, fails for another reason, did not run, inconsistent or refused), 1 for bad input.
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { parseArgs } from 'node:util';
@@ -56,7 +56,7 @@ try {
     files = sandboxFiles(prepared);
   }
   console.log(JSON.stringify({ record, sandbox_files: files }, null, 2));
-  process.exit(record.accepted ? 0 : 3);
+  process.exit(record.list === 'confirmed' ? 0 : record.list === 'unreproducible' ? 4 : 3);
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

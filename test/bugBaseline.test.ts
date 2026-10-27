@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { parseTap, classifyBaseline, type RunResult, type TestOutcome, type ReportedReason } from '../src/capabilities/bugBaseline.ts';
+import { parseTap, classifyBaseline, byList, type RunResult, type TestOutcome, type ReportedReason } from '../src/capabilities/bugBaseline.ts';
 import { prepareSandbox, runBaseline, sandboxFiles, BaselineInputError, type BaselineSpec } from '../src/sandbox/baselineRunner.ts';
 
 // TAP fixtures are real node test-runner output (v25), with local paths replaced by /sandbox.
@@ -113,9 +113,9 @@ test('a timeout, an empty run or a killed run did not run to a result', () => {
   assert.equal(classifyBaseline(TICKET, REASON, [killed, killed]).verdict, 'did_not_run');
 });
 
-test('the failure must repeat: one run is not enough, and runs that disagree are rejected', () => {
+test('the failure must repeat: one run is not enough, and runs whose failing tests differ are rejected', () => {
   assert.equal(classifyBaseline(TICKET, REASON, [run(DEFECT)]).verdict, 'not_repeated');
-  assert.equal(classifyBaseline(TICKET, REASON, [run(DEFECT), run(out('defect', 'pass'))]).verdict, 'inconsistent');
+  assert.equal(classifyBaseline(TICKET, REASON, [run(DEFECT), run(out('defect', 'pass'))]).verdict, 'unreproducible', 'seen on one run of two: intermittent, not rejected');
   const other = out('other', 'assertion', 'AssertionError', 'unrecognised tier cleared the R0 ceiling');
   assert.equal(classifyBaseline(TICKET, REASON, [run(DEFECT), run(other)]).verdict, 'inconsistent', 'same verdict, different failing test');
 });
@@ -137,4 +137,47 @@ test('the sandbox is prepared only from the checkout, into plain file names', ()
   assert.throws(() => prepareSandbox({ ...w.spec, excerpts: [{ ...w.spec.excerpts[0], lines: [5, 999] }] }, w.source, w.sandbox), /has no lines 5-999/);
   const p = prepareSandbox(w.spec, w.source, w.sandbox);
   assert.match(readFileSync(join(p.dir, 'capabilityRouter.excerpt.ts'), 'utf8'), /^\/\/ Copied from backend\/router\.ts:1-12 \(read-only source\)\.[\s\S]*export \{ riskTierAllowed \};\n$/);
+});
+
+test('a defect seen on some runs and not others is unreproducible, on its own list, never "not a defect"', () => {
+  const r = classifyBaseline(TICKET, REASON, [run(DEFECT), run(out('defect', 'pass')), run(DEFECT)]);
+  assert.equal(r.verdict, 'unreproducible');
+  assert.equal(r.list, 'unreproducible');
+  assert.equal(r.accepted, false);
+  assert.deepEqual(r.seen_in, { runs: 2, of: 3 });
+  assert.match(r.statement, /some runs and not others.*not evidence there is no defect/);
+  assert.doesNotMatch(r.statement, /proves nothing|not a defect\b(?! *;)/);
+});
+
+test('a timing-dependent defect the test does not show is unreproducible, not "passes before fix"', () => {
+  const timing: ReportedReason = { ...REASON, timing_dependent: true };
+  const r = classifyBaseline(TICKET, timing, [run(out('defect', 'pass')), run(out('defect', 'pass'))]);
+  assert.equal(r.verdict, 'unreproducible');
+  assert.deepEqual(r.seen_in, { runs: 0, of: 2 });
+  assert.match(r.statement, /timing-dependent and this test did not show it/);
+  assert.equal(classifyBaseline(TICKET, REASON, [run(out('defect', 'pass')), run(out('defect', 'pass'))]).verdict, 'passes_before_fix', 'without the mark, a pass is still rejected');
+});
+
+test('disagreement with no reported failure, or with a sandbox violation, is still rejected as inconsistent', () => {
+  const other = out('defect', 'assertion', 'AssertionError', 'something else');
+  assert.equal(classifyBaseline(TICKET, REASON, [run(other), run(out('defect', 'pass'))]).verdict, 'inconsistent');
+  const denied = out('defect', 'thrown', 'Error', 'Access to this API has been restricted');
+  denied.kind = 'access_denied';
+  const r = classifyBaseline(TICKET, REASON, [run(DEFECT), run(denied)]);
+  assert.equal(r.verdict, 'inconsistent');
+  assert.equal(r.list, 'rejected');
+});
+
+test('records split into confirmed, unreproducible and rejected lists, sorted and order-independent', () => {
+  const t = (id: string) => ({ ...TICKET, id });
+  const recs = [
+    classifyBaseline(t('bug-3'), REASON, [run(DEFECT), run(out('defect', 'pass'))]),
+    classifyBaseline(t('bug-1'), REASON, [run(DEFECT), run(DEFECT)]),
+    classifyBaseline(t('bug-2'), REASON, [run(out('defect', 'pass')), run(out('defect', 'pass'))]),
+    classifyBaseline(t('bug-0'), REASON, [run(DEFECT), run(DEFECT)]),
+  ];
+  const lists = byList(recs);
+  assert.deepEqual(Object.fromEntries(Object.entries(lists).map(([k, v]) => [k, v.map((r) => r.ticket_id)])), { confirmed: ['bug-0', 'bug-1'], unreproducible: ['bug-3'], rejected: ['bug-2'] });
+  assert.deepEqual(byList([...recs].reverse()), lists);
+  assert.equal(classifyBaseline(t('x'), null, []).seen_in, null);
 });

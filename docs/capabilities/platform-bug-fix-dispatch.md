@@ -29,9 +29,17 @@ The baseline is accepted only when every run fails, every failure is the reporte
 | `fails_for_another_reason` | it fails, but with another error or message, or some failures are not the reported one | no |
 | `did_not_run` | the file could not load, a test timed out, no tests ran, or the run was killed | no |
 | `sandbox_violation` | the test tried to reach outside its sandbox and was refused | no |
-| `inconsistent` | the runs disagree | no |
+| `unreproducible` | the reported failure appeared on some runs and not others, or the reason is marked timing-dependent and the test passed; kept on its own list, never read as "not a defect" | no |
+| `inconsistent` | the runs disagree in another way: different failing tests, or a sandbox violation on one run | no |
 | `not_repeated` | fewer than two runs | no |
 | `refused` | not a bug ticket, or no reported reason | no |
+
+**Unreproducible is not "not a defect".** Added after A.M.'s review (2026-10-27). A check that accepts only a
+reproducible failure would quietly reject the hard half: a race, a recovery that fires only after ten minutes,
+a breaker that resets when a window drains. So a failure seen on some runs and not others, or a defect whose
+reported reason is marked `timing_dependent` that this test did not show, is `unreproducible`. Each record
+says how many runs showed the failure (`seen_in`), and `byList` keeps three lists: confirmed, unreproducible
+and rejected. An unreproducible ticket waits for a person to reproduce it another way.
 
 **A failure to load is not the defect.** Node's test runner reports a file that cannot load as an ordinary
 failing test: in a child process with an `exitCode` and the error "test failed", and in process with the
@@ -65,13 +73,21 @@ Run against the same lines with the defect fixed, the same test passes and Ellis
    (`backend/src/services/ticketAgentDispatcher.ts:303-305`). A reviewer sees a bug in review with a note
    that it was fixed, and can close a real defect. Its header and registry row both describe it as
    auto-fixing (`platformFixAgent.ts:3`, `agentRegistrySeed.ts:1090`). No test covers this agent.
+   **Confirmed by A.M. (2026-10-27, at `c699e58`), sharper:** the agent records its own action as
+   `auto_fix_proposed` (`platformFixAgent.ts:74`), so the code already knows it only proposed; the one
+   untrue sentence is the one addressed to a person. There is no file write, process, git call or patch
+   anywhere in the agent. The promotion is the dispatcher's rule, not the agent's: any agent that returns no
+   errors goes to review (`ticketAgentDispatcher.ts:303-306`). The fix is two changes: the comment says a
+   diagnosis was proposed, and promotion stops for this agent. It heads a family of four where an agent
+   reports work it did not do, and it is the only one a person reads and acts on.
 
 **New: reporting gap**
 
 2. **The guard written for unrecognised tiers is never called.** `assertNoAutonomyInRiskTierColumn` calls
    itself the enforcement point (`backend/src/services/agentDomain/autonomyLadder.ts:110-124`), but only its
    own tests call it. Its tests also confirm it lets an unrecognised tier such as `R99` through
-   (`backend/src/services/agentDomain/__tests__/autonomyRiskTierGuard.test.ts:127`).
+   (`backend/src/services/agentDomain/__tests__/autonomyRiskTierGuard.test.ts:127`). Confirmed by A.M.,
+   in the same family: an enforcement point nothing enforces with.
 
 **Already known**
 
@@ -97,15 +113,17 @@ The example ticket was written for this demonstration; the copied lines are real
 
 Exit codes:
 - 0: baseline confirmed
-- 3: not confirmed (passes, fails for another reason, did not run, sandbox violation, inconsistent, refused)
+- 4: unreproducible (kept on its own list)
+- 3: rejected (passes, fails for another reason, did not run, sandbox violation, inconsistent, refused)
 - 1: bad input
 
 ## Evidence
 
 - **Named passing test:** "acceptance: the baseline test fails for the reported reason before any fix and is
   shown to fail; a test that passes before the fix proves nothing". It runs the real runner twice against the
-  defective router lines (confirmed) and twice against the fixed lines (`passes_before_fix`). There are 9
-  tests in this file and 203 in the repo, all passing under `npm test`.
+  defective router lines (confirmed) and twice against the fixed lines (`passes_before_fix`). Also "a defect
+  seen on some runs and not others is unreproducible, on its own list, never "not a defect"". There are 14
+  tests in this file and 238 in the repo, all passing under `npm test`.
 - **Real runner output.** The parser tests read real node test-runner output (v25) for an assertion, a thrown
   error, a passing test, a syntax error, a missing import (in process and in a child process), a timeout and
   a refused write, saved in `test/fixtures/tap/`.
@@ -127,6 +145,16 @@ Exit codes:
   - not enforcing the checkout boundary fails 1;
   - not checking file names fails 1;
   - not resolving a symlinked sandbox fails 1.
+
+  For the unreproducible outcome:
+  - folding an intermittent failure into `inconsistent` fails 3;
+  - rejecting a timing-dependent pass fails 1;
+  - making every pass unreproducible fails 3;
+  - letting a sandbox violation count as unreproducible fails 1;
+  - listing unreproducible as rejected fails 2;
+  - accepting an unreproducible baseline fails 1;
+  - miscounting the runs that showed the failure fails 2;
+  - leaving the lists unsorted fails 1.
 
   One mutation cannot fail: letting any failure kind match the reported reason. Load errors, timeouts and
   refusals are already ruled out before that check, so it is a backstop, not a separate rule.
