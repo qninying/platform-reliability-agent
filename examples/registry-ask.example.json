@@ -1,0 +1,172 @@
+{
+  "captured_at": "2026-10-27T12:00:00Z",
+  "captured_by": "example, not production data: names, schedules and timer wiring are taken from the platform at bb1d3c3; counts and times are illustrative",
+  "ai_agents": [
+    {
+      "id": "example-PromptMonitorAgent",
+      "agent_name": "PromptMonitorAgent",
+      "enabled": true,
+      "status": "idle",
+      "schedule": "*/1 * * * *",
+      "run_count": 1440,
+      "error_count": 2,
+      "last_run_at": "2026-10-27T11:59:00Z"
+    },
+    {
+      "id": "example-Dara",
+      "agent_name": "Dara",
+      "enabled": true,
+      "status": "idle",
+      "schedule": "10 6 * * *",
+      "run_count": 90,
+      "error_count": 0,
+      "last_run_at": "2026-10-27T11:30:00Z"
+    },
+    {
+      "id": "example-WorkforceCurriculumDirector",
+      "agent_name": "WorkforceCurriculumDirector",
+      "enabled": true,
+      "status": "idle",
+      "schedule": null,
+      "run_count": 0,
+      "error_count": 0,
+      "last_run_at": null
+    },
+    {
+      "id": "example-TicketManagementAgent",
+      "agent_name": "TicketManagementAgent",
+      "enabled": true,
+      "status": "idle",
+      "schedule": "*/15 * * * *",
+      "run_count": 0,
+      "error_count": 0,
+      "last_run_at": null
+    },
+    {
+      "id": "example-MarketingPublishingWorker",
+      "agent_name": "MarketingPublishingWorker",
+      "enabled": false,
+      "status": "idle",
+      "schedule": null,
+      "run_count": 0,
+      "error_count": 0,
+      "last_run_at": null
+    },
+    {
+      "id": "example-AdmissionsAssistantAgent",
+      "agent_name": "AdmissionsAssistantAgent",
+      "enabled": true,
+      "status": "idle",
+      "schedule": null,
+      "run_count": 300,
+      "error_count": 1,
+      "last_run_at": "2026-10-27T11:50:00Z"
+    }
+  ],
+  "ai_agent_activity_logs": [
+    {
+      "id": "example-act-1",
+      "agent_id": "example-PromptMonitorAgent",
+      "result": "success",
+      "created_at": "2026-10-27T11:59:00Z"
+    }
+  ],
+  "timers": [
+    {
+      "timer": "PromptMonitorAgent",
+      "schedule": "*/1 * * * *",
+      "label": "Prompt monitor",
+      "ref": "backend/src/services/aiOpsScheduler.ts:203",
+      "gates": [
+        {
+          "gate": "run_agent",
+          "flag": "PromptMonitorAgent"
+        }
+      ]
+    },
+    {
+      "timer": "Dara",
+      "schedule": "10 6 * * *",
+      "label": "Curriculum director",
+      "ref": "backend/src/services/aiOpsScheduler.ts:367",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "Dara"
+        },
+        {
+          "gate": "director_gate",
+          "flag": "WorkforceCurriculumDirector"
+        }
+      ]
+    },
+    {
+      "timer": "Dara",
+      "schedule": "30 6 * * *",
+      "label": "Certification director",
+      "ref": "backend/src/services/aiOpsScheduler.ts:369",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "Dara"
+        },
+        {
+          "gate": "director_gate",
+          "flag": "WorkforceCertificationDirector"
+        }
+      ]
+    },
+    {
+      "timer": "Dara",
+      "schedule": "15 6 * * *",
+      "label": "Targeted research sweep",
+      "ref": "backend/src/services/aiOpsScheduler.ts:375",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "Dara"
+        }
+      ]
+    },
+    {
+      "timer": "AdmissionsAssistant",
+      "schedule": "4,14,24,34,44,54 * * * *",
+      "label": "Admissions assistant",
+      "ref": "backend/src/services/aiOpsScheduler.ts:240",
+      "gates": [
+        {
+          "gate": "run_agent",
+          "flag": "AdmissionsAssistantAgent"
+        }
+      ]
+    },
+    {
+      "timer": "AliPersonalOutreach",
+      "schedule": "20 14-22 * * 1-5",
+      "label": "AliPersonalOutreach",
+      "ref": "backend/src/services/schedulerService.ts:3234",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "AliPersonalOutreach"
+        }
+      ]
+    },
+    {
+      "timer": "MarketingPublishingWorker",
+      "schedule": "* * * * *",
+      "label": "Marketing publishing worker",
+      "ref": "backend/src/services/aiOpsScheduler.ts:538",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "MarketingPublishingWorker"
+        }
+      ]
+    }
+  ],
+  "timer_scope": [
+    "the seven timers listed in this example (a subset of the platform's)"
+  ],
+  "cron_schedule_configs": []
+}

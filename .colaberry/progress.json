@@ -205,13 +205,22 @@
       "criteria": [
         {
           "text": "A question about a name with no ai_agents row returns 'not registered', never 'disabled' and never 'zero runs' — those are three different facts and the surface must not merge them.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/registryReadSurface.ts",
+        "src/cli/registryAsk.ts",
+        "test/registryReadSurface.test.ts",
+        "examples/registry-ask.example.json",
+        "docs/capabilities/agent-registry-read-surface.md",
+        "package.json"
+      ],
+      "tests_added": [
+        "test/registryReadSurface.test.ts"
+      ],
+      "notes": "Read-only (platform commit bb1d3c3): answers per name from ai_agents, the activity log and the capability-13 timer inventory. A name with no row is 'not registered' with enabled null and runs null, never 'disabled' and never 'zero runs'; Ellis says whether a timer by that name runs untracked or checks a differently named row, and lists similar registered names without answering for them. For a registered row: enabled, status, the live schedule (timers that read the row, governance overrides, a declared schedule that is not what fires, no timer at all), and run attribution (pooled across timers, counted under another row for an inner gate, not from a scheduled timer). Two rows with one name give no single answer. Test 'acceptance: a question about a name with no ai_agents row returns 'not registered', never 'disabled' and never 'zero runs'' passes; 10 tests in the file, 213 in the repo (npm test). 16 mutations each fail at least one test. CLI: npm run registry-ask -- --snapshot examples/registry-ask.example.json --name AliPersonalOutreach exits 3 (not registered).",
+      "updated_at": "2026-10-27T21:00:00Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
