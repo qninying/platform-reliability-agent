@@ -21,7 +21,8 @@
     "ticket-resolution": "node src/cli/ticketResolution.ts",
     "evolution-proposals": "node src/cli/evolutionProposals.ts",
     "resilience-posture": "node src/cli/resiliencePosture.ts",
-    "disable-recommendation": "node src/cli/disableRecommendation.ts"
+    "disable-recommendation": "node src/cli/disableRecommendation.ts",
+    "technology-direction": "node src/cli/technologyDirection.ts"
   },
   "devDependencies": {
     "@types/node": "22.15.3",

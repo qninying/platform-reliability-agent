@@ -1,0 +1,99 @@
+{
+  "captured_at": "2026-10-27T12:00:00Z",
+  "captured_by": "example, not production data: agent names, tools and tiers are taken from the platform seed and grant map at 7c70f0a; the direction below is an illustration, not an approved policy",
+  "direction": {
+    "id": "illustration-1",
+    "written_by": "illustration only",
+    "approved_by": "illustration only, not a real approval",
+    "approved_at": "2026-10-20T00:00:00Z",
+    "rules": [
+      {
+        "kind": "max_tier",
+        "tier": "write_with_audit"
+      },
+      {
+        "kind": "denied_tools",
+        "tools": [
+          "llm_strategy_analysis"
+        ]
+      },
+      {
+        "kind": "allowed_models",
+        "models": [
+          "gpt-4o-mini"
+        ]
+      }
+    ]
+  },
+  "ai_agents": [
+    {
+      "id": "example-1",
+      "agent_name": "ExecutiveStrategyArchitect",
+      "enabled": true,
+      "tools_granted": [
+        "evaluate_department_health",
+        "identify_strategic_opportunities",
+        "create_strategic_initiative",
+        "generate_initiative_tickets",
+        "llm_strategy_analysis"
+      ]
+    },
+    {
+      "id": "example-2",
+      "agent_name": "AdmissionsEmailAgent",
+      "enabled": true,
+      "tools_granted": []
+    },
+    {
+      "id": "example-3",
+      "agent_name": "PromptMonitorAgent",
+      "enabled": true,
+      "tools_granted": []
+    },
+    {
+      "id": "example-4",
+      "agent_name": "WorkforceTechnologyDirector",
+      "enabled": true,
+      "tools_granted": []
+    }
+  ],
+  "grant_map": [
+    {
+      "agent_name": "AdmissionsEmailAgent",
+      "tier": "communication",
+      "allowed_tables": [
+        "admissions_action_logs",
+        "communication_logs"
+      ],
+      "allowed_operations": [
+        "send_email"
+      ]
+    },
+    {
+      "agent_name": "PromptMonitorAgent",
+      "tier": "read_only",
+      "allowed_tables": [],
+      "allowed_operations": []
+    },
+    {
+      "agent_name": "WorkforceTechnologyDirector",
+      "tier": "write_with_audit",
+      "allowed_tables": [
+        "workforce_tasks"
+      ],
+      "allowed_operations": [
+        "flag_agent_health_issue"
+      ]
+    }
+  ],
+  "model_uses": [
+    {
+      "model": "gpt-4o-mini",
+      "ref": "backend/src/services/components/costEstimationService.ts:24"
+    },
+    {
+      "model": "gpt-4o",
+      "ref": "backend/src/intelligence/systemStateEngine/multimodal/multimodalVisionEngine.ts:75"
+    }
+  ]
+}
