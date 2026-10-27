@@ -80,6 +80,9 @@ Run against the same lines with the defect fixed, the same test passes and Ellis
    errors goes to review (`ticketAgentDispatcher.ts:303-306`). The fix is two changes: the comment says a
    diagnosis was proposed, and promotion stops for this agent. It heads a family of four where an agent
    reports work it did not do, and it is the only one a person reads and acts on.
+   **Fixed upstream in PR 3435** (in main at `4443087`): the comment now says no change has been made and
+   the diagnosis is proposed only, and an advisory-only agent no longer moves its ticket to review
+   (`platformFixAgent.ts`, `ticketAgentDispatcher.ts`), with tests in `platformFixAgentHonesty.test.ts`.
 
 **New: reporting gap**
 

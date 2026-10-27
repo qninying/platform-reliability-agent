@@ -83,7 +83,9 @@ than guessing from names.
    being `running` in `instrumentCronJob`, the CampaignHealthScanner path and runAgent's success path.
    runAgent's failure path still writes `status: 'error'` unconditionally (`aiOrchestrator.ts:303-309` at
    `c699e58`), so a pause set during a run that then throws is still erased; the new test pins the success
-   path only (`agentControlGate.test.ts:109`). Reported to A.M.
+   path only (`agentControlGate.test.ts:109`). Confirmed by A.M. (2026-10-27) as finding 58; the fix routes the
+   failure path through the same conditional write and is in PR 3439, not yet merged. Until it lands, this
+   map keeps "holds unless the run fails".
 4. **Dara's directors have two switches, and the scheduler comment is false.** The comment says the
    directors gate on Dara's own row (`backend/src/services/aiOpsScheduler.ts:118-128`). The code gates
    them on `WorkforceCurriculumDirector` and `WorkforceCertificationDirector`
