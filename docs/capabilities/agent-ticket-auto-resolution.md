@@ -129,4 +129,4 @@ Exit codes:
   the ticket open. The test now uses numbers that would otherwise close.
 - **Not yet run against a copy of the live queue.** The first live check is a read-only export of the
   open tickets each resolver owns, with the source rows its rule reads, loaded as a fixture.
-  K.D. still has to confirm which rules he accepts for closing a ticket without a human reading it.
+  K.D. still has to confirm which rules are acceptable for closing a ticket without a human reading it.

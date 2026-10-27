@@ -1,6 +1,6 @@
 {
-  "captured_at": "2026-10-27T19:01:16.858Z",
-  "captured_by": "built from platform source at c699e58: cron-wrapped timers outside aiOpsScheduler.ts, and the ai_agents rows created in code (seed and governance agents, enabled as seeded). Production may hold rows the code does not create.",
+  "captured_at": "2026-10-27T21:29:47.865Z",
+  "captured_by": "built from platform source at 4443087: cron-wrapped timers outside aiOpsScheduler.ts, and the ai_agents rows created in code (seed and governance agents, enabled as seeded). Production may hold rows the code does not create.",
   "timers": [
     {
       "timer": "ReesePresenceHeartbeat",
@@ -2305,55 +2305,55 @@
     {
       "id": "seed:MarketingDomainAgent",
       "agent_name": "MarketingDomainAgent",
-      "enabled": true,
+      "enabled": false,
       "status": "idle"
     },
     {
       "id": "seed:AdmissionsDomainAgent",
       "agent_name": "AdmissionsDomainAgent",
-      "enabled": true,
+      "enabled": false,
       "status": "idle"
     },
     {
       "id": "seed:InternshipDomainAgent",
       "agent_name": "InternshipDomainAgent",
-      "enabled": true,
+      "enabled": false,
       "status": "idle"
     },
     {
       "id": "seed:SalesDomainAgent",
       "agent_name": "SalesDomainAgent",
-      "enabled": true,
+      "enabled": false,
       "status": "idle"
     },
     {
       "id": "seed:PlatformDomainAgent",
       "agent_name": "PlatformDomainAgent",
-      "enabled": true,
+      "enabled": false,
       "status": "idle"
     },
     {
       "id": "seed:ProductExperienceDomainAgent",
       "agent_name": "ProductExperienceDomainAgent",
-      "enabled": true,
+      "enabled": false,
       "status": "idle"
     },
     {
       "id": "seed:LearnerSuccessDomainAgent",
       "agent_name": "LearnerSuccessDomainAgent",
-      "enabled": true,
+      "enabled": false,
       "status": "idle"
     },
     {
       "id": "seed:ExecutiveDomainAgent",
       "agent_name": "ExecutiveDomainAgent",
-      "enabled": true,
+      "enabled": false,
       "status": "idle"
     },
     {
       "id": "seed:WebsiteDomainAgent",
       "agent_name": "WebsiteDomainAgent",
-      "enabled": true,
+      "enabled": false,
       "status": "idle"
     },
     {

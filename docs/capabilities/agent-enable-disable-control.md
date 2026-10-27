@@ -60,7 +60,7 @@ than guessing from names.
      `:195-196`). One difference: the baseline says they run. WeeklyReport goes straight to `runAgent`
      (`aiOpsScheduler.ts:266`, `aiOrchestrator.ts:661-662`), which returns without running when the row is
      missing. So unless production has a row the seed does not create, it does not run.
-   - **Confirmed by A.M. (2026-10-27):** the Sunday report has not reached him in 45 days of mail. The
+   - **Confirmed by A.M. (2026-10-27):** the Sunday report has not reached A.M. in 45 days of mail. The
      timer fires into nothing. A related PR the same week (3369, "a weekly report that is allowed to be
      short") adds a separate commercialization report and does not touch this one.
 2. **Pause is ignored by five timers.** `trackAgentRun` reads only `enabled` (`agentRunTracker.ts:33`),
@@ -133,7 +133,7 @@ as a separate switch.
 It also lists every registered agent that pause does not fully contain, so an operator knows before
 reaching for it.
 
-**Re-measured against `c699e58` after PR 3430** (A.M. asked for a measurement, not his word for it):
+**Re-measured against `c699e58` after PR 3430** (A.M. asked for a measurement, not an assurance):
 - AutonomousEngine, AICOOStrategicCycle, MetaAgentLoop, CoryEvolutionCycle and CampaignHealthScanner moved
   from "pause does not stop" to "stops".
 - Every `instrumentCronJob` timer, Dara's included, moved from "holds only between runs" to "stops".
@@ -150,7 +150,7 @@ inside it, resolves names and schedules held in constants (including imported on
 at run time, such as the per-source intel timers (`schedulerService.ts:2143`), is reported as unresolved,
 never guessed.
 
-At `c699e58` it finds all 69 timers, the same as at `7c70f0a`:
+At `c699e58` it finds all 69 timers, the same as at `7c70f0a`; the example is rebuilt at `4443087`, still 69:
 - **36 have a row**, so disable and pause both stop them (pause held only between runs before PR 3430).
 - **33 have no row in code, so no disable or pause can reach them, and no other registry control does
   either.** They are not dead: the wrapper runs them anyway, untracked. That is a gap in the fleet's

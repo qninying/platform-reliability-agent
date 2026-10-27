@@ -68,7 +68,8 @@ export function extractCronSites(text: string, file: string, importedConsts: Map
 }
 
 // Rows created in code: the registry seed's entries and the governance agents. enabled is as seeded
-// (the column defaults to true, models/AiAgent.ts:423-427); production may have changed it since.
+// (the column defaults to true, models/AiAgent.ts:423-427); production may have changed it since. A domain
+// agent spreads releaseZero() above its name, which seeds it disabled (agentRegistry/domainAgents.ts:66-72).
 export function extractSeedRows(seedTexts: string[], governanceText: string): ControlAgentRow[] {
   const rows: ControlAgentRow[] = [];
   for (const seed of seedTexts.map((t) => t.split('\n'))) {
@@ -76,6 +77,9 @@ export function extractSeedRows(seedTexts: string[], governanceText: string): Co
       const m = line.match(/^ {4}agent_name: '([^']+)'/);
       if (!m) return;
       let enabled = true;
+      for (let j = i - 1; j >= 0 && !/^ {2}\{\s*$/.test(seed[j]); j--) {
+        if (/^ {4}\.\.\.releaseZero\(\),/.test(seed[j])) enabled = false;
+      }
       for (let j = i + 1; j < seed.length && !/^ {2}\},?\s*$/.test(seed[j]) && !/^ {4}agent_name: /.test(seed[j]); j++) {
         const e = seed[j].match(/^ {4}enabled: (true|false)/);
         if (e) enabled = e[1] === 'true';

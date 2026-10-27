@@ -73,12 +73,15 @@ test('rows come from every seed list and the governance agents, with enabled as 
     '  },',
   ].join('\n');
   const growth = "  {\n    agent_name: 'GrowthJourneyHandoffDigest',\n  },";
+  // Domain agents seed through a shared default that disables them (domainAgents.ts:66-72, :83).
+  const domain = "  {\n    ...releaseZero(),\n    agent_name: 'MarketingDomainAgent',\n  },\n  {\n    agent_name: 'AfterIt',\n  },";
   const governance = "const GOVERNANCE_AGENTS = [\n  { agent_name: 'visitor_tracker', agent_type: 'x' },\n];";
-  const rows = extractSeedRows([seed, growth], governance);
+  const rows = extractSeedRows([seed, growth, domain], governance);
   assert.deepEqual(rows.map((r) => [r.agent_name, r.enabled]), [
-    ['ScheduledActionsProcessor', false], ['ChatMessageCleanup', true], ['GrowthJourneyHandoffDigest', true], ['visitor_tracker', true],
+    ['ScheduledActionsProcessor', false], ['ChatMessageCleanup', true], ['GrowthJourneyHandoffDigest', true],
+    ['MarketingDomainAgent', false], ['AfterIt', true], ['visitor_tracker', true],
   ]);
-  assert.equal(rows[3].id, 'governance:visitor_tracker');
+  assert.equal(rows[5].id, 'governance:visitor_tracker');
 });
 
 test('timers whose row does not exist are listed as beyond disable and pause; a registered instrumentCronJob timer is no pause gap since PR 3430', () => {

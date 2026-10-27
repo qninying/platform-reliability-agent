@@ -334,13 +334,26 @@
       "criteria": [
         {
           "text": "Jobs excluded by the trigger_type and enabled filter are listed as not-evaluated rather than omitted, so the answer discloses its own blind spot.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/cronHealthAlerting.ts",
+        "src/inventory/cronExpression.ts",
+        "src/cli/cronHealth.ts",
+        "test/cronHealthAlerting.test.ts",
+        "examples/cron-health.example.json",
+        "docs/capabilities/cron-health-alerting.md",
+        "src/inventory/cronSites.ts",
+        "test/cronSites.test.ts",
+        "examples/timer-inventory.example.json",
+        "package.json"
+      ],
+      "tests_added": [
+        "test/cronHealthAlerting.test.ts"
+      ],
+      "notes": "Read-only (platform commit 4443087): reproduces the live cron health check (cronHealthAlertService.ts) and answers which cron jobs it would alert on now, which it evaluates only in part, and which it cannot evaluate at all. Every scheduled job is in exactly one of four lists: alerting, clear, evaluated in part (fewer than 5 rows, or never run so never overdue), not evaluated (no row with what its wrapper then does, disabled, not trigger_type cron, a timer checking no row, or a runner Ellis cannot trace). The answer is clear only when every job is fully evaluated; otherwise clear_with_blind_spots, never healthy. Thresholds and the trigger_type/enabled selection are read from the live source with --source, an error if either changed, else the pinned copy is named. Ellis reads cron expressions itself; on all 131 fleet schedules at five reference times it matches cron-parser 5.5.0 (655 comparisons, no difference). On the real fleet (169 timers, 259 rows) it lists 52 jobs as not evaluated, including the 41 timers with no row (WeeklyReport: returns without running; PaySimplePaymentSync: runs untracked). Tests 'acceptance: jobs excluded by the trigger_type and enabled filter are listed as not evaluated, with the reason, never omitted' and 'acceptance on the real fleet: every timer and every scheduled row is accounted for, and the 41 timers with no row are named' pass; 12 tests in the file, 250 in the repo (npm test). 12 mutations each fail at least one test. CLI: npm run cron-health -- --snapshot examples/cron-health.example.json exits 3 (blind spots).",
+      "updated_at": "2026-10-27T21:42:34Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
