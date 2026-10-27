@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 19,
+    "stories_verified": 20,
     "stories_submitted": 0,
-    "stories_in_progress": 35,
+    "stories_in_progress": 34,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 31,
-    "points_awarded": 285
+    "criteria_passed": 32,
+    "points_awarded": 300
   },
   "stories": [
     {
@@ -1480,17 +1480,15 @@
       "notes": "Read-only (platform commit 7c70f0a): lists each enabled agent's recorded tools (ai_agents.tools_granted) and declared tier (grant map, or the default suggest_only grant) and compares them with a written, approved technology direction: allowed or ruled-out tools, a maximum tier, allowed models. With no direction on file, one with no recorded approval, one dated after the snapshot, or one with no rules, the verdict is 'unknown' and every agent is 'not_assessed', never 'no divergence'. An empty tools_granted list is the column default (models/AiAgent.ts:480-484), so it reads as not recorded and keeps the verdict unknown. A model outside the direction is raised as an escalation for a person, never an action. Tests 'acceptance: with no written direction on file, the answer is 'unknown', not 'no divergence'' and 'acceptance: divergence is reported against a written intended direction' pass; 11 tests in the file, 171 in the repo (npm test). 14 mutations each fail at least one test. CLI: npm run technology-direction -- --snapshot examples/technology-direction.example.json exits 3 (unknown).",
       "updated_at": "2026-10-27T14:00:00Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
+        "verified_at": "2026-10-27T13:46:40.960Z",
         "commit_sha": "22cff653a3d37fcb9f03318498a7baa59ad920e8",
         "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/22cff653a3d37fcb9f03318498a7baa59ad920e8",
         "commit_at": "2026-10-27T13:44:48Z",
-        "points_awarded": null,
-        "outstanding": [
-          "Divergence is reported against a written intended direction; with no written direction on file, the answer is 'unknown', not 'no divergence'."
-        ]
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
