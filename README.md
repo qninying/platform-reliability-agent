@@ -1,71 +1,227 @@
-# Ellis: Platform Automation & Reliability Agent
+# Ellis
 
-**Ellis watches the AI agents that run the Colaberry platform. It tells a person, with evidence, what is healthy, what is broken, and what it cannot see.**
+### Reliability and governance for a multi-agent AI platform
 
-Colaberry Project Factory, **platform** domain. **Forward Deployed Engineer:** Quincy Nkwain Ninying. **Manager and stakeholder:** K.D. (AI Engineer). **Approvals:** K.D. gives sign-off, including on agent actions in production. A.M. oversees PR approvals, tool access and governance review.
+[![CI](https://github.com/qninying/platform-reliability-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/qninying/platform-reliability-agent/actions/workflows/ci.yml)
 
-| Capabilities verified | Tests | Runtime dependencies | Changes to the live platform |
-|---|---|---|---|
-| 18 of 48, 2 more awaiting review | 262 passing | none (Node 23.6+, TypeScript) | none: read-only, or a sandbox copy |
+**Ellis watches the AI agents that run the Colaberry platform. It tells a person, with evidence, what is
+healthy, what is broken, and what it cannot see.** It is an AI agent built in phases: this phase builds its
+evidence and judgement layer, read-only, against the real platform's code and records.
+
+| | |
+|---|---|
+| **Engineering ownership** | Quincy Nkwain Ninying: system architecture and forward-deployed engineering |
+| **Platform** | [Colaberry platform](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator) (public): 100+ scheduled agents, Node, TypeScript, PostgreSQL |
+| **Capabilities** | 18 of 48 verified by the platform, 2 more awaiting review ([catalog](docs/capabilities/README.md)) |
+| **Tests** | 262 passing, each capability's key rules shown to fail when broken ([how](docs/decisions/004-prove-each-test-can-fail.md)) |
+| **Autonomy** | every capability starts at R0; first releases at R2 (answer from records), with two at R4 and one at R1, all in a sandbox |
+| **Production writes** | none: read-only, or a sandbox copy ([decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md)) |
+| **Runtime dependencies** | none (Node 23.6+ runs the TypeScript directly) |
+| **Oversight** | K.D. (AI Engineer, manager) approves promotions and any production action; A.M. reviews platform findings and governance |
+
+## The problem
+
+A platform run by a hundred scheduled AI agents can look healthy while it is not. Uptime checks say the
+process is up; they do not say whether each agent did its work. Reading the platform's code while building
+Ellis turned up the ways this happens, each with file:line references:
+
+- **Silence reads as health.** A security director stayed "normal" because no threat arrived from a scanner
+  that never ran.
+- **Failures are recorded as successes.** A wrapper shared by 104 agents logged a failed run as "no issues".
+- **Records say work happened when it did not.** A bug-fix agent told reviewers "Auto-fix has been applied"
+  when nothing was changed.
+- **Controls that do not control.** Pause was ignored by five timers, so a paused agent kept running.
+- **Scores that mean nothing.** An agent that has never run shows a health score of 100, in green.
+
+Ellis answers one operational question per capability, and every answer separates three things the
+platform often merges: *healthy*, *broken*, and *unknown*.
 
 ## How Ellis is built
-- **Unknown is never reported as clean.** A scanner that did not run, scanned 0 files or is switched off reads "unknown", and a rollup over it can never be green.
-- **Every answer cites its evidence:** the table and row id behind each verdict, so a reviewer can check it.
-- **Pinned to the platform's code.** Every rule Ellis copies from the platform names the commit and the file:line it came from.
-- **Tests that are shown to catch defects.** For each capability, a key rule is deliberately broken and a named test is confirmed to fail.
-- **Built by reading the platform first.** Each write-up's "What the code showed" lists the platform weaknesses found while building it, with file:line references.
 
-**Status (2026-10-26):** Release 1 (discovery and validation) is complete: all five discovery stories are verified on the Colaberry platform. Release 2 (capability development) started at K.D.'s request. Discovery documents are drafts until K.D. approves them; approved versions are kept in `discovery/`.
+| Principle | What it means in the code |
+|---|---|
+| **Unknown is never healthy** | A scanner that did not run, scanned 0 files or is switched off reads `unknown`, and a rollup over it can never be green ([decision 002](docs/decisions/002-unknown-is-not-healthy.md), [`securityOversightRollup.ts`](src/capabilities/securityOversightRollup.ts)) |
+| **Evidence over assertion** | Every verdict cites the table and row id it came from, so a reviewer can check it |
+| **Bounded autonomy** | Read-only by type: capabilities see the platform through an interface with no write method ([`readSource.ts`](src/readSource.ts)) |
+| **Pinned to the platform** | Every copied rule names the platform commit and file:line it came from; `--source` re-reads it live and fails if it changed shape ([decision 003](docs/decisions/003-pin-to-platform-code.md)) |
+| **Prove the test can fail** | For each capability, key rules are deliberately broken and a named test is confirmed to fail ([decision 004](docs/decisions/004-prove-each-test-can-fail.md)) |
+| **Verify after a change** | In the sandbox, each changed value is read back, and a second run must change nothing ([example below](#end-to-end-a-repair-proven-safe-to-repeat)) |
 
-## Release 1: discovery and validation
-| # | Story | Status |
+## Architecture
+
+```mermaid
+flowchart LR
+  P[("Colaberry platform<br/>records and source code")] -- "dated export, pulled by an admin" --> RS["Read boundary<br/>no write method"]
+  P -- "rules copied at a named commit" --> PIN["Pinned rules<br/>commit + file:line"]
+  RS --> CAP["20 capability modules<br/>one question each"]
+  PIN --> CAP
+  SB["Sandbox copies<br/>every write journaled"] <--> CAP
+  CAP --> OUT["Verdict + citations<br/>+ explicit unknowns + exit code"]
+  OUT --> H(["People: K.D. approves,<br/>A.M. reviews findings"])
+  H -- "upstream fixes" --> P
+```
+
+Ellis holds no credentials and has no network path to the platform. Detail, layers and the sandbox
+boundaries: [docs/architecture](docs/architecture/README.md).
+
+## Autonomy: where Ellis is, and what moves it
+
+The platform defines an R0 to R9 ladder per capability
+([`autonomyLadder.ts:59-68`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/44430870b/backend/src/services/agentDomain/autonomyLadder.ts#L59-L68)).
+Ellis climbs it one step at a time, on evidence K.D. approves.
+
+| Level | Platform meaning | Ellis today |
+|---|---|---|
+| R0 | Define the workflow, requirements, risks and human decisions | every capability starts here ([discovery](docs/discovery/)) |
+| R1 | Prepare isolated development, fixtures and baseline tests | bug fix dispatch: a sealed baseline test, run in a locked sandbox |
+| R2 | Answer questions using approved knowledge and records | 17 first releases: report and recommend, change nothing |
+| R4 | Execute and verify stateful, multi-step sandbox tasks | auto-repair and ticket resolution, on sandbox copies only |
+| R5 | Evaluate in shadow mode against approved reference outcomes | next step for monitoring, once K.D. sets the acceptable misses and false alarms |
+| R6+ | Supervised production pilot, then authorized automation | not started; each needs its own approval |
+
+## Capabilities
+
+| Domain | Built | What it covers |
+|---|---|---|
+| Reliability engineering | 6 | orchestration health, stuck actions, resilience, cron runs, cron health alerts, agent health scores |
+| Security and AI safety | 4 | secret, code and dependency scans; admin access; agents acting outside their grants; one security verdict |
+| Agent operations and governance | 4 | agent registry, enable and disable control, technology direction, data retention |
+| Controlled remediation, sandbox only | 3 | auto-repair, ticket auto-resolution, bug baselines |
+| Platform optimisation and change | 3 | prompt cost and speed, evolution proposals, preview stacks |
+
+Each row in the [capability catalog](docs/capabilities/README.md) links to a write-up: the question it
+answers, how the answer is decided, what the platform code showed, and the evidence. 28 more capabilities
+are planned in the platform's build plan for this domain.
+
+## End to end: a repair proven safe to repeat
+
+The platform's auto-repair agent fixes broken prompt links on a timer, every minute. Ellis runs the same two
+authorized repairs, but only on a sandbox copy, and proves that running them twice changes things once.
+
+```
+npm run orchestration-repair -- --fixture examples/orchestration-repair.fixture.json
+```
+
+1. **Signal.** Six fault events, shaped like the platform's `ai_system_events` rows: one of each authorized
+   kind, a duplicate (the monitor runs every minute), and faults Ellis must not touch.
+2. **Plan.** Each fault is matched against the authorized repair set and an allowlist of columns. A fault
+   outside the set is reported, not improvised on.
+3. **Act, in the sandbox.** Every write goes through a store that journals it.
+4. **Verify.** Each changed value is read back; any mismatch marks the run failed
+   ([`orchestrationAutoRepair.ts:92`](src/capabilities/orchestrationAutoRepair.ts#L92)).
+5. **Repeat.** A second run must make no change, counted from the journal.
+
+Excerpt of the real output on that fixture (trimmed; the fixture is test data, not production):
+
+```json
+{
+  "runs": [
+    { "run": 1, "outcome": "changed", "verified": true,
+      "applied": [ { "table": "prompt_templates", "row_id": "prompt-off", "column": "is_active",
+                     "from": false, "to": true, "repair_class": "inactive_prompt_reactivation" }, "...3 more" ],
+      "no_op": [ { "fault_id": "evt-2", "reason": "duplicate signal: prompt_templates:prompt-off:is_active is already planned by an earlier fault" } ],
+      "left_alone": [ "...2 more", { "fault_id": "evt-6", "event_type": "gating_deadlock",
+                      "reason": "outside the authorized repair set; reported, not repaired" } ] },
+    { "run": 2, "outcome": "no_op", "verified": true, "applied": [] }
+  ],
+  "total_changes": 4
+}
+```
+
+6. **Approval boundary.** A production pilot is R6 and needs K.D.'s separate approval. One of the two repairs
+   can undo a person's deliberate decision, so it needs K.D.'s decision before any production pilot ([write-up](docs/capabilities/orchestration-auto-repair.md)).
+
+## Findings that changed the platform
+
+Each capability starts by reading the platform code it depends on. The weaknesses found go to A.M., who
+verifies each one against the code. Four fixes are merged in the platform repository, each crediting the
+findings by number:
+
+| Pull request | What it fixed |
+|---|---|
+| [#3410](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3410) | Security and orchestration: nine findings |
+| [#3422](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3422) | The scheduler sending a lead the same message twice |
+| [#3430](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3430) | Pause not containing an agent |
+| [#3435](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3435) | A bug-fix agent saying a fix was applied when none was |
+
+The pattern behind many of them is written up as a rule for anyone building a monitor on the platform:
+[no evidence is not health](docs/no-evidence-is-not-health.md).
+
+## Forward-deployed engineering approach
+
+| Step | What it meant here | Evidence |
+|---|---|---|
+| **Discover** | Classify the system, map the agent's anatomy onto the platform, interview the manager | [discovery](docs/discovery/), each version approved by K.D. |
+| **Map** | Inventory every timer, the wrapper that runs it and the row it reads; grants; admin sections | [`timer-inventory.example.json`](examples/timer-inventory.example.json), [`agentGrants.ts`](src/grants/agentGrants.ts) |
+| **Bound** | Read-only interface, sandbox stores, per-capability autonomy ceilings | [decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md), [`sandbox/`](src/sandbox) |
+| **Build** | One narrow question per capability, against the real platform's rules, pinned to a commit | [`src/capabilities/`](src/capabilities) |
+| **Verify** | Happy path, failure path, boundaries, same-input-twice, and deliberate defects | [`test/`](test), the Evidence section of each write-up |
+| **Report** | Platform weaknesses found while building go to the governance reviewer | [findings that changed the platform](#findings-that-changed-the-platform) |
+| **Observe** | First live export, compared with what the platform shows | outstanding: see boundaries below |
+| **Expand** | Promotion one rung at a time, on evidence K.D. approves | [autonomy](#autonomy-where-ellis-is-and-what-moves-it) |
+
+## Key engineering decisions
+
+| Decision | Reasoning | Tradeoff |
+|---|---|---|
+| [Read-only first; change only in a sandbox](docs/decisions/001-read-only-first-sandbox-for-change.md) | The platform's own repairs showed how a plausible change can be wrong | Ellis fixes nothing live today |
+| [Unknown is never healthy](docs/decisions/002-unknown-is-not-healthy.md) | Most findings were something reporting health it had not measured | More answers read `unknown`, which is less comfortable but true |
+| [Pin rules to platform code, re-check live](docs/decisions/003-pin-to-platform-code.md) | The platform changes daily; an unpinned copy goes stale silently | Each pin is maintenance when the platform changes |
+| [Prove each test can fail](docs/decisions/004-prove-each-test-can-fail.md) | A test that passes first time may not test its rule | Slower to finish each capability |
+| [Evidence layer before reasoning layer](docs/decisions/005-evidence-layer-before-reasoning.md) | A model's answer must trace to records K.D. can check before promotion | No free-form questions yet |
+
+## Current boundaries and next steps
+
+| | |
+|---|---|
+| **Implemented** | 20 capabilities: 18 verified by the platform, 2 awaiting review. 262 tests. |
+| **Validated in a sandbox** | Auto-repair and ticket resolution (R4), bug baselines (R1). |
+| **Not yet done** | No capability has run on a live production export; each read-only capability's write-up lists that check as outstanding. Ellis has no agent row on the platform yet, and K.D. has no admin login to pull an export. |
+| **Next** | The first live export and comparison with what the platform shows; shadow-mode evaluation (R5) once K.D. sets the thresholds; choosing the model and prompt for the reasoning layer; 28 more capabilities in the build plan. |
+
+## Run it
+
+```
+npm install   # TypeScript for the type check; Ellis itself has no runtime dependencies
+npm test
+npm run typecheck
+npm run cron-health -- --snapshot examples/cron-health.example.json    # exits 3: blind spots listed
+npm run agent-health -- --snapshot examples/cron-health.example.json   # exits 3: unscored agents listed
+npm run orchestration-repair -- --fixture examples/orchestration-repair.fixture.json
+```
+
+Each capability has a command and an example input in `examples/`. The examples are built from platform
+source or written for tests, never production data. Each write-up explains its command and exit codes.
+
+## Project history
+
+The work started from an assignment to build an AI agent for this role with its manager, K.D. The discovery
+stories came first, each approved by K.D. before building started.
+
+| # | Discovery story | Status |
 |---|---|---|
 | 1 | Compare the five system classes, and place this domain among them | Approved by K.D. 2026-10-22, version 3 ([01-system-classes.md](docs/discovery/01-system-classes.md)) |
 | 2 | Map the nine anatomy elements onto this domain's agent | Approved by K.D. 2026-10-21, version 4 ([02-agent-anatomy.md](docs/discovery/02-agent-anatomy.md)) |
 | 3 | Document the role and which DA responsibilities transition | Approved by K.D. 2026-10-21, version 2 ([03-role-and-da-transition.md](docs/discovery/03-role-and-da-transition.md)) |
-| 4 | 30-minute manager interview and weekly check-in | Interview plan ready; weekly check-in proposed for Mondays 1:30 pm Central ([04-manager-interview.md](docs/discovery/04-manager-interview.md)) |
+| 4 | 30-minute manager interview and weekly check-in | Interview prepared; first working session with K.D. 2026-10-19; weekly check-in Mondays 1:30 pm Central ([04-manager-interview.md](docs/discovery/04-manager-interview.md)) |
 | 5 | Three proposed agent tasks with boundaries and completion evidence | Version 3; K.D. asked to proceed with building 2026-10-26 ([05-three-proposed-tasks.md](docs/discovery/05-three-proposed-tasks.md)) |
 
-## Release 2: capability development
-Each capability is built with tests, and the platform verifies it from this repo. Each one starts at autonomy level R0, and its first release is R2: it reports and recommends, and changes nothing live.
-
-| # | Capability | The question it answers | Platform agents it reads | Write-up | Status |
-|---|---|---|---|---|---|
-| 1 | **Orchestration health watch** | Is orchestration healthy right now, and when did that last change? | [OrchestrationHealthAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/orchestrationHealthAgent.ts) | [orchestration-health-watch](docs/capabilities/orchestration-health-watch.md) | Verified 2026-10-26, [`cd225af`](https://github.com/qninying/platform-reliability-agent/commit/cd225af) |
-| 2 | **Orchestration auto-repair (sandbox only)** | Can the two approved repairs run safely, changing things only once however often they run? | [OrchestrationAutoRepairAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/orchestrationAutoRepairAgent.ts), [PromptMonitorAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/promptMonitorAgent.ts) | [orchestration-auto-repair](docs/capabilities/orchestration-auto-repair.md) | Verified 2026-10-26, [`add84c9`](https://github.com/qninying/platform-reliability-agent/commit/add84c9) |
-| 3 | **Static security posture scanning** | What did the last secret, code and dependency scan find, and when? | [SecretDetectionAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/secretDetectionAgent.ts), [CodeSecurityAuditAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/codeSecurityAuditAgent.ts), [DependencySecurityAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/dependencySecurityAgent.ts) | [security-posture-scan](docs/capabilities/security-posture-scan.md) | Verified 2026-10-26, [`8ad3ba9`](https://github.com/qninying/platform-reliability-agent/commit/8ad3ba9) |
-| 4 | **Runtime threat and access-control watch** | Who can reach which admin section, and what changed since the last check? | [AccessControlGuardianAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/accessControlGuardianAgent.ts), [RuntimeThreatMonitorAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/runtimeThreatMonitorAgent.ts), admin roles | [runtime-threat-and-access-watch](docs/capabilities/runtime-threat-and-access-watch.md) | Verified 2026-10-26, [`8263fa2`](https://github.com/qninying/platform-reliability-agent/commit/8263fa2) |
-| 5 | **Agent behaviour and AI-safety watch** | Which agents acted outside their grants, and which grant was missing? | [AgentBehaviorMonitorAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/agentBehaviorMonitorAgent.ts), [AISafetyMonitorAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents/security/aiSafetyMonitorAgent.ts), agent grants | [agent-behavior-safety-watch](docs/capabilities/agent-behavior-safety-watch.md) | Verified 2026-10-26, [`f010814`](https://github.com/qninying/platform-reliability-agent/commit/f010814) |
-| 6 | **Security oversight rollup** | Is the platform safe right now, as one verdict over all seven scanners? | [SecurityDirectorAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/769ff4ec1/backend/src/services/agents/security/securityDirectorAgent.ts) and the [seven security timers](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/769ff4ec1/backend/src/services/aiOpsScheduler.ts#L328-L335) it supervises | [security-oversight-rollup](docs/capabilities/security-oversight-rollup.md) | Verified 2026-10-26, [`a520ec2`](https://github.com/qninying/platform-reliability-agent/commit/a520ec2) |
-| 7 | **Platform data retention sweeps** | What is each table's retention window, and when was it last swept? | [PageEventCleanup, ChatMessageCleanup](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/769ff4ec1/backend/src/services/schedulerService.ts#L2473-L2505), [IntelligenceRetentionCycle](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/769ff4ec1/backend/src/services/cory/intelligenceRetention.ts), [generated-card prune](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/769ff4ec1/backend/src/services/timeline/generatedContentRetention.ts), [ProposalCleanupService](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/769ff4ec1/backend/src/services/proposalCleanupService.ts) | [data-retention-sweep](docs/capabilities/data-retention-sweep.md) | Verified 2026-10-26, [`d267672`](https://github.com/qninying/platform-reliability-agent/commit/d267672) |
-| 8 | **Preview stack reaping** | Which preview stacks are live, how idle is each, and which are reap candidates? | [PreviewStackReaper](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/4a34e9e89/backend/src/services/previewStackReaper.ts), [preview stack service](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/4a34e9e89/backend/src/services/previewStackService.ts) | [preview-stack-reaping](docs/capabilities/preview-stack-reaping.md) | Verified 2026-10-26, [`76a41d3`](https://github.com/qninying/platform-reliability-agent/commit/76a41d3) |
-| 9 | **Stale action recovery** | What is stuck right now, for how long, and on which attempt? | [StaleActionRecovery](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/4f6b4d5b0/backend/src/services/schedulerService.ts#L832-L845), [scheduled actions processor](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/4f6b4d5b0/backend/src/services/schedulerService.ts#L389-L498) | [stale-action-recovery](docs/capabilities/stale-action-recovery.md) | Verified 2026-10-26, [`5ca2e3e`](https://github.com/qninying/platform-reliability-agent/commit/5ca2e3e) |
-| 10 | **Agent ticket auto-resolution** | Do the ticket auto-closers close only finished work, and do nothing on a second run? | [WorkforceTicketAutoResolver](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/efb0cfbdc/backend/src/services/company/workforceTicketAutoResolver.ts), [cory-engine](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/efb0cfbdc/backend/src/intelligence/autonomy/coryEngineTicketAutoResolver.ts), [CoryBrain](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/efb0cfbdc/backend/src/intelligence/autonomy/corybrainInitiativeTicketAutoResolver.ts), [BPOS](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/efb0cfbdc/backend/src/services/company/bposCapabilityTicketAutoResolver.ts), [inbox case](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/efb0cfbdc/backend/src/intelligence/autonomy/inboxCaseSourceCompletionResolver.ts) resolvers | [agent-ticket-auto-resolution](docs/capabilities/agent-ticket-auto-resolution.md) | Verified 2026-10-27, [`a2a40ee`](https://github.com/qninying/platform-reliability-agent/commit/a2a40ee) |
-| 11 | **Infrastructure and platform evolution proposals** | What has been proposed, why, and what happened to it? | InfrastructureEvolution, OrchestrationEcosystem and PlatformInnovation architects ([strategy architect](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/3ffea7c54/backend/src/services/agents/strategy/strategyArchitectAgent.ts), [initiative engine](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/3ffea7c54/backend/src/services/departmentInitiativeEngine.ts)) | [infrastructure-evolution-proposals](docs/capabilities/infrastructure-evolution-proposals.md) | Verified 2026-10-27, [`20f265e`](https://github.com/qninying/platform-reliability-agent/commit/20f265e) |
-| 12 | **System resilience supervision** | How resilient is the platform right now, and how old is each part's last signal? | SystemResilienceSuperAgent ([super agent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/a284987c0/backend/src/services/agents/departments/superAgents/systemResilienceSuperAgent.ts), [health rules](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/a284987c0/backend/src/services/agents/departments/superAgents/superAgentHealth.ts), [scheduler](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/a284987c0/backend/src/services/aiOpsScheduler.ts)) | [system-resilience-supervision](docs/capabilities/system-resilience-supervision.md) | Verified 2026-10-27, [`9b251a1`](https://github.com/qninying/platform-reliability-agent/commit/9b251a1) |
-| 13 | **Agent enable, disable, pause and resume control** | Should this agent be stopped, why, what would stopping it actually stop, and does pause or disable actually contain it? | [controlAgent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/a284987c0/backend/src/services/aiOpsService.ts), [cron instrumentation](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/a284987c0/backend/src/services/cronInstrumentation.ts), [run tracker](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/a284987c0/backend/src/services/agentRunTracker.ts), [scheduler](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/a284987c0/backend/src/services/aiOpsScheduler.ts) | [agent-enable-disable-control](docs/capabilities/agent-enable-disable-control.md) | Verified 2026-10-27, [`2cccba9`](https://github.com/qninying/platform-reliability-agent/commit/2cccba9) |
-| 14 | **Workforce technology direction** | What tooling does the fleet hold, and where does it diverge from the written direction? | [director actions](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/7c70f0a76/backend/src/services/workforce/directorActions.ts), [agent permissions](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/7c70f0a76/backend/src/services/agentPermissionService.ts), [agent model](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/7c70f0a76/backend/src/models/AiAgent.ts) | [workforce-technology-direction](docs/capabilities/workforce-technology-direction.md) | Verified 2026-10-27, [`22cff65`](https://github.com/qninying/platform-reliability-agent/commit/22cff65) |
-| 15 | **Prompt and performance optimisation** | Which prompts cost the most, which are slowest, and which have open change proposals? | [instrumented model client](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/8c16250a9/backend/src/services/openaiInstrumented.ts), [meta agent loop](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/8c16250a9/backend/src/intelligence/meta/metaAgentLoop.ts), [experiment agent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/8c16250a9/backend/src/intelligence/meta/experimentAgent.ts) | [prompt-and-performance-optimization](docs/capabilities/prompt-and-performance-optimization.md) | Verified 2026-10-27, [`67e2bc0`](https://github.com/qninying/platform-reliability-agent/commit/67e2bc0) |
-| 16 | **On-demand platform bug fix dispatch** | For a reported bug, does a sandboxed baseline test fail for the reported reason before any fix? | [platform fix agent](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c35fbc56e/backend/src/services/agents/platformFixAgent.ts), [capability registry](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c35fbc56e/backend/src/services/workGraph/capabilityRegistry.ts), [capability router](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c35fbc56e/backend/src/services/workGraph/capabilityRouter.ts) | [platform-bug-fix-dispatch](docs/capabilities/platform-bug-fix-dispatch.md) | Verified 2026-10-27, [`872a586`](https://github.com/qninying/platform-reliability-agent/commit/872a586) |
-| 17 | **Agent registry read surface** | Is this agent registered, is it on, when does it really run, and what has it done? | [registry service](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bb1d3c3bc/backend/src/services/aiOpsService.ts), [next-run helper](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bb1d3c3bc/backend/src/utils/cronNextRun.ts), [registry tab](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bb1d3c3bc/frontend/src/pages/admin/ai-settings/AgentRegistryTab.tsx) | [agent-registry-read-surface](docs/capabilities/agent-registry-read-surface.md) | Verified 2026-10-27, [`b461807`](https://github.com/qninying/platform-reliability-agent/commit/b461807) |
-| 18 | **Cron run instrumentation** | Did this job run, when, how long did it take, and did it fail? | [cron wrapper](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bb1d3c3bc/backend/src/services/cronInstrumentation.ts), [run tracker](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bb1d3c3bc/backend/src/services/agentRunTracker.ts), [cron health alert](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bb1d3c3bc/backend/src/services/cronHealthAlertService.ts) | [cron-run-instrumentation](docs/capabilities/cron-run-instrumentation.md) | Verified 2026-10-27, [`b1eba88`](https://github.com/qninying/platform-reliability-agent/commit/b1eba88) |
-| 19 | **Cron health alerting** | Which cron jobs are error-spiking or overdue right now, and which cannot be evaluated at all? | [cron health check](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/44430870b/backend/src/services/cronHealthAlertService.ts), [interval helper](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/44430870b/backend/src/utils/cronNextRun.ts), [alert service](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/44430870b/backend/src/services/alertService.ts) | [cron-health-alerting](docs/capabilities/cron-health-alerting.md) | Submitted 2026-10-27, awaiting review, [`229707a`](https://github.com/qninying/platform-reliability-agent/commit/229707a) |
-
-29 more capabilities are planned in the platform's build plan for this domain ([`platform.json`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agentDomain/capabilities/platform.json)).
-
-## Run it
-```
-npm install   # TypeScript for the type check; Ellis itself has no runtime dependencies
-npm test
-npm run orchestration-health -- --snapshot examples/orchestration-health.example.json
-npm run security-rollup -- --snapshot examples/security-rollup.example.json
-```
-Each capability has a command and an example input in `examples/`. The examples are not production data. Each write-up explains its command and exit codes.
+| Path | What |
+|---|---|
+| [`assignment.md`](assignment.md) | The original assignment |
+| [`research/`](research) | Research summary and a review of the "Demo to Production" video |
+| [`governance/`](governance) | Tool approval rule and how the agent is treated as a governed identity |
+| [`docs/migration/legacy-migration-plan.md`](docs/migration/legacy-migration-plan.md) | Plan for the 38 inherited platform records (version 1 approved by K.D.) |
+| [`docs/artifacts/`](docs/artifacts) | PDFs: architecture, charter, platform audit, discovery brief, risk review, governance model |
+| [`brd/brd-draft-v0.7.pdf`](brd/brd-draft-v0.7.pdf) | Business requirement document, early draft v0.7 (2026-10-14, written before platform access) |
+| [Command Center](https://qninying.github.io/platform-reliability-agent/) (`index.html`, `command-center/`) | Project progress and plan, read live from `.colaberry/` |
+| `docs/stories/`, `docs/REQUIREMENTS.md`, `CLAUDE.md` | Build plan files managed by the platform's pipeline |
 
 ## The platform Ellis watches
 
-Ellis monitors and works with the agents of the Colaberry platform: **[ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator)** (public).
-Links below are pinned to commit `c860274`, the version Ellis's capabilities were last checked against.
+**[ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator)** (public).
+The links below are pinned to commit `c860274`, the version discovery was done against. Each capability
+write-up names the later commit its own rules were checked against.
 
 | What | Where in the platform repo |
 |---|---|
@@ -76,26 +232,3 @@ Links below are pinned to commit `c860274`, the version Ellis's capabilities wer
 | Agent registry and activity log tables | [`AiAgent.ts`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/models/AiAgent.ts), [`AiAgentActivityLog.ts`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/models/AiAgentActivityLog.ts) |
 | Per-agent write grants | [`agentPermissionService.ts`, `AGENT_PERMISSIONS`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agentPermissionService.ts#L36) |
 | Admin roles and sections | [`access/mgmtRoles.ts`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/access/mgmtRoles.ts) |
-
-## Contents
-| Path | What |
-|---|---|
-| `index.html`, `command-center/` | Command Center: progress and plan, read live from `.colaberry/` |
-| `assignment.md` | Project assignment and first-deliverable list |
-| `research/research-summary.md` | Research summary (deliverable 1), including open questions for K.D. |
-| `research/video-review-demo-to-production.md` | Review of the "Demo to Production" video |
-| `governance/tool-catalog-approach.md` | Tool approval rule and catalog format |
-| `governance/agent-identity.md` | How the agent is treated as a governed identity |
-| `docs/migration/legacy-migration-plan.md` | Legacy migration plan for the 38 inherited platform records (version 1 approved by K.D.) |
-| `docs/discovery/` | Release 1: the five discovery stories (linked above) |
-| `docs/capabilities/` | Release 2: one write-up per capability: what it answers, what the platform code showed, and the evidence |
-| `src/`, `test/`, `examples/` | Ellis's code (one file per capability in `src/capabilities/`), its tests, and example inputs |
-| `brd/brd-draft-v0.7.pdf` | Business requirement document, early draft v0.7 (2026-10-14, written before platform access) |
-
-## First deliverable checklist
-- [x] Research summary with source links
-- [x] Component map: `docs/discovery/02-agent-anatomy.md` (version 5; version 4 approved by K.D. 2026-10-21)
-- [x] Role summary: `docs/discovery/03-role-and-da-transition.md` (version 2, approved by K.D. 2026-10-21)
-- [x] Manager meeting notes (kept private; interview held 2026-10-19, `docs/discovery/04-manager-interview.md`)
-- [x] First three proposed agent tasks (info, tools, approvals, proof of completion): `docs/discovery/05-three-proposed-tasks.md`
-- [x] Recurring weekly meeting with K.D.: Mondays, 1:30 pm Central ([04-manager-interview.md](docs/discovery/04-manager-interview.md))
