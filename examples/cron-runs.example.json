@@ -1,0 +1,31 @@
+{
+  "captured_at": "2026-10-27T12:00:00Z",
+  "captured_by": "example, not production data: names, schedules, timer wiring and which rows exist are taken from the platform at bb1d3c3; counts, times and run rows are illustrative",
+  "ai_agents": [
+    { "id": "example-ReesePresenceHeartbeat", "agent_name": "ReesePresenceHeartbeat", "enabled": true, "status": "idle", "run_count": 3, "avg_duration_ms": 412, "last_run_at": "2026-10-27T11:59:00.412Z", "error_count": 0, "last_error": null, "last_error_at": null },
+    { "id": "example-ProposalCleanupService", "agent_name": "ProposalCleanupService", "enabled": true, "status": "idle", "run_count": 2, "avg_duration_ms": 1650, "last_run_at": "2026-10-27T07:00:01.800Z", "error_count": 1, "last_error": "connect ETIMEDOUT", "last_error_at": "2026-10-27T07:00:01.800Z" },
+    { "id": "example-AutonomousEngine", "agent_name": "AutonomousEngine", "enabled": true, "status": "idle", "run_count": 40, "avg_duration_ms": 9300, "last_run_at": "2026-10-27T11:55:09.300Z", "error_count": 0, "last_error": "LLM provider returned 429", "last_error_at": "2026-10-27T11:55:09.300Z" },
+    { "id": "example-Dara", "agent_name": "Dara", "enabled": true, "status": "running", "run_count": 2, "avg_duration_ms": 20500, "last_run_at": "2026-10-27T11:10:20.000Z", "error_count": 0, "last_error": null, "last_error_at": null },
+    { "id": "example-MarketingPublishingWorker", "agent_name": "MarketingPublishingWorker", "enabled": false, "status": "idle", "run_count": 0, "avg_duration_ms": null, "last_run_at": null, "error_count": 0, "last_error": null, "last_error_at": null }
+  ],
+  "ai_agent_activity_logs": [
+    { "id": "example-act-r3", "agent_id": "example-ReesePresenceHeartbeat", "action": "ReesePresenceHeartbeat", "result": "success", "trace_id": "example-trace-r3", "duration_ms": 412, "reason": "Completed in 412ms", "created_at": "2026-10-27T11:59:00.412Z" },
+    { "id": "example-act-r2", "agent_id": "example-ReesePresenceHeartbeat", "action": "ReesePresenceHeartbeat", "result": "success", "trace_id": "example-trace-r2", "duration_ms": 398, "reason": "Completed in 398ms", "created_at": "2026-10-27T11:58:00.398Z" },
+    { "id": "example-act-r1", "agent_id": "example-ReesePresenceHeartbeat", "action": "ReesePresenceHeartbeat", "result": "success", "trace_id": "example-trace-r1", "duration_ms": 426, "reason": "Completed in 426ms", "created_at": "2026-10-27T11:57:00.426Z" },
+    { "id": "example-act-p2", "agent_id": "example-ProposalCleanupService", "action": "ProposalCleanupService", "result": "failed", "trace_id": "example-trace-p2", "duration_ms": 1800, "reason": "connect ETIMEDOUT", "created_at": "2026-10-27T07:00:01.800Z" },
+    { "id": "example-act-p1", "agent_id": "example-ProposalCleanupService", "action": "ProposalCleanupService", "result": "success", "trace_id": "example-trace-p1", "duration_ms": 1500, "reason": "Completed in 1500ms", "created_at": "2026-10-26T07:00:01.500Z" },
+    { "id": "example-act-d1", "agent_id": "example-Dara", "action": "Dara", "result": "success", "trace_id": "example-trace-d1", "duration_ms": 20000, "reason": "Completed in 20000ms", "created_at": "2026-10-27T11:10:20.000Z" }
+  ],
+  "timers": [
+    { "timer": "ReesePresenceHeartbeat", "schedule": "*/1 * * * *", "label": "ReesePresenceHeartbeat", "ref": "backend/src/services/schedulerService.ts:1750", "gates": [{ "gate": "instrument_cron_job", "flag": "ReesePresenceHeartbeat" }] },
+    { "timer": "ReliabilityAlerting", "schedule": "*/15 * * * *", "label": "ReliabilityAlerting", "ref": "backend/src/services/schedulerService.ts:1901", "gates": [{ "gate": "instrument_cron_job", "flag": "ReliabilityAlerting" }] },
+    { "timer": "BlogRefresh", "schedule": "30 3 * * 1", "label": "BlogRefresh", "ref": "backend/src/services/schedulerService.ts:2082", "gates": [{ "gate": "instrument_cron_job", "flag": "BlogRefresh" }] },
+    { "timer": "AutonomousEngine", "schedule": "5,15,25,35,45,55 * * * *", "label": "Autonomous engine", "ref": "backend/src/services/aiOpsScheduler.ts:214", "gates": [{ "gate": "track_agent_run", "flag": "AutonomousEngine" }] },
+    { "timer": "ProposalCleanupService", "schedule": "0 2 * * *", "label": "Proposal expiration cleanup", "ref": "backend/src/services/aiOpsScheduler.ts:344", "gates": [{ "gate": "instrument_cron_job", "flag": "ProposalCleanupService" }] },
+    { "timer": "Dara", "schedule": "10 6 * * *", "label": "AI Workforce: Curriculum director (Dara)", "ref": "backend/src/services/aiOpsScheduler.ts:367", "gates": [{ "gate": "instrument_cron_job", "flag": "Dara" }, { "gate": "director_gate", "flag": "WorkforceCurriculumDirector" }] },
+    { "timer": "Dara", "schedule": "30 6 * * *", "label": "AI Workforce: Certification director (Dara)", "ref": "backend/src/services/aiOpsScheduler.ts:369", "gates": [{ "gate": "instrument_cron_job", "flag": "Dara" }] },
+    { "timer": "Dara", "schedule": "15 6 * * *", "label": "AI Workforce: Dara targeted research sweep", "ref": "backend/src/services/aiOpsScheduler.ts:375", "gates": [{ "gate": "instrument_cron_job", "flag": "Dara" }] },
+    { "timer": "MarketingPublishingWorker", "schedule": "* * * * *", "label": "Marketing publishing queue tick (every minute)", "ref": "backend/src/services/aiOpsScheduler.ts:538", "gates": [{ "gate": "instrument_cron_job", "flag": "MarketingPublishingWorker" }] }
+  ],
+  "timer_scope": ["the nine timers listed in this example (a subset of the platform's)"]
+}

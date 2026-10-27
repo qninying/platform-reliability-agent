@@ -390,13 +390,22 @@
       "criteria": [
         {
           "text": "For an untracked timer the answer is 'not instrumented — no record exists', never 'did not run'. A positive control: asking about a name known to have no ai_agents row must return the not-instrumented answer.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/cronRunInstrumentation.ts",
+        "src/cli/cronRuns.ts",
+        "test/cronRunInstrumentation.test.ts",
+        "examples/cron-runs.example.json",
+        "docs/capabilities/cron-run-instrumentation.md",
+        "package.json"
+      ],
+      "tests_added": [
+        "test/cronRunInstrumentation.test.ts"
+      ],
+      "notes": "Read-only (platform commit bb1d3c3): answers 'did this job run, when, how long did it take, and did it fail' from ai_agents, the activity log and the capability-13 timer inventory, and names what it cannot say. A name with no ai_agents row is 'not instrumented, no record exists' with ran null, never 'did not run' (the wrapper runs it and writes nothing, cronInstrumentation.ts:34-38). A registered row gets its last finish, duration, derived start, result, error message and trace id; trackAgentRun timers are read from counters only, with a failure read from last_error_at. Each answer lists what the records cannot show: error class, skipped ticks of a disabled or paused job, the current run when status is running, whether a failed run started its job, which pooled timer ran, counted runs with no run row. --coverage groups every timer; on the real inventory 33 are not instrumented, matching the platform baseline. Tests 'acceptance: for an untracked timer the answer is 'not instrumented, no record exists', never 'did not run'' and 'acceptance, positive control: a name known to have no ai_agents row returns the not-instrumented answer' (ReliabilityAlerting, from the real inventory, checked to have no row) pass; 18 tests in the file, 231 in the repo (npm test). 16 mutations each fail at least one test. CLI: npm run cron-runs -- --snapshot examples/cron-runs.example.json --name ReliabilityAlerting exits 3 (not instrumented).",
+      "updated_at": "2026-10-27T23:00:00Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

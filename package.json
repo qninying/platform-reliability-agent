@@ -26,7 +26,8 @@
     "timer-inventory": "node src/cli/timerInventory.ts",
     "prompt-performance": "node src/cli/promptPerformance.ts",
     "bug-baseline": "node src/cli/bugBaseline.ts",
-    "registry-ask": "node src/cli/registryAsk.ts"
+    "registry-ask": "node src/cli/registryAsk.ts",
+    "cron-runs": "node src/cli/cronRuns.ts"
   },
   "devDependencies": {
     "@types/node": "22.15.3",
