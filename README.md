@@ -12,7 +12,7 @@ evidence and judgement layer, read-only, against the real platform's code and re
 |---|---|
 | **Engineering ownership** | Quincy Nkwain Ninying: system architecture and forward-deployed engineering |
 | **Platform** | [Colaberry platform](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator) (public): 100+ scheduled agents, Node, TypeScript, PostgreSQL |
-| **Capabilities** | 20 of 48 verified by the platform ([catalog](docs/capabilities/README.md)) |
+| **Capabilities** | 21 of 48 verified by the platform ([catalog](docs/capabilities/README.md)) |
 | **Tests** | 274 passing, each capability's key rules shown to fail when broken ([how](docs/decisions/004-prove-each-test-can-fail.md)) |
 | **Autonomy** | every capability starts at R0; first releases at R2 (answer from records), with two at R4 and one at R1, all in a sandbox |
 | **Production writes** | none: read-only, or a sandbox copy ([decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md)) |
@@ -75,14 +75,14 @@ Ellis climbs it one step at a time, on evidence K.D. approves.
 
 | Domain | Built | What it covers |
 |---|---|---|
-| Reliability engineering | 6 | orchestration health, stuck actions, resilience, cron runs, cron health alerts, agent health scores |
+| Reliability engineering | 7 | orchestration health, stuck actions, resilience, cron runs, cron health alerts, agent health scores, timer and agent registry reconciliation |
 | Security and AI safety | 4 | secret, code and dependency scans; admin access; agents acting outside their grants; one security verdict |
 | Agent operations and governance | 4 | agent registry, enable and disable control, technology direction, data retention |
 | Controlled remediation, sandbox only | 3 | auto-repair, ticket auto-resolution, bug baselines |
 | Platform optimisation and change | 3 | prompt cost and speed, evolution proposals, preview stacks |
 
 Each row in the [capability catalog](docs/capabilities/README.md) links to a write-up: the question it
-answers, how the answer is decided, what the platform code showed, and the evidence. 28 more capabilities
+answers, how the answer is decided, what the platform code showed, and the evidence. 27 more capabilities
 are planned in the platform's build plan for this domain.
 
 ## End to end: a repair proven safe to repeat
@@ -166,10 +166,10 @@ The pattern behind many of them is written up as a rule for anyone building a mo
 
 | | |
 |---|---|
-| **Implemented** | 21 capabilities built, 20 verified by the platform so far. 274 tests. |
+| **Implemented** | 21 capabilities, all verified by the platform. 274 tests. |
 | **Validated in a sandbox** | Auto-repair and ticket resolution (R4), bug baselines (R1). |
 | **Not yet done** | No capability has run on a live production export; each read-only capability's write-up lists that check as outstanding. Ellis has no agent row on the platform yet, and K.D. has no admin login to pull an export. |
-| **Next** | The first live export and comparison with what the platform shows; shadow-mode evaluation (R5) once K.D. sets the thresholds; choosing the model and prompt for the reasoning layer; 28 more capabilities in the build plan. |
+| **Next** | The first live export and comparison with what the platform shows; shadow-mode evaluation (R5) once K.D. sets the thresholds; choosing the model and prompt for the reasoning layer; 27 more capabilities in the build plan. |
 
 ## Run it
 
