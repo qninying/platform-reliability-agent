@@ -67,12 +67,32 @@ that changed a management role. With no previous sweep, it says what changed is 
    This is why Ellis compares whole sweeps rather than relying on the audit log. Still open upstream
    at `3ffea7c`.
 5. **The runtime monitor does not read auth signals.** It counts page events per visitor and failed
-   agent runs (`runtimeThreatMonitorAgent.ts:26`, `:46`). Auth failures go only to the console
-   (`backend/src/middlewares/authFailureLog.ts:74`), so a burst of failed admin logins is not one of its
-   inputs.
+   agent runs (`runtimeThreatMonitorAgent.ts:26`, `:46`), so a burst of failed admin logins is not one
+   of its inputs. Corrected on 2026-10-28 against `4443087`: this line first said auth failures go only to
+   the console. A bad or expired token is in fact stored as an `admin_auth_failed` event
+   (`backend/src/middlewares/authMiddleware.ts:75`, `authFailureLog.ts:49-71`). A wrong password is the
+   one that leaves no record (see the limits below).
 
 Not in this release: runtime threat alerts and expiry for temporary grants (the platform has no expiry
 field on either kind of access).
+
+## Two limits in every answer
+
+K.D. asked on 2026-10-28 that Ellis state both of these in its answers, because fixing them is A.M.'s
+call. Every report carries them in `limits`, cited at `4443087`:
+
+1. **A removed role can keep working for up to 12 hours.** The staff admin token carries the management
+   role and lasts 12 hours (`backend/src/services/access/mgmtBridgeService.ts:92`). The section gate reads
+   the role from the token, not the database (`backend/src/middlewares/mgmtSectionGate.ts:248-256`). So a
+   section this report shows as lost may still open until that token expires.
+2. **Failed admin logins are not recorded.** A wrong password returns a 401
+   (`backend/src/services/adminService.ts:12`, `:17`) that the error handler sends back without logging
+   or storing it (`backend/src/middlewares/errorHandler.ts:10-12`). Only a bad or expired token is
+   recorded, as an `admin_auth_failed` event, and this watch does not read those yet.
+
+Agreed with K.D. on 2026-10-28: the watch runs on its own beside the platform's access control guardian
+for one review cycle, A.M. decides when the guardian is retired, and the report goes to K.D. only until
+Ellis may alert others.
 
 ## How to run it
 
@@ -87,9 +107,11 @@ The example is not production data. A snapshot that carries a credential column 
 ## Evidence
 
 - **Named passing test:** "acceptance: 'no admin_users row' and 'admin_users row with no sections' are
-  different answers with different remedies". 11 tests in this file, 50 in the repo, all passing under `npm test`.
+  different answers with different remedies". Also "every answer states the two platform limits". 12 tests
+  in this file, all passing under `npm test`.
 - **The tests catch defects:** merging the two statuses fails the acceptance test; removing the staff-only
-  rule fails the dormant-role test (each checked by editing the code, running `npm test`, and restoring it).
+  rule fails the dormant-role test; an empty `limits`, a dropped limit, or a list shared between answers
+  each fails the limits test (each checked by editing the code, running the tests, and restoring it).
 - **Not yet run on live records.** K.D. cannot reach the surface that reports access
   (`backend/src/routes/admin/aiOpsRoutes.ts:64`); the first live check is one export from A.M.'s
   agent-management admin screen.

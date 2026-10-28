@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { validateAccessSnapshot, type AccessSnapshot } from '../src/access/accessSnapshot.ts';
 import { sectionsForMgmtRole, ALL_SECTIONS } from '../src/access/sectionMap.ts';
-import { accessReport, accessSweep } from '../src/capabilities/runtimeThreatAccessWatch.ts';
+import { accessReport, accessSweep, LIMITS } from '../src/capabilities/runtimeThreatAccessWatch.ts';
 
 // Test inputs shaped like the platform's tables; addresses use the reserved example.invalid domain.
 function snap(over: Partial<AccessSnapshot> = {}, at = '2026-10-26T05:00:00Z'): AccessSnapshot {
@@ -115,4 +115,19 @@ test('bad input is refused with a contract error', () => {
 test('idempotent: the same records in any order give the same sweep', () => {
   const rows = { admin_users: [{ id: 'au-1', email: 'b@example.invalid', role: 'admin' }, { id: 'au-2', email: 'a@example.invalid', role: 'sales' }] };
   assert.deepEqual(accessSweep(snap(rows)), accessSweep(snap({ admin_users: [...rows.admin_users].reverse() })));
+});
+
+test('every answer states the two platform limits: a removed role works for up to 12 hours, and failed admin logins are not recorded', () => {
+  const first = accessReport(snap(), null);
+  const later = accessReport(snap({}, '2026-10-27T05:00:00Z'), accessSweep(snap()));
+  for (const r of [first, later]) {
+    assert.equal(r.limits.length, 2);
+    assert.match(r.limits[0], /up to 12 hours/);
+    assert.match(r.limits[0], /mgmtBridgeService\.ts:92/);
+    assert.match(r.limits[1], /Failed admin logins are not recorded/);
+    assert.match(r.limits[1], /errorHandler\.ts:10-12/);
+  }
+  first.limits.pop();
+  assert.equal(LIMITS.length, 2, 'a caller changing its copy does not change the next answer');
+  assert.equal(accessReport(snap(), null).limits.length, 2);
 });

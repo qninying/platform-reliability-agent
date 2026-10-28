@@ -117,7 +117,15 @@ export interface AccessReport {
   changes: AccessChange[] | null;
   access_audit_rows: Array<{ id: string; actor: string | null; entity_id: string | null; new_values: Record<string, unknown> | null; created_at: string }>;
   notes: string[];
+  limits: string[];
 }
+
+// Two platform limits stated in every answer, as K.D. asked on 2026-10-28; fixing either is A.M.'s call.
+// Cited at platform commit 4443087.
+export const LIMITS: readonly string[] = [
+  'A removed management role can keep working for up to 12 hours. The staff admin token carries the role and lasts 12 hours (services/access/mgmtBridgeService.ts:92), and the section gate reads the role from the token, not the database (middlewares/mgmtSectionGate.ts:248-256). A section reported here as lost may still open until that token expires.',
+  'Failed admin logins are not recorded, so this report cannot show them. A wrong password returns a 401 (services/adminService.ts:12, :17) that the error handler sends back without logging or storing it (middlewares/errorHandler.ts:10-12). Only a bad or expired token is recorded, as an admin_auth_failed event (middlewares/authMiddleware.ts:75), which this watch does not read.',
+];
 
 // Compares this sweep with the previous one. Without a previous sweep, "what changed" is unknown
 // and said so, rather than reported as "nothing changed".
@@ -135,6 +143,7 @@ export function accessReport(snap: AccessSnapshot, previous: Sweep | null): Acce
     changes: previous ? diff(previous, sweep) : null,
     access_audit_rows: accessAuditRows(snap.audit_logs, since),
     notes,
+    limits: [...LIMITS],
   };
 }
 

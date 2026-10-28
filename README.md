@@ -13,7 +13,7 @@ evidence and judgement layer, read-only, against the real platform's code and re
 | **Engineering ownership** | Quincy Nkwain Ninying: system architecture and forward-deployed engineering |
 | **Platform** | [Colaberry platform](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator) (public): 100+ scheduled agents, Node, TypeScript, PostgreSQL |
 | **Capabilities** | 21 of 48 verified by the platform ([catalog](docs/capabilities/README.md)) |
-| **Tests** | 274 passing, each capability's key rules shown to fail when broken ([how](docs/decisions/004-prove-each-test-can-fail.md)) |
+| **Tests** | 275 passing, each capability's key rules shown to fail when broken ([how](docs/decisions/004-prove-each-test-can-fail.md)) |
 | **Autonomy** | every capability starts at R0; first releases at R2 (answer from records), with two at R4 and one at R1, all in a sandbox |
 | **Production writes** | none: read-only, or a sandbox copy ([decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md)) |
 | **Runtime dependencies** | none (Node 23.6+ runs the TypeScript directly) |
@@ -167,7 +167,7 @@ The pattern behind many of them is written up as a rule for anyone building a mo
 
 | | |
 |---|---|
-| **Implemented** | 21 capabilities, all verified by the platform. 274 tests. |
+| **Implemented** | 21 capabilities, all verified by the platform. 275 tests. |
 | **Validated in a sandbox** | Auto-repair and ticket resolution (R4), bug baselines (R1). |
 | **Not yet done** | No capability has run on a live production export; each read-only capability's write-up lists that check as outstanding. Ellis has no agent row on the platform yet, and K.D. has no admin login to pull an export. |
 | **Next** | The first live export and comparison with what the platform shows; shadow-mode evaluation (R5) once K.D. sets the thresholds; choosing the model and prompt for the reasoning layer; 27 more capabilities in the build plan. |
