@@ -705,13 +705,23 @@
       "criteria": [
         {
           "text": "Where no trace exists for a failure, the answer is 'not traceable — this job is untracked', never a reconstructed narrative.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/incidentTrace.ts",
+        "src/cli/incidentTrace.ts",
+        "test/incidentTrace.test.ts",
+        "examples/incident-trace.example.json",
+        "docs/capabilities/incident-trace-and-error-triage.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/incidentTrace.test.ts"
+      ],
+      "notes": "Read-only (platform commit c96f6a6): assembles the trace behind a trace id, activity row, error record or a job latest failure, adds the AI calls sharing the trace (the platform trace view reads activity rows only), and states the probable cause in the run own words with the rows behind it. Where no trace exists the answer starts Not traceable with the exact reason (no row, wrapper records no run, row has no trace, error links to no run, events without a run), and for an untracked job it is Not traceable: this job is untracked (a colon in place of the criterion dash); no cause is ever given without a trace. Error class and severity are always null, said plainly. Tests acceptance: where no trace exists for a failure, the answer is not traceable: this job is untracked, never a narrative and acceptance: no not-traceable answer cites a row it was not asked about, even one that looks related pass; 9 tests in the file, 283 in the repo (npm test). 19 mutations each fail at least one test.",
+      "updated_at": "2026-10-28T02:21:04Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

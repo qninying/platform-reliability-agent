@@ -1,0 +1,200 @@
+{
+  "captured_at": "2026-10-28T03:00:00Z",
+  "captured_by": "example, not production data: real agent and timer names and timer lines at platform commit c96f6a6, hand-written records, one of each case (a thrown failure with AI calls in its trace, a reported error, an agent's own row with no trace, AI calls from an untracked job, a stalled-campaign error and an auto-resolved one)",
+  "ai_agents": [
+    {
+      "id": "a-admissions",
+      "agent_name": "AdmissionsAssistantAgent"
+    },
+    {
+      "id": "a-reese",
+      "agent_name": "ReesePresenceHeartbeat"
+    },
+    {
+      "id": "a-meta",
+      "agent_name": "MetaAgentLoop"
+    },
+    {
+      "id": "a-scanner",
+      "agent_name": "CampaignHealthScanner"
+    },
+    {
+      "id": "a-repair",
+      "agent_name": "CampaignRepairAgent"
+    }
+  ],
+  "ai_agent_activity_logs": [
+    {
+      "id": "log-1",
+      "agent_id": "a-admissions",
+      "action": "agent_execution_failed",
+      "result": "failed",
+      "reason": "connect ETIMEDOUT 10.0.0.12:5432",
+      "trace_id": "t-admissions-1",
+      "created_at": "2026-10-28T02:10:04Z",
+      "stack_trace": "Error: connect ETIMEDOUT\n    at TCPConnectWrap.afterConnect",
+      "details": null
+    },
+    {
+      "id": "log-2",
+      "agent_id": "a-admissions",
+      "action": "draft_reply",
+      "result": "success",
+      "reason": "drafted reply for lead 4411",
+      "trace_id": null,
+      "created_at": "2026-10-28T02:10:02Z",
+      "details": null
+    },
+    {
+      "id": "log-3",
+      "agent_id": "a-reese",
+      "action": "ReesePresenceHeartbeat",
+      "result": "failed",
+      "reason": "Skool session expired",
+      "trace_id": "t-reese-1",
+      "created_at": "2026-10-28T02:15:00Z",
+      "stack_trace": "Error: Skool session expired",
+      "details": null
+    },
+    {
+      "id": "log-4",
+      "agent_id": "a-repair",
+      "action": "scan_failed_with_errors: 1 error(s)",
+      "result": "failed",
+      "reason": null,
+      "trace_id": "t-repair-1",
+      "created_at": "2026-10-28T02:20:00Z",
+      "details": {
+        "errors": [
+          "Failed to retry action 9a1: SMTP 421 rate limited"
+        ]
+      }
+    },
+    {
+      "id": "log-5",
+      "agent_id": "a-repair",
+      "action": "detect_stalled_campaign",
+      "result": "success",
+      "reason": "12 active leads but no pending scheduled actions",
+      "trace_id": null,
+      "created_at": "2026-10-28T02:20:01Z",
+      "details": null
+    }
+  ],
+  "campaign_errors": [
+    {
+      "id": "err-stalled",
+      "campaign_id": "c-spring",
+      "component": "automation",
+      "severity": "warning",
+      "error_message": "Campaign stalled: 12 active leads but 0 pending actions",
+      "resolved": false,
+      "resolved_by": null,
+      "repair_attempt_id": null,
+      "created_at": "2026-10-28T02:20:01Z"
+    },
+    {
+      "id": "err-old",
+      "campaign_id": "c-winter",
+      "component": "automation",
+      "severity": "warning",
+      "error_message": "Campaign stalled: 3 active leads but 0 pending actions",
+      "resolved": true,
+      "resolved_by": "auto:CampaignRepairAgent",
+      "repair_attempt_id": null,
+      "created_at": "2026-10-19T08:00:00Z"
+    }
+  ],
+  "ai_events": [
+    {
+      "id": "ev-1",
+      "trace_id": "t-reese-1",
+      "event_type": "llm.call",
+      "created_at": "2026-10-28T02:14:58Z"
+    },
+    {
+      "id": "ev-2",
+      "trace_id": "t-intel-untracked",
+      "event_type": "llm.call",
+      "created_at": "2026-10-28T02:30:00Z"
+    }
+  ],
+  "timers": [
+    {
+      "timer": "AdmissionsAssistant",
+      "schedule": "4,14,24,34,44,54 * * * *",
+      "label": "Admissions assistant",
+      "ref": "backend/src/services/aiOpsScheduler.ts:240",
+      "gates": [
+        {
+          "gate": "run_agent",
+          "flag": "AdmissionsAssistantAgent"
+        }
+      ]
+    },
+    {
+      "timer": "ReesePresenceHeartbeat",
+      "schedule": "*/15 * * * *",
+      "label": "Reese presence heartbeat",
+      "ref": "backend/src/services/schedulerService.ts:1750",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "ReesePresenceHeartbeat"
+        }
+      ]
+    },
+    {
+      "timer": "MetaAgentLoop",
+      "schedule": "2 * * * *",
+      "label": "Meta agent loop",
+      "ref": "backend/src/services/aiOpsScheduler.ts:224",
+      "gates": [
+        {
+          "gate": "track_agent_run",
+          "flag": "MetaAgentLoop"
+        }
+      ]
+    },
+    {
+      "timer": "CampaignHealthScanner",
+      "schedule": "*/15 * * * *",
+      "label": "Campaign health scan",
+      "ref": "backend/src/services/aiOpsScheduler.ts:174",
+      "gates": [
+        {
+          "gate": "own_check",
+          "flag": "CampaignHealthScanner"
+        }
+      ]
+    },
+    {
+      "timer": "PaySimplePaymentSync",
+      "schedule": "*/30 * * * *",
+      "label": "PaySimple payment sync",
+      "ref": "backend/src/services/schedulerService.ts:2175",
+      "gates": [
+        {
+          "gate": "instrument_cron_job",
+          "flag": "PaySimplePaymentSync"
+        }
+      ]
+    },
+    {
+      "timer": "CampaignRepairAgent",
+      "schedule": "8,28,48 * * * *",
+      "label": "Campaign repair",
+      "ref": "backend/src/services/aiOpsScheduler.ts:175",
+      "gates": [
+        {
+          "gate": "run_agent",
+          "flag": "CampaignRepairAgent"
+        }
+      ]
+    }
+  ],
+  "timer_scope": [
+    "backend/src/services/aiOpsScheduler.ts",
+    "backend/src/services/schedulerService.ts"
+  ]
+}
