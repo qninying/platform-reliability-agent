@@ -13,7 +13,8 @@
 //   agent throws (aiOrchestrator.ts:158-166, :300-306), so error_count can exceed run_count; instrumentCronJob
 //   adds both and always writes status idle (cronInstrumentation.ts:68-81); trackAgentRun adds run_count on
 //   success and failure and never touches error_count or status (agentRunTracker.ts:44-70); a director gate
-//   records no run at all (workforceAgentRuntime.ts:66-69).
+//   records no run on the row, only activity rows for a success or a skip (workforceAgentRuntime.ts:66-69,
+//   :164-173).
 
 import type { Citation } from './orchestrationHealthWatch.ts';
 import { GATES, type Gate, type TimerRow } from './agentEnableDisableControl.ts';

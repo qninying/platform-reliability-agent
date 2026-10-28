@@ -17,9 +17,10 @@
 // - The check runs at 10, 25, 40 and 55 past each hour (schedulerService.ts:3400) and records no run of its
 //   own (:3397-3399), so a quiet check and a check that is not running look the same.
 // - What a run leaves behind depends on its wrapper: runAgent and instrumentCronJob write last_run_at and one
-//   activity row per run; trackAgentRun writes last_run_at only (agentRunTracker.ts:40-65); a workforce
-//   director's gate writes neither (workforce/workforceAgentRuntime.ts:66-69), a gap the scheduler names and
-//   closes for Dara only (aiOpsScheduler.ts:118-128).
+//   activity row per run; trackAgentRun writes last_run_at and run_count only, on failure too (agentRunTracker.ts:40-65); a
+//   workforce director's gate never sets last_run_at (workforce/workforceAgentRuntime.ts:66-69) and writes an
+//   activity row for a success or a skip but none for a failure (:164, :170-173), a gap the scheduler names
+//   and closes for Dara only (aiOpsScheduler.ts:118-128).
 
 import type { Citation } from './orchestrationHealthWatch.ts';
 import { GATES, type Gate, type TimerRow } from './agentEnableDisableControl.ts';
@@ -170,7 +171,7 @@ function evaluate(row: HealthRow, logs: RunLog[], now: Date, t: Thresholds, deci
   const recordings = new Set(deciders.map((d) => RECORDS[d.gate]));
   const refs = deciders.map((d) => d.ref).join(', ');
   if (deciders.length === 0) notes.push(`no timer in ${scope.join(', ')} records under this row; a timer outside that scope may`);
-  else if (recordings.size === 1 && recordings.has('nothing')) notes.push(`its timer (${refs}) runs through a director gate that records no run: last_run_at and run rows never change, so a run that fails or stops is invisible to both checks (workforceAgentRuntime.ts:66-69; the scheduler closes this gap for Dara only, aiOpsScheduler.ts:118-128)`);
+  else if (recordings.size === 1 && recordings.has('nothing')) notes.push(`its timer (${refs}) runs through a director gate that records no run on the row: last_run_at never changes, and a failure writes no activity row while a success or skip does, so a run that fails or stops is invisible to both checks (workforceAgentRuntime.ts:66-69, :164-173; the scheduler closes this gap for Dara only, aiOpsScheduler.ts:118-128)`);
   else if (recordings.has('counters_only')) notes.push(`its timer (${refs}) writes no activity row per run (agentRunTracker.ts:40-65), so its failures never enter the error-rate sample`);
   else if (recordings.has('unknown')) notes.push(`what its timer (${refs}) records per run is not known to Ellis`);
   return {

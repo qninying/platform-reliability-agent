@@ -37,14 +37,20 @@ None of these is a live risk.
 
 **New: reporting gaps with no runtime consequence**
 
-1. **The registry's "next run" is off by the server's UTC offset for most of the fleet's daily timers.**
-   - The scheduler fires its timers in Chicago time (`backend/src/services/aiOpsScheduler.ts:559`, `:570`).
+1. **The registry's "next run" is off by the server's UTC offset for timers registered in Chicago time.**
+   - Those timers fire in Chicago time: every timer in `backend/src/services/aiOpsScheduler.ts` (`:559`,
+     `:570`), and the 21 of the 70 in `schedulerService.ts` that pass the Chicago option. The other 49 fire
+     in the container's own time, so the page's next run is right for them.
    - The registry computes the next run with `calculateNextRun`, which ignores its timezone argument
      (`backend/src/utils/cronNextRun.ts:7-9`), so it uses the server's clock.
-   - The production container runs UTC, as the platform's own code notes
-     (`backend/src/scripts/lib/renderPaysimpleReport.js:53`, `backend/src/scripts/lib/compileFamilyBriefingData.js:26`).
-   - So for every hour-specific schedule, the page's next run is 5 hours off (6 in winter). Dara's 06:10
-     run fires at 06:10 Chicago time; the page predicts 06:10 UTC.
+   - The production container runs UTC with TZ unset, which A.M. read from the running container on
+     2026-10-28. `backend/.env.example:19` says `TZ=America/Chicago`, so the template is wrong about it.
+   - So for an hour-specific schedule, the page's next run is 5 hours early (6 after 1 November).
+     WorkforceCurriculumDirector's row says 06:10 (`agentRegistrySeed.ts:2258`): the job fires at 06:10
+     Chicago time and the page shows 06:10 UTC. Dara's own row shows no next run at all, because its
+     schedule is empty (`:2529`).
+   - Display only: the timers fire at the right time. The same function feeds a ticket's next check
+     (`ticketAutoCheckService.ts:205-206`), per A.M.
 2. **"Next run" is shown whether or not anything will run.** It is computed from the row's own schedule field
    for any row that has one (`backend/src/services/aiOpsService.ts:249-251`). The page shows it next to the
    "off" badge (`frontend/src/pages/admin/ai-settings/AgentRegistryTab.tsx:270`, `:277`). It also shows a
@@ -55,6 +61,12 @@ None of these is a live risk.
    WorkforceCurriculumDirector's gate is checked every morning inside Dara's timer, which counts the run
    under Dara. This extends A.M.'s note on finding 34 (two gates, two names, one counter) to what the page
    shows.
+   - **Conditional.** This stands only while Dara's row is switched on. The seed ships it off
+     (`agentRegistrySeed.ts:2544`) and never changes `enabled` afterwards; while it is off, Dara's timer
+     skips its work and "Never" is accurate. A.M. is reading the live value. Findings 56 and 60 rest on
+     the same flag.
+   - The platform measured the same thing on a sibling row: WorkforceResearchDirector had run_count 0
+     beside 12 activity rows (`workforce/scheduledAgentHealth.ts:16-18`).
 
 **Already known**
 

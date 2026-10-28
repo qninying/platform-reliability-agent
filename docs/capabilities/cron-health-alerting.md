@@ -49,7 +49,7 @@ untracked", because the wrapper decides which one is true.
   131 schedules in the fleet at five reference times, including a weekend, a year end and February: 655
   comparisons, no difference.
 - **What the check cannot see on a selected row.** Ellis adds a note when:
-  - its timer records no run (a director gate);
+  - its timer records no run on the row (a director gate);
   - its timer writes counters only (`trackAgentRun`);
   - its schedule has uneven gaps;
   - the schedule that fires gives a different interval from the row's.
@@ -64,25 +64,33 @@ untracked", because the wrapper decides which one is true.
      (`schedulerService.ts:3258-3259`).
    - **The effect.** The check reads the row's schedule (`cronHealthAlertService.ts:161`, `:91`). So 4
      hours after each run it warns, and 8 hours after it raises a critical "has likely stopped running
-     entirely" alert, which stays critical from Friday afternoon to Monday.
+     entirely" alert. That is critical about 16 hours of every weeknight, and from Friday evening to
+     Monday.
    - **Not recorded anywhere.** The platform's classification records the 2-hour schedule as wired
      (`docs/architecture/ai-workforce-management/LEGACY_AGENT_CLASSIFICATION.csv:205`). The baseline's
      schedule disagreements compare only `aiOpsScheduler.ts` with the seed
      (`__tests__/fixtures/cronRegistryBaseline.ts:201-204`).
    - **Caveat.** This is as seeded; a production row created earlier may hold another schedule.
-   - **The reverse case.** ApolloWeeklyEnrollmentAgent fires every weekday but its row says Mondays, so it
-     is warned about only after 14 days stopped. That disagreement is already in the baseline (`:202`);
-     its effect on the alert is not.
-2. **Reporting gap. None of Dara's three daily duties can raise a cron alert.** Her row is
-   `trigger_type: 'event_driven'` (`agentRegistrySeed.ts:2528`), so the check never selects it.
+2. **Latent. Dara's three daily duties do not run while her row is off, and could not raise a cron alert
+   if it were on.**
+   - **They do not run.** The row ships `enabled: false` (`agentRegistrySeed.ts:2544`), so the timer's
+     gate returns before the work. The seed says this is deliberate until later validation. A.M. is reading
+     the live value; findings 53 and 56 rest on the same flag.
+   - **Three separate exclusions from the check**, each enough on its own: `trigger_type: 'event_driven'`
+     (`:2528`), `enabled: false`, and an empty schedule (`:2529`), which skips the missed-run test.
+     Switching the row on would leave two of them in place.
    - Already known in part: the baseline records the row's trigger type and its effect on the dashboard
      (`cronRegistryBaseline.ts:214-222`).
    - New: its effect on alerting, for timers at 06:10, 06:15 and 06:30.
-3. **Latent. A schedule with uneven gaps is judged against its next gap only** (`cronNextRun.ts:21-27`).
-   - A weekday `0 9,15 * * 1-5` job is judged against 6 hours on Saturday, so Friday's last run reads as
-     critical by Saturday afternoon.
-   - Latent: the only seed rows with such schedules record no runs under their own names
-     (`agentRegistrySeed.ts:1594`, `:1610`; `cronRegistryBaseline.ts:75-76`).
+3. **Live. A schedule with uneven gaps is judged against its next gap only** (`utils/cronNextRun.ts:21-27`).
+   - OpenclawLinkedInCommentMonitorAgent's row says `0 8,12,16 * * 1-5` (`agentRegistrySeed.ts:1610`). Its
+     timer (`aiOpsScheduler.ts:255`) runs it through `runAgent` under the row's own name
+     (`aiOrchestrator.ts:627`), so the row records runs and the check selects it.
+   - Overnight and at weekends the next gap is 4 hours, so a stop is warned at 8 hours and critical at
+     16. Friday's 16:00 run reads as critical from Saturday 08:00 until Monday, and every weeknight it
+     warns from midnight.
+   - First filed as latent on the belief that no such row records runs. A.M. showed this one does; the
+     other, OpenclawLinkedInFlowAgent (`:1594`), does not.
    - Not pinned: every schedule in the check's tests is `*/15`.
    - Ellis adds a caution to any alert that falls inside the schedule's longest normal gap.
 4. **Reporting gap. A cron alert stays open after the job recovers, and an escalation opens a second one.**
@@ -93,12 +101,19 @@ untracked", because the wrapper decides which one is true.
    - The escalation path (`:71`) cannot fire for these alerts, because each type has a fixed severity
      (`cronHealthAlertService.ts:68`, `:79`).
 
-**Added to finding 54 (sent with 51-56).** Besides the four `trackAgentRun` timers, the seven workforce
-directors other than Dara write neither `last_run_at` nor a run row:
+**Added to finding 54 (sent with 51-56, corrected after A.M.'s review).** Besides the four
+`trackAgentRun` timers, the workforce directors scheduled under their own names never set `last_run_at`:
 - Their gate only reads the row (`workforce/workforceAgentRuntime.ts:66-69`). Their runners run bare
   (`aiOpsScheduler.ts:551-553`), and their failures reach only the dead-letter queue.
-- Their rows are enabled cron rows (`agentRegistrySeed.ts:2246-2338`), so the check selects them but can
-  never call them overdue or failing.
+- They do write activity rows, for a success or a skip (`workforceAgentRuntime.ts:164`, `:170-173`), but
+  none for a failure. So the error-rate sample fills with successes and a failing director reads 0
+  percent, and with no `last_run_at` it can never be overdue.
+- Two more director rows, WorkforceCurriculumDirector and WorkforceCertificationDirector, are enabled cron
+  rows whose work is registered under Dara instead (`aiOpsScheduler.ts:367`, `:369`), so nothing ever
+  records against them.
+- The four `trackAgentRun` timers are worse than first written: a failed run also sets `last_run_at` and
+  adds to the run count (`agentRunTracker.ts:64`), so a job that fails every run reads as healthy and busy.
+  Their failures do reach the dead-letter queue after three in a row, but nothing reads that table.
 - **Already known in substance.** The platform's own audit of scheduled agents records that these runners
   never write back to their row (`workforce/scheduledAgentHealth.ts:16-18`). It also records that the
   four `trackAgentRun` timers write no activity rows (`:19-22`).
