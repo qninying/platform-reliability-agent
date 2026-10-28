@@ -126,7 +126,7 @@ Excerpt of the real output on that fixture (trimmed; the fixture is test data, n
 ## Findings that changed the platform
 
 Each capability starts by reading the platform code it depends on. The weaknesses found go to A.M., who
-verifies each one against the code. Four fixes are merged in the platform repository, each crediting the
+verifies each one against the code. Five fixes are merged in the platform repository, each crediting the
 findings by number:
 
 | Pull request | What it fixed |
@@ -135,6 +135,7 @@ findings by number:
 | [#3422](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3422) | The scheduler sending a lead the same message twice |
 | [#3430](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3430) | Pause not containing an agent |
 | [#3435](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3435) | A bug-fix agent saying a fix was applied when none was |
+| [#3439](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3439) | A failed run undoing a pause set while it ran |
 
 The pattern behind many of them is written up as a rule for anyone building a monitor on the platform:
 [no evidence is not health](docs/no-evidence-is-not-health.md).
