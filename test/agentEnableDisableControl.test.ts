@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { recommendDisable, recommendAll, containment, pauseGaps, timersWithNoRow, GATES, type ControlSnapshot, type TimerRow, type ControlAgentRow } from '../src/capabilities/agentEnableDisableControl.ts';
 
-// Timers mirror the platform's scheduler wiring at a284987, wrappers as re-measured at c699e58 (PR 3430);
+// Timers mirror the platform's scheduler wiring at a284987, wrappers as re-measured at 7d582e8 (PR 3439);
 // rows are test inputs, not production data.
 const EVIDENCE = [{ source: 'ai_agent_activity_logs', ref: 'log-1', summary: '12 failed runs in the last hour' }];
 const timer = (t: string, gates: TimerRow['gates'], over: Partial<TimerRow> = {}): TimerRow => ({ timer: t, schedule: '0 6 * * *', label: `${t} timer`, ref: `aiOpsScheduler.ts:${t.length}`, gates, ...over });
@@ -75,9 +75,9 @@ test('after PR 3430 every wrapper that honours disable also honours pause', () =
   assert.ok(!rec('AutonomousEngine').notes.some((n) => /pause would not stop/.test(n)));
 });
 
-test("a mid-run pause note appears only where a wrapper can still erase it: runAgent's failure path", () => {
-  assert.ok(rec('AdmissionsAssistantAgent').notes.some((n) => /erased if that run fails \(aiOrchestrator\.ts:303-309\)/.test(n)));
-  for (const n of ['AutonomousEngine', 'Dara']) assert.ok(!rec(n).notes.some((x) => /pause set while a run is in progress/.test(x)), n);
+test('after PR 3439 no wrapper writes its status back unconditionally, so no agent carries a mid-run pause note', () => {
+  for (const [gate, g] of Object.entries(GATES)) assert.notEqual(g.closingWrite, true, gate);
+  for (const n of ['AdmissionsAssistantAgent', 'AutonomousEngine', 'Dara']) assert.ok(!rec(n).notes.some((x) => /pause set while a run is in progress/.test(x)), n);
 });
 
 test('a wrapper that never reads the row, or one that is not known, is never counted as stopped', () => {
@@ -151,12 +151,12 @@ test('containment: instrumentCronJob keeps a mid-run pause now, so Dara is fully
   assert.deepEqual(c.governance.map((g) => g.timer), ['Dara']);
 });
 
-test("containment: runAgent's pause holds unless a run fails, and the advice stays disable, not pause", () => {
+test("containment: runAgent's pause holds however the run ends (re-measured at 7d582e8, PR 3439), so pause is enough", () => {
   const c = containment(snap(), 'AdmissionsAssistantAgent');
-  assert.equal(c.pause, 'unless_a_run_fails');
-  assert.deepEqual(c.timers.map((t) => t.pause), ['holds_unless_the_run_fails']);
-  assert.match(c.timers[0].why, /writes status error back unconditionally when a run fails/);
-  assert.match(c.statement, /erased if that run fails.*aiOrchestrator\.ts:303-309.*Use disable, not pause\./);
+  assert.deepEqual([c.disable, c.pause], ['yes', 'yes']);
+  assert.deepEqual(c.timers.map((t) => t.pause), ['stops']);
+  assert.match(c.timers[0].why, /checks both flags before running/);
+  assert.doesNotMatch(c.statement, /Use disable/);
 });
 
 test('containment: an inner gate stops only the writes, and pause holds there because nothing writes it back', () => {
@@ -187,7 +187,6 @@ test('containment: no row, an unknown wrapper, a wrapper that never reads the ro
 test('pause gaps list every registered agent that pause does not fully contain, sorted and order-independent', () => {
   const gaps = pauseGaps(snap());
   assert.deepEqual(gaps.map((g) => [g.agent_name, g.pause]), [
-    ['AdmissionsAssistantAgent', 'unless_a_run_fails'],
     ['Mystery', 'unknown'],
   ]);
   const s = snap();

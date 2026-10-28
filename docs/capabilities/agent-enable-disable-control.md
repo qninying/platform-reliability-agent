@@ -79,13 +79,12 @@ than guessing from names.
    at the start (`aiOrchestrator.ts:236`), so a concurrent increment is lost. Live risk; it has to follow
    finding 2, because a pause checked at the start of a run is worthless if the last run's closing write
    erased it. Ellis recommends disable.
-   **Fixed upstream in PR 3430, except one path.** The closing write is now conditional on the row still
-   being `running` in `instrumentCronJob`, the CampaignHealthScanner path and runAgent's success path.
-   runAgent's failure path still writes `status: 'error'` unconditionally (`aiOrchestrator.ts:303-309` at
-   `c699e58`), so a pause set during a run that then throws is still erased; the new test pins the success
-   path only (`agentControlGate.test.ts:109`). Confirmed by A.M. (2026-10-27) as finding 58; the fix routes the
-   failure path through the same conditional write and is in PR 3439, not yet merged. Until it lands, this
-   map keeps "holds unless the run fails".
+   **Fixed upstream in PR 3430 and PR 3439.** PR 3430 made the closing write conditional on the row still
+   being `running` in `instrumentCronJob`, the CampaignHealthScanner path and runAgent's success path. It left
+   runAgent's failure path writing `status: 'error'` unconditionally, so a pause set during a run that then
+   threw was still erased (finding 58, confirmed by A.M. on 2026-10-27). PR 3439 (merged at `7d582e8`) routes
+   that path through the same conditional write (`aiOrchestrator.ts:309`, `agentControlGate.ts:98-118`), so a
+   mid-run pause now survives however the run ends.
 4. **Dara's directors have two switches, and the scheduler comment is false.** The comment says the
    directors gate on Dara's own row (`backend/src/services/aiOpsScheduler.ts:118-128`). The code gates
    them on `WorkforceCurriculumDirector` and `WorkforceCertificationDirector`
@@ -121,12 +120,11 @@ pause, does this agent actually stop?"**, timer by timer:
 |---|---|
 | stops | the run does not start |
 | stops writes only | an inner gate: the timer fires and an earlier row counts the run, but nothing is written |
-| holds unless the run fails | a pause set during a run is kept if the run succeeds and erased if it fails, because the failure path writes the status back unconditionally (runAgent, `aiOrchestrator.ts:303-309`) |
 | holds only between runs | a pause set during a run is undone when that run ends, because the wrapper writes the status back unconditionally (no wrapper since PR 3430) |
 | does not stop | the wrapper never reads the row, or reads only `enabled` while pause leaves `enabled` true (`aiOpsService.ts:296-297`; no run wrapper since PR 3430) |
 | unknown | how the wrapper treats the row is not known |
 
-It sums these up for disable and for pause (yes, unless a run fails, only between runs, partly, no, unknown), names the timers
+It sums these up for disable and for pause (yes, only between runs, partly, no, unknown), names the timers
 where pause is inert, and says "use disable, not pause" when that is the honest advice. A name with no row
 gets "no control contains it", and, when no governance row applies, that no other registry control reaches
 it either: a gap in the fleet's registration, not in the controls. The governance schedule row is listed
@@ -140,7 +138,12 @@ reaching for it.
   from "pause does not stop" to "stops".
 - Every `instrumentCronJob` timer, Dara's included, moved from "holds only between runs" to "stops".
 - Every runAgent agent, such as AdmissionsAssistantAgent, moved to "holds unless the run fails", and the
-  advice stays "use disable, not pause".
+  advice stayed "use disable, not pause".
+
+**Re-measured against `7d582e8` after PR 3439:** every runAgent agent moved from "holds unless the run fails"
+to "stops". Every wrapper that reads the row now honours both disable and pause, and none writes its status
+back unconditionally. On both examples the pause-gap list is now empty; a timer whose wrapper Ellis cannot
+read is still reported as unknown, never as contained.
 
 ## The timers outside aiOpsScheduler.ts
 
@@ -227,6 +230,10 @@ exits 0 when every call site resolved, 3 when any did not, 1 for bad input.
   - listing fully contained agents as pause gaps fails 1;
   - dropping the "use disable, not pause" advice fails 1;
   - changing the no-row statement fails 1.
+
+  For the re-measurement against `7d582e8` (PR 3439):
+  - putting runAgent's unconditional closing write back fails 3;
+  - marking runAgent's closing write as unknown fails 2.
 
   For the re-measurement against `c699e58`:
   - treating runAgent's failure path as conditional fails 3;

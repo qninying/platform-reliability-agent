@@ -19,13 +19,13 @@
 //   two rows (Dara's outer row and a director's inner row, aiOpsScheduler.ts:367 with
 //   workforce/directorActions.ts:71). So the inventory lists, per timer, every row that can stop it.
 //
-// Re-measured against platform main c699e58 (PR 3430, "make pause actually contain an agent"): runAgent,
-// CampaignHealthScanner, instrumentCronJob and trackAgentRun now share one predicate that honours both flags
-// and logs 'cron_job_skipped_disabled' (agents/agentControlGate.ts:12-17, :22-40; callers
-// aiOrchestrator.ts:114, :192, cronInstrumentation.ts:47, agentRunTracker.ts:38). The closing status write
-// is conditional on the row still being 'running' (agentControlGate.ts completeRunPreservingControls), so a
-// pause set mid-run survives, except on runAgent's failure path, which still writes status 'error'
-// unconditionally (aiOrchestrator.ts:303-309): a pause set during a run that then throws is erased.
+// Re-measured against platform main 7d582e8 (PR 3439, "stop a failed run from erasing a mid-run pause", after
+// PR 3430): runAgent, CampaignHealthScanner, instrumentCronJob and trackAgentRun share one predicate that
+// honours both flags and logs 'cron_job_skipped_disabled' (agents/agentControlGate.ts:38-44, :55-70; callers
+// aiOrchestrator.ts:114, :192, cronInstrumentation.ts:47, agentRunTracker.ts:38). Every closing status write,
+// on success and on failure, is conditional on the row still being 'running' (completeRunPreservingControls,
+// agentControlGate.ts:98-118; runAgent's failure path at aiOrchestrator.ts:309), so a pause set mid-run
+// survives the run however it ends.
 
 import type { Citation } from './orchestrationHealthWatch.ts';
 
@@ -36,10 +36,10 @@ export type Gate = 'run_agent' | 'instrument_cron_job' | 'track_agent_run' | 'di
 // cronInstrumentation.ts:34-38, agentRunTracker.ts:29-31, workforceAgentRuntime.ts:68, aiOrchestrator.ts:108).
 // closingWrite is whether the wrapper writes the row's status back unconditionally at the end of a run, which
 // erases a pause set mid-run: false where the write is conditional on the row still being 'running' or never
-// made, 'on_failure' where only the failure path is unconditional (aiOrchestrator.ts:303-309).
+// made.
 const SKIP = "a structured 'cron_job_skipped_disabled' line";
-export const GATES: Record<Gate, { disable: boolean | null; pause: boolean | null; closingWrite: boolean | 'on_failure' | null; skip: string; noRow: string }> = {
-  run_agent: { disable: true, pause: true, closingWrite: 'on_failure', skip: SKIP, noRow: 'returns without running, so this timer does nothing today' },
+export const GATES: Record<Gate, { disable: boolean | null; pause: boolean | null; closingWrite: boolean | null; skip: string; noRow: string }> = {
+  run_agent: { disable: true, pause: true, closingWrite: false, skip: SKIP, noRow: 'returns without running, so this timer does nothing today' },
   instrument_cron_job: { disable: true, pause: true, closingWrite: false, skip: SKIP, noRow: 'runs it anyway, untracked' },
   track_agent_run: { disable: true, pause: true, closingWrite: false, skip: SKIP, noRow: 'runs it anyway, untracked' },
   director_gate: { disable: true, pause: true, closingWrite: false, skip: 'a returned reason, with no log line', noRow: 'blocks every write as not registered' },
@@ -117,7 +117,6 @@ export function recommendDisable(snap: ControlSnapshot, req: ControlRequest): Re
     if (row && g.disable && g.pause && i === 0) erasing.add(g.closingWrite);
   }
   if (erasing.has(true)) notes.push('a pause set while a run is in progress is undone when that run finishes, so a pause cannot be relied on to contain a misbehaving agent');
-  else if (erasing.has('on_failure')) notes.push('a pause set while a run is in progress is erased if that run fails (aiOrchestrator.ts:303-309), so disable, not pause, is the reliable switch for a misbehaving agent');
 
   const governance = snap.cron_schedule_configs
     .filter((g) => would_stop.some((w) => w.timer === g.agent_name) || g.agent_name === name)
@@ -155,8 +154,8 @@ export function recommendAll(snap: ControlSnapshot): Recommendation[] {
 // erases), does not stop it, or cannot be said. Pause writes only status and leaves enabled true
 // (aiOpsService.ts:296-297), so a wrapper that reads only enabled never sees it.
 
-export type ControlEffect = 'stops' | 'stops_writes_only' | 'holds_only_between_runs' | 'holds_unless_the_run_fails' | 'does_not_stop' | 'unknown';
-export type ContainmentAnswer = 'yes' | 'only_between_runs' | 'unless_a_run_fails' | 'partly' | 'no' | 'unknown' | 'no_timers';
+export type ControlEffect = 'stops' | 'stops_writes_only' | 'holds_only_between_runs' | 'does_not_stop' | 'unknown';
+export type ContainmentAnswer = 'yes' | 'only_between_runs' | 'partly' | 'no' | 'unknown' | 'no_timers';
 
 export interface TimerControl { timer: string; schedule: string; label: string; ref: string; disable: ControlEffect; pause: ControlEffect; why: string }
 
@@ -178,7 +177,7 @@ function effectFor(g: (typeof GATES)[Gate], control: 'disable' | 'pause', inner:
   if (reads === null) return 'unknown';
   if (!reads) return 'does_not_stop';
   if (inner) return 'stops_writes_only';
-  if (control === 'pause') return g.closingWrite === null ? 'unknown' : g.closingWrite === 'on_failure' ? 'holds_unless_the_run_fails' : g.closingWrite ? 'holds_only_between_runs' : 'stops';
+  if (control === 'pause') return g.closingWrite === null ? 'unknown' : g.closingWrite ? 'holds_only_between_runs' : 'stops';
   return 'stops';
 }
 
@@ -188,13 +187,12 @@ function summarise(effects: ControlEffect[]): ContainmentAnswer {
   const off = effects.filter((e) => e === 'does_not_stop').length;
   if (off === effects.length) return 'no';
   if (off > 0) return 'partly';
-  return effects.includes('holds_only_between_runs') ? 'only_between_runs' : effects.includes('holds_unless_the_run_fails') ? 'unless_a_run_fails' : 'yes';
+  return effects.includes('holds_only_between_runs') ? 'only_between_runs' : 'yes';
 }
 
 const ANSWER_TEXT: Record<ContainmentAnswer, string> = {
   yes: 'stops every timer that reads this row',
   only_between_runs: 'holds only between runs: a pause set during a run is undone when that run ends',
-  unless_a_run_fails: 'holds, except that a pause set during a run is erased if that run fails, because the failure path writes status back unconditionally (aiOrchestrator.ts:303-309)',
   partly: 'stops some of its timers and not others',
   no: 'stops none of its timers',
   unknown: 'cannot be said for every timer',
@@ -218,7 +216,6 @@ export function containment(snap: ControlSnapshot, agentName: string): Containme
     const why = pause === 'does_not_stop' && disable !== 'does_not_stop'
       ? 'its wrapper reads only enabled, and pause leaves enabled true'
       : pause === 'holds_only_between_runs' ? 'its wrapper writes the status back at the end of every run'
-      : pause === 'holds_unless_the_run_fails' ? 'its wrapper writes status error back unconditionally when a run fails'
       : i > 0 ? 'an inner gate: the timer still fires and an earlier row counts the run, but the writes are blocked'
       : disable === 'unknown' ? 'how its wrapper treats the row is not known'
       : disable === 'does_not_stop' ? 'its wrapper never reads the row' : 'its wrapper checks both flags before running';
