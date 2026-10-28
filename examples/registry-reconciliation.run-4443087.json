@@ -1,0 +1,670 @@
+{
+  "measured_at": "2026-10-28T01:02:27.386Z",
+  "source_commit": "44430870b",
+  "files_read": 4431,
+  "verdict": "matches_baseline",
+  "classes": {
+    "cronSeedRowsWithNoRegistration": {
+      "means": "seed rows advertising cron with no timer registered under their own name (the platform calls these phantom)",
+      "count": 79,
+      "entries": [
+        "AdmissionsAssistantAgent",
+        "AdmissionsCallComplianceMonitor",
+        "AdmissionsCallbackManagementAgent",
+        "AdmissionsConversationContinuityAgent",
+        "AdmissionsConversationMemoryAgent",
+        "AdmissionsExecutiveUpdateAgent",
+        "AdmissionsHighIntentLeadAgent",
+        "AdmissionsInsightsAgent",
+        "AdmissionsIntentDetectionAgent",
+        "AdmissionsProactiveOutreachAgent",
+        "AdmissionsReportingAgent",
+        "AdmissionsVisitorActivityAgent",
+        "AgentPerformanceAnalyticsAgent",
+        "AlumniReportingAgent",
+        "Alumni_Outreach_Agent",
+        "Alumni_Reengagement_Agent",
+        "ArchitectureAgent",
+        "AuditAgent",
+        "Content_Marketing_Agent",
+        "CostOptimizationAgent",
+        "CurriculumOptimizerAgent",
+        "CurriculumQAAgent",
+        "Data_Intelligence_Agent",
+        "EducationReportingAgent",
+        "Employer_Relationship_Agent",
+        "ExecutiveBriefingReportingAgent",
+        "Executive_Briefing_Agent",
+        "ExperimentAgent",
+        "ExperimentRecommendationAgent",
+        "GovernanceAgent",
+        "GrowthExperimentAgent",
+        "InsightDiscoveryAgent",
+        "KnowledgeGraphBuilderAgent",
+        "MarketingReportingAgent",
+        "MonitorAgent",
+        "OpenclawAuthorityContentAgent",
+        "OpenclawBrowserWorkerAgent",
+        "OpenclawContentResponseAgent",
+        "OpenclawConversationDetectionAgent",
+        "OpenclawEngagementMonitorAgent",
+        "OpenclawFollowUpAgent",
+        "OpenclawInfraMonitorAgent",
+        "OpenclawLearningOptimizationAgent",
+        "OpenclawLinkedInCommentMonitorAgent",
+        "OpenclawLinkedInFlowAgent",
+        "OpenclawMarketSignalAgent",
+        "OpenclawQualityGateAgent",
+        "OpenclawResponseOrchestratorAgent",
+        "OpenclawSupervisorAgent",
+        "OpenclawTechResearchAgent",
+        "Opportunity_Detection_Agent",
+        "Organization_Health_Agent",
+        "PartnershipsReportingAgent",
+        "PerformanceAgent",
+        "Performance_Monitoring_Agent",
+        "PlatformReportingAgent",
+        "Policy_Agent",
+        "ProblemDiscoveryAgent",
+        "PromptOptimizationAgent",
+        "ReportingIntelligenceAgent",
+        "RevenueOpportunityAgent",
+        "RevenueOptimizationAgent",
+        "Risk_Agent",
+        "StrategicIntelligenceAgent",
+        "StudentBehaviorIntelligenceAgent",
+        "StudentProgressMonitor",
+        "StudentSuccessReportingAgent",
+        "TicketManagementAgent",
+        "TrendAnalysisAgent",
+        "Trend_Detection_Agent",
+        "UX_Optimization_Agent",
+        "WebsiteBehaviorAgent",
+        "WebsiteBrokenLinkAgent",
+        "WebsiteConversionFlowAgent",
+        "WebsiteImprovementStrategist",
+        "WebsiteUIVisibilityAgent",
+        "WebsiteUXHeuristicAgent",
+        "WorkforceCertificationDirector",
+        "WorkforceCurriculumDirector"
+      ],
+      "new_since_baseline": [],
+      "healed_since_baseline": []
+    },
+    "scheduledNamesWithNoSeedRow": {
+      "means": "names a timer fires that have no seed row (the platform calls these untracked)",
+      "count": 66,
+      "entries": [
+        "AdmissionsAssistant",
+        "AdmissionsCallCompliance",
+        "AdmissionsCallbackManagement",
+        "AdmissionsConversationContinuity",
+        "AdmissionsConversationMemory",
+        "AdmissionsExecutiveUpdate",
+        "AdmissionsHighIntentDetection",
+        "AdmissionsInsightsAggregation",
+        "AdmissionsIntentDetection",
+        "AdmissionsProactiveOutreach",
+        "AdmissionsVisitorActivity",
+        "AgentReportSubscriptionDispatch",
+        "AliPersonalOutreach",
+        "AlumniLifecycleProcessor",
+        "AnthropicCatalogScraper",
+        "AnthropicChangeDetector",
+        "AnthropicContentWatcher",
+        "AnthropicCurriculumImpactAgent",
+        "AppPaymentReconcile",
+        "ArchitectEvaluationAgent",
+        "AutopayDisclosure",
+        "BillingWatch",
+        "BlogRefresh",
+        "BuildLogDraftGenerator",
+        "CampaignGraduation",
+        "CampaignWatchdog",
+        "ColdOutboundPhaseGraduation",
+        "CommunityDigest",
+        "FeedReleaseTick",
+        "GithubWriteAccessReconcile",
+        "GovOpportunityDailySync",
+        "HotLeadEscalation",
+        "InboxCaseAutoSync",
+        "InboxDeletedSync",
+        "InboxLivenessReconcile",
+        "LearnerMemoryDistill",
+        "MissedOpportunitiesReport",
+        "OpenclawBrowserWorker",
+        "OpenclawContentResponse",
+        "OpenclawConversationDetection",
+        "OpenclawEngagementMonitor",
+        "OpenclawFollowUp",
+        "OpenclawInfrastructureMonitor",
+        "OpenclawLearningOptimization",
+        "OpenclawLinkedInCommentMonitor",
+        "OpenclawMarketSignal",
+        "OpenclawQualityGate",
+        "OpenclawResponseOrchestrator",
+        "OpenclawSupervisor",
+        "OpenclawTechResearch",
+        "PaySimplePaymentSync",
+        "PaySimpleWebhookHealth",
+        "PodcastRefresh",
+        "ProofDeskOutcomeMeasurements",
+        "ReliabilityAlerting",
+        "RenewalReminders",
+        "SessionRecordingIngest",
+        "SkoolBrowserWorker",
+        "SkoolContentResponse",
+        "SkoolNotificationResponse",
+        "SkoolQualityGate",
+        "SkoolSignalDetection",
+        "SkoolSupervisor",
+        "SystemHealthMonitor",
+        "WeeklyReport",
+        "WorkforceIntelligence"
+      ],
+      "new_since_baseline": [],
+      "healed_since_baseline": []
+    },
+    "scheduleDisagreements": {
+      "means": "registry schedule and seed schedule differ (name|registry|seed)",
+      "count": 2,
+      "entries": [
+        "ApolloWeeklyEnrollmentAgent|0 14 * * 1-5|0 14 * * 1",
+        "WeeklyStrategicBriefing|45 7 * * 1|45 6 * * 1"
+      ],
+      "new_since_baseline": [],
+      "healed_since_baseline": []
+    },
+    "registeredRowsDenyingSchedule": {
+      "means": "fired names whose seed row says not cron or no schedule (name|trigger|seed schedule|firing schedules)",
+      "count": 1,
+      "entries": [
+        "Dara|event_driven||10 6 * * *,15 6 * * *,30 6 * * *"
+      ],
+      "new_since_baseline": [],
+      "healed_since_baseline": []
+    },
+    "duplicateRegistryNames": {
+      "means": "one name on several registry entries, pooling their counters (name|registries|schedules)",
+      "count": 1,
+      "entries": [
+        "Dara|SCHEDULE_REGISTRY|10 6 * * *,15 6 * * *,30 6 * * *"
+      ],
+      "new_since_baseline": [],
+      "healed_since_baseline": []
+    }
+  },
+  "beyond_the_platform_reconciler": {
+    "phantom_rows_that_receive_runs": [
+      {
+        "row": "AdmissionsAssistantAgent",
+        "registry_name": "AdmissionsAssistant",
+        "ref": "backend/src/services/aiOpsScheduler.ts:240"
+      },
+      {
+        "row": "AdmissionsCallComplianceMonitor",
+        "registry_name": "AdmissionsCallCompliance",
+        "ref": "backend/src/services/aiOpsScheduler.ts:237"
+      },
+      {
+        "row": "AdmissionsCallbackManagementAgent",
+        "registry_name": "AdmissionsCallbackManagement",
+        "ref": "backend/src/services/aiOpsScheduler.ts:238"
+      },
+      {
+        "row": "AdmissionsConversationContinuityAgent",
+        "registry_name": "AdmissionsConversationContinuity",
+        "ref": "backend/src/services/aiOpsScheduler.ts:233"
+      },
+      {
+        "row": "AdmissionsConversationMemoryAgent",
+        "registry_name": "AdmissionsConversationMemory",
+        "ref": "backend/src/services/aiOpsScheduler.ts:230"
+      },
+      {
+        "row": "AdmissionsExecutiveUpdateAgent",
+        "registry_name": "AdmissionsExecutiveUpdate",
+        "ref": "backend/src/services/aiOpsScheduler.ts:236"
+      },
+      {
+        "row": "AdmissionsHighIntentLeadAgent",
+        "registry_name": "AdmissionsHighIntentDetection",
+        "ref": "backend/src/services/aiOpsScheduler.ts:234"
+      },
+      {
+        "row": "AdmissionsInsightsAgent",
+        "registry_name": "AdmissionsInsightsAggregation",
+        "ref": "backend/src/services/aiOpsScheduler.ts:235"
+      },
+      {
+        "row": "AdmissionsIntentDetectionAgent",
+        "registry_name": "AdmissionsIntentDetection",
+        "ref": "backend/src/services/aiOpsScheduler.ts:231"
+      },
+      {
+        "row": "AdmissionsProactiveOutreachAgent",
+        "registry_name": "AdmissionsProactiveOutreach",
+        "ref": "backend/src/services/aiOpsScheduler.ts:232"
+      },
+      {
+        "row": "AdmissionsVisitorActivityAgent",
+        "registry_name": "AdmissionsVisitorActivity",
+        "ref": "backend/src/services/aiOpsScheduler.ts:229"
+      },
+      {
+        "row": "OpenclawBrowserWorkerAgent",
+        "registry_name": "OpenclawBrowserWorker",
+        "ref": "backend/src/services/aiOpsScheduler.ts:251"
+      },
+      {
+        "row": "OpenclawContentResponseAgent",
+        "registry_name": "OpenclawContentResponse",
+        "ref": "backend/src/services/aiOpsScheduler.ts:249"
+      },
+      {
+        "row": "OpenclawConversationDetectionAgent",
+        "registry_name": "OpenclawConversationDetection",
+        "ref": "backend/src/services/aiOpsScheduler.ts:245"
+      },
+      {
+        "row": "OpenclawEngagementMonitorAgent",
+        "registry_name": "OpenclawEngagementMonitor",
+        "ref": "backend/src/services/aiOpsScheduler.ts:246"
+      },
+      {
+        "row": "OpenclawFollowUpAgent",
+        "registry_name": "OpenclawFollowUp",
+        "ref": "backend/src/services/aiOpsScheduler.ts:248"
+      },
+      {
+        "row": "OpenclawInfraMonitorAgent",
+        "registry_name": "OpenclawInfrastructureMonitor",
+        "ref": "backend/src/services/aiOpsScheduler.ts:253"
+      },
+      {
+        "row": "OpenclawLearningOptimizationAgent",
+        "registry_name": "OpenclawLearningOptimization",
+        "ref": "backend/src/services/aiOpsScheduler.ts:252"
+      },
+      {
+        "row": "OpenclawLinkedInCommentMonitorAgent",
+        "registry_name": "OpenclawLinkedInCommentMonitor",
+        "ref": "backend/src/services/aiOpsScheduler.ts:255"
+      },
+      {
+        "row": "OpenclawMarketSignalAgent",
+        "registry_name": "OpenclawMarketSignal",
+        "ref": "backend/src/services/aiOpsScheduler.ts:244"
+      },
+      {
+        "row": "OpenclawQualityGateAgent",
+        "registry_name": "OpenclawQualityGate",
+        "ref": "backend/src/services/aiOpsScheduler.ts:250"
+      },
+      {
+        "row": "OpenclawResponseOrchestratorAgent",
+        "registry_name": "OpenclawResponseOrchestrator",
+        "ref": "backend/src/services/aiOpsScheduler.ts:247"
+      },
+      {
+        "row": "OpenclawSupervisorAgent",
+        "registry_name": "OpenclawSupervisor",
+        "ref": "backend/src/services/aiOpsScheduler.ts:243"
+      },
+      {
+        "row": "OpenclawTechResearchAgent",
+        "registry_name": "OpenclawTechResearch",
+        "ref": "backend/src/services/aiOpsScheduler.ts:254"
+      }
+    ],
+    "untracked_names_that_record_on_a_row": [
+      {
+        "registry_name": "AdmissionsAssistant",
+        "row": "AdmissionsAssistantAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:240"
+      },
+      {
+        "registry_name": "AdmissionsCallCompliance",
+        "row": "AdmissionsCallComplianceMonitor",
+        "ref": "backend/src/services/aiOpsScheduler.ts:237"
+      },
+      {
+        "registry_name": "AdmissionsCallbackManagement",
+        "row": "AdmissionsCallbackManagementAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:238"
+      },
+      {
+        "registry_name": "AdmissionsConversationContinuity",
+        "row": "AdmissionsConversationContinuityAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:233"
+      },
+      {
+        "registry_name": "AdmissionsConversationMemory",
+        "row": "AdmissionsConversationMemoryAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:230"
+      },
+      {
+        "registry_name": "AdmissionsExecutiveUpdate",
+        "row": "AdmissionsExecutiveUpdateAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:236"
+      },
+      {
+        "registry_name": "AdmissionsHighIntentDetection",
+        "row": "AdmissionsHighIntentLeadAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:234"
+      },
+      {
+        "registry_name": "AdmissionsInsightsAggregation",
+        "row": "AdmissionsInsightsAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:235"
+      },
+      {
+        "registry_name": "AdmissionsIntentDetection",
+        "row": "AdmissionsIntentDetectionAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:231"
+      },
+      {
+        "registry_name": "AdmissionsProactiveOutreach",
+        "row": "AdmissionsProactiveOutreachAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:232"
+      },
+      {
+        "registry_name": "AdmissionsVisitorActivity",
+        "row": "AdmissionsVisitorActivityAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:229"
+      },
+      {
+        "registry_name": "OpenclawBrowserWorker",
+        "row": "OpenclawBrowserWorkerAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:251"
+      },
+      {
+        "registry_name": "OpenclawContentResponse",
+        "row": "OpenclawContentResponseAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:249"
+      },
+      {
+        "registry_name": "OpenclawConversationDetection",
+        "row": "OpenclawConversationDetectionAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:245"
+      },
+      {
+        "registry_name": "OpenclawEngagementMonitor",
+        "row": "OpenclawEngagementMonitorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:246"
+      },
+      {
+        "registry_name": "OpenclawFollowUp",
+        "row": "OpenclawFollowUpAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:248"
+      },
+      {
+        "registry_name": "OpenclawInfrastructureMonitor",
+        "row": "OpenclawInfraMonitorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:253"
+      },
+      {
+        "registry_name": "OpenclawLearningOptimization",
+        "row": "OpenclawLearningOptimizationAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:252"
+      },
+      {
+        "registry_name": "OpenclawLinkedInCommentMonitor",
+        "row": "OpenclawLinkedInCommentMonitorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:255"
+      },
+      {
+        "registry_name": "OpenclawMarketSignal",
+        "row": "OpenclawMarketSignalAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:244"
+      },
+      {
+        "registry_name": "OpenclawQualityGate",
+        "row": "OpenclawQualityGateAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:250"
+      },
+      {
+        "registry_name": "OpenclawResponseOrchestrator",
+        "row": "OpenclawResponseOrchestratorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:247"
+      },
+      {
+        "registry_name": "OpenclawSupervisor",
+        "row": "OpenclawSupervisorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:243"
+      },
+      {
+        "registry_name": "OpenclawTechResearch",
+        "row": "OpenclawTechResearchAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:254"
+      }
+    ],
+    "untracked_names_that_have_a_row": [],
+    "runs_recorded_under_another_row": [
+      {
+        "registry_name": "AdmissionsVisitorActivity",
+        "row": "AdmissionsVisitorActivityAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:229"
+      },
+      {
+        "registry_name": "AdmissionsConversationMemory",
+        "row": "AdmissionsConversationMemoryAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:230"
+      },
+      {
+        "registry_name": "AdmissionsIntentDetection",
+        "row": "AdmissionsIntentDetectionAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:231"
+      },
+      {
+        "registry_name": "AdmissionsProactiveOutreach",
+        "row": "AdmissionsProactiveOutreachAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:232"
+      },
+      {
+        "registry_name": "AdmissionsConversationContinuity",
+        "row": "AdmissionsConversationContinuityAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:233"
+      },
+      {
+        "registry_name": "AdmissionsHighIntentDetection",
+        "row": "AdmissionsHighIntentLeadAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:234"
+      },
+      {
+        "registry_name": "AdmissionsInsightsAggregation",
+        "row": "AdmissionsInsightsAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:235"
+      },
+      {
+        "registry_name": "AdmissionsExecutiveUpdate",
+        "row": "AdmissionsExecutiveUpdateAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:236"
+      },
+      {
+        "registry_name": "AdmissionsCallCompliance",
+        "row": "AdmissionsCallComplianceMonitor",
+        "ref": "backend/src/services/aiOpsScheduler.ts:237"
+      },
+      {
+        "registry_name": "AdmissionsCallbackManagement",
+        "row": "AdmissionsCallbackManagementAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:238"
+      },
+      {
+        "registry_name": "AdmissionsAssistant",
+        "row": "AdmissionsAssistantAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:240"
+      },
+      {
+        "registry_name": "OpenclawSupervisor",
+        "row": "OpenclawSupervisorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:243"
+      },
+      {
+        "registry_name": "OpenclawMarketSignal",
+        "row": "OpenclawMarketSignalAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:244"
+      },
+      {
+        "registry_name": "OpenclawConversationDetection",
+        "row": "OpenclawConversationDetectionAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:245"
+      },
+      {
+        "registry_name": "OpenclawEngagementMonitor",
+        "row": "OpenclawEngagementMonitorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:246"
+      },
+      {
+        "registry_name": "OpenclawResponseOrchestrator",
+        "row": "OpenclawResponseOrchestratorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:247"
+      },
+      {
+        "registry_name": "OpenclawFollowUp",
+        "row": "OpenclawFollowUpAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:248"
+      },
+      {
+        "registry_name": "OpenclawContentResponse",
+        "row": "OpenclawContentResponseAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:249"
+      },
+      {
+        "registry_name": "OpenclawQualityGate",
+        "row": "OpenclawQualityGateAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:250"
+      },
+      {
+        "registry_name": "OpenclawBrowserWorker",
+        "row": "OpenclawBrowserWorkerAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:251"
+      },
+      {
+        "registry_name": "OpenclawLearningOptimization",
+        "row": "OpenclawLearningOptimizationAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:252"
+      },
+      {
+        "registry_name": "OpenclawInfrastructureMonitor",
+        "row": "OpenclawInfraMonitorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:253"
+      },
+      {
+        "registry_name": "OpenclawTechResearch",
+        "row": "OpenclawTechResearchAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:254"
+      },
+      {
+        "registry_name": "OpenclawLinkedInCommentMonitor",
+        "row": "OpenclawLinkedInCommentMonitorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:255"
+      }
+    ],
+    "registry_entries_recording_no_run": [
+      {
+        "registry_name": "WorkforceStudentSuccessDirector",
+        "ref": "backend/src/services/aiOpsScheduler.ts:363"
+      },
+      {
+        "registry_name": "WorkforceCareerDirector",
+        "ref": "backend/src/services/aiOpsScheduler.ts:368"
+      },
+      {
+        "registry_name": "WorkforceFinanceDirector",
+        "ref": "backend/src/services/aiOpsScheduler.ts:376"
+      },
+      {
+        "registry_name": "WorkforceOperationsDirector",
+        "ref": "backend/src/services/aiOpsScheduler.ts:377"
+      },
+      {
+        "registry_name": "WorkforceCommunityDirector",
+        "ref": "backend/src/services/aiOpsScheduler.ts:378"
+      },
+      {
+        "registry_name": "WorkforceTechnologyDirector",
+        "ref": "backend/src/services/aiOpsScheduler.ts:379"
+      },
+      {
+        "registry_name": "WorkforceResearchDirector",
+        "ref": "backend/src/services/aiOpsScheduler.ts:380"
+      }
+    ],
+    "registry_runners_not_read": [
+      {
+        "registry_name": "DeptCampaignPerformanceAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:189"
+      }
+    ],
+    "timers_with_no_name": [
+      {
+        "ref": "backend/src/server.ts:3482",
+        "schedule": "*/10 * * * *"
+      },
+      {
+        "ref": "backend/src/server.ts:3503",
+        "schedule": "*/5 * * * *"
+      },
+      {
+        "ref": "backend/src/server.ts:3516",
+        "schedule": "*/2 * * * *"
+      },
+      {
+        "ref": "backend/src/server.ts:3562",
+        "schedule": "*/2 * * * *"
+      },
+      {
+        "ref": "backend/src/server.ts:3572",
+        "schedule": "0 */4 * * *"
+      },
+      {
+        "ref": "backend/src/server.ts:3588",
+        "schedule": "* * * * *"
+      },
+      {
+        "ref": "backend/src/server.ts:3596",
+        "schedule": "*/5 * * * *"
+      },
+      {
+        "ref": "backend/src/server.ts:3608",
+        "schedule": "*/5 * * * *"
+      },
+      {
+        "ref": "backend/src/services/aiOpsScheduler.ts:785",
+        "schedule": "* * * * *"
+      },
+      {
+        "ref": "backend/src/services/broadcast/broadcastHealthLoop.ts:99",
+        "schedule": "(HEALTH_CRON)"
+      },
+      {
+        "ref": "backend/src/services/repoTree/repoTreeRefreshService.ts:197",
+        "schedule": "(schedule)"
+      },
+      {
+        "ref": "backend/src/services/schedulerService.ts:3400",
+        "schedule": "10,25,40,55 * * * *"
+      },
+      {
+        "ref": "backend/src/services/schedulerService.ts:3411",
+        "schedule": "12,27,42,57 * * * *"
+      },
+      {
+        "ref": "backend/src/services/schedulerService.ts:3423",
+        "schedule": "13,28,43,58 * * * *"
+      }
+    ]
+  },
+  "names_built_at_run_time": [
+    "entry.agentName"
+  ],
+  "cannot_say": [
+    "what fires in production: a cron_schedule_configs row replaces the registry schedule or switches an entry off at start-up and on reload (aiOpsScheduler.ts:748-750, :767-769, :652), and only a live export of that table shows it",
+    "rows created at run time by agentFactory, and rows a production database holds from earlier seeds",
+    "whether an environment-gated timer is running (for example the community-rooms timers in server.ts run only when that flag is on)",
+    "what a timer with no name records: Ellis read its callback, not every function the callback calls"
+  ],
+  "statement": "Measured 2026-10-28T01:02:27.386Z at platform commit 44430870b: the platform's five definitions give 79 seed rows advertising cron with no timer registered under their own name, 66 fired names with no seed row, 2 schedule disagreements, 1 fired name(s) whose row denies a schedule, and 1 name(s) pooling several registry entries. Against the platform's accepted list: 0 new, 0 healed. A match means nothing new, not that the drift is gone. Beyond the platform's reconciler: 24 of the phantom rows do receive runs from a timer under another name, and 24 of the untracked names record their runs on such a row, because runAgent looks up and writes to the row its runner names (aiOrchestrator.ts:184); 7 registry entries record no run at all, and 14 timers fire with no name, no row and no run record."
+}
