@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 26,
+    "stories_verified": 27,
     "stories_submitted": 0,
-    "stories_in_progress": 28,
+    "stories_in_progress": 27,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 38,
-    "points_awarded": 390
+    "criteria_passed": 39,
+    "points_awarded": 405
   },
   "stories": [
     {
@@ -1098,17 +1098,15 @@
       "notes": "Read-only (platform commit 4443087): measures both lists from a platform checkout at run time and applies the platform reconciler five definitions (cronRegistryRatchet.ts:90-150). Every count is the measured number of entries, stamped with measured_at and the checkout commit read from .git; the frozen baseline (cronRegistryBaseline.ts) is used only to report new and healed entries per class, never as a count. At 4443087 (measured 2026-10-28T01:02:27Z, 4,431 files): 79 / 66 / 2 / 1 / 1, 0 new and 0 healed, which is parity with the platform reconciler since its suite passed at that commit. Beyond it: 24 phantom rows receive runs from a timer under another name and the same 24 untracked names record on them; 7 registry entries record no run; 14 timers fire with no name. Tests acceptance: every count is the measured number of entries, stamped with when and at which commit it was measured and acceptance: no count is restated from the baseline document; changing or removing the baseline changes no count pass; 12 tests in the file, 274 in the repo (npm test). 18 mutations each fail at least one test. No platform code is run.",
       "updated_at": "2026-10-28T01:03:33Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "Counts are reported as the reconciler measured them with the measurement date attached; no count is restated from a document."
-        ]
+        "verified_at": "2026-10-28T01:06:20.432Z",
+        "commit_sha": "04dd0fb2830dee89d1dcca7f981ad4a7e210f1eb",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/04dd0fb2830dee89d1dcca7f981ad4a7e210f1eb",
+        "commit_at": "2026-10-28T01:06:03Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
