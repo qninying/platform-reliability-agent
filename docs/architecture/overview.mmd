@@ -1,0 +1,16 @@
+flowchart LR
+  PLATFORM["Colaberry platform<br/>records and source code"]
+  READ["Read boundary<br/>no write method"]
+  PINNED["Pinned rules<br/>commit and file:line"]
+  MODULES["20 capability modules<br/>one question each"]
+  SANDBOX["Sandbox copies<br/>every write journaled"]
+  REPORT["Verdict, citations,<br/>explicit unknowns, exit code"]
+  PEOPLE["People: K.D. approves,<br/>A.M. reviews findings"]
+  PLATFORM -->|dated export, pulled by an admin| READ
+  PLATFORM -->|rules copied at a named commit| PINNED
+  READ --> MODULES
+  PINNED --> MODULES
+  MODULES -->|changes, sandbox only| SANDBOX
+  MODULES --> REPORT
+  REPORT --> PEOPLE
+  PEOPLE -->|upstream fixes| PLATFORM

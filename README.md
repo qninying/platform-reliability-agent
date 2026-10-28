@@ -49,24 +49,9 @@ platform often merges: *healthy*, *broken*, and *unknown*.
 
 ## Architecture
 
-```mermaid
-flowchart LR
-  PLATFORM["Colaberry platform<br/>records and source code"]
-  READ["Read boundary<br/>no write method"]
-  PINNED["Pinned rules<br/>commit and file:line"]
-  MODULES["20 capability modules<br/>one question each"]
-  SANDBOX["Sandbox copies<br/>every write journaled"]
-  REPORT["Verdict, citations,<br/>explicit unknowns, exit code"]
-  PEOPLE["People: K.D. approves,<br/>A.M. reviews findings"]
-  PLATFORM -->|dated export, pulled by an admin| READ
-  PLATFORM -->|rules copied at a named commit| PINNED
-  READ --> MODULES
-  PINNED --> MODULES
-  MODULES -->|changes, sandbox only| SANDBOX
-  MODULES --> REPORT
-  REPORT --> PEOPLE
-  PEOPLE -->|upstream fixes| PLATFORM
-```
+![Ellis reads a dated export through a read boundary and rules pinned to platform code; 20 capability modules make changes only in sandbox copies and produce verdicts with citations for K.D. and A.M., whose reviews lead to upstream fixes](docs/architecture/overview.svg)
+
+Diagram source: [`overview.mmd`](docs/architecture/overview.mmd), rendered to SVG with Mermaid (plain text labels).
 
 Ellis holds no credentials and has no network path to the platform. Detail, layers and the sandbox
 boundaries: [docs/architecture](docs/architecture/README.md).
