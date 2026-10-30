@@ -519,13 +519,22 @@
       "criteria": [
         {
           "text": "An empty queue is reported as 'empty, and here is what could not have reached it', never as a healthy fleet.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/deadLetterTriage.ts",
+        "src/cli/deadLetterTriage.ts",
+        "examples/dead-letter-triage.example.json",
+        "docs/capabilities/dead-letter-triage.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/deadLetterTriage.test.ts"
+      ],
+      "notes": "Both stores as one queue by error class, with proposals; a person decides. Run on platform source at bbde6ef; not yet on live records.",
+      "updated_at": "2026-10-30T18:30:00.000Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

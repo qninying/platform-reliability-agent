@@ -1,0 +1,107 @@
+{
+ "captured_at": "2026-10-30T12:00:00Z",
+ "captured_by": "example, not production data: job names and error fields are taken from the platform at bbde6ef; rows, classes, messages and times are illustrative",
+ "dead_letter_jobs": [
+  {
+   "id": "dl-1",
+   "job_name": "AutonomousEngine",
+   "label": "Autonomous cycle",
+   "consecutive_failures": 3,
+   "error_class": "TypeError",
+   "error_message": "Cannot read properties of undefined (reading 'plan')",
+   "resolved": false,
+   "resolved_at": null,
+   "created_at": "2026-10-27T10:15:00Z"
+  },
+  {
+   "id": "dl-2",
+   "job_name": "AutonomousEngine",
+   "label": "Autonomous cycle",
+   "consecutive_failures": 3,
+   "error_class": "TypeError",
+   "error_message": "Cannot read properties of undefined (reading 'plan')",
+   "resolved": false,
+   "resolved_at": null,
+   "created_at": "2026-10-27T10:45:00Z"
+  },
+  {
+   "id": "dl-3",
+   "job_name": "MetaAgentLoop",
+   "label": "Meta-agent loop",
+   "consecutive_failures": 3,
+   "error_class": "SequelizeTimeoutError",
+   "error_message": "Query timed out after 30000 ms",
+   "resolved": false,
+   "resolved_at": null,
+   "created_at": "2026-10-29T04:02:00Z"
+  },
+  {
+   "id": "dl-4",
+   "job_name": "AICOOStrategicCycle",
+   "label": "AI COO strategic cycle",
+   "consecutive_failures": 3,
+   "error_class": "SequelizeTimeoutError",
+   "error_message": "Query timed out after 30000 ms",
+   "resolved": false,
+   "resolved_at": null,
+   "created_at": "2026-10-29T04:10:00Z"
+  },
+  {
+   "id": "dl-5",
+   "job_name": "WorkforceFinanceDirector",
+   "label": "AI Workforce: Finance director",
+   "consecutive_failures": 3,
+   "error_class": "TypeError",
+   "error_message": "x is not a function",
+   "resolved": false,
+   "resolved_at": null,
+   "created_at": "2026-10-30T06:00:00Z"
+  }
+ ],
+ "publishing_jobs": [
+  {
+   "id": "pub-1",
+   "state": "dead_lettered",
+   "provider": "linkedin",
+   "last_error_class": "RateLimitError",
+   "last_error": "429 from provider",
+   "dead_lettered_at": "2026-10-29T09:00:00Z",
+   "dead_letter_reason": "exhausted 3 attempts: RateLimitError"
+  },
+  {
+   "id": "pub-2",
+   "state": "failed",
+   "provider": "linkedin",
+   "last_error_class": "AuthError",
+   "last_error": "token rejected",
+   "dead_lettered_at": "2026-10-29T11:00:00Z",
+   "dead_letter_reason": "permanent: AuthError"
+  },
+  {
+   "id": "pub-3",
+   "state": "cancelled",
+   "provider": "linkedin",
+   "last_error_class": "AuthError",
+   "last_error": "token rejected",
+   "dead_lettered_at": "2026-10-28T11:00:00Z",
+   "dead_letter_reason": "permanent: AuthError"
+  }
+ ],
+ "ai_agents": [
+  {
+   "agent_name": "AutonomousEngine",
+   "last_run_at": "2026-10-30T11:00:00Z",
+   "last_error_at": "2026-10-30T11:00:00Z"
+  },
+  {
+   "agent_name": "MetaAgentLoop",
+   "last_run_at": "2026-10-30T10:00:00Z",
+   "last_error_at": "2026-10-29T04:02:00Z"
+  },
+  {
+   "agent_name": "AICOOStrategicCycle",
+   "last_run_at": "2026-10-29T04:09:59Z",
+   "last_error_at": "2026-10-29T04:09:59Z"
+  }
+ ]
+}

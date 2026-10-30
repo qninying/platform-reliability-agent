@@ -34,7 +34,8 @@
     "registry-reconcile": "node src/cli/registryReconcile.ts",
     "incident-trace": "node src/cli/incidentTrace.ts",
     "schedule-governance": "node src/cli/scheduleGovernance.ts",
-    "dead-letters": "node src/cli/deadLetters.ts"
+    "dead-letters": "node src/cli/deadLetters.ts",
+    "dead-letter-triage": "node src/cli/deadLetterTriage.ts"
   },
   "devDependencies": {
     "@types/node": "22.15.3",
