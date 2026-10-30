@@ -12,7 +12,7 @@ evidence and judgement layer, read-only, against the real platform's code and re
 |---|---|
 | **Engineering ownership** | Quincy Nkwain Ninying: system architecture and forward-deployed engineering |
 | **Platform** | [Colaberry platform](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator) (public): 100+ scheduled agents, Node, TypeScript, PostgreSQL |
-| **Capabilities** | 23 of 48 verified by the platform ([catalog](docs/capabilities/README.md)) |
+| **Capabilities** | 24 of 48 verified by the platform ([catalog](docs/capabilities/README.md)) |
 | **Tests** | 303 passing, each capability's key rules shown to fail when broken ([how](docs/decisions/004-prove-each-test-can-fail.md)) |
 | **Autonomy** | every capability starts at R0; first releases at R2 (answer from records), with two at R4 and one at R1, all in a sandbox |
 | **Production writes** | none: read-only, or a sandbox copy ([decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md)) |
