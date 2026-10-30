@@ -1246,13 +1246,26 @@
       "criteria": [
         {
           "text": "Every proposal says whether the target is in the reloadable aiOps registry or inline in schedulerService.ts, because the two have different remedies; a proposal with an unknown home is labelled unknown.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/scheduleGovernance.ts",
+        "src/inventory/timerHomes.ts",
+        "src/cli/scheduleGovernance.ts",
+        "src/cli/checkout.ts",
+        "src/cli/registryReconcile.ts",
+        "test/scheduleGovernance.test.ts",
+        "examples/schedule-governance.example.json",
+        "docs/capabilities/schedule-governance-and-live-reload.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/scheduleGovernance.test.ts"
+      ],
+      "notes": "Read-only (platform commit c96f6a6, run at d85c2ab): proposes schedule changes with the measured run cost (run rows and the AI calls sharing their trace) and signal rate (a lower bound) behind each, and names the timer home read from source at run time: aiops_registry (reloadable from /admin/governance), inline (restart only), registry_and_inline, or unknown with the reason. Also names the governance key when it differs from the ai_agents row, and says when no cron_schedule_configs row exists (the PATCH returns 404). A person applies every change. Test acceptance: every proposal says whether the target is in the reloadable aiOps registry or inline in schedulerService.ts, and an unknown home is labelled unknown passes; 9 tests in the file, 293 in the repo (npm test). Run on d85c2ab source: 188 timers placed, 109 reloadable keys and 79 inline, none unknown. 25 mutations each fail at least one test.",
+      "updated_at": "2026-10-30T16:06:27Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

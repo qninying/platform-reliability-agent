@@ -1,0 +1,159 @@
+{
+ "captured_at": "2026-10-30T12:00:00Z",
+ "captured_by": "example, not production data: job names, registries and inline timers are taken from the platform at d85c2ab4a; rows, runs, costs and governance rows are illustrative",
+ "ai_agents": [
+  {
+   "id": "a-brief",
+   "agent_name": "DailyExecutiveBriefing",
+   "enabled": true
+  },
+  {
+   "id": "a-pay",
+   "agent_name": "PaySimplePaymentSync",
+   "enabled": true
+  },
+  {
+   "id": "a-adm",
+   "agent_name": "AdmissionsAssistantAgent",
+   "enabled": true
+  }
+ ],
+ "ai_agent_activity_logs": [
+  {
+   "id": "run-brief-0",
+   "agent_id": "a-brief",
+   "action": "DailyExecutiveBriefing",
+   "result": "success",
+   "trace_id": "t-brief-0",
+   "duration_ms": 42000,
+   "created_at": "2026-10-24T11:45:00Z"
+  },
+  {
+   "id": "run-brief-1",
+   "agent_id": "a-brief",
+   "action": "DailyExecutiveBriefing",
+   "result": "success",
+   "trace_id": "t-brief-1",
+   "duration_ms": 43000,
+   "created_at": "2026-10-25T11:45:01Z"
+  },
+  {
+   "id": "run-brief-2",
+   "agent_id": "a-brief",
+   "action": "DailyExecutiveBriefing",
+   "result": "success",
+   "trace_id": "t-brief-2",
+   "duration_ms": 44000,
+   "created_at": "2026-10-26T11:45:02Z"
+  },
+  {
+   "id": "run-brief-3",
+   "agent_id": "a-brief",
+   "action": "DailyExecutiveBriefing",
+   "result": "success",
+   "trace_id": "t-brief-3",
+   "duration_ms": 45000,
+   "created_at": "2026-10-27T11:45:03Z"
+  },
+  {
+   "id": "run-brief-4",
+   "agent_id": "a-brief",
+   "action": "DailyExecutiveBriefing",
+   "result": "success",
+   "trace_id": "t-brief-4",
+   "duration_ms": 46000,
+   "created_at": "2026-10-28T11:45:04Z"
+  },
+  {
+   "id": "run-brief-5",
+   "agent_id": "a-brief",
+   "action": "DailyExecutiveBriefing",
+   "result": "success",
+   "trace_id": "t-brief-5",
+   "duration_ms": 47000,
+   "created_at": "2026-10-29T11:45:05Z"
+  },
+  {
+   "id": "run-pay-0",
+   "agent_id": "a-pay",
+   "action": "PaySimplePaymentSync",
+   "result": "failed",
+   "trace_id": "t-pay-0",
+   "duration_ms": 900,
+   "created_at": "2026-10-30T00:00:01Z"
+  },
+  {
+   "id": "run-pay-1",
+   "agent_id": "a-pay",
+   "action": "PaySimplePaymentSync",
+   "result": "failed",
+   "trace_id": "t-pay-1",
+   "duration_ms": 900,
+   "created_at": "2026-10-30T01:00:01Z"
+  },
+  {
+   "id": "run-pay-2",
+   "agent_id": "a-pay",
+   "action": "PaySimplePaymentSync",
+   "result": "failed",
+   "trace_id": "t-pay-2",
+   "duration_ms": 900,
+   "created_at": "2026-10-30T02:00:01Z"
+  },
+  {
+   "id": "run-pay-3",
+   "agent_id": "a-pay",
+   "action": "PaySimplePaymentSync",
+   "result": "failed",
+   "trace_id": "t-pay-3",
+   "duration_ms": 900,
+   "created_at": "2026-10-30T03:00:01Z"
+  }
+ ],
+ "ai_events": [
+  {
+   "id": "ev-brief-0",
+   "trace_id": "t-brief-0",
+   "cost_usd": 0.031,
+   "created_at": "2026-10-24T11:45:00Z"
+  },
+  {
+   "id": "ev-brief-1",
+   "trace_id": "t-brief-1",
+   "cost_usd": 0.031,
+   "created_at": "2026-10-25T11:45:01Z"
+  },
+  {
+   "id": "ev-brief-2",
+   "trace_id": "t-brief-2",
+   "cost_usd": 0.031,
+   "created_at": "2026-10-26T11:45:02Z"
+  },
+  {
+   "id": "ev-brief-3",
+   "trace_id": "t-brief-3",
+   "cost_usd": 0.031,
+   "created_at": "2026-10-27T11:45:03Z"
+  },
+  {
+   "id": "ev-brief-4",
+   "trace_id": "t-brief-4",
+   "cost_usd": 0.031,
+   "created_at": "2026-10-28T11:45:04Z"
+  },
+  {
+   "id": "ev-brief-5",
+   "trace_id": "t-brief-5",
+   "cost_usd": null,
+   "created_at": "2026-10-29T11:45:05Z"
+  }
+ ],
+ "cron_schedule_configs": [
+  {
+   "agent_name": "DailyExecutiveBriefing",
+   "active_schedule": "45 6 * * *",
+   "default_schedule": "45 6 * * *",
+   "enabled": true
+  }
+ ]
+}

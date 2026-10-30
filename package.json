@@ -32,7 +32,8 @@
     "cron-health": "node src/cli/cronHealth.ts",
     "agent-health": "node src/cli/agentHealth.ts",
     "registry-reconcile": "node src/cli/registryReconcile.ts",
-    "incident-trace": "node src/cli/incidentTrace.ts"
+    "incident-trace": "node src/cli/incidentTrace.ts",
+    "schedule-governance": "node src/cli/scheduleGovernance.ts"
   },
   "devDependencies": {
     "@types/node": "22.15.3",
