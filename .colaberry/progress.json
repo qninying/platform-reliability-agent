@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 27,
+    "stories_verified": 28,
     "stories_submitted": 0,
-    "stories_in_progress": 27,
+    "stories_in_progress": 26,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 39,
-    "points_awarded": 405
+    "criteria_passed": 40,
+    "points_awarded": 420
   },
   "stories": [
     {
@@ -723,17 +723,15 @@
       "notes": "Read-only (platform commit c96f6a6): assembles the trace behind a trace id, activity row, error record or a job latest failure, adds the AI calls sharing the trace (the platform trace view reads activity rows only), and states the probable cause in the run own words with the rows behind it. Where no trace exists the answer starts Not traceable with the exact reason (no row, wrapper records no run, row has no trace, error links to no run, events without a run), and for an untracked job it is Not traceable: this job is untracked (a colon in place of the criterion dash); no cause is ever given without a trace. Error class and severity are always null, said plainly. Tests acceptance: where no trace exists for a failure, the answer is not traceable: this job is untracked, never a narrative and acceptance: no not-traceable answer cites a row it was not asked about, even one that looks related pass; 9 tests in the file, 283 in the repo (npm test). 19 mutations each fail at least one test.",
       "updated_at": "2026-10-28T02:21:04Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "Where no trace exists for a failure, the answer is 'not traceable — this job is untracked', never a reconstructed narrative."
-        ]
+        "verified_at": "2026-10-30T15:51:44.342Z",
+        "commit_sha": "e9d8ecc34b57772a3881bb5703405bf137d5fb80",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/e9d8ecc34b57772a3881bb5703405bf137d5fb80",
+        "commit_at": "2026-10-28T02:22:25Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
