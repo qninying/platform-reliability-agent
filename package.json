@@ -33,7 +33,8 @@
     "agent-health": "node src/cli/agentHealth.ts",
     "registry-reconcile": "node src/cli/registryReconcile.ts",
     "incident-trace": "node src/cli/incidentTrace.ts",
-    "schedule-governance": "node src/cli/scheduleGovernance.ts"
+    "schedule-governance": "node src/cli/scheduleGovernance.ts",
+    "dead-letters": "node src/cli/deadLetters.ts"
   },
   "devDependencies": {
     "@types/node": "22.15.3",

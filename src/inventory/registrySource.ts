@@ -207,6 +207,8 @@ export function recordsUnder(entry: RegistryEntry, orchestratorText: string, uni
   if (!body) return { row: null, how: 'unknown' };
   const run = /^\{\s*return runAgent\(\s*'([^']+)'/.exec(body);
   if (run) return { row: run[1], how: 'runAgent' };
+  // The row's name passed as a constant (runCampaignPerformance, aiOrchestrator.ts:941): the wrapper is known, the row is not read.
+  if (/^\{\s*return runAgent\(\s*[A-Z][A-Z0-9_]*\b/.test(body)) return { row: null, how: 'runAgent' };
   const own = /AiAgent\.findOne\(\{\s*where:\s*\{\s*agent_name:\s*'([^']+)'/.exec(body);
   return own ? { row: own[1], how: 'own_row' } : { row: null, how: 'unknown' };
 }

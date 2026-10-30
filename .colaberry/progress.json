@@ -481,13 +481,25 @@
       "criteria": [
         {
           "text": "The report names the unwrapped job families explicitly, so an empty queue is never read as a healthy fleet.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/deadLetterCapture.ts",
+        "src/inventory/timerHomes.ts",
+        "src/inventory/registrySource.ts",
+        "src/cli/deadLetters.ts",
+        "test/deadLetterCapture.test.ts",
+        "examples/dead-letters.example.json",
+        "docs/capabilities/dead-letter-capture.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/deadLetterCapture.test.ts"
+      ],
+      "notes": "Read-only (platform commit bbde6ef): reports dead_letter_jobs and publishing_jobs dead letters by error class, kept separate, and names the job families that cannot dead-letter, read from source at run time. Being wrapped is not enough: runAgent, runHealthScans and instrumentCronJob with a row catch the failure and never rethrow, so those jobs are reported as wrapped_but_swallowed. Empty queues exit 4 and say that does not mean the fleet is healthy. Refuses to answer if the wrapping has moved. Error messages and stacks are never repeated. Test acceptance: the report names the unwrapped job families explicitly, so an empty queue is never read as a healthy fleet passes; 10 tests in the file, 303 in the repo (npm test). Run on bbde6ef source: 11 of 202 jobs can dead-letter. 23 mutations each fail at least one test. Not yet run on a live export.",
+      "updated_at": "2026-10-30T16:44:28Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

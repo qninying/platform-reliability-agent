@@ -1,0 +1,62 @@
+{
+ "captured_at": "2026-10-30T12:00:00Z",
+ "captured_by": "example, not production data: job names and error fields are taken from the platform at bbde6ef; rows, classes and times are illustrative",
+ "dead_letter_jobs": [
+  {
+   "id": "dl-1",
+   "job_name": "AutonomousEngine",
+   "label": "Autonomous cycle",
+   "consecutive_failures": 3,
+   "error_class": "TypeError",
+   "resolved": false,
+   "resolved_at": null,
+   "created_at": "2026-10-27T10:15:00Z"
+  },
+  {
+   "id": "dl-2",
+   "job_name": "AutonomousEngine",
+   "label": "Autonomous cycle",
+   "consecutive_failures": 3,
+   "error_class": "TypeError",
+   "resolved": false,
+   "resolved_at": null,
+   "created_at": "2026-10-27T10:45:00Z"
+  },
+  {
+   "id": "dl-3",
+   "job_name": "MetaAgentLoop",
+   "label": "Meta-agent loop",
+   "consecutive_failures": 3,
+   "error_class": "SequelizeTimeoutError",
+   "resolved": false,
+   "resolved_at": null,
+   "created_at": "2026-10-29T04:02:00Z"
+  },
+  {
+   "id": "dl-4",
+   "job_name": "WorkforceFinanceDirector",
+   "label": "AI Workforce: Finance director",
+   "consecutive_failures": 3,
+   "error_class": "TypeError",
+   "resolved": false,
+   "resolved_at": null,
+   "created_at": "2026-10-30T06:00:00Z"
+  }
+ ],
+ "publishing_jobs": [
+  {
+   "id": "pub-1",
+   "state": "dead_lettered",
+   "last_error_class": "RateLimitError",
+   "dead_lettered_at": "2026-10-29T09:00:00Z",
+   "dead_letter_reason": "exhausted 3 attempts: RateLimitError"
+  },
+  {
+   "id": "pub-2",
+   "state": "published",
+   "last_error_class": null,
+   "dead_lettered_at": null,
+   "dead_letter_reason": null
+  }
+ ]
+}
