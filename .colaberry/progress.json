@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 29,
+    "stories_verified": 30,
     "stories_submitted": 0,
-    "stories_in_progress": 25,
+    "stories_in_progress": 24,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 41,
-    "points_awarded": 435
+    "criteria_passed": 42,
+    "points_awarded": 450
   },
   "stories": [
     {
@@ -501,17 +501,15 @@
       "notes": "Read-only (platform commit bbde6ef): reports dead_letter_jobs and publishing_jobs dead letters by error class, kept separate, and names the job families that cannot dead-letter, read from source at run time. Being wrapped is not enough: runAgent, runHealthScans and instrumentCronJob with a row catch the failure and never rethrow, so those jobs are reported as wrapped_but_swallowed. Empty queues exit 4 and say that does not mean the fleet is healthy. Refuses to answer if the wrapping has moved. Error messages and stacks are never repeated. Test acceptance: the report names the unwrapped job families explicitly, so an empty queue is never read as a healthy fleet passes; 10 tests in the file, 303 in the repo (npm test). Run on bbde6ef source: 11 of 202 jobs can dead-letter. 23 mutations each fail at least one test. Not yet run on a live export.",
       "updated_at": "2026-10-30T16:44:28Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "The report names the unwrapped job families explicitly, so an empty queue is never read as a healthy fleet."
-        ]
+        "verified_at": "2026-10-30T17:25:22.400Z",
+        "commit_sha": "730bfaecb33a8374c169121353d89ded8376ee9b",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/730bfaecb33a8374c169121353d89ded8376ee9b",
+        "commit_at": "2026-10-30T17:25:04Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
