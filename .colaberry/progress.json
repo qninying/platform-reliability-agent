@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 28,
+    "stories_verified": 29,
     "stories_submitted": 0,
-    "stories_in_progress": 26,
+    "stories_in_progress": 25,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 40,
-    "points_awarded": 420
+    "criteria_passed": 41,
+    "points_awarded": 435
   },
   "stories": [
     {
@@ -1267,17 +1267,15 @@
       "notes": "Read-only (platform commit c96f6a6, run at d85c2ab): proposes schedule changes with the measured run cost (run rows and the AI calls sharing their trace) and signal rate (a lower bound) behind each, and names the timer home read from source at run time: aiops_registry (reloadable from /admin/governance), inline (restart only), registry_and_inline, or unknown with the reason. Also names the governance key when it differs from the ai_agents row, and says when no cron_schedule_configs row exists (the PATCH returns 404). A person applies every change. Test acceptance: every proposal says whether the target is in the reloadable aiOps registry or inline in schedulerService.ts, and an unknown home is labelled unknown passes; 9 tests in the file, 293 in the repo (npm test). Run on d85c2ab source: 188 timers placed, 109 reloadable keys and 79 inline, none unknown. 25 mutations each fail at least one test.",
       "updated_at": "2026-10-30T16:06:27Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "Every proposal says whether the target is in the reloadable aiOps registry or inline in schedulerService.ts, because the two have different remedies; a proposal with an unknown home is labelled unknown."
-        ]
+        "verified_at": "2026-10-30T16:33:14.119Z",
+        "commit_sha": "1052ddd624b067b8985c45d974114f542d750d67",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/1052ddd624b067b8985c45d974114f542d750d67",
+        "commit_at": "2026-10-30T16:32:44Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
