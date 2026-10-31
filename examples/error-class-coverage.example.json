@@ -1,0 +1,63 @@
+{
+ "captured_at": "2026-10-31T12:00:00Z",
+ "captured_by": "example, not production data: job names are taken from the platform at bbde6ef; rows, classes and times are illustrative",
+ "ai_agent_activity_logs": [
+  {
+   "id": "run-1",
+   "action": "PaySimplePaymentSync",
+   "result": "failed",
+   "details": null,
+   "created_at": "2026-10-30T02:00:00Z"
+  },
+  {
+   "id": "run-2",
+   "action": "PaySimplePaymentSync",
+   "result": "failed",
+   "details": null,
+   "created_at": "2026-10-30T03:00:00Z"
+  },
+  {
+   "id": "run-3",
+   "action": "agent_execution_failed",
+   "result": "failed",
+   "details": null,
+   "created_at": "2026-10-30T04:00:00Z"
+  },
+  {
+   "id": "run-4",
+   "action": "DailyExecutiveBriefing",
+   "result": "success",
+   "details": null,
+   "created_at": "2026-10-30T11:45:00Z"
+  },
+  {
+   "id": "run-5",
+   "action": "agent_execution_failed",
+   "result": "failure",
+   "details": {
+    "error_class": "TimeoutError"
+   },
+   "created_at": "2026-10-29T04:00:00Z"
+  }
+ ],
+ "dead_letter_jobs": [
+  {
+   "id": "dl-1",
+   "job_name": "AutonomousEngine",
+   "error_class": "Error",
+   "created_at": "2026-10-29T10:15:00Z"
+  },
+  {
+   "id": "dl-2",
+   "job_name": "MetaAgentLoop",
+   "error_class": "SequelizeTimeoutError",
+   "created_at": "2026-10-29T04:02:00Z"
+  },
+  {
+   "id": "dl-3",
+   "job_name": "AICOOStrategicCycle",
+   "error_class": "TypeError",
+   "created_at": "2026-10-28T04:10:00Z"
+  }
+ ]
+}

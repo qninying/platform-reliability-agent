@@ -36,6 +36,7 @@
     "schedule-governance": "node src/cli/scheduleGovernance.ts",
     "dead-letters": "node src/cli/deadLetters.ts",
     "dead-letter-triage": "node src/cli/deadLetterTriage.ts",
+    "error-class-coverage": "node src/cli/errorClassCoverage.ts",
     "command-center-domain": "node scripts/buildCommandCenterDomain.ts"
   },
   "devDependencies": {

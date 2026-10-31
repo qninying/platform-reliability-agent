@@ -638,13 +638,23 @@
       "criteria": [
         {
           "text": "Coverage is reported as a share of all recorded failures; failures whose class is the generic fallback count as unclassified, not classified.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/errorClassCoverage.ts",
+        "src/inventory/catchSites.ts",
+        "src/cli/errorClassCoverage.ts",
+        "examples/error-class-coverage.example.json",
+        "docs/capabilities/error-class-coverage.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/errorClassCoverage.test.ts"
+      ],
+      "notes": "Coverage over all recorded failures, generic counts as unclassified; catch sites with no class named. Run on platform source at bbde6ef; not yet on live records.",
+      "updated_at": "2026-10-31T18:00:00.000Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
