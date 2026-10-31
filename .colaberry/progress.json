@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 30,
+    "stories_verified": 31,
     "stories_submitted": 0,
-    "stories_in_progress": 24,
+    "stories_in_progress": 23,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 42,
-    "points_awarded": 450
+    "criteria_passed": 43,
+    "points_awarded": 465
   },
   "stories": [
     {
@@ -536,17 +536,15 @@
       "notes": "Both stores as one queue by error class, with proposals; a person decides. Run on platform source at bbde6ef; not yet on live records.",
       "updated_at": "2026-10-30T18:30:00.000Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "An empty queue is reported as 'empty, and here is what could not have reached it', never as a healthy fleet."
-        ]
+        "verified_at": "2026-10-30T22:15:11.522Z",
+        "commit_sha": "ce04db2774dd43265e1d9b99a0bdfad7af7f0e46",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/ce04db2774dd43265e1d9b99a0bdfad7af7f0e46",
+        "commit_at": "2026-10-30T22:14:53Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
