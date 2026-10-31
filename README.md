@@ -13,7 +13,7 @@ evidence and judgement layer, read-only, against the real platform's code and re
 | **Engineering ownership** | Quincy Nkwain Ninying: system architecture and forward-deployed engineering |
 | **Platform** | [Colaberry platform](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator) (public): 100+ scheduled agents, Node, TypeScript, PostgreSQL |
 | **Capabilities** | 25 of 48 verified by the platform ([catalog](docs/capabilities/README.md)) |
-| **Tests** | 322 passing, each capability's key rules shown to fail when broken ([how](docs/decisions/004-prove-each-test-can-fail.md)) |
+| **Tests** | 334 passing, each capability's key rules shown to fail when broken ([how](docs/decisions/004-prove-each-test-can-fail.md)) |
 | **Autonomy** | every capability starts at R0; first releases at R2 (answer from records), with two at R4 and one at R1, all in a sandbox |
 | **Production writes** | none: read-only, or a sandbox copy ([decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md)) |
 | **Runtime dependencies** | none (Node 23.6+ runs the TypeScript directly) |
@@ -207,7 +207,7 @@ stories came first, each approved by K.D. before building started.
 | [`docs/migration/legacy-migration-plan.md`](docs/migration/legacy-migration-plan.md) | Plan for the 38 inherited platform records (version 1 approved by K.D.) |
 | [`docs/artifacts/`](docs/artifacts) | PDFs: architecture, charter, platform audit, discovery brief, risk review, governance model |
 | [`brd/brd-draft-v0.7.pdf`](brd/brd-draft-v0.7.pdf) | Business requirement document, early draft v0.7 (2026-10-14, written before platform access) |
-| [Command Center](https://qninying.github.io/platform-reliability-agent/) (`index.html`, `command-center/`) | Project progress and plan, read live from `.colaberry/` |
+| [Command Center](https://qninying.github.io/platform-reliability-agent/) (`index.html`, `command-center/`) | Project progress and plan, read live from `.colaberry/`, and the Agent domain tab: six panels on what Ellis is allowed to do |
 | `docs/stories/`, `docs/REQUIREMENTS.md`, `CLAUDE.md` | Build plan files managed by the platform's pipeline |
 
 ## The platform Ellis watches

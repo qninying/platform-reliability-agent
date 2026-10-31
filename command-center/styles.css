@@ -94,3 +94,20 @@ ul.checks li.yes::marker { color: var(--ok); }
 .kb-form input { flex: 1; font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); }
 .kb-form button { border: 0; background: var(--brand-deep); color: #fff; border-radius: 8px; padding: 8px 16px; cursor: pointer; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* Agent domain tab: loading, nothing returned and read must not look alike. */
+.dp.loading { opacity: 0.6; border-style: dotted; }
+.dp.nothing { border: 2px solid var(--warn); }
+.dp .read { font-size: 0.85rem; max-width: none; }
+.chip.dp-loading { background: var(--unknown-soft); color: var(--unknown); }
+.chip.dp-nothing { background: var(--warn-soft); color: var(--warn); }
+.chip.dp-ready { background: var(--ok-soft); color: var(--ok); }
+.chip.human { background: var(--accent-soft); color: var(--ink); }
+.chip.by-fact { background: var(--warn-soft); color: var(--warn); }
+.blank { color: var(--warn); font-style: italic; }
+.rungs { margin: 0; padding-left: 0; list-style: none; display: grid; gap: 4px; }
+td.rung { text-align: center; font-size: 0.72rem; min-width: 38px; }
+td.rung.reachable { background: var(--accent-soft); }
+td.rung.ceiling { background: var(--accent-soft); font-weight: 700; }
+td.rung.unreachable { color: var(--muted); background: repeating-linear-gradient(45deg, transparent, transparent 4px, var(--line) 4px, var(--line) 5px); }
+td.rung.by_fact { color: var(--warn); background: var(--warn-soft); }

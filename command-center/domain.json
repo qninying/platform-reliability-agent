@@ -1,0 +1,1037 @@
+{
+ "source": {
+  "file": "backend/src/services/agentDomain/capabilities/platform.json",
+  "commit": "bbde6ef1d"
+ },
+ "capabilities": [
+  {
+   "capability_id": "platform.orchestration_health_watch",
+   "name": "Orchestration health watch",
+   "classification": "inherited",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R5",
+   "max_autonomy_rationale": "Read-and-report over existing records. Shadow evaluation against an approved reference verdict is the highest rung that needs no new production side effect; anything above R5 would mean acting on the verdict, which is a separate capability.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'is orchestration healthy right now, and when did it last change' from the registry and activity log only.",
+     "acceptance_criteria": "Every answer cites the ai_agents row and activity-log rows it was derived from; no answer is produced for an agent name with no row."
+    },
+    {
+     "autonomy": "autonomy:R5",
+     "behaviour": "Produces a verdict in shadow alongside runOrchestrationHealth without replacing it.",
+     "acceptance_criteria": "Shadow verdict agrees with the live verdict on an agreed sample of runs, and every disagreement is recorded with both verdicts."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.orchestration_auto_repair",
+   "name": "Orchestration auto-repair",
+   "classification": "inherited",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R6",
+   "max_autonomy_rationale": "This writes repairs, so it cannot stop at read-only. R6 is the ceiling because a supervised production pilot is separately approved per capability (autonomyLadder.ts:156-159 flags production_requires_separate_pilot_approval); R7 would let it automate repair classes nobody has enumerated, and the authorized repair set is not written down anywhere today.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R4",
+     "behaviour": "Executes the full repair sequence against a sandbox fixture carrying a seeded fault and verifies the end state.",
+     "acceptance_criteria": "Running the same repair twice against the same fixture leaves one change, not two, and the second run reports no-op."
+    },
+    {
+     "autonomy": "autonomy:R6",
+     "behaviour": "Runs supervised against production with each repair recorded before it is applied.",
+     "acceptance_criteria": "Every applied repair is in the enumerated authorized set and has a recorded pre-state sufficient to reverse it."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.security_posture_scan",
+   "name": "Static security posture scanning",
+   "classification": "inherited",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R5",
+   "max_autonomy_rationale": "Scanning is read-only and can reach shadow comparison against an approved reference finding set. Remediation — rotating a credential, bumping a dependency, rewriting history — is a different capability with production consequences and is deliberately excluded from this one.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'what did the last scan of each kind find, and when' from stored findings.",
+     "acceptance_criteria": "A scan that has never run returns 'unknown' rather than 'no findings'."
+    },
+    {
+     "autonomy": "autonomy:R5",
+     "behaviour": "Scans in shadow against a fixture with planted vulnerabilities, secrets and vulnerable pins.",
+     "acceptance_criteria": "Every planted item is found, no planted secret value appears in any emitted record, and the false-positive count is recorded rather than suppressed."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.runtime_threat_and_access_watch",
+   "name": "Runtime threat and access-control watch",
+   "classification": "inherited",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R5",
+   "max_autonomy_rationale": "Detection only. Changing anyone's access is a privilege grant, which is the single thing an agent in this domain must never do on its own authority, so the ladder stops below any action rung for this capability.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'who holds which admin section today, and what changed since the last sweep' from audit records.",
+     "acceptance_criteria": "The answer distinguishes 'no admin_users row' from 'admin_users row with no sections', because they have different remedies."
+    },
+    {
+     "autonomy": "autonomy:R5",
+     "behaviour": "Evaluates in shadow against an approved expected-access baseline.",
+     "acceptance_criteria": "The four known no-login managers are reported as a known gap, not as new drift, on every run."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.agent_behavior_safety_watch",
+   "name": "Agent behaviour and AI-safety watch",
+   "classification": "inherited",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R6",
+   "max_autonomy_rationale": "It already writes tickets in production today, so a production pilot rung is the honest ceiling. R7 is withheld because 'stop that agent' is the obvious next action and it is a live-timer change, which stays human-decided under platform.agent_enable_disable_control.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'which agents acted outside their grants recently' from the activity log and grant records.",
+     "acceptance_criteria": "Every finding names the specific grant that was missing; a finding with no named grant is not emitted."
+    },
+    {
+     "autonomy": "autonomy:R6",
+     "behaviour": "Creates [Security] tickets in production under supervision, under its registered identity.",
+     "acceptance_criteria": "No ticket is created under a raw UUID; every ticket resolves to a real admin_users row, which is the exact defect ticketCreatorIdentitySeed.ts:186-198 records."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.security_oversight_rollup",
+   "name": "Security oversight rollup",
+   "classification": "inherited",
+   "implementation_state": "partial",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R5",
+   "max_autonomy_rationale": "A rollup's only output is a judgement. Shadow comparison against an approved reference verdict is exactly the right top rung, and is also the only rung that would have caught the unfalsifiable-green defect the supervisor audit found.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Reports the current rollup with every contributing scanner listed as clean, dirty or unknown.",
+     "acceptance_criteria": "A scanner with no last_run_at renders as unknown; the rollup can never be green while any contribution is unknown."
+    },
+    {
+     "autonomy": "autonomy:R5",
+     "behaviour": "Produces a shadow rollup against an approved reference verdict for a seeded mix of clean, dirty and silent scanners.",
+     "acceptance_criteria": "The seeded silent scanner is reported as unknown and the overall verdict is not green — a positive control that the green path can actually fail."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.data_retention_sweep",
+   "name": "Platform data retention sweeps",
+   "classification": "inherited",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R4",
+   "max_autonomy_rationale": "Deletion is irreversible, so the ladder stops at verified multi-step sandbox execution. Reaching production would require production_database, which is default-denied; the live sweeps keep running as the existing deterministic timers, not as agent actions.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'what is each table's retention window and when was it last swept' from run records.",
+     "acceptance_criteria": "A table whose window is not recorded anywhere returns 'unknown', never a guessed number of days."
+    },
+    {
+     "autonomy": "autonomy:R4",
+     "behaviour": "Executes the sweep end to end against a sandbox database seeded with rows either side of the boundary.",
+     "acceptance_criteria": "Rows exactly at the boundary are handled per the stated rule, dependents survive, and a second run deletes zero rows."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.preview_stack_reaping",
+   "name": "Preview stack reaping",
+   "classification": "inherited",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R4",
+   "max_autonomy_rationale": "Teardown destroys resources. cloud_resource_deletion is one of the eight default-denied capabilities, so this capability can never hold the tool that would let an agent reap for real; sandbox verification is the ceiling by construction, not by preference.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'which preview stacks are live, how idle is each, and which are reap candidates' from inventory and activity data.",
+     "acceptance_criteria": "A stack with no activity signal at all is reported as unknown-idle, not as idle."
+    },
+    {
+     "autonomy": "autonomy:R4",
+     "behaviour": "Runs the full reap decision and a simulated teardown against a sandbox inventory.",
+     "acceptance_criteria": "An interrupted teardown, re-run, reaches a fully clean end state with no orphaned resources."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.stale_action_recovery",
+   "name": "Stale action recovery",
+   "classification": "inherited",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R4",
+   "max_autonomy_rationale": "Recovery mutates work state, and getting it wrong double-executes real side effects. Sandbox verification with a concurrency fixture is the ceiling until the slow-versus-stuck distinction is specified by the manager.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'what is stuck right now, for how long, and on which attempt' from action records.",
+     "acceptance_criteria": "The answer separates 'past the threshold' from 'past the attempt cap', because the second must not be recycled."
+    },
+    {
+     "autonomy": "autonomy:R4",
+     "behaviour": "Runs recovery against a sandbox queue seeded with stuck, slow and cap-exceeded actions.",
+     "acceptance_criteria": "The slow action is untouched, the cap-exceeded action is parked not recycled, and two concurrent recovery runs produce one recovery, not two."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.agent_ticket_auto_resolution",
+   "name": "Agent ticket auto-resolution",
+   "classification": "inherited",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R7",
+   "max_autonomy_rationale": "This is the one inherited behaviour whose action class is genuinely enumerable — each resolver has a written completion rule, and closing a ticket is reversible. R7 is therefore reachable, but only per-resolver: an R7 grant for the workforce resolver authorizes nothing for the BPOS resolver.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R4",
+     "behaviour": "Runs each resolver against a sandbox queue containing tickets that should close and tickets that must not.",
+     "acceptance_criteria": "Every must-not ticket is still open, and a second run closes zero additional tickets and adds zero duplicate comments."
+    },
+    {
+     "autonomy": "autonomy:R7",
+     "behaviour": "Closes production tickets for the specific resolvers whose completion rules the manager has accepted in writing.",
+     "acceptance_criteria": "Each closed ticket carries the rule name and the evidence; a resolver without a written acceptance closes nothing."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.infrastructure_evolution_proposals",
+   "name": "Infrastructure and platform evolution proposals",
+   "classification": "inherited",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R5",
+   "max_autonomy_rationale": "Whether an architectural proposal is adopted is a governance decision, which CLAUDE.md lists as an escalation boundary. human_decision is therefore true, and autonomyLadder.ts:170-176 caps a human-decision capability at autonomy:R5 in code — this value matches that cap rather than asserting a higher one.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'what has been proposed, what is its rationale, and what happened to it' from initiative records.",
+     "acceptance_criteria": "Each proposal's current state is one of open, accepted, deferred or rejected; a proposal with no recorded outcome reads as open, not as accepted."
+    },
+    {
+     "autonomy": "autonomy:R5",
+     "behaviour": "Drafts proposals in shadow against a set the manager has already ruled on.",
+     "acceptance_criteria": "The shadow run does not re-propose anything already rejected, and its precision against the manager's prior rulings is recorded as a number rather than described."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.system_resilience_supervision",
+   "name": "System resilience supervision",
+   "classification": "inherited",
+   "implementation_state": "partial",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R5",
+   "max_autonomy_rationale": "A supervisor's output is a judgement about other systems. Shadow evaluation against approved reference outcomes is both the top rung that needs no new side effect and the only one that can prove the verdict is falsifiable.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Reports the current resilience posture with each contributing subsystem's state and the age of its last signal.",
+     "acceptance_criteria": "A subsystem with no signal is reported as unknown and prevents a healthy overall verdict."
+    },
+    {
+     "autonomy": "autonomy:R5",
+     "behaviour": "Evaluates in shadow against an approved reference posture for seeded multi-subsystem failures.",
+     "acceptance_criteria": "A seeded failure spanning three subsystems is reported as one pattern, and a seeded all-silent case produces unknown rather than healthy."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.workforce_technology_direction",
+   "name": "Workforce technology direction",
+   "classification": "inherited",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R5",
+   "max_autonomy_rationale": "Setting the fleet's technology direction is a strategic decision — CLAUDE.md names AI model class changes and external dependency introduction as escalation boundaries. human_decision is true, and autonomyLadder.ts:170-176 caps such a capability at autonomy:R5.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'what tooling does the fleet hold, and where does it diverge from the intended direction' from registry records.",
+     "acceptance_criteria": "Divergence is reported against a written intended direction; with no written direction on file, the answer is 'unknown', not 'no divergence'."
+    },
+    {
+     "autonomy": "autonomy:R5",
+     "behaviour": "Produces direction recommendations in shadow against decisions the manager has already made.",
+     "acceptance_criteria": "No recommendation proposes a model-class change or a new paid dependency without flagging it as an escalation."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.prompt_and_performance_optimization",
+   "name": "Prompt and performance optimisation loop",
+   "classification": "inherited",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R5",
+   "max_autonomy_rationale": "A shipped prompt is production behaviour for every agent that uses it, and CLAUDE.md treats prompts that ship as code. Adopting a prompt change is therefore human-decided, and autonomyLadder.ts:170-176 caps a human-decision capability at autonomy:R5.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'which prompts cost the most, which are slowest, and which have open change proposals' from recorded runs.",
+     "acceptance_criteria": "Every cost or latency figure traces to recorded runs; a prompt with no recorded runs reports unknown rather than zero."
+    },
+    {
+     "autonomy": "autonomy:R5",
+     "behaviour": "Evaluates proposed prompt changes in shadow against approved reference outputs.",
+     "acceptance_criteria": "Each proposal carries a measured before-and-after on the same fixture; a proposal without a measurement is not surfaced for adoption."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.platform_bug_fix_dispatch",
+   "name": "On-demand platform bug fix dispatch",
+   "classification": "inherited",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R4",
+   "max_autonomy_rationale": "A fix becomes real only when it merges and deploys, and both push_to_protected_main and production_deploy are default-denied. The honest ceiling is a verified sandbox fix with a human taking it from there; the entry's maxRiskTier 'R4' is a risk-tier ceiling in a different vocabulary and does not raise this.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R1",
+     "behaviour": "Prepares an isolated reproduction and a baseline test for the reported defect, and changes nothing else.",
+     "acceptance_criteria": "The baseline test fails for the reported reason before any fix and is shown to fail — a test that passes before the fix proves nothing."
+    },
+    {
+     "autonomy": "autonomy:R4",
+     "behaviour": "Produces a verified fix in a sandbox with the reproduction test passing and the suite green.",
+     "acceptance_criteria": "The reproduction test fails on the pre-fix tree and passes on the post-fix tree, and the diff touches only files named in the attempt record."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.agent_registry_read_surface",
+   "name": "Agent registry read surface",
+   "classification": "existing_application",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R2",
+   "max_autonomy_rationale": "A read surface's whole job is answering questions from approved records, which is the definition of autonomy:R2. There is nothing above R2 for it to do, so a higher ceiling would be decoration.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers questions about any registered agent's schedule, state and run history from ai_agents and the activity log.",
+     "acceptance_criteria": "A question about a name with no ai_agents row returns 'not registered', never 'disabled' and never 'zero runs' — those are three different facts and the surface must not merge them."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.agent_enable_disable_control",
+   "name": "Agent enable, disable, pause and resume control",
+   "classification": "existing_application",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R2",
+   "max_autonomy_rationale": "Turning a live timer off is explicitly a human decision in this domain's brief. The agent's ceiling is therefore answering from records and recommending — it may say 'this agent should be stopped and here is why', and a human performs the stop. R2 is the highest rung that involves no state change.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Recommends a disable with the evidence that justifies it, and names every timer the disable would stop.",
+     "acceptance_criteria": "A recommendation for a shared agent_name lists all timers that share it; a recommendation for an unregistered name states that no disable flag exists for it rather than proposing one."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.cron_run_instrumentation",
+   "name": "Cron run instrumentation",
+   "classification": "existing_application",
+   "implementation_state": "partial",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R2",
+   "max_autonomy_rationale": "This is deterministic plumbing that must stay deterministic — CLAUDE.md's core principle is that production systems are deterministic and the agent is never the runtime executor. The agent's role is to read what the instrumentation recorded and report on its gaps, not to become the instrumentation.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'did this job run, when, how long did it take, and did it fail' and names which jobs it cannot answer for.",
+     "acceptance_criteria": "For an untracked timer the answer is 'not instrumented — no record exists', never 'did not run'. A positive control: asking about a name known to have no ai_agents row must return the not-instrumented answer."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.cron_health_alerting",
+   "name": "Cron health alerting",
+   "classification": "existing_application",
+   "implementation_state": "partial",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R5",
+   "max_autonomy_rationale": "The evaluator is already a pure function over existing data, which makes shadow comparison against an approved reference alert set both cheap and the right top rung. Emitting production alerts stays with the deterministic service; an agent that could raise its own pages would be a new, unapproved external effect.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'which cron jobs are error-spiking or overdue right now, and which cannot be evaluated at all' using the live thresholds.",
+     "acceptance_criteria": "Jobs excluded by the trigger_type and enabled filter are listed as not-evaluated rather than omitted, so the answer discloses its own blind spot."
+    },
+    {
+     "autonomy": "autonomy:R5",
+     "behaviour": "Evaluates in shadow against an approved reference alert set over seeded run histories.",
+     "acceptance_criteria": "A seeded four-failures-in-five history produces exactly one warning and no critical; a seeded four-in-four history produces nothing, proving the minimum-sample rule is real and not an accident of the fixture."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.agent_health_scoring",
+   "name": "Agent health scoring",
+   "classification": "existing_application",
+   "implementation_state": "partial",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R4",
+   "max_autonomy_rationale": "Scoring is computation over records, so R2 covers reporting it and R4 covers producing and verifying a corrected score over a sandbox fixture. Replacing the live score is a change to what a human sees when triaging, which belongs to a reviewed change rather than to an autonomy rung.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Reports health scores and states explicitly which scores rest on zero runs.",
+     "acceptance_criteria": "Every score derived from run_count 0 is labelled unscored rather than 100."
+    },
+    {
+     "autonomy": "autonomy:R4",
+     "behaviour": "Computes and verifies a corrected scoring model over a sandbox fixture of agents with varied run and error histories.",
+     "acceptance_criteria": "A zero-run agent and a zero-error hundred-run agent receive different outputs — the positive control that the current formula fails."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.registry_runtime_reconciliation",
+   "name": "Timer registry and agent registry reconciliation",
+   "classification": "existing_application",
+   "implementation_state": "partial",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R4",
+   "max_autonomy_rationale": "Reconciliation is pure comparison, and R4 covers running the full multi-step comparison against fixtures and verifying it. Shrinking the baseline means accepting that a known defect is fixed, which is a human judgement, so the ladder stops below R5 for the acceptance half of the job.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'which timers are untracked, which registry rows are phantom, and which schedules disagree' from the current reconciliation output.",
+     "acceptance_criteria": "Counts are reported as the reconciler measured them with the measurement date attached; no count is restated from a document."
+    },
+    {
+     "autonomy": "autonomy:R4",
+     "behaviour": "Runs the full reconciliation and ratchet against fixtures containing each of the five drift classes.",
+     "acceptance_criteria": "A planted new violation fails the ratchet and a planted healed entry also fails it — both directions proven, not just the one that is easy to assert."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.schedule_governance_live_reload",
+   "name": "Schedule governance and live reload",
+   "classification": "existing_application",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R2",
+   "max_autonomy_rationale": "Changing a live schedule or disabling a live timer is a human decision by this domain's own rule. The agent may propose a cadence change with the cost and signal evidence behind it; a human applies it. R2 is the ceiling because every rung above involves touching the live schedule.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Proposes schedule changes with the measured run cost and signal rate behind each, and states for each whether it is reloadable or restart-only.",
+     "acceptance_criteria": "Every proposal says whether the target is in the reloadable aiOps registry or inline in schedulerService.ts, because the two have different remedies; a proposal with an unknown home is labelled unknown."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.emergency_stop_and_kill_switch",
+   "name": "Emergency stop, resume and kill switch",
+   "classification": "existing_application",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R2",
+   "max_autonomy_rationale": "A kill switch that an agent can pull is a kill switch an agent can pull on its own supervision. The agent's ceiling is recommending a halt with evidence; the pull is always a human's. R2 involves no state change and is therefore the only safe rung here.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Recommends a halt, names the specific lever, and states what that lever does and does not stop.",
+     "acceptance_criteria": "A recommendation that names a per-agent stop for a schedulerService-registered job is wrong and must instead name the scheduler pause — a positive control that the recommendation understands the layering."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.agent_discovery_sync",
+   "name": "Agent registry discovery sync",
+   "classification": "existing_application",
+   "implementation_state": "partial",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R2",
+   "max_autonomy_rationale": "Running discovery writes registry rows whose enabled flag defaults to true, which means a discovery run can start timers. That makes it a human action, and the agent's ceiling is reporting what a discovery run would add.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Reports which seed entries have no registry row and which rows would be created, before anything is written.",
+     "acceptance_criteria": "The report names each row that would be created and states that each would arrive enabled, so the consequence is visible before the action."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.execution_policy_enforcement",
+   "name": "Execution policy and default-deny enforcement",
+   "classification": "existing_application",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R2",
+   "max_autonomy_rationale": "This is the gate that bounds every other capability in the domain. An agent that could act on it could widen its own authority, so its ceiling is answering questions about the policy from the policy. Changing the denied set is a compliance and security boundary and an escalation under CLAUDE.md.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'is this capability permitted, why is it denied, and which layer enforces it' from the policy module itself.",
+     "acceptance_criteria": "A request naming production_deploy is answered as denied with enforcedBy no_provider; a positive control asserts the same request is never answered as permitted."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.capability_autonomy_authority_resolution",
+   "name": "Per-capability autonomy authority resolution",
+   "classification": "existing_application",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R2",
+   "max_autonomy_rationale": "An agent that could raise its own approved level would make the whole ladder decorative. Approval is never inferred from behaviour — it is a recorded human decision — so the ceiling is answering questions about what is currently approved.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'what is this capability's effective authority today and which constraint is binding' from recorded approvals and grants.",
+     "acceptance_criteria": "A capability with no recorded approval returns null with reason no_approved_autonomy, never a defaulted rung; and a human_decision capability never resolves above autonomy:R5."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.incident_trace_and_error_triage",
+   "name": "Incident trace and error triage",
+   "classification": "existing_application",
+   "implementation_state": "partial",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R5",
+   "max_autonomy_rationale": "Tracing and diagnosing is reading and reasoning over records, which reaches shadow comparison against approved reference diagnoses. Marking an error resolved is a claim about reality and stays with a human, so it is excluded from this capability's grants.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Assembles the full trace for a given id and states the probable cause with the rows that support it.",
+     "acceptance_criteria": "Where no trace exists for a failure, the answer is 'not traceable — this job is untracked', never a reconstructed narrative."
+    },
+    {
+     "autonomy": "autonomy:R5",
+     "behaviour": "Diagnoses in shadow against incidents a human has already diagnosed.",
+     "acceptance_criteria": "Agreement with the human diagnosis is reported as a measured rate over a named incident set, and every disagreement is listed with both diagnoses."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.agent_identity_attribution",
+   "name": "Agent identity and reporting-chain attribution",
+   "classification": "existing_application",
+   "implementation_state": "implemented",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R2",
+   "max_autonomy_rationale": "Who an agent reports to is an accountability decision made by the founder and recorded in the seed, not something an agent may adjust. The ceiling is answering questions about the current chain and naming where it is broken.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'who is accountable for this agent, through what chain, and is every link enabled' from identity and chain records.",
+     "acceptance_criteria": "A chain passing through a disabled intermediary is reported as resolving-but-degraded, not as resolved; and an actor id matching no admin_users row is reported as unattributable."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.manager_scoped_authorization",
+   "name": "Manager-scoped authorization for agent management",
+   "classification": "existing_application",
+   "implementation_state": "partial",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R2",
+   "max_autonomy_rationale": "This is the authorization boundary itself. An agent with any write authority over it could grant itself a manager, so the ceiling is answering questions about who is authorised for what. Authentication and authorization posture is an escalation boundary under CLAUDE.md.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'who may act on this agent, and by which route' from identity, role and chain records.",
+     "acceptance_criteria": "For K.D. and any platform agent the answer is 'nobody, via no route, because he holds no admin_users row' — a positive control that the gap is reported rather than papered over."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.dead_letter_capture",
+   "name": "Dead-letter capture for repeatedly failing jobs",
+   "classification": "existing_application",
+   "implementation_state": "partial",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R4",
+   "max_autonomy_rationale": "Capture is deterministic plumbing the agent reads rather than performs; R4 covers exercising the capture path end to end against a sandbox fixture, including the restart case the in-memory counter makes fragile. Reading and acting on the queue is the separate triage capability.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Reports what has been dead-lettered, by error class, and which job families cannot dead-letter at all.",
+     "acceptance_criteria": "The report names the unwrapped job families explicitly, so an empty queue is never read as a healthy fleet."
+    },
+    {
+     "autonomy": "autonomy:R4",
+     "behaviour": "Exercises the capture path against a sandbox job seeded to fail three times, and again across a simulated restart.",
+     "acceptance_criteria": "Three consecutive failures write exactly one row; a restart between failures two and three writes none — the positive control for the in-memory counter's real behaviour."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.system_health_probe_and_alerting",
+   "name": "System health probes and alerting",
+   "classification": "existing_application",
+   "implementation_state": "partial",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R5",
+   "max_autonomy_rationale": "Probing and judging health is read-only and reaches shadow comparison against approved reference verdicts. Sending the alert stays with the deterministic service because live_email is default-denied, so no rung lets the agent page a human itself.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Reports current health per subsystem and states which failure modes the probes cannot see.",
+     "acceptance_criteria": "The report explicitly names 'scheduler never registered' as undetectable by GET /health — a disclosure the probe itself cannot make."
+    },
+    {
+     "autonomy": "autonomy:R5",
+     "behaviour": "Produces health verdicts in shadow against approved reference verdicts over seeded subsystem failures.",
+     "acceptance_criteria": "A seeded scenario with a healthy database and zero registered timers is reported as unhealthy, which the live probe reports as healthy — the positive control for the gap."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.schema_drift_detection",
+   "name": "Schema drift detection between environments",
+   "classification": "existing_application",
+   "implementation_state": "partial",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R3",
+   "max_autonomy_rationale": "Detecting drift is reading metadata, and R3 covers an approved user-initiated comparison in a sandbox. Resolving drift is a schema change, which CLAUDE.md lists as an escalation boundary and which the platform's own risk vocabulary rates R3 for schema_security_or_external_side_effect — so remediation never belongs to this capability.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Reports known drift from the latest drift run and names the axes that are not measured.",
+     "acceptance_criteria": "Where no drift run has completed, the answer is 'unknown — last run not found', never 'no drift'."
+    },
+    {
+     "autonomy": "autonomy:R3",
+     "behaviour": "Runs an operator-initiated schema comparison between two sandbox databases and reports the differences.",
+     "acceptance_criteria": "A planted type change and a planted dropped column are both reported, proving the comparison is not additive-only like the runtime reconciler."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.manager_reachable_agent_surface",
+   "name": "Manager-reachable agent surface",
+   "classification": "manager_defined",
+   "implementation_state": "absent",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R2",
+   "max_autonomy_rationale": "Provisioning a human's login and choosing their permission scope is an identity and authorization decision — a governance boundary under CLAUDE.md and the one decision an agent in this domain must never make, since it would be granting access to its own supervisor's seat.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "States exactly what is missing, which route would resolve it, which sections the scope should include, and which email the join requires.",
+     "acceptance_criteria": "The answer names the org_members id and the absent admin_users row as two separate facts, and does not claim the surface is reachable under any current configuration."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.manager_restriction_directives",
+   "name": "Manager restriction directives",
+   "classification": "manager_defined",
+   "implementation_state": "unknown",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R2",
+   "max_autonomy_rationale": "A directive is the manager's instrument for constraining the agent. An agent that could write directives could write its own constraints, which inverts the control. Its ceiling is reading and explaining the directives in force.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Explains which directives are in force for a given capability and what each one narrows.",
+     "acceptance_criteria": "A directive with no runtime enforcement path is reported as recorded-but-unenforced, not as in force."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.production_deploy_review_and_approval",
+   "name": "Production deploy review and approval",
+   "classification": "manager_defined",
+   "implementation_state": "partial",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R1",
+   "max_autonomy_rationale": "Both halves of this capability name a default-denied capability: merging is push_to_protected_main and releasing is production_deploy. No autonomy rung can grant either, so the honest ceiling is preparing the change in isolation with its tests. R1 is where this stops, permanently.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R1",
+     "behaviour": "Prepares the change in isolation with fixtures and baseline tests, and reports preflight readiness without acting on it.",
+     "acceptance_criteria": "The readiness report states tree cleanliness and whether HEAD matches origin/main as measured facts; it never merges, pushes to main or deploys, and a test asserts no deploy tool is among its grants."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.reliability_threshold_ownership",
+   "name": "Reliability threshold ownership",
+   "classification": "manager_defined",
+   "implementation_state": "partial",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R5",
+   "max_autonomy_rationale": "Proposing and simulating a threshold change is analysis the agent can do well, and shadow replay against an observed window is exactly the evidence the decision needs. Setting the number stays with the named owner, and autonomyLadder.ts:170-176 caps a human-decision capability at autonomy:R5.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Reports every reliability threshold in force, where it lives, and what it is currently producing.",
+     "acceptance_criteria": "Each threshold is reported with its source file and line; a threshold whose alert outcomes were never recorded is reported as unmeasured rather than as well-tuned."
+    },
+    {
+     "autonomy": "autonomy:R5",
+     "behaviour": "Replays a proposed threshold set in shadow against a recorded window and reports what would have changed.",
+     "acceptance_criteria": "Each proposal states how many alerts it would have added and removed over the named window, and flags any change that would have suppressed a real incident in that window."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.agent_promotion_and_approval_decision",
+   "name": "Agent promotion and approval decision",
+   "classification": "manager_defined",
+   "implementation_state": "absent",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R2",
+   "max_autonomy_rationale": "An agent that could promote itself is not governed. Its ceiling is assembling and presenting the evidence for a rung it does not grant. This is the capability that makes every other max_permitted_autonomy in this file meaningful.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Assembles the evidence for one capability at one rung and states plainly whether it meets that rung's acceptance criteria.",
+     "acceptance_criteria": "The assembly cites real run records and names any criterion with no evidence as unmet; a capability whose only evidence is a passing mocked test is reported as unproven."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.runtime_cron_drift_detection",
+   "name": "Runtime cron drift detection",
+   "classification": "proposed_new",
+   "implementation_state": "absent",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R5",
+   "max_autonomy_rationale": "Detection is comparison and reporting, and shadow evaluation against the existing build-time reconciler is a genuinely useful top rung — the build-time result is already an approved reference outcome. Acting on a drift finding means registering or disabling a timer, which is human-decided under separate capabilities.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Answers 'which timers are untracked, which rows are phantom, and which names collide' from a live measurement, with the measurement time attached.",
+     "acceptance_criteria": "Every count is accompanied by the list of names behind it; a count with no name list is not published. A positive control asserts WorkforceIntelligence appears in the no-seed-row class."
+    },
+    {
+     "autonomy": "autonomy:R5",
+     "behaviour": "Runs in shadow against the build-time reconciler's output on the same tree.",
+     "acceptance_criteria": "The runtime classes match the build-time classes on the same tree, and any name the runtime detector finds that the build-time one does not is reported as a genuine runtime-only drift rather than reconciled away."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.default_on_timer_guard",
+   "name": "Default-on timer guard",
+   "classification": "proposed_new",
+   "implementation_state": "absent",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R4",
+   "max_autonomy_rationale": "Changing what starts at boot in production changes which automation runs, which is a human decision. The agent can build and verify the guard in a sandbox and enumerate the ungoverned set, which is R4; applying the change is a reviewed deploy performed by a human.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Enumerates every registry name with no governing cron_schedule_configs row and states that each is currently on by default.",
+     "acceptance_criteria": "The enumeration is a measured list of names, not a count; and it states the three code locations where the default is applied."
+    },
+    {
+     "autonomy": "autonomy:R4",
+     "behaviour": "Builds and verifies the guard against a sandbox scheduler, including the database-read-failure case.",
+     "acceptance_criteria": "With no row present the timer does not start; with an unreadable configuration table the scheduler refuses to start rather than starting everything — the second case is the positive control the current boot path fails."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.scheduler_registration_liveness_probe",
+   "name": "Scheduler registration liveness probe",
+   "classification": "proposed_new",
+   "implementation_state": "absent",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R4",
+   "max_autonomy_rationale": "Building and verifying a probe is sandbox work the agent can complete and prove, which is R4. Shipping it changes what external monitoring treats as an outage, which is a reviewed deploy and a human's call.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Reports how many timers the running process registered and states that the public probe cannot currently detect zero.",
+     "acceptance_criteria": "The report names ENABLE_FOLLOWUP_SCHEDULER as the single flag and names startScheduler as the only caller of the AI Ops scheduler, both as measured facts."
+    },
+    {
+     "autonomy": "autonomy:R4",
+     "behaviour": "Builds and verifies the probe against a sandbox process started with the flag unset.",
+     "acceptance_criteria": "With the flag unset the probe returns non-200 while the database is healthy — the exact case the current probe returns 200 for."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.dead_letter_triage",
+   "name": "Dead-letter triage and recovery runbook",
+   "classification": "proposed_new",
+   "implementation_state": "absent",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R4",
+   "max_autonomy_rationale": "Reading, grouping and recommending is well within reach, and R4 covers verifying a replay end to end in a sandbox. Replaying in production re-fires real side effects, so the replay decision stays with a human until the job's idempotency is proven — and that proof is a separate capability.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Presents both dead-letter stores as one queue grouped by error class, with the job families that cannot dead-letter named alongside.",
+     "acceptance_criteria": "An empty queue is reported as 'empty, and here is what could not have reached it', never as a healthy fleet."
+    },
+    {
+     "autonomy": "autonomy:R4",
+     "behaviour": "Verifies a replay end to end in a sandbox for one job family.",
+     "acceptance_criteria": "Replaying the same entry twice produces one set of side effects; if it produces two, the entry is reported as not replay-safe rather than replayed."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.idempotency_and_replay_audit",
+   "name": "Idempotency and replay-safety audit",
+   "classification": "proposed_new",
+   "implementation_state": "absent",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R4",
+   "max_autonomy_rationale": "The whole method is run-it-twice-in-a-sandbox-and-compare, which is precisely stateful multi-step sandbox execution with verification. Nothing above R4 is needed, and nothing above R4 would be safe, because the next rung would mean double-running jobs against production.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R1",
+     "behaviour": "Builds the isolated fixtures and the twice-run harness for one job family, with a baseline that captures end state.",
+     "acceptance_criteria": "The harness detects a deliberately non-idempotent fixture job as unsafe — if it cannot fail, it cannot pass."
+    },
+    {
+     "autonomy": "autonomy:R4",
+     "behaviour": "Runs the twice-run comparison across the enumerated job families and publishes a verdict per job.",
+     "acceptance_criteria": "Each verdict is safe, unsafe or untestable-in-sandbox with the reason; no job is reported safe on the strength of a documented mechanism alone."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.untracked_timer_registration_proposal",
+   "name": "Untracked timer registration proposal",
+   "classification": "proposed_new",
+   "implementation_state": "absent",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R3",
+   "max_autonomy_rationale": "Proposing is analysis; creating the rows is a production registry change that alters which jobs are gated and counted. R3 covers an operator-initiated sandbox run that generates and validates the proposal set, and the rows themselves are created by a human.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Publishes the freshly measured untracked set with each name's real schedule and call site.",
+     "acceptance_criteria": "Every entry carries a real call-site citation and a measurement date; the published count is the one just measured, not 33 or 34 quoted from a document."
+    },
+    {
+     "autonomy": "autonomy:R3",
+     "behaviour": "Generates and validates the proposed row set against a sandbox registry on an operator's request.",
+     "acceptance_criteria": "Each proposed row names its intended enabled value explicitly, and applying the set to a sandbox registry starts no timer that the proposal marked disabled."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.cron_overlap_guard",
+   "name": "Cron overlap guard",
+   "classification": "proposed_new",
+   "implementation_state": "absent",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R4",
+   "max_autonomy_rationale": "Identifying at-risk timers and building and proving the guard is sandbox work with a clear pass condition. Applying it to live timers changes execution behaviour and ships via a reviewed deploy, so the ladder stops at verified sandbox execution.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Names every timer whose recorded duration can exceed its own interval, and states which jobs already hold their own claim.",
+     "acceptance_criteria": "Each name is accompanied by its interval and its recorded duration; a timer with no duration data is listed as unassessable rather than safe."
+    },
+    {
+     "autonomy": "autonomy:R4",
+     "behaviour": "Builds the guard and verifies it against a sandbox timer forced to overrun its interval.",
+     "acceptance_criteria": "The second tick does not start while the first is running, and the skip is recorded — a silent skip fails the criterion."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.error_class_coverage",
+   "name": "Error classification coverage",
+   "classification": "proposed_new",
+   "implementation_state": "absent",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R4",
+   "max_autonomy_rationale": "Classifying and measuring coverage is sandbox-verifiable work with an objective pass condition. The change ships through a reviewed deploy, so R4 is the ceiling; and the vocabulary itself is a decision rather than a derivation.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Reports current classification coverage and names every catch site on the cron path that records no class.",
+     "acceptance_criteria": "Coverage is reported as a share of all recorded failures; failures whose class is the generic fallback count as unclassified, not classified."
+    },
+    {
+     "autonomy": "autonomy:R4",
+     "behaviour": "Classifies the cron path in a sandbox and verifies grouping against seeded failures of several kinds.",
+     "acceptance_criteria": "Seeded timeout, rate-limit and validation failures land in three distinct classes and none in the generic class."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.deploy_verification_evidence",
+   "name": "Deploy verification evidence",
+   "classification": "proposed_new",
+   "implementation_state": "partial",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R2",
+   "max_autonomy_rationale": "Verification is reading, but everything it reads sits behind production access. The agent's ceiling is assembling and judging evidence a human or the deploy script collected; it never performs the deploy and never reaches the host itself.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Judges a release's evidence and states whether the deployed SHA, the running image and the live routes agree.",
+     "acceptance_criteria": "A release whose evidence is missing any of the three is reported as unverified, never as deployed; and an edge-level 200 alone is never accepted as proof the application started."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.backup_and_restore_verification",
+   "name": "Backup and restore verification",
+   "classification": "proposed_new",
+   "implementation_state": "absent",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R3",
+   "max_autonomy_rationale": "Restoring a backup into an isolated sandbox target is an approved, operator-initiated sandbox operation, which is exactly R3. Reading a production backup artefact needs production credentials a run never holds, and anything resembling an operator-free restore is categorically off the table.",
+   "human_decision": true,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "States the current recovery position honestly, including that no backup verification exists.",
+     "acceptance_criteria": "The answer is 'unknown — no backup verification exists in this repository', with the search that establishes it; it never infers a position from the presence of pg_dump in unrelated scripts."
+    },
+    {
+     "autonomy": "autonomy:R3",
+     "behaviour": "On an operator's request, restores a supplied artefact into an isolated sandbox target and asserts it answers a known query.",
+     "acceptance_criteria": "A deliberately truncated artefact fails the restore assertion — the positive control that the check can fail; and the restore target is proven isolated before the restore begins."
+    }
+   ]
+  },
+  {
+   "capability_id": "platform.reliability_briefing_for_manager",
+   "name": "Reliability briefing for the accountable manager",
+   "classification": "proposed_new",
+   "implementation_state": "absent",
+   "requirement_validation_state": "draft",
+   "starting_autonomy": "autonomy:R0",
+   "max_permitted_autonomy": "autonomy:R5",
+   "max_autonomy_rationale": "Composing an evidence-cited report is reading and writing prose over records, and shadow comparison against a briefing a human has already written is the right top rung. Sending it is a live external effect, so delivery stays with the existing deterministic briefing service.",
+   "human_decision": false,
+   "release_behaviour": [
+    {
+     "autonomy": "autonomy:R2",
+     "behaviour": "Produces the briefing on request, with every figure cited and an explicit unmeasured section.",
+     "acceptance_criteria": "No percentage appears without the record count behind it; the unmeasured section names the untracked timers and the phantom crons as present rather than omitting them."
+    },
+    {
+     "autonomy": "autonomy:R5",
+     "behaviour": "Produces briefings in shadow against ones a human has written for the same period.",
+     "acceptance_criteria": "Every figure in the shadow briefing matches the human's or the difference is explained by a named source; a figure present in the shadow version and absent from its evidence fails the criterion."
+    }
+   ]
+  }
+ ]
+}

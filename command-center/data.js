@@ -7,6 +7,7 @@
     progress: '.colaberry/progress.json',
     manifest: '.colaberry/manifest.json',
     profile: '.colaberry/profile.json',
+    domain: 'command-center/domain.json',
   };
   const DAY = 24 * 60 * 60 * 1000;
 

@@ -6,7 +6,7 @@
   const TABS = [
     ['overview', 'Overview'], ['outcomes', 'Outcomes'], ['users', 'Users and use case'],
     ['guardrails', 'Guardrails'], ['systems', 'Systems'], ['pm', 'Project management'],
-    ['agents', 'AI agents'], ['kb', 'Knowledge base'], ['data', 'Data model'],
+    ['agents', 'AI agents'], ['domain', 'Agent domain'], ['kb', 'Knowledge base'], ['data', 'Data model'],
   ];
   let real = null; // { plan, progress, manifest, profile, errors }
 
@@ -92,6 +92,7 @@
   }
 
   function body(d, route) {
+    if (route.tab === 'domain') return CC.domainTab.view({ ...d, domain: real && real.domain, domainLoading: !real });
     if (!d) return '<p>Loading…</p>';
     if (!d.plan || !d.progress) return '<div class="banner error">The plan or progress file could not be read, so no tab can show anything yet.</div>';
     if (route.tab === 'overview') return overview(d, route.detail);
@@ -110,6 +111,7 @@
     document.querySelectorAll('[data-mode]').forEach((b) => b.addEventListener('click', () => { store('cc-mode', b.dataset.mode); render(); }));
     document.getElementById('theme').addEventListener('click', () => { store('cc-theme', theme() === 'dark' ? 'light' : 'dark'); render(); });
     if (d && route.tab === 'kb' && !route.detail) CC.kb.bind(d);
+    if (route.tab === 'domain') CC.domainTab.bind(render);
     document.title = `${TABS.find(([k]) => k === route.tab)[1]} · Command Center`;
   }
 
