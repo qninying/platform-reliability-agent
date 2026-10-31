@@ -702,13 +702,23 @@
       "criteria": [
         {
           "text": "The harness detects a deliberately non-idempotent fixture job as unsafe — if it cannot fail, it cannot pass.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/sandbox/twiceRun.ts",
+        "src/sandbox/publishingJobs.ts",
+        "src/capabilities/idempotencyAudit.ts",
+        "src/cli/replayHarness.ts",
+        "docs/capabilities/idempotency-and-replay-audit.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/idempotencyAudit.test.ts"
+      ],
+      "notes": "Twice-run harness and publishing fixtures; proves the harness, not a platform job. All platform jobs stay unknown.",
+      "updated_at": "2026-10-31T19:00:00.000Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

@@ -37,6 +37,7 @@
     "dead-letters": "node src/cli/deadLetters.ts",
     "dead-letter-triage": "node src/cli/deadLetterTriage.ts",
     "error-class-coverage": "node src/cli/errorClassCoverage.ts",
+    "replay-harness": "node src/cli/replayHarness.ts",
     "command-center-domain": "node scripts/buildCommandCenterDomain.ts"
   },
   "devDependencies": {
