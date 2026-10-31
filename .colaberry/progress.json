@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 32,
+    "stories_verified": 33,
     "stories_submitted": 0,
-    "stories_in_progress": 22,
+    "stories_in_progress": 21,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 44,
-    "points_awarded": 480
+    "criteria_passed": 45,
+    "points_awarded": 495
   },
   "stories": [
     {
@@ -720,17 +720,15 @@
       "notes": "Twice-run harness and publishing fixtures; proves the harness, not a platform job. All platform jobs stay unknown.",
       "updated_at": "2026-10-31T19:00:00.000Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "The harness detects a deliberately non-idempotent fixture job as unsafe — if it cannot fail, it cannot pass."
-        ]
+        "verified_at": "2026-10-31T18:08:06.600Z",
+        "commit_sha": "ff99053c18ef63445c1f93074a20df3e8f66b542",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/ff99053c18ef63445c1f93074a20df3e8f66b542",
+        "commit_at": "2026-10-31T18:07:49Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
