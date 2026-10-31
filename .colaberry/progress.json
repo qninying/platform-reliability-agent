@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 31,
+    "stories_verified": 32,
     "stories_submitted": 0,
-    "stories_in_progress": 23,
+    "stories_in_progress": 22,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 43,
-    "points_awarded": 465
+    "criteria_passed": 44,
+    "points_awarded": 480
   },
   "stories": [
     {
@@ -656,17 +656,15 @@
       "notes": "Coverage over all recorded failures, generic counts as unclassified; catch sites with no class named. Run on platform source at bbde6ef; not yet on live records.",
       "updated_at": "2026-10-31T18:00:00.000Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "Coverage is reported as a share of all recorded failures; failures whose class is the generic fallback count as unclassified, not classified."
-        ]
+        "verified_at": "2026-10-31T16:27:55.386Z",
+        "commit_sha": "6a1c0afb8983d0750692adde20a3a9acf594ec34",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/6a1c0afb8983d0750692adde20a3a9acf594ec34",
+        "commit_at": "2026-10-31T16:27:38Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
