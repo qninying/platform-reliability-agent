@@ -284,13 +284,21 @@
       "criteria": [
         {
           "text": "The answer is 'unknown — no backup verification exists in this repository', with the search that establishes it; it never infers a position from the presence of pg_dump in unrelated scripts.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/backupRestoreVerification.ts",
+        "src/cli/backupPosition.ts",
+        "docs/capabilities/backup-and-restore-verification.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/backupRestoreVerification.test.ts"
+      ],
+      "notes": "States the recovery position with the search that establishes it, guarded by a control so a broken search cannot claim an absence. pg_dump in unrelated scripts is listed as not evidence. Read-only. No backup policy exists yet.",
+      "updated_at": "2026-11-01T20:00:00.000Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
