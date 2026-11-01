@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 34,
+    "stories_verified": 35,
     "stories_submitted": 0,
-    "stories_in_progress": 20,
+    "stories_in_progress": 19,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 46,
-    "points_awarded": 510
+    "criteria_passed": 47,
+    "points_awarded": 525
   },
   "stories": [
     {
@@ -1372,17 +1372,15 @@
       "notes": "Reports known drift from the latest run in a log copy and names the axes nothing measures. No completed run answers unknown, last run not found, never no drift. Read-only. Not yet run on the production log.",
       "updated_at": "2026-11-01T18:00:00.000Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "Where no drift run has completed, the answer is 'unknown — last run not found', never 'no drift'."
-        ]
+        "verified_at": "2026-11-01T17:54:58.156Z",
+        "commit_sha": "15d81be49b3d6fb7d7f49166d9ccba310a6c9fac",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/15d81be49b3d6fb7d7f49166d9ccba310a6c9fac",
+        "commit_at": "2026-11-01T17:54:32Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
