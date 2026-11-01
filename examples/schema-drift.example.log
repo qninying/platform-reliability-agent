@@ -1,0 +1,12 @@
+2026-10-31T06:00:01Z schema-drift: none
+2026-11-01T06:00:01Z schema-drift: DETECTED
+== schema parity: accelerator_prod -> accelerator_dev1 (container accelerator-db) ==
+-- missing enum types --
+(none)
+-- missing tables --
+example_orders
+-- missing columns (drift on existing tables) --
+  example_jobs.owner_id (uuid)
+
+DRY-RUN: re-run with --apply to create the above on accelerator_dev1 (single transaction).
+schema-drift alert sent to oncall@example.test

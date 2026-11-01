@@ -1355,13 +1355,22 @@
       "criteria": [
         {
           "text": "Where no drift run has completed, the answer is 'unknown — last run not found', never 'no drift'.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/schemaDriftDetection.ts",
+        "src/cli/schemaDrift.ts",
+        "docs/capabilities/schema-drift-detection.md",
+        "examples/schema-drift.example.log",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/schemaDriftDetection.test.ts"
+      ],
+      "notes": "Reports known drift from the latest run in a log copy and names the axes nothing measures. No completed run answers unknown, last run not found, never no drift. Read-only. Not yet run on the production log.",
+      "updated_at": "2026-11-01T18:00:00.000Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
