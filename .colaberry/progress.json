@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 35,
+    "stories_verified": 36,
     "stories_submitted": 0,
-    "stories_in_progress": 19,
+    "stories_in_progress": 18,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 47,
-    "points_awarded": 525
+    "criteria_passed": 48,
+    "points_awarded": 540
   },
   "stories": [
     {
@@ -300,17 +300,15 @@
       "notes": "States the recovery position with the search that establishes it, guarded by a control so a broken search cannot claim an absence. pg_dump in unrelated scripts is listed as not evidence. Read-only. No backup policy exists yet.",
       "updated_at": "2026-11-01T20:00:00.000Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "The answer is 'unknown — no backup verification exists in this repository', with the search that establishes it; it never infers a position from the presence of pg_dump in unrelated scripts."
-        ]
+        "verified_at": "2026-11-01T18:22:56.507Z",
+        "commit_sha": "b59f0dfeaa4f7a0482dd882dc92a882fe498a91f",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/b59f0dfeaa4f7a0482dd882dc92a882fe498a91f",
+        "commit_at": "2026-11-01T18:22:35Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
