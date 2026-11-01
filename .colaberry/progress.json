@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 40,
+    "stories_verified": 41,
     "stories_submitted": 0,
-    "stories_in_progress": 14,
+    "stories_in_progress": 13,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 52,
-    "points_awarded": 600
+    "criteria_passed": 53,
+    "points_awarded": 615
   },
   "stories": [
     {
@@ -199,17 +199,15 @@
       "notes": "Assembles evidence for one capability at one rung. Only a run record meets a criterion; tests alone read as unproven. Grants nothing and records no decision. Neither dependency is built.",
       "updated_at": "2026-11-01T23:30:00Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "The assembly cites real run records and names any criterion with no evidence as unmet; a capability whose only evidence is a passing mocked test is reported as unproven."
-        ]
+        "verified_at": "2026-11-01T22:55:57.003Z",
+        "commit_sha": "02842d9c59dc9baf460eb61c60fd0c2b8ac34e87",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/02842d9c59dc9baf460eb61c60fd0c2b8ac34e87",
+        "commit_at": "2026-11-01T22:55:35Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
