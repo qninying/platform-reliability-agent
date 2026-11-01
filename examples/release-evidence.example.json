@@ -1,0 +1,17 @@
+{
+  "captured_by": "a person on the host",
+  "intended_sha": "0123456789abcdef0123456789abcdef01234567",
+  "deployed_sha": "0123456789abcdef0123456789abcdef01234567",
+  "deployed_at": "2026-11-01T12:00:00Z",
+  "services": ["backend"],
+  "changed_routes": ["/api/example"],
+  "tree": { "clean": true, "head_is_origin_main": true },
+  "lock": { "held": true },
+  "containers": [
+    { "service": "backend", "state": "running", "image": "ghcr.io/example/accelerator-backend:main" }
+  ],
+  "routes": [
+    { "path": "/health", "via": "edge", "status": 200, "at": "2026-11-01T12:01:00Z", "body": "{\"status\":\"ok\"}" },
+    { "path": "/api/example", "via": "edge", "status": 200, "at": "2026-11-01T12:01:00Z", "body": "{\"items\":[]}" }
+  ]
+}

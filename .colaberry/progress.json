@@ -597,13 +597,22 @@
       "criteria": [
         {
           "text": "A release whose evidence is missing any of the three is reported as unverified, never as deployed; and an edge-level 200 alone is never accepted as proof the application started.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/deployVerificationEvidence.ts",
+        "src/cli/releaseEvidence.ts",
+        "docs/capabilities/deploy-verification-evidence.md",
+        "examples/release-evidence.example.json",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/deployVerificationEvidence.test.ts"
+      ],
+      "notes": "Judges one release record: deployed commit, running image and live routes must agree. Missing any is unverified, never deployed, and an edge-level 200 alone is never proof. Read-only. Not yet run on a real release.",
+      "updated_at": "2026-11-01T22:00:00.000Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
