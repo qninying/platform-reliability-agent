@@ -38,6 +38,7 @@
     "dead-letter-triage": "node src/cli/deadLetterTriage.ts",
     "error-class-coverage": "node src/cli/errorClassCoverage.ts",
     "replay-harness": "node src/cli/replayHarness.ts",
+    "deploy-readiness": "node src/cli/deployReadiness.ts",
     "release-evidence": "node src/cli/releaseEvidence.ts",
     "backup-position": "node src/cli/backupPosition.ts",
     "schema-drift": "node src/cli/schemaDrift.ts",

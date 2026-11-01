@@ -1077,13 +1077,21 @@
       "criteria": [
         {
           "text": "The readiness report states tree cleanliness and whether HEAD matches origin/main as measured facts; it never merges, pushes to main or deploys, and a test asserts no deploy tool is among its grants.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/deployReadiness.ts",
+        "src/cli/deployReadiness.ts",
+        "docs/capabilities/deploy-readiness.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/deployReadiness.test.ts"
+      ],
+      "notes": "Reports tree cleanliness and whether HEAD matches origin/main as measured facts, asking the remote directly. Runs only five exact git reads; never merges, pushes, fetches or deploys. No deploy tool is among its grants. Not yet run on the production host.",
+      "updated_at": "2026-11-02T00:00:00.000Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
