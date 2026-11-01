@@ -5,7 +5,7 @@ release is R2 (answers from records) unless the table says otherwise. Nothing he
 the R4 first releases act only on a sandbox copy, and the R1 ones run tests in a locked sandbox.
 
 **Status** comes from the platform's own verification of this repository (`.colaberry/progress.json`):
-*Verified* means the platform confirmed it from a commit that names the story. 18 more capabilities are planned in the platform's build plan for this domain
+*Verified* means the platform confirmed it from a commit that names the story. 17 more capabilities are planned in the platform's build plan for this domain
 ([`platform.json`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/44430870b/backend/src/services/agentDomain/capabilities/platform.json)).
 
 ## Reliability engineering
@@ -30,6 +30,7 @@ Is the platform's work actually happening, and is it healthy?
 | 28 | **Cron overlap guard** | Which timers can run longer than their own interval, and which jobs hold their own claim? | [cron wrapper](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bbde6ef1d/backend/src/services/cronInstrumentation.ts#L53-L72), [publishing worker claim](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bbde6ef1d/backend/src/services/publishing/publishingWorker.ts#L290-L295) | [cron-overlap-guard](cron-overlap-guard.md) | R2 | Verified 2026-11-01, [`ece5f6c`](https://github.com/qninying/platform-reliability-agent/commit/ece5f6c) |
 | 29 | **Schema drift detection** | What did the latest drift run report, and what does it never compare? | [drift check](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bbde6ef1d/scripts/schemaDriftCheck.sh#L32-L43), [comparison](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bbde6ef1d/scripts/syncDevSchemaFromProd.sh#L68-L74) | [schema-drift-detection](schema-drift-detection.md) | R2 | Verified 2026-11-01, [`15d81be`](https://github.com/qninying/platform-reliability-agent/commit/15d81be) |
 | 30 | **Backup and restore verification** | Can anyone state that a current backup exists and can be restored, and what search says so? | [schema-only pg_dump](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bbde6ef1d/scripts/syncDevSchemaFromProd.sh#L110), [database volume](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bbde6ef1d/docker-compose.production.yml#L21) | [backup-and-restore-verification](backup-and-restore-verification.md) | R2 | Verified 2026-11-01, [`b59f0df`](https://github.com/qninying/platform-reliability-agent/commit/b59f0df) |
+| 31 | **Deploy verification evidence** | Do the deployed commit, the running image and the live routes agree for this release? | [deploy script](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bbde6ef1d/scripts/deploy-prod.sh#L280-L320), [health routes](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bbde6ef1d/backend/src/routes/healthRoutes.ts#L7-L15) | [deploy-verification-evidence](deploy-verification-evidence.md) | R2 | Verified 2026-11-01, [`709e5b3`](https://github.com/qninying/platform-reliability-agent/commit/709e5b3) |
 
 ## Security and AI safety
 
