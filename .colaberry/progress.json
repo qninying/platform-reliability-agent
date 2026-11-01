@@ -1185,13 +1185,23 @@
       "criteria": [
         {
           "text": "No percentage appears without the record count behind it; the unmeasured section names the untracked timers and the phantom crons as present rather than omitting them.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/reliabilityReport.ts",
+        "src/cli/reliabilityReport.ts",
+        "docs/capabilities/reliability-report.md",
+        "test/fixtures/registryCheckout.ts",
+        "test/registryReconciliation.test.ts",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/reliabilityReport.test.ts"
+      ],
+      "notes": "Produces the briefing on request by composing built capabilities. The unmeasured section comes first and names the untracked timers and phantom crons; no percentage appears without its record count. Read-only and never sent. Scope is a proposal until K.D. states it. Not yet run on production records.",
+      "updated_at": "2026-11-02T01:00:00.000Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
