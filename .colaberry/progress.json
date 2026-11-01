@@ -379,13 +379,24 @@
       "criteria": [
         {
           "text": "Each name is accompanied by its interval and its recorded duration; a timer with no duration data is listed as unassessable rather than safe.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/cronOverlapGuard.ts",
+        "src/inventory/claimSites.ts",
+        "src/cli/overlapGuard.ts",
+        "docs/capabilities/cron-overlap-guard.md",
+        "examples/overlap-guard.example.json",
+        "package.json",
+        "README.md",
+        "docs/capabilities/README.md"
+      ],
+      "tests_added": [
+        "test/cronOverlapGuard.test.ts"
+      ],
+      "notes": "Names each timer that can overlap with its interval and recorded duration; a timer with no duration data is unassessable, never safe. Read-only. Not yet run on production records.",
+      "updated_at": "2026-10-31T20:00:00.000Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

@@ -1,0 +1,13 @@
+{
+  "captured_at": "2026-10-31T12:00:00.000Z",
+  "captured_by": "illustrative example, not platform data",
+  "ai_agents": [
+    { "id": "a1", "agent_name": "ExampleSlowJob", "enabled": true, "avg_duration_ms": 45000 },
+    { "id": "a2", "agent_name": "ExampleQuickJob", "enabled": true, "avg_duration_ms": 900 }
+  ],
+  "ai_agent_activity_logs": [
+    { "id": "r1", "agent_id": "a1", "action": "ExampleSlowJob", "result": "success", "duration_ms": 95000, "created_at": "2026-10-31T10:05:00.000Z" },
+    { "id": "r2", "agent_id": "a2", "action": "ExampleQuickJob", "result": "success", "duration_ms": 1200, "created_at": "2026-10-31T10:05:00.000Z" }
+  ],
+  "cron_schedule_configs": []
+}
