@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 37,
+    "stories_verified": 38,
     "stories_submitted": 0,
-    "stories_in_progress": 17,
+    "stories_in_progress": 16,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 49,
-    "points_awarded": 555
+    "criteria_passed": 50,
+    "points_awarded": 570
   },
   "stories": [
     {
@@ -1093,17 +1093,15 @@
       "notes": "Reports tree cleanliness and whether HEAD matches origin/main as measured facts, asking the remote directly. Runs only five exact git reads; never merges, pushes, fetches or deploys. No deploy tool is among its grants. Not yet run on the production host.",
       "updated_at": "2026-11-02T00:00:00.000Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "The readiness report states tree cleanliness and whether HEAD matches origin/main as measured facts; it never merges, pushes to main or deploys, and a test asserts no deploy tool is among its grants."
-        ]
+        "verified_at": "2026-11-01T20:10:42.218Z",
+        "commit_sha": "db13ddff4fde7630b93ff0be440fe450156ec6c3",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/db13ddff4fde7630b93ff0be440fe450156ec6c3",
+        "commit_at": "2026-11-01T20:10:18Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
