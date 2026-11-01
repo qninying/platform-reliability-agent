@@ -5,7 +5,7 @@ release is R2 (answers from records) unless the table says otherwise. Nothing he
 the R4 first releases act only on a sandbox copy, and the R1 ones run tests in a locked sandbox.
 
 **Status** comes from the platform's own verification of this repository (`.colaberry/progress.json`):
-*Verified* means the platform confirmed it from a commit that names the story. 21 more capabilities are planned in the platform's build plan for this domain
+*Verified* means the platform confirmed it from a commit that names the story. 20 more capabilities are planned in the platform's build plan for this domain
 ([`platform.json`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/44430870b/backend/src/services/agentDomain/capabilities/platform.json)).
 
 ## Reliability engineering
@@ -27,6 +27,7 @@ Is the platform's work actually happening, and is it healthy?
 | 25 | **Dead-letter triage and recovery runbook** | What is in the dead-letter queue, what should a person do with each entry, and what could not have reached it? | [dead-letter writer](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bbde6ef1d/backend/src/services/deadLetterService.ts#L41-L51), [publishing retry and cancel](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bbde6ef1d/backend/src/services/publishing/publishingReceiptService.ts#L73-L113) | [dead-letter-triage](dead-letter-triage.md) | R2 | Verified 2026-10-30, [`ce04db2`](https://github.com/qninying/platform-reliability-agent/commit/ce04db2) |
 | 26 | **Error classification coverage** | What share of recorded failures carry a specific class, and which cron catch sites record none? | [cron wrapper](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bbde6ef1d/backend/src/services/cronInstrumentation.ts#L61-L65), [dead-letter fallback](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bbde6ef1d/backend/src/services/deadLetterService.ts#L46) | [error-class-coverage](error-class-coverage.md) | R2 | Verified 2026-10-31, [`6a1c0af`](https://github.com/qninying/platform-reliability-agent/commit/6a1c0af) |
 | 27 | **Idempotency and replay-safety audit** | Can a sandbox run tell a job that is safe to run twice from one that is not? | [publishing worker claim](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bbde6ef1d/backend/src/services/publishing/publishingWorker.ts#L290-L295) | [idempotency-and-replay-audit](idempotency-and-replay-audit.md) | R1 | Verified 2026-10-31, [`ff99053`](https://github.com/qninying/platform-reliability-agent/commit/ff99053) |
+| 28 | **Cron overlap guard** | Which timers can run longer than their own interval, and which jobs hold their own claim? | [cron wrapper](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bbde6ef1d/backend/src/services/cronInstrumentation.ts#L53-L72), [publishing worker claim](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/bbde6ef1d/backend/src/services/publishing/publishingWorker.ts#L290-L295) | [cron-overlap-guard](cron-overlap-guard.md) | R2 | Verified 2026-11-01, [`ece5f6c`](https://github.com/qninying/platform-reliability-agent/commit/ece5f6c) |
 
 ## Security and AI safety
 
