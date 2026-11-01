@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 39,
+    "stories_verified": 40,
     "stories_submitted": 0,
-    "stories_in_progress": 15,
+    "stories_in_progress": 14,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 51,
-    "points_awarded": 585
+    "criteria_passed": 52,
+    "points_awarded": 600
   },
   "stories": [
     {
@@ -1237,17 +1237,15 @@
       "notes": "Inventory of 31 thresholds across 7 files, each value and line read from the checkout. Unmeasured unless alert outcomes are recorded; no false-positive rate exists. Proposes no number; setting one stays K.D.'s.",
       "updated_at": "2026-11-01T22:23:12Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "Each threshold is reported with its source file and line; a threshold whose alert outcomes were never recorded is reported as unmeasured rather than as well-tuned."
-        ]
+        "verified_at": "2026-11-01T22:25:04.480Z",
+        "commit_sha": "efff59bb5499c65e4bfd8c9205587a009c4a0158",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/efff59bb5499c65e4bfd8c9205587a009c4a0158",
+        "commit_at": "2026-11-01T22:24:41Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
