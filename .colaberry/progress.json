@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 33,
+    "stories_verified": 34,
     "stories_submitted": 0,
-    "stories_in_progress": 21,
+    "stories_in_progress": 20,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 45,
-    "points_awarded": 495
+    "criteria_passed": 46,
+    "points_awarded": 510
   },
   "stories": [
     {
@@ -398,17 +398,15 @@
       "notes": "Names each timer that can overlap with its interval and recorded duration; a timer with no duration data is unassessable, never safe. Read-only. Not yet run on production records.",
       "updated_at": "2026-10-31T20:00:00.000Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "Each name is accompanied by its interval and its recorded duration; a timer with no duration data is listed as unassessable rather than safe."
-        ]
+        "verified_at": "2026-11-01T00:43:37.840Z",
+        "commit_sha": "ece5f6cc50c7a852665b3c7a2bb9f09fc7f39ad1",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/ece5f6cc50c7a852665b3c7a2bb9f09fc7f39ad1",
+        "commit_at": "2026-11-01T00:43:19Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
@@ -1723,7 +1721,7 @@
         "verified_at": "2026-10-22T13:12:24.353Z",
         "commit_sha": "2e70593c8a4e1c5c125c3a5dc8ada3f2bd42963b",
         "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/2e70593c8a4e1c5c125c3a5dc8ada3f2bd42963b",
-        "commit_at": "2026-10-22T13:12:11Z",
+        "commit_at": "2026-10-22T13:20:42Z",
         "points_awarded": 15,
         "outstanding": []
       }
