@@ -183,13 +183,21 @@
       "criteria": [
         {
           "text": "The assembly cites real run records and names any criterion with no evidence as unmet; a capability whose only evidence is a passing mocked test is reported as unproven.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/promotionEvidence.ts",
+        "src/cli/promotionEvidence.ts",
+        "docs/capabilities/agent-promotion-and-approval-decision.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/promotionEvidence.test.ts"
+      ],
+      "notes": "Assembles evidence for one capability at one rung. Only a run record meets a criterion; tests alone read as unproven. Grants nothing and records no decision. Neither dependency is built.",
+      "updated_at": "2026-11-01T23:30:00Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

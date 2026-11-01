@@ -44,6 +44,7 @@
     "backup-position": "node src/cli/backupPosition.ts",
     "schema-drift": "node src/cli/schemaDrift.ts",
     "reliability-thresholds": "node src/cli/reliabilityThresholds.ts",
+    "promotion-evidence": "node src/cli/promotionEvidence.ts",
     "overlap-guard": "node src/cli/overlapGuard.ts",
     "command-center-domain": "node scripts/buildCommandCenterDomain.ts"
   },
