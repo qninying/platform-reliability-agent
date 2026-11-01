@@ -1221,13 +1221,21 @@
       "criteria": [
         {
           "text": "Each threshold is reported with its source file and line; a threshold whose alert outcomes were never recorded is reported as unmeasured rather than as well-tuned.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/reliabilityThresholds.ts",
+        "src/cli/reliabilityThresholds.ts",
+        "docs/capabilities/reliability-threshold-ownership.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/reliabilityThresholds.test.ts"
+      ],
+      "notes": "Inventory of 31 thresholds across 7 files, each value and line read from the checkout. Unmeasured unless alert outcomes are recorded; no false-positive rate exists. Proposes no number; setting one stays K.D.'s.",
+      "updated_at": "2026-11-01T22:23:12Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

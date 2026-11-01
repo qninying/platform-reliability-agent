@@ -43,6 +43,7 @@
     "release-evidence": "node src/cli/releaseEvidence.ts",
     "backup-position": "node src/cli/backupPosition.ts",
     "schema-drift": "node src/cli/schemaDrift.ts",
+    "reliability-thresholds": "node src/cli/reliabilityThresholds.ts",
     "overlap-guard": "node src/cli/overlapGuard.ts",
     "command-center-domain": "node scripts/buildCommandCenterDomain.ts"
   },
