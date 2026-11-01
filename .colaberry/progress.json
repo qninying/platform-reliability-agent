@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 36,
+    "stories_verified": 37,
     "stories_submitted": 0,
-    "stories_in_progress": 18,
+    "stories_in_progress": 17,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 48,
-    "points_awarded": 540
+    "criteria_passed": 49,
+    "points_awarded": 555
   },
   "stories": [
     {
@@ -614,17 +614,15 @@
       "notes": "Judges one release record: deployed commit, running image and live routes must agree. Missing any is unverified, never deployed, and an edge-level 200 alone is never proof. Read-only. Not yet run on a real release.",
       "updated_at": "2026-11-01T22:00:00.000Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "A release whose evidence is missing any of the three is reported as unverified, never as deployed; and an edge-level 200 alone is never accepted as proof the application started."
-        ]
+        "verified_at": "2026-11-01T18:55:11.272Z",
+        "commit_sha": "709e5b30bb68f944b7d49086c575e4c9dc1dc801",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/709e5b30bb68f944b7d49086c575e4c9dc1dc801",
+        "commit_at": "2026-11-01T18:54:47Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
