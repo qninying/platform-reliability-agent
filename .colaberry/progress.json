@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 38,
+    "stories_verified": 39,
     "stories_submitted": 0,
-    "stories_in_progress": 16,
+    "stories_in_progress": 15,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 50,
-    "points_awarded": 570
+    "criteria_passed": 51,
+    "points_awarded": 585
   },
   "stories": [
     {
@@ -1203,17 +1203,15 @@
       "notes": "Produces the briefing on request by composing built capabilities. The unmeasured section comes first and names the untracked timers and phantom crons; no percentage appears without its record count. Read-only and never sent. Scope is a proposal until K.D. states it. Not yet run on production records.",
       "updated_at": "2026-11-02T01:00:00.000Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "No percentage appears without the record count behind it; the unmeasured section names the untracked timers and the phantom crons as present rather than omitting them."
-        ]
+        "verified_at": "2026-11-01T20:28:03.800Z",
+        "commit_sha": "bd6336cc2f99bfe520d8aae2851f196fae96319b",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/bd6336cc2f99bfe520d8aae2851f196fae96319b",
+        "commit_at": "2026-11-01T20:27:39Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
