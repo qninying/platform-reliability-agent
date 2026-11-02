@@ -5,9 +5,9 @@
     "stories_total": 55,
     "stories_verified": 43,
     "stories_submitted": 0,
-    "stories_in_progress": 11,
-    "stories_not_started": 1,
-    "criteria_total": 66,
+    "stories_in_progress": 12,
+    "stories_not_started": 0,
+    "criteria_total": 72,
     "criteria_passed": 55,
     "points_awarded": 645
   },
@@ -1928,15 +1928,22 @@
       "notes": null,
       "updated_at": null,
       "verification": {
-        "state": "not_started",
+        "state": "in_progress",
         "criteria_passed": 0,
-        "criteria_total": 0,
+        "criteria_total": 6,
         "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
+        "commit_sha": "be7079d9d1cba875d2670148f7b125b39ab4c8fe",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/be7079d9d1cba875d2670148f7b125b39ab4c8fe",
+        "commit_at": "2026-10-31T15:57:16Z",
         "points_awarded": null,
-        "outstanding": []
+        "outstanding": [
+          "Given the Command Center, when it is opened, then all six panels render and each one names the endpoint it read.",
+          "Given a panel whose endpoint returned nothing, when it renders, then it says so in words and is visibly distinct from a panel that is still loading.",
+          "Given the autonomy ladder panel, when it renders, then all ten rungs are present with the owner's wording, and each capability's ceiling is marked against the rung it stops at.",
+          "Given a capability above `autonomy:R2` with no granted tools, when its authority is shown, then the page shows the effective authority `effectiveAuthority()` returns and the reason `no_tool_grants`, not the authority the capability record asks for.",
+          "Given the governance panel, when a tool request is shown, then nothing on the page states or implies that filing it granted anything.",
+          "Trust -- no panel shows a number, a grant, a rung or a result this domain has not actually produced."
+        ]
       }
     }
   ]
