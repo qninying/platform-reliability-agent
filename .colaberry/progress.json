@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 43,
+    "stories_verified": 44,
     "stories_submitted": 1,
-    "stories_in_progress": 11,
+    "stories_in_progress": 10,
     "stories_not_started": 0,
     "criteria_total": 72,
-    "criteria_passed": 60,
-    "points_awarded": 645
+    "criteria_passed": 61,
+    "points_awarded": 660
   },
   "stories": [
     {
@@ -1394,17 +1394,15 @@
       "notes": "Names ENABLE_FOLLOWUP_SCHEDULER as the single flag gating startScheduler() and startScheduler as the only caller of startAIOpsScheduler(), measured from source each run, and reports that GET /health never consults the scheduler. Running count only from a boot log a person supplies. Real source at bbde6ef: server.ts:3632, schedulerService.ts:3490.",
       "updated_at": "2026-11-02T20:40:00Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "The report names ENABLE_FOLLOWUP_SCHEDULER as the single flag and names startScheduler as the only caller of the AI Ops scheduler, both as measured facts."
-        ]
+        "verified_at": "2026-11-02T19:55:50.636Z",
+        "commit_sha": "b336b03a65686540355b97c07e589eaa107e1a13",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/b336b03a65686540355b97c07e589eaa107e1a13",
+        "commit_at": "2026-11-02T19:55:26Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
