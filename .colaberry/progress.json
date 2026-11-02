@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 42,
+    "stories_verified": 43,
     "stories_submitted": 0,
-    "stories_in_progress": 12,
+    "stories_in_progress": 11,
     "stories_not_started": 1,
-    "criteria_total": 71,
-    "criteria_passed": 54,
-    "points_awarded": 630
+    "criteria_total": 66,
+    "criteria_passed": 55,
+    "points_awarded": 645
   },
   "stories": [
     {
@@ -597,17 +597,15 @@
       "notes": "Names every registry name with no cron_schedule_configs row, each on by default, and the three code sites that apply the default, found by scanning. Real source at bbde6ef: 74 of 109 names against the seeded rows. A failed row read fails open at boot and at reload, because the resolver swallows it.",
       "updated_at": "2026-11-02T14:51:00Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "The enumeration is a measured list of names, not a count; and it states the three code locations where the default is applied."
-        ]
+        "verified_at": "2026-11-02T14:55:59.778Z",
+        "commit_sha": "279489b8e5b33f8827a26d5cfe8a705725737d3f",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/279489b8e5b33f8827a26d5cfe8a705725737d3f",
+        "commit_at": "2026-11-02T14:55:26Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
@@ -1896,48 +1894,50 @@
       }
     },
     {
-      "id": "STORY-000",
-      "release": null,
-      "acceptance_total": 5,
+      "id": "platform.STORY-000",
+      "release": "autonomy:R0",
+      "acceptance_total": 6,
       "criteria": [
         {
-          "text": "Given the Command Center, when it is opened, then every tab is reachable and every card drills down one level.",
-          "passed": true
+          "text": "Given the Command Center, when it is opened, then all six panels render and each one names the endpoint it read.",
+          "passed": false
         },
         {
-          "text": "Given sample mode, when any tab is shown, then the sample data is visibly labelled as sample.",
-          "passed": true
+          "text": "Given a panel whose endpoint returned nothing, when it renders, then it says so in words and is visibly distinct from a panel that is still loading.",
+          "passed": false
         },
         {
-          "text": "Given the Command Center, when any tab renders, then .colaberry/plan.json and .colaberry/progress.json are both committed in this repo and every tab reads its content from them at runtime rather than from hard-coded values.",
-          "passed": true
+          "text": "Given the autonomy ladder panel, when it renders, then all ten rungs are present with the owner's wording, and each capability's ceiling is marked against the rung it stops at.",
+          "passed": false
         },
         {
-          "text": "Given the Command Center, when any tab is shown, then .colaberry/manifest.json is committed in this repo and every tab shows how old that data is and warns when the age exceeds a week.",
-          "passed": true
+          "text": "Given a capability above `autonomy:R2` with no granted tools, when its authority is shown, then the page shows the effective authority `effectiveAuthority()` returns and the reason `no_tool_grants`, not the authority the capability record asks for.",
+          "passed": false
         },
         {
-          "text": "Trust — no tab shows a number, a connection or a result the project has not actually produced.",
-          "passed": true
+          "text": "Given the governance panel, when a tool request is shown, then nothing on the page states or implies that filing it granted anything.",
+          "passed": false
+        },
+        {
+          "text": "Trust -- no panel shows a number, a grant, a rung or a result this domain has not actually produced.",
+          "passed": false
         }
       ],
-      "files_touched": [
-        "index.html",
-        ".nojekyll",
-        "command-center/data.js",
-        "command-center/sample.js",
-        "command-center/ui.js",
-        "command-center/tabs.js",
-        "command-center/kb.js",
-        "command-center/app.js",
-        "command-center/styles.css",
-        ".colaberry/profile.json",
-        ".colaberry/enrichment/STORY-000.json"
-      ],
+      "files_touched": [],
       "tests_added": [],
-      "notes": "Static Command Center at the repo root: nine tabs, each card drills down one level; sample/real and day/night switches; every tab reads .colaberry/plan.json and progress.json at runtime and shows the manifest's data age, warning after a week. Verified by loading all 14 routes in headless Chrome over a local server (no script errors, data stamp on every route) and by node checks of the age warning and the chat.",
-      "updated_at": "2026-10-22",
-      "verification": null
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 0,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": []
+      }
     }
   ]
 }

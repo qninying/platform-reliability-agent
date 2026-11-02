@@ -1,0 +1,332 @@
+{
+  "schema": "colaberry.agent-domain/v1",
+  "domain_key": "platform",
+  "sources": {
+    "agent": "GET /api/admin/agent-domains-mine",
+    "capabilities": "GET /api/admin/agent-domains/platform",
+    "governance": "GET /api/admin/agent-domain-change-requests-mine"
+  },
+  "autonomy_models": {
+    "agent_level": "observe | suggest | act_audited | communicate -- a property of the employee",
+    "capability_ladder": "autonomy:R0 .. autonomy:R9 -- a property of each capability",
+    "warning": "These are different scales on different objects. Never render one as a position on the other, and never compare them."
+  },
+  "staleness_note": "This file deliberately carries no timestamp: a clock here would make every sync commit a file whose only change is the time. Read `generated_at` from `.colaberry/manifest.json` and label it \"last changed\", not \"last checked\".",
+  "agent": {
+    "exists": true,
+    "agent_id": "6283ca70-bb55-40d3-847e-cb164ee03157",
+    "display_name": null,
+    "enabled": false,
+    "autonomy_level": "observe",
+    "autonomy_level_set_at": "2026-10-18T16:08:12.432Z",
+    "autonomy_level_source": "auto",
+    "autonomy_level_set_by": null,
+    "tools_granted": [],
+    "tools_granted_count": 0
+  },
+  "authority": [
+    {
+      "capability_id": "platform.agent_behavior_safety_watch",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.agent_discovery_sync",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.agent_enable_disable_control",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.agent_health_scoring",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.agent_identity_attribution",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.agent_promotion_and_approval_decision",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.agent_registry_read_surface",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.agent_ticket_auto_resolution",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.backup_and_restore_verification",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.capability_autonomy_authority_resolution",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.cron_health_alerting",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.cron_overlap_guard",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.cron_run_instrumentation",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.data_retention_sweep",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.dead_letter_capture",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.dead_letter_triage",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.default_on_timer_guard",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.deploy_verification_evidence",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.emergency_stop_and_kill_switch",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.error_class_coverage",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.execution_policy_enforcement",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.idempotency_and_replay_audit",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.incident_trace_and_error_triage",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.infrastructure_evolution_proposals",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.manager_reachable_agent_surface",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.manager_restriction_directives",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.manager_scoped_authorization",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.orchestration_auto_repair",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.orchestration_health_watch",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.platform_bug_fix_dispatch",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.preview_stack_reaping",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.production_deploy_review_and_approval",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.prompt_and_performance_optimization",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.registry_runtime_reconciliation",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.reliability_briefing_for_manager",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.reliability_threshold_ownership",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.runtime_cron_drift_detection",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.runtime_threat_and_access_watch",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.schedule_governance_live_reload",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.scheduler_registration_liveness_probe",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.schema_drift_detection",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.security_oversight_rollup",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.security_posture_scan",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.stale_action_recovery",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.system_health_probe_and_alerting",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.system_resilience_supervision",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": []
+    },
+    {
+      "capability_id": "platform.untracked_timer_registration_proposal",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    },
+    {
+      "capability_id": "platform.workforce_technology_direction",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [
+        "human_decision_required_at_every_level"
+      ]
+    }
+  ],
+  "authority_rule": {
+    "rule": "A capability approved above autonomy:R2 with no granted tools is forced back down to autonomy:R2, with the reason no_tool_grants. Tool grants are the throttle.",
+    "approved_above_r2": 0,
+    "binds_nothing": true,
+    "note": "When this binds nothing, say so in words. It means no capability in this domain has been approved above autonomy:R2 yet, not that the rule is absent or that the panel failed."
+  },
+  "governance": {
+    "disclosure": "A filed request grants nothing. Status is what a named human decided, and a pending row means nobody has decided yet.",
+    "requests": [],
+    "pending": 0
+  },
+  "not_recorded": [
+    {
+      "field": "agent.autonomy_level_set_by",
+      "reason": "The platform does not store who set an agent's autonomy level. `ai_agents` carries `autonomy_level_set_at` and `autonomy_level_source` but no `set_by` column, so the time and whether a person chose it are known and the identity is not. Do not render a name here."
+    }
+  ]
+}
