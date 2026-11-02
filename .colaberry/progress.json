@@ -324,13 +324,21 @@
       "criteria": [
         {
           "text": "A capability with no recorded approval returns null with reason no_approved_autonomy, never a defaulted rung; and a human_decision capability never resolves above autonomy:R5.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/autonomyAuthority.ts",
+        "src/cli/autonomyAuthority.ts",
+        "docs/capabilities/capability-autonomy-authority-resolution.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/autonomyAuthority.test.ts"
+      ],
+      "notes": "Resolves effective authority and the binding constraint per capability. A copy of the platform's rules, checked against its module on every run. All 48 resolve to null today because no level is approved.",
+      "updated_at": "2026-11-01T23:50:00Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
