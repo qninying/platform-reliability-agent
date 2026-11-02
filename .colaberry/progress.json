@@ -581,13 +581,21 @@
       "criteria": [
         {
           "text": "The enumeration is a measured list of names, not a count; and it states the three code locations where the default is applied.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/defaultOnTimerGuard.ts",
+        "src/cli/defaultOnTimers.ts",
+        "docs/capabilities/default-on-timer-guard.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/defaultOnTimerGuard.test.ts"
+      ],
+      "notes": "Names every registry name with no cron_schedule_configs row, each on by default, and the three code sites that apply the default, found by scanning. Real source at bbde6ef: 74 of 109 names against the seeded rows. A failed row read fails open at boot and at reload, because the resolver swallows it.",
+      "updated_at": "2026-11-02T14:51:00Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

@@ -47,7 +47,8 @@
     "promotion-evidence": "node src/cli/promotionEvidence.ts",
     "autonomy-authority": "node src/cli/autonomyAuthority.ts",
     "overlap-guard": "node src/cli/overlapGuard.ts",
-    "command-center-domain": "node scripts/buildCommandCenterDomain.ts"
+    "command-center-domain": "node scripts/buildCommandCenterDomain.ts",
+    "default-on-timers": "node src/cli/defaultOnTimers.ts"
   },
   "devDependencies": {
     "@types/node": "22.15.3",
