@@ -48,7 +48,8 @@
     "autonomy-authority": "node src/cli/autonomyAuthority.ts",
     "overlap-guard": "node src/cli/overlapGuard.ts",
     "command-center-domain": "node scripts/buildCommandCenterDomain.ts",
-    "default-on-timers": "node src/cli/defaultOnTimers.ts"
+    "default-on-timers": "node src/cli/defaultOnTimers.ts",
+    "scheduler-liveness": "node src/cli/schedulerLiveness.ts"
   },
   "devDependencies": {
     "@types/node": "22.15.3",

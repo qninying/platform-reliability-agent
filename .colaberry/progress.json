@@ -1378,13 +1378,21 @@
       "criteria": [
         {
           "text": "The report names ENABLE_FOLLOWUP_SCHEDULER as the single flag and names startScheduler as the only caller of the AI Ops scheduler, both as measured facts.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/schedulerLiveness.ts",
+        "src/cli/schedulerLiveness.ts",
+        "docs/capabilities/scheduler-registration-liveness-probe.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/schedulerLiveness.test.ts"
+      ],
+      "notes": "Names ENABLE_FOLLOWUP_SCHEDULER as the single flag gating startScheduler() and startScheduler as the only caller of startAIOpsScheduler(), measured from source each run, and reports that GET /health never consults the scheduler. Running count only from a boot log a person supplies. Real source at bbde6ef: server.ts:3632, schedulerService.ts:3490.",
+      "updated_at": "2026-11-02T20:40:00Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
