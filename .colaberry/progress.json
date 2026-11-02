@@ -1900,15 +1900,15 @@
       "criteria": [
         {
           "text": "Given the Command Center, when it is opened, then all six panels render and each one names the endpoint it read.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "Given a panel whose endpoint returned nothing, when it renders, then it says so in words and is visibly distinct from a panel that is still loading.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "Given the autonomy ladder panel, when it renders, then all ten rungs are present with the owner's wording, and each capability's ceiling is marked against the rung it stops at.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "Given a capability above `autonomy:R2` with no granted tools, when its authority is shown, then the page shows the effective authority `effectiveAuthority()` returns and the reason `no_tool_grants`, not the authority the capability record asks for.",
@@ -1916,17 +1916,29 @@
         },
         {
           "text": "Given the governance panel, when a tool request is shown, then nothing on the page states or implies that filing it granted anything.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "Trust -- no panel shows a number, a grant, a rung or a result this domain has not actually produced.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "README.md",
+        "command-center/app.js",
+        "command-center/data.js",
+        "command-center/domain.json",
+        "command-center/domainData.js",
+        "command-center/domainTab.js",
+        "command-center/styles.css",
+        "index.html",
+        "scripts/buildCommandCenterDomain.ts"
+      ],
+      "tests_added": [
+        "test/commandCenterDomain.test.ts"
+      ],
+      "notes": "Agent domain tab: six panels, each criterion with a named acceptance test in test/commandCenterDomain.test.ts. Panels 1 and 5, and every authority figure, now read .colaberry/agent-domain.json (A.M.'s 2026-11-02 decision), with its age from manifest.json. Authority is what the platform's effectiveAuthority() returned, never the record's ceiling; the agent's own level is kept off the ladder. Criterion 4 left unmarked: A.M. said on 2026-11-02 that nobody can satisfy it today because every capability starts at autonomy:R0, and is rewording it. The page states in words that the no-tool-grants rule binds nothing today.",
+      "updated_at": "2026-11-02T20:00:00Z",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

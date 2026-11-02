@@ -8,6 +8,7 @@
     manifest: '.colaberry/manifest.json',
     profile: '.colaberry/profile.json',
     domain: 'command-center/domain.json',
+    agentDomain: '.colaberry/agent-domain.json',
   };
   const DAY = 24 * 60 * 60 * 1000;
 
@@ -17,7 +18,7 @@
     return res.json();
   }
 
-  // Loads all four files. A missing or unreadable file is reported, never papered over.
+  // Loads every file. A missing or unreadable file is reported, never papered over.
   async function load() {
     const out = { errors: [] };
     await Promise.all(Object.entries(FILES).map(async ([key, path]) => {
