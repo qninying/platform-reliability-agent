@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 41,
+    "stories_verified": 42,
     "stories_submitted": 0,
-    "stories_in_progress": 13,
+    "stories_in_progress": 12,
     "stories_not_started": 1,
     "criteria_total": 71,
-    "criteria_passed": 53,
-    "points_awarded": 615
+    "criteria_passed": 54,
+    "points_awarded": 630
   },
   "stories": [
     {
@@ -340,17 +340,15 @@
       "notes": "Resolves effective authority and the binding constraint per capability. A copy of the platform's rules, checked against its module on every run. All 48 resolve to null today because no level is approved.",
       "updated_at": "2026-11-01T23:50:00Z",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "A capability with no recorded approval returns null with reason no_approved_autonomy, never a defaulted rung; and a human_decision capability never resolves above autonomy:R5."
-        ]
+        "verified_at": "2026-11-02T00:15:49.053Z",
+        "commit_sha": "a00c719bd4aae6209f4910cf9282a22108f175a1",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/a00c719bd4aae6209f4910cf9282a22108f175a1",
+        "commit_at": "2026-11-02T00:15:23Z",
+        "points_awarded": 15,
+        "outstanding": []
       }
     },
     {
@@ -1500,7 +1498,7 @@
         "verified_at": "2026-10-26T19:13:05.558Z",
         "commit_sha": "8ad3ba90ccaeabdce88a312f57abf7defe68da68",
         "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/8ad3ba90ccaeabdce88a312f57abf7defe68da68",
-        "commit_at": "2026-10-26T19:12:56Z",
+        "commit_at": "2026-10-26T19:13:06Z",
         "points_awarded": 15,
         "outstanding": []
       }
