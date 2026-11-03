@@ -15,7 +15,7 @@
   "agent": {
     "exists": true,
     "agent_id": "6283ca70-bb55-40d3-847e-cb164ee03157",
-    "display_name": null,
+    "display_name": "Ellis",
     "enabled": false,
     "autonomy_level": "observe",
     "autonomy_level_set_at": "2026-10-18T16:08:12.432Z",
