@@ -51,9 +51,11 @@
   function ruleLine(s) {
     const r = s && s.authority_rule;
     if (!r) return '';
-    return r.binds_nothing
-      ? `<p class="lead"><strong>The no-tool-grants rule binds nothing today:</strong> ${esc(r.approved_above_r2)} capabilities are approved above R2, so nothing is forced down to R2 with <code>no_tool_grants</code>.</p>`
-      : `<p class="lead"><strong>The no-tool-grants rule binds:</strong> ${esc(r.approved_above_r2)} capabilities are approved above R2 with no tools granted, and each is forced down to R2 with <code>no_tool_grants</code>.</p>`;
+    // The count is what effectiveAuthority() actually constrained, not the approved-above-R2 figure.
+    const n = (s.authority || []).filter((a) => (a.reasons || []).includes('no_tool_grants')).length;
+    return n === 0
+      ? `<p class="lead"><strong>The <code>no_tool_grants</code> rule constrains 0 capabilities today.</strong> ${esc(r.approved_above_r2)} capabilities in this domain are approved above R2, and none is forced down to R2 by it.</p>`
+      : `<p class="lead"><strong>The <code>no_tool_grants</code> rule constrains ${n} ${n === 1 ? 'capability' : 'capabilities'} today.</strong> Each is approved above R2 with no tools granted, so it is forced down to R2.</p>`;
   }
   function inventory(d, s, verified) {
     const rows = d.capabilities.map((c) => `<tr><td>${esc(c.name)}${c.human_decision ? ' <span class="chip human">Human decision</span>' : ''}${verified.has(c.capability_id) ? ' <span class="chip not_started">Story verified, not authority</span>' : ''}</td><td>${esc(c.classification)}</td><td>${esc(c.implementation_state)}</td><td>${draft(c.requirement_validation_state)}</td><td>${esc(short(c.starting_autonomy))}</td><td>${esc(short(c.max_permitted_autonomy))}</td><td>${authorityCell(s, c)}</td></tr>`);

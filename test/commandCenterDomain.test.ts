@@ -87,17 +87,19 @@ test('acceptance: the employee\'s level is never drawn as a rung, because it is 
   assert.match(panels(view(page(), REAL))[0], /<code>observe<\/code> <small>on the agent's own scale[^<]*, not a ladder rung/);
 });
 
-test('acceptance: above R2 with no grants the page shows effectiveAuthority and no_tool_grants, not what the record asks for', () => {
+test('acceptance: authority shows effectiveAuthority, not the record, and names no_tool_grants with the count it constrains, in words at zero', () => {
   const s = snap({ authority: [{ capability_id: 'platform.x', effective_autonomy: 'autonomy:R2', reasons: ['no_tool_grants'] }], authority_rule: { approved_above_r2: 1, binds_nothing: false } });
   const p = panels(view(page(), data([cap({ starting_autonomy: 'autonomy:R4' })]), false, s))[1];
   assert.match(p, /<td>R4<\/td><td>R5<\/td><td><strong>R2<\/strong><br><small>no_tool_grants<\/small>/);
-  assert.match(p, /The no-tool-grants rule binds:<\/strong> 1 capabilities are approved above R2/);
+  assert.match(p, /<code>no_tool_grants<\/code> rule constrains 1 capability today\./);
+  const two = snap({ authority: ['a', 'b', 'c'].map((x, i) => ({ capability_id: `platform.${x}`, effective_autonomy: 'autonomy:R2', reasons: i < 2 ? ['no_tool_grants'] : [] })), authority_rule: { approved_above_r2: 3, binds_nothing: false } });
+  assert.match(panels(view(page(), data([cap()]), false, two))[1], /rule constrains 2 capabilities today\./);
   const real = panels(view(page(), REAL))[1];
-  assert.match(real, /The no-tool-grants rule binds nothing today:<\/strong> 0 capabilities are approved above R2/);
+  assert.match(real, /<code>no_tool_grants<\/code> rule constrains 0 capabilities today\.<\/strong> 0 capabilities in this domain are approved above R2, and none is forced down to R2 by it\./);
   assert.equal(real.split('<strong>R0</strong>').length - 1, 48);
   assert.match(panels(view(page(), data([cap({ capability_id: 'platform.unknown' })])))[1], /Not available: the snapshot carries no answer for it/);
   assert.match(panels(view(page(), data([cap()]), false, null))[1], /Not available: \.colaberry\/agent-domain\.json could not be read/);
-  assert.doesNotMatch(panels(view(page(), data([cap()]), false, snap({ authority_rule: undefined })))[1], /binds/);
+  assert.doesNotMatch(panels(view(page(), data([cap()]), false, snap({ authority_rule: undefined })))[1], /rule constrains/);
 });
 
 test('acceptance: nothing on the governance panel states or implies that filing a tool request granted anything', () => {

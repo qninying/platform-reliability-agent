@@ -1918,7 +1918,7 @@
         },
         {
           "text": "Given the autonomy ladder panel, when a capability's authority is shown, then the page shows the effective authority `effectiveAuthority()` returns rather than the level the capability record asks for, and names the `no_tool_grants` rule with the number of capabilities it currently constrains, saying so in words when that number is zero.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "Given the governance panel, when a tool request is shown, then nothing on the page states or implies that filing it granted anything.",
@@ -1943,8 +1943,8 @@
       "tests_added": [
         "test/commandCenterDomain.test.ts"
       ],
-      "notes": "Agent domain tab: six panels, each criterion with a named acceptance test in test/commandCenterDomain.test.ts. Panels 1 and 5, and every authority figure, now read .colaberry/agent-domain.json (A.M.'s 2026-11-02 decision), with its age from manifest.json. Authority is what the platform's effectiveAuthority() returned, never the record's ceiling; the agent's own level is kept off the ladder. Criterion 4 left unmarked: A.M. said on 2026-11-02 that nobody can satisfy it today because every capability starts at autonomy:R0, and is rewording it. The page states in words that the no-tool-grants rule binds nothing today.",
-      "updated_at": "2026-11-02T20:00:00Z",
+      "notes": "Agent domain tab: six panels, each criterion with a named acceptance test in test/commandCenterDomain.test.ts. Panels 1 and 5, and every authority figure, now read .colaberry/agent-domain.json (A.M.'s 2026-11-02 decision), with its age from manifest.json. Authority is what the platform's effectiveAuthority() returned, never the record's ceiling; the agent's own level is kept off the ladder. Criterion 4 (A.M.'s 2026-11-02 wording): the authority line names the no_tool_grants rule with the number of capabilities effectiveAuthority() actually constrained, counted from the snapshot's reasons, and says in words that it constrains 0 today.",
+      "updated_at": "2026-11-02T23:00:00Z",
       "verification": {
         "state": "submitted",
         "criteria_passed": 5,
