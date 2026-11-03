@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 44,
-    "stories_submitted": 1,
+    "stories_verified": 45,
+    "stories_submitted": 0,
     "stories_in_progress": 10,
     "stories_not_started": 0,
     "criteria_total": 72,
-    "criteria_passed": 61,
-    "points_awarded": 660
+    "criteria_passed": 62,
+    "points_awarded": 675
   },
   "stories": [
     {
@@ -1946,17 +1946,15 @@
       "notes": "Agent domain tab: six panels, each criterion with a named acceptance test in test/commandCenterDomain.test.ts. Panels 1 and 5, and every authority figure, now read .colaberry/agent-domain.json (A.M.'s 2026-11-02 decision), with its age from manifest.json. Authority is what the platform's effectiveAuthority() returned, never the record's ceiling; the agent's own level is kept off the ladder. Criterion 4 (A.M.'s 2026-11-02 wording): the authority line names the no_tool_grants rule with the number of capabilities effectiveAuthority() actually constrained, counted from the snapshot's reasons, and says in words that it constrains 0 today.",
       "updated_at": "2026-11-02T23:00:00Z",
       "verification": {
-        "state": "submitted",
-        "criteria_passed": 5,
+        "state": "verified",
+        "criteria_passed": 6,
         "criteria_total": 6,
-        "verified_at": null,
+        "verified_at": "2026-11-03T01:08:33.846Z",
         "commit_sha": "be7079d9d1cba875d2670148f7b125b39ab4c8fe",
         "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/be7079d9d1cba875d2670148f7b125b39ab4c8fe",
         "commit_at": "2026-10-31T15:57:16Z",
-        "points_awarded": null,
-        "outstanding": [
-          "Given the autonomy ladder panel, when a capability's authority is shown, then the page shows the effective authority `effectiveAuthority()` returns rather than the level the capability record asks for, and names the `no_tool_grants` rule with the number of capabilities it currently constrains, saying so in words when that number is zero."
-        ]
+        "points_awarded": 15,
+        "outstanding": []
       }
     }
   ]
