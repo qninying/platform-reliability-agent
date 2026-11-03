@@ -1917,7 +1917,7 @@
           "passed": true
         },
         {
-          "text": "Given a capability above `autonomy:R2` with no granted tools, when its authority is shown, then the page shows the effective authority `effectiveAuthority()` returns and the reason `no_tool_grants`, not the authority the capability record asks for.",
+          "text": "Given the autonomy ladder panel, when a capability's authority is shown, then the page shows the effective authority `effectiveAuthority()` returns rather than the level the capability record asks for, and names the `no_tool_grants` rule with the number of capabilities it currently constrains, saying so in words when that number is zero.",
           "passed": false
         },
         {
@@ -1955,7 +1955,7 @@
         "commit_at": "2026-10-31T15:57:16Z",
         "points_awarded": null,
         "outstanding": [
-          "Given a capability above `autonomy:R2` with no granted tools, when its authority is shown, then the page shows the effective authority `effectiveAuthority()` returns and the reason `no_tool_grants`, not the authority the capability record asks for."
+          "Given the autonomy ladder panel, when a capability's authority is shown, then the page shows the effective authority `effectiveAuthority()` returns rather than the level the capability record asks for, and names the `no_tool_grants` rule with the number of capabilities it currently constrains, saying so in words when that number is zero."
         ]
       }
     }

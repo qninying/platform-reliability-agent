@@ -43,7 +43,7 @@ marking this story complete.
 - [ ] Given the Command Center, when it is opened, then all six panels render and each one names the endpoint it read.
 - [ ] Given a panel whose endpoint returned nothing, when it renders, then it says so in words and is visibly distinct from a panel that is still loading.
 - [ ] Given the autonomy ladder panel, when it renders, then all ten rungs are present with the owner's wording, and each capability's ceiling is marked against the rung it stops at.
-- [ ] Given a capability above `autonomy:R2` with no granted tools, when its authority is shown, then the page shows the effective authority `effectiveAuthority()` returns and the reason `no_tool_grants`, not the authority the capability record asks for.
+- [ ] Given the autonomy ladder panel, when a capability's authority is shown, then the page shows the effective authority `effectiveAuthority()` returns rather than the level the capability record asks for, and names the `no_tool_grants` rule with the number of capabilities it currently constrains, saying so in words when that number is zero.
 - [ ] Given the governance panel, when a tool request is shown, then nothing on the page states or implies that filing it granted anything.
 - [ ] Trust -- no panel shows a number, a grant, a rung or a result this domain has not actually produced.
 
