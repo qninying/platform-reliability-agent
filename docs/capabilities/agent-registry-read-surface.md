@@ -75,8 +75,10 @@ None of these is a live risk.
    The 33 cron timers with no row are in the platform's baseline (`cronRegistryBaseline.ts:114-130`).
 5. **Dara's run count is pooled across three timers.** This is audit finding D7, recorded in the baseline
    (`cronRegistryBaseline.ts:214-222`).
-6. **K.D. cannot open this surface.** Every route is behind `requireAdmin`, and K.D. has no admin row, as the
-   brief says.
+6. **K.D. reaches this surface only through a management role.** Every route is behind `requireAdmin`. K.D. has
+   no admin_users row, as the brief says, but the portal mints an admin login from K.D.'s management role (A.M.,
+   2026-11-04), so the brief's "cannot open" is out of date. Whether that role's sections cover these routes has not
+   been checked here.
 
 ## Before anyone presses "discover"
 

@@ -91,5 +91,5 @@ scan has a known result, 3 means at least one is `unknown`, and 1 means bad inpu
 - **The tests catch defects:** making a never-run scan `clean` fails 3 tests, including the acceptance
   test; removing the 0-coverage rule fails 2; removing the redaction fails the secret test (each
   checked by editing the code, running `npm test`, and restoring it).
-- **Not yet run on live records.** K.D. has no admin login (`backend/src/routes/admin/aiOpsRoutes.ts:60`);
-  the first live check is one export from A.M.'s agent-management admin screen.
+- **Not yet run on live records.** K.D. has no admin_users row and signs in through a management role instead
+  (A.M., 2026-11-04; routes at `backend/src/routes/admin/aiOpsRoutes.ts:60`); the first live check is one export from A.M.'s agent-management admin screen.

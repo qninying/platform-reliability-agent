@@ -66,7 +66,7 @@ The snapshot is a dated export of the two tables (format in `src/readSource.ts`,
   "failure path: result 'failed' with action 'scan_completed_no_issues' is run_failed, not healthy".
 - **The tests catch defects:** removing the `failed` check, or the no-row refusal, makes the matching
   tests fail (checked by editing the code, running `npm test`, and restoring it).
-- **Not yet shown on live records.** The answer has not been run against a real export. K.D. has no admin
-  login (`backend/src/routes/admin/aiOpsRoutes.ts:44-82`) and A.M.'s agent-management admin screen is
-  being built. The first live check is one export from that screen, with K.D. comparing the answer to the
+- **Not yet shown on live records.** The answer has not been run against a real export. K.D. has no admin_users
+  row and signs in through a management role instead (A.M., 2026-11-04; routes at
+  `backend/src/routes/admin/aiOpsRoutes.ts:44-82`), and A.M.'s agent-management admin screen is being built. The first live check is one export from that screen, with K.D. comparing the answer to the
   rows it cites.

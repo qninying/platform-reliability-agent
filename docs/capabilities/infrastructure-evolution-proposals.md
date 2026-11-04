@@ -79,8 +79,10 @@ department (finding 2).
    move a score, a person adds that tool on purpose.
 5. **The three architects are not specialised.** All sixteen architects, including these three, run the
    same function with a different department slug (`backend/src/services/aiOrchestrator.ts:798-828`).
-6. **The person who should decide cannot open the list.** The initiatives list is admin-only
-   (`backend/src/routes/admin/departmentIntelligenceRoutes.ts:27`, `:51`), and K.D. has no admin login.
+6. **The person who should decide reaches the list only through a management role.** The initiatives list is
+   admin-only (`backend/src/routes/admin/departmentIntelligenceRoutes.ts:27`, `:51`). K.D. has no admin_users row;
+   the portal mints an admin login from K.D.'s management role (A.M., 2026-11-04). Whether that role's sections
+   include this list has not been checked here.
 
 ## How to run it
 

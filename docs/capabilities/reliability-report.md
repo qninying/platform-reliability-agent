@@ -47,7 +47,8 @@ whether a skipped tick counts as a missed run, the backup policy, and who owns a
 - **No percentage without its count.** A percentage prints as `7.5% (3 of 40 runs)`, always.
 - **Never from an empty list.** With zero runs there is no failure rate: the line reads `0 runs`.
 - **No overall verdict.** The briefing never calls the platform healthy. An unknown is not a good result.
-- **No links.** K.D. has no admin login, so the briefing links to no admin page and stands on its own.
+- **No links.** The briefing links to no admin page and stands on its own: which admin pages K.D.'s management-role
+  login reaches has not been checked here.
 
 ## Limits, stated in every briefing
 
