@@ -45,11 +45,15 @@ Rules the code enforces:
 - The job checks have adapters in `src/output/jobAdapters.ts`: overlap guard, run records, dead-letter capture,
   dead-letter triage and stale-action recovery. An empty dead-letter queue is never `ok`: it cites no row, and most
   jobs could not have reached it, so it is `partly_unknown` and names them.
+- The scheduler and registry checks have adapters in `src/output/schedulerAdapters.ts`: scheduler liveness,
+  default-on timers, schedule governance, registry reconciliation and the registry ask. Most read platform source,
+  so their evidence is a file:line at a named commit. A sweep with nothing to propose cites nothing, so it is
+  `unknown`, not `ok`.
 - The remaining older checks move over in batches of five or six.
 - Until K.D. writes the first rules, the broker can rank by verdict only.
 
 ## Evidence
 - `src/output/toolOutput.ts`, `src/output/monitorAdapters.ts`, `src/output/foldAdapters.ts`,
-  `src/output/jobAdapters.ts`, `test/toolOutput.test.ts` (16 tests), `test/foldAdapters.test.ts` (8 tests),
-  `test/jobAdapters.test.ts` (10 tests).
-- Thirty-four deliberate breaks of these rules, each caught by a named test (decision 004).
+  `src/output/jobAdapters.ts`, `src/output/schedulerAdapters.ts`, `test/toolOutput.test.ts` (16 tests),
+  `test/foldAdapters.test.ts` (8 tests), `test/jobAdapters.test.ts` (10 tests), `test/schedulerAdapters.test.ts` (8 tests).
+- Forty-three deliberate breaks of these rules, each caught by a named test (decision 004).
