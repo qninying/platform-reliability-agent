@@ -53,12 +53,17 @@ Rules the code enforces:
   evidence, backup position, schema drift and preview stack reaping. Some read no table, so a git ref, the release
   evidence a person captured, or a drift log stamp is their evidence. The backup position stays `unknown` by
   design: no backup age or restore is ever read, only searched for.
+- The security checks have adapters in `src/output/securityAdapters.ts`: posture scans, the access watch, the
+  behaviour watch, the security rollup and autonomy authority. A scanner's finding severity and the platform
+  director's verdict travel as `platform_signal`, never as Ellis's severity. A clean behaviour window keeps no row
+  ids, so it is `unknown` with the count it examined.
 - The remaining older checks move over in batches of five or six.
 - Until K.D. writes the first rules, the broker can rank by verdict only.
 
 ## Evidence
 - `src/output/toolOutput.ts`, `src/output/monitorAdapters.ts`, `src/output/foldAdapters.ts`,
   `src/output/jobAdapters.ts`, `src/output/schedulerAdapters.ts`, `src/output/deployAdapters.ts`,
-  `test/toolOutput.test.ts` (16 tests), `test/foldAdapters.test.ts` (8 tests), `test/jobAdapters.test.ts` (10 tests),
-  `test/schedulerAdapters.test.ts` (8 tests), `test/deployAdapters.test.ts` (8 tests).
-- Fifty-two deliberate breaks of these rules, each caught by a named test (decision 004).
+  `src/output/securityAdapters.ts`, `test/toolOutput.test.ts` (16 tests), `test/foldAdapters.test.ts` (8 tests),
+  `test/jobAdapters.test.ts` (10 tests), `test/schedulerAdapters.test.ts` (8 tests), `test/deployAdapters.test.ts`
+  (8 tests), `test/securityAdapters.test.ts` (9 tests).
+- Sixty-two deliberate breaks of these rules, each caught by a named test (decision 004).
