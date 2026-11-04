@@ -1,6 +1,6 @@
 # 006: One output shape for every tool, with severity set only by K.D.'s table
 
-**Status:** applied to the four built first monitors on 2026-11-04 and to the fifth the same day · A.M. approved the shape on 2026-11-04; K.D.'s two questions (partly_unknown, the severity table) are open and not blocking
+**Status:** applied on 2026-11-04 to K.D.'s five first monitors and to the four checks A.M.'s ruling of that day added · A.M. approved the shape on 2026-11-04; K.D.'s two questions (partly_unknown, the severity table) are open and not blocking
 
 ## Context
 K.D.'s architecture (2026-10-28) makes each coded check a tool the agent calls through a broker. The broker
@@ -39,8 +39,12 @@ Rules the code enforces:
 - No monitor's logic changed; each has a small adapter in `src/output/monitorAdapters.ts`. The fifth first monitor,
   the system health probe, folded into system resilience supervision on 2026-11-04, so it has two adapters there:
   the posture, and the health probes, whose evidence is the `GET /health/full` export rather than a table row.
+- The checks the 4 November ruling added have adapters in `src/output/foldAdapters.ts`: the fleet stop levers, the
+  discovery preview, the registration proposals and manager access. A timer with no row has no table row to cite,
+  so its evidence is its entry in the timer inventory read from source; a proposal's is its call site.
 - Until K.D. writes the first rules, the broker can rank by verdict only.
 
 ## Evidence
-- `src/output/toolOutput.ts`, `src/output/monitorAdapters.ts`, `test/toolOutput.test.ts` (16 tests).
-- Seventeen deliberate breaks of these rules, each caught by a named test (decision 004).
+- `src/output/toolOutput.ts`, `src/output/monitorAdapters.ts`, `src/output/foldAdapters.ts`,
+  `test/toolOutput.test.ts` (16 tests), `test/foldAdapters.test.ts` (8 tests).
+- Twenty-six deliberate breaks of these rules, each caught by a named test (decision 004).
