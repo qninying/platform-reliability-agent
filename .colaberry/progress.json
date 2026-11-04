@@ -944,8 +944,8 @@
       "criteria": [
         {
           "text": "For Kesetebirhan Delele and any platform agent the answer is 'nobody, via no route, because he holds no admin_users row' — a positive control that the gap is reported rather than papered over.",
-          "passed": false,
-          "evidence": "Not met as written, by design: the line expects 'nobody, via no route, because he holds no admin_users row'. The portal mints access from a management role (mgmtBridgeService.ts:97-112 at cc1ebc5), and super admins pass the gate (agentManagerAuthMiddleware.ts:50-91). Ellis reports who may act and by which route, and says separately when the accountable manager has none: test 'acceptance (scoped authorization): who may act and by which route, and a manager with no route is reported, not papered over'. Proposed replacement sent to A.M."
+          "passed": true,
+          "evidence": "A.M. accepted a replacement for this criterion on 2026-11-04: 'The answer names each login that may act on the agent and by which route, and says separately when the accountable manager has none.' The original expected 'nobody, via no route', which a super admin passing the gate makes false by construction (agentManagerAuthMiddleware.ts:50-91 at cc1ebc5). Met by test 'acceptance (scoped authorization): who may act and by which route, and a manager with no route is reported, not papered over' in test/managerAccess.test.ts."
         }
       ],
       "files_touched": [
@@ -961,7 +961,7 @@
       "tests_added": [
         "test/managerAccess.test.ts"
       ],
-      "notes": "Held: built as one manager-access check that also answers manager_reachable_agent_surface and manager_restriction_directives (A.M.'s ruling of 2026-11-04), in src/capabilities/managerAccess.ts. Its acceptance line rests on the no-admin-login fact A.M. called stale on 2026-11-04, and super admins can always act, so 'nobody' is never true; a replacement line waits on A.M. 11 tests; ten deliberate breaks each caught.",
+      "notes": "Built as one manager-access check that also answers manager_reachable_agent_surface and manager_restriction_directives (A.M.'s ruling of 2026-11-04), in src/capabilities/managerAccess.ts, commit 9ec4d6c. A.M. accepted the replacement acceptance line on 2026-11-04. 11 tests; ten deliberate breaks each caught.",
       "updated_at": "2026-11-04",
       "verification": {
         "state": "in_progress",

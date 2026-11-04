@@ -52,11 +52,14 @@ Platform facts cite the public Colaberry platform repository at upstream commit 
 - **Reachable surface:** the `org_members` row and the login are two separate facts, and the surface is never
   claimed reachable when no login carries the recorded email. Met.
 - **Directives:** a directive with no runtime enforcement path is reported as recorded but unenforced. Met.
-- **Scoped authorization:** the plan's line expects the answer for the platform manager to be "nobody, via no
-  route, because he holds no admin_users row". That rests on a fact A.M. called stale on 2026-11-04: the portal
-  mints access from a management role, which the manager holds. And super admins can always act, so "nobody" is
-  never true. Ellis reports who may act and by which route, and says separately when the accountable manager has
-  none. A replacement line is with A.M.
+- **Scoped authorization:** the plan's original line expected the answer for the platform manager to be "nobody,
+  via no route, because he holds no admin_users row". Super admins always pass the gate, so "nobody" was false by
+  construction, and the no-admin-login fact under it was stale. A.M. accepted a replacement on 2026-11-04: "The
+  answer names each login that may act on the agent and by which route, and says separately when the accountable
+  manager has none." Met.
+
+Whether a directive should be enforced for every agent, or labelled advisory wherever it appears, is A.M.'s
+decision, now a ticket of its own. This check does not take a side: it reports what the runtime does.
 
 ## How to run it
 

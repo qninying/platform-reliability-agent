@@ -168,7 +168,7 @@ The pattern behind many of them is written up as a rule for anyone building a mo
 
 | | |
 |---|---|
-| **Implemented** | 38 of 48 capabilities verified by the platform; under A.M.'s 4 November ruling, 7 more are folded into others and 3 are held. 719 tests. Every check returns one output shape. |
+| **Implemented** | 38 of 48 capabilities verified by the platform; under A.M.'s 4 November ruling, 7 more are folded into others, the merged manager-access check waits on the platform's check, and 2 are held. 752 tests. Every check returns one output shape. |
 | **Validated in a sandbox** | Auto-repair and ticket resolution (R4), the R4 rungs of stale action recovery, preview stack reaping and data retention, bug baselines (R1). |
 | **Not yet done** | No capability has run on a live production export; each read-only capability's write-up lists that check as outstanding. K.D. signs in through a management role, from which the portal mints an admin login (A.M., 4 November); A.M. is correcting the domain record to K.D.'s work address, which the agent's own pages need. |
 | **Next** | The first live export and comparison with what the platform shows; the gate and broker that call these checks as tools; shadow-mode evaluation (R5) once K.D. sets the thresholds and the severity table; choosing the model and prompt for the reasoning layer. |

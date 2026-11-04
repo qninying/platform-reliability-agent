@@ -44,14 +44,17 @@ test('a verified story is never relabelled by its notes', () => {
   assert.equal(s.disposition, null);
 });
 
-test('on the real files, every story that is not verified explains itself: seven folded, none planned, three held', () => {
+test('on the real files, every story that is not verified explains itself: seven folded, none planned, two held', () => {
   const cc = page();
   const open = cc.joinStories(PLAN, PROGRESS).filter((s: { platform_state: string }) => s.platform_state !== 'verified');
   const count = (k: string) => open.filter((s: { state: string }) => s.state === k).length;
   assert.equal(count('folded'), 7);
   assert.equal(count('fold_planned'), 0);
-  assert.equal(count('held'), 3);
-  assert.equal(open.filter((s: { disposition: unknown }) => s.disposition === null).length, 0, 'no unexplained absence');
+  assert.equal(count('held'), 2);
+  // A story with no note explains itself only by having every criterion passed: it waits on the platform's check.
+  const allPassed = (id: string) => (PROGRESS.stories.find((x: { id: string }) => x.id === id)?.criteria ?? []).every((c: { passed: boolean }) => c.passed);
+  const unexplained = open.filter((s: { id: string; disposition: unknown }) => s.disposition === null && !allPassed(s.id));
+  assert.deepEqual(unexplained.map((s: { id: string }) => s.id), [], 'no unexplained absence');
 });
 
 test('the story page names the story it was folded into, and the platform\'s own state', () => {
