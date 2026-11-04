@@ -118,11 +118,44 @@ measured 2026-10-28T01:02:27Z over 4,431 source files.
 **Small point:** the ratchet's header cites `aiOrchestrator.ts:177-180` for `runAgent`'s row lookup; at
 `4443087` it is `:184`.
 
+## Drift, and a proposed row for every untracked timer
+
+Added 2026-11-04, when A.M. folded runtime cron drift detection and untracked timer registration proposal into
+this capability. Drift detection was already this capability's answer: every class is a list of names, and its
+count is the length of that list, stamped with the time and commit it was measured at. The drift story's
+positive control holds on the recorded run: WorkforceIntelligence is in the no-seed-row class.
+
+`--proposals` adds a proposed registry row for every untracked name just measured. Each proposal carries every
+call site, the schedule it fires on there, the measurement time and commit, and the enabled value the row would
+arrive with. Creating the rows, and choosing to govern or retire each timer, stay with a person.
+
+**The row a timer needs is the row its runner reads, not always its own name.** A timer that goes through
+`instrumentCronJob` reads its own name and runs today untracked. A registry entry whose runner calls
+`runAgent('<Row>')` reads that row, and `runAgent` finding none returns without running
+(`aiOrchestrator.ts:184-188` at `cc1ebc5`). So each proposal says one of:
+
+| Runs today | Proposed row |
+|---|---|
+| yes, untracked | a row under its own name, arriving enabled: disabled would stop it |
+| yes, on another row | none: the row its runner reads exists and already gates it |
+| no: its runner reads a row that does not exist | that row, arriving disabled: enabled would start a job that does nothing today |
+| cannot say: a director gate, or a runner Ellis cannot read | a row under its own name, with a person to check first |
+
+A schedule that is not a literal cron expression, or a name registered on more than one schedule, gets no
+proposed schedule and a note. A name with no `cron.schedule` call within 15 lines above it, or with another
+timer between them, borrows none.
+
+**Measured at `cc1ebc5`** (`examples/registry-reconciliation.run-cc1ebc5.json`): 67 untracked names. 43 run
+today untracked and get a proposed row, each with a readable schedule. 24 are already gated by a row under
+another name and need none, for example AdmissionsAssistant, whose runner reads AdmissionsAssistantAgent. The
+platform's own reconciler counts all 67 as untracked; a row under each of those 24 names would gate nothing.
+
 ## How to run it
 
 ```
 npm run registry-reconcile -- --source <platform checkout>
 npm run registry-reconcile -- --source <platform checkout> --no-baseline
+npm run registry-reconcile -- --source <platform checkout> --proposals
 ```
 
 It reads the checkout's source and `.git` only. It never writes to the checkout and runs none of its code.
@@ -133,8 +166,18 @@ Exit codes:
 - 3: only healed entries differ (shrinking the baseline asserts a defect is fixed, which is K.D.'s call)
 - 1: bad input
 
+`--proposals` leaves the exit codes unchanged.
+
 ## Evidence
 
+- **Registration proposals** (`src/capabilities/registrationProposal.ts`, `test/registrationProposal.test.ts`, 11
+  tests). Named tests: "acceptance: every entry carries a real call-site citation and the measurement date, and the
+  count is the one just measured" and "acceptance (drift): every published count has its names behind it, and
+  WorkforceIntelligence is in the no-seed-row class on the real run". Ten deliberate breaks, each caught by a
+  named test: publishing a name with no call site, letting a job that does nothing arrive enabled, proposing a row
+  for a timer another row already gates, ignoring the row the runner reads, assuming an unreadable runner runs,
+  guessing an unreadable schedule, dropping the measurement date, borrowing a neighbour's schedule, dropping the
+  15-line limit, and leaving a row outside the seed unnamed.
 - **Named passing tests:**
   - "acceptance: every count is the measured number of entries, stamped with when and at which commit it
     was measured";

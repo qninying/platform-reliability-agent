@@ -45,6 +45,8 @@ export interface Measurement {
   dynamicNameForms: string[];
   recordedUnder: Array<{ agentName: string; row: string | null; how: Recording; line: number }>;
   scheduleSites: ScheduleSite[];
+  // Where each registered name is registered, and the schedule it fires on there (null when not readable).
+  nameSites: Array<{ name: string; ref: string; schedule: string | null }>;
   baseline: Record<ClassKey, string[]> | null;
 }
 
@@ -74,10 +76,20 @@ export function measure(r: Reader, now: Date, commit: string | null): Measuremen
     ? intelSlugs(r.read(`${S}/intel/sources/index.ts`), (base) => r.read(`${S}/intel/sources/${base}.ts`)) : [];
   const registry = registryEntries(scheduler);
   const registered = new Set<string>(registry.map((e) => e.agentName));
+  const allSchedules = sites.flatMap((x) => x.schedules);
+  // The cron.schedule call a name sits in: the nearest one above it in the same file, at most 15 lines up, with no
+  // other name between them. Anything else is not readable, never borrowed from a neighbour.
+  const firing = (file: string, line: number) => {
+    const call = allSchedules.filter((x) => x.file === file && x.line <= line && line - x.line <= 15).sort((a, b) => b.line - a.line)[0];
+    if (!call || names.some((o) => o.file === file && o.line >= call.line && o.line < line)) return null;
+    return call.schedule;
+  };
+  const nameSites: Measurement['nameSites'] = registry.map((e) => ({ name: e.agentName, ref: `${S}/aiOpsScheduler.ts:${e.line}`, schedule: e.schedule }));
+  const at = (n: (typeof names)[number], name: string) => nameSites.push({ name, ref: `${n.file}:${n.line}`, schedule: firing(n.file, n.line) });
   for (const n of names) {
-    if (n.kind === 'exact') registered.add(n.value);
-    else if (n.kind === 'constant') { const v = resolveConstant(n.value, sources); if (v) registered.add(v); }
-    else if (n.kind === 'prefix' && n.value === 'Intel_') slugs.forEach((sl) => registered.add(`Intel_${sl}`));
+    if (n.kind === 'exact') { registered.add(n.value); at(n, n.value); }
+    else if (n.kind === 'constant') { const v = resolveConstant(n.value, sources); if (v) { registered.add(v); at(n, v); } }
+    else if (n.kind === 'prefix' && n.value === 'Intel_') slugs.forEach((sl) => { registered.add(`Intel_${sl}`); at(n, `Intel_${sl}`); });
   }
   const orchestrator = r.read(`${S}/aiOrchestrator.ts`);
   const uninstrumented = uninstrumentedAgents(scheduler);
@@ -91,7 +103,8 @@ export function measure(r: Reader, now: Date, commit: string | null): Measuremen
     registeredNames: [...registered].sort(),
     dynamicNameForms: [...new Set(names.filter((n) => n.kind === 'dynamic' || (n.kind === 'prefix' && n.value !== 'Intel_')).map((n) => n.value))].sort(),
     recordedUnder: registry.filter((e) => e.registry === 'SCHEDULE_REGISTRY').map((e) => ({ agentName: e.agentName, ...recordsUnder(e, orchestrator, uninstrumented), line: e.line })),
-    scheduleSites: sites.flatMap((x) => x.schedules),
+    scheduleSites: allSchedules,
+    nameSites: nameSites.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : a.ref < b.ref ? -1 : 1)),
     baseline: null,
   };
 }

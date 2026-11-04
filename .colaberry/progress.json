@@ -1294,13 +1294,21 @@
       "criteria": [
         {
           "text": "Every count is accompanied by the list of names behind it; a count with no name list is not published. A positive control asserts WorkforceIntelligence appears in the no-seed-row class.",
-          "passed": false
+          "passed": true,
+          "evidence": "Tests 'acceptance: every count is the measured number of entries, stamped with when and at which commit it was measured' in test/registryReconciliation.test.ts and 'acceptance (drift): every published count has its names behind it, and WorkforceIntelligence is in the no-seed-row class on the real run' in test/registrationProposal.test.ts."
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": "To be folded into platform.CAP.registry_runtime_reconciliation (A.M.'s ruling of 2026-11-04): reconciliation will report the drift and propose the registration. Not built yet.",
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/registryReconciliation.ts",
+        "test/registrationProposal.test.ts",
+        "examples/registry-reconciliation.run-cc1ebc5.json",
+        "docs/capabilities/registry-runtime-reconciliation.md"
+      ],
+      "tests_added": [
+        "test/registrationProposal.test.ts"
+      ],
+      "notes": "Folded into platform.CAP.registry_runtime_reconciliation (A.M.'s ruling of 2026-11-04). Not built on its own: reconciliation already measured each drift class from source at run time as a list of names with its measurement time and commit; the fold adds the guarantee that no name is published without a call site, and records the run at cc1ebc5 (examples/registry-reconciliation.run-cc1ebc5.json). It measures the source at a commit, not the live process: what fires in production needs a live export of cron_schedule_configs, which the answer states.",
+      "updated_at": "2026-11-04",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
@@ -1656,13 +1664,25 @@
       "criteria": [
         {
           "text": "Every entry carries a real call-site citation and a measurement date; the published count is the one just measured, not 33 or 34 quoted from a document.",
-          "passed": false
+          "passed": true,
+          "evidence": "Test 'acceptance: every entry carries a real call-site citation and the measurement date, and the count is the one just measured' in test/registrationProposal.test.ts. Recorded run at cc1ebc5: examples/registry-reconciliation.run-cc1ebc5.json (67 measured, not 33 or 34)."
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": "To be folded into platform.CAP.registry_runtime_reconciliation (A.M.'s ruling of 2026-11-04): reconciliation will report the drift and propose the registration. Not built yet.",
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/registrationProposal.ts",
+        "src/capabilities/registryReconciliation.ts",
+        "src/cli/registryReconcile.ts",
+        "test/registrationProposal.test.ts",
+        "examples/registry-reconciliation.run-cc1ebc5.json",
+        "docs/capabilities/registry-runtime-reconciliation.md",
+        "docs/capabilities/README.md",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/registrationProposal.test.ts"
+      ],
+      "notes": "Folded into platform.CAP.registry_runtime_reconciliation (A.M.'s ruling of 2026-11-04). Not built on its own: reconciliation now proposes, with --proposals (src/capabilities/registrationProposal.ts), a registry row for every untracked name just measured, naming the row its runner reads and the enabled value it would arrive with. At cc1ebc5: 67 untracked names, 43 run today untracked and get a proposed row, 24 are already gated by a row under another name and need none. Govern or retire stays a person's decision. 11 tests; ten deliberate breaks each caught.",
+      "updated_at": "2026-11-04",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

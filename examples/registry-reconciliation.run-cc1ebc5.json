@@ -1,0 +1,2076 @@
+{
+  "measured_at": "2026-11-04T16:56:38.842Z",
+  "source_commit": "cc1ebc55e",
+  "files_read": 4605,
+  "verdict": "matches_baseline",
+  "classes": {
+    "cronSeedRowsWithNoRegistration": {
+      "means": "seed rows advertising cron with no timer registered under their own name (the platform calls these phantom)",
+      "count": 79,
+      "entries": [
+        "AdmissionsAssistantAgent",
+        "AdmissionsCallComplianceMonitor",
+        "AdmissionsCallbackManagementAgent",
+        "AdmissionsConversationContinuityAgent",
+        "AdmissionsConversationMemoryAgent",
+        "AdmissionsExecutiveUpdateAgent",
+        "AdmissionsHighIntentLeadAgent",
+        "AdmissionsInsightsAgent",
+        "AdmissionsIntentDetectionAgent",
+        "AdmissionsProactiveOutreachAgent",
+        "AdmissionsReportingAgent",
+        "AdmissionsVisitorActivityAgent",
+        "AgentPerformanceAnalyticsAgent",
+        "AlumniReportingAgent",
+        "Alumni_Outreach_Agent",
+        "Alumni_Reengagement_Agent",
+        "ArchitectureAgent",
+        "AuditAgent",
+        "Content_Marketing_Agent",
+        "CostOptimizationAgent",
+        "CurriculumOptimizerAgent",
+        "CurriculumQAAgent",
+        "Data_Intelligence_Agent",
+        "EducationReportingAgent",
+        "Employer_Relationship_Agent",
+        "ExecutiveBriefingReportingAgent",
+        "Executive_Briefing_Agent",
+        "ExperimentAgent",
+        "ExperimentRecommendationAgent",
+        "GovernanceAgent",
+        "GrowthExperimentAgent",
+        "InsightDiscoveryAgent",
+        "KnowledgeGraphBuilderAgent",
+        "MarketingReportingAgent",
+        "MonitorAgent",
+        "OpenclawAuthorityContentAgent",
+        "OpenclawBrowserWorkerAgent",
+        "OpenclawContentResponseAgent",
+        "OpenclawConversationDetectionAgent",
+        "OpenclawEngagementMonitorAgent",
+        "OpenclawFollowUpAgent",
+        "OpenclawInfraMonitorAgent",
+        "OpenclawLearningOptimizationAgent",
+        "OpenclawLinkedInCommentMonitorAgent",
+        "OpenclawLinkedInFlowAgent",
+        "OpenclawMarketSignalAgent",
+        "OpenclawQualityGateAgent",
+        "OpenclawResponseOrchestratorAgent",
+        "OpenclawSupervisorAgent",
+        "OpenclawTechResearchAgent",
+        "Opportunity_Detection_Agent",
+        "Organization_Health_Agent",
+        "PartnershipsReportingAgent",
+        "PerformanceAgent",
+        "Performance_Monitoring_Agent",
+        "PlatformReportingAgent",
+        "Policy_Agent",
+        "ProblemDiscoveryAgent",
+        "PromptOptimizationAgent",
+        "ReportingIntelligenceAgent",
+        "RevenueOpportunityAgent",
+        "RevenueOptimizationAgent",
+        "Risk_Agent",
+        "StrategicIntelligenceAgent",
+        "StudentBehaviorIntelligenceAgent",
+        "StudentProgressMonitor",
+        "StudentSuccessReportingAgent",
+        "TicketManagementAgent",
+        "TrendAnalysisAgent",
+        "Trend_Detection_Agent",
+        "UX_Optimization_Agent",
+        "WebsiteBehaviorAgent",
+        "WebsiteBrokenLinkAgent",
+        "WebsiteConversionFlowAgent",
+        "WebsiteImprovementStrategist",
+        "WebsiteUIVisibilityAgent",
+        "WebsiteUXHeuristicAgent",
+        "WorkforceCertificationDirector",
+        "WorkforceCurriculumDirector"
+      ],
+      "new_since_baseline": [],
+      "healed_since_baseline": []
+    },
+    "scheduledNamesWithNoSeedRow": {
+      "means": "names a timer fires that have no seed row (the platform calls these untracked)",
+      "count": 67,
+      "entries": [
+        "AdmissionsAssistant",
+        "AdmissionsCallCompliance",
+        "AdmissionsCallbackManagement",
+        "AdmissionsConversationContinuity",
+        "AdmissionsConversationMemory",
+        "AdmissionsExecutiveUpdate",
+        "AdmissionsHighIntentDetection",
+        "AdmissionsInsightsAggregation",
+        "AdmissionsIntentDetection",
+        "AdmissionsProactiveOutreach",
+        "AdmissionsVisitorActivity",
+        "AgentReportSubscriptionDispatch",
+        "AliPersonalOutreach",
+        "AlumniLifecycleProcessor",
+        "AnthropicCatalogScraper",
+        "AnthropicChangeDetector",
+        "AnthropicContentWatcher",
+        "AnthropicCurriculumImpactAgent",
+        "AppPaymentReconcile",
+        "ArchitectEvaluationAgent",
+        "AutopayDisclosure",
+        "BillingWatch",
+        "BlogRefresh",
+        "BuildLogDraftGenerator",
+        "CampaignGraduation",
+        "CampaignWatchdog",
+        "ColdOutboundPhaseGraduation",
+        "CommunityDigest",
+        "FeedReleaseTick",
+        "GithubWriteAccessReconcile",
+        "GovOpportunityDailySweep",
+        "GovOpportunityDailySync",
+        "HotLeadEscalation",
+        "InboxCaseAutoSync",
+        "InboxDeletedSync",
+        "InboxLivenessReconcile",
+        "LearnerMemoryDistill",
+        "MissedOpportunitiesReport",
+        "OpenclawBrowserWorker",
+        "OpenclawContentResponse",
+        "OpenclawConversationDetection",
+        "OpenclawEngagementMonitor",
+        "OpenclawFollowUp",
+        "OpenclawInfrastructureMonitor",
+        "OpenclawLearningOptimization",
+        "OpenclawLinkedInCommentMonitor",
+        "OpenclawMarketSignal",
+        "OpenclawQualityGate",
+        "OpenclawResponseOrchestrator",
+        "OpenclawSupervisor",
+        "OpenclawTechResearch",
+        "PaySimplePaymentSync",
+        "PaySimpleWebhookHealth",
+        "PodcastRefresh",
+        "ProofDeskOutcomeMeasurements",
+        "ReliabilityAlerting",
+        "RenewalReminders",
+        "SessionRecordingIngest",
+        "SkoolBrowserWorker",
+        "SkoolContentResponse",
+        "SkoolNotificationResponse",
+        "SkoolQualityGate",
+        "SkoolSignalDetection",
+        "SkoolSupervisor",
+        "SystemHealthMonitor",
+        "WeeklyReport",
+        "WorkforceIntelligence"
+      ],
+      "new_since_baseline": [],
+      "healed_since_baseline": []
+    },
+    "scheduleDisagreements": {
+      "means": "registry schedule and seed schedule differ (name|registry|seed)",
+      "count": 2,
+      "entries": [
+        "ApolloWeeklyEnrollmentAgent|0 14 * * 1-5|0 14 * * 1",
+        "WeeklyStrategicBriefing|45 7 * * 1|45 6 * * 1"
+      ],
+      "new_since_baseline": [],
+      "healed_since_baseline": []
+    },
+    "registeredRowsDenyingSchedule": {
+      "means": "fired names whose seed row says not cron or no schedule (name|trigger|seed schedule|firing schedules)",
+      "count": 1,
+      "entries": [
+        "Dara|event_driven||10 6 * * *,15 6 * * *,30 6 * * *"
+      ],
+      "new_since_baseline": [],
+      "healed_since_baseline": []
+    },
+    "duplicateRegistryNames": {
+      "means": "one name on several registry entries, pooling their counters (name|registries|schedules)",
+      "count": 1,
+      "entries": [
+        "Dara|SCHEDULE_REGISTRY|10 6 * * *,15 6 * * *,30 6 * * *"
+      ],
+      "new_since_baseline": [],
+      "healed_since_baseline": []
+    }
+  },
+  "beyond_the_platform_reconciler": {
+    "phantom_rows_that_receive_runs": [
+      {
+        "row": "AdmissionsAssistantAgent",
+        "registry_name": "AdmissionsAssistant",
+        "ref": "backend/src/services/aiOpsScheduler.ts:240"
+      },
+      {
+        "row": "AdmissionsCallComplianceMonitor",
+        "registry_name": "AdmissionsCallCompliance",
+        "ref": "backend/src/services/aiOpsScheduler.ts:237"
+      },
+      {
+        "row": "AdmissionsCallbackManagementAgent",
+        "registry_name": "AdmissionsCallbackManagement",
+        "ref": "backend/src/services/aiOpsScheduler.ts:238"
+      },
+      {
+        "row": "AdmissionsConversationContinuityAgent",
+        "registry_name": "AdmissionsConversationContinuity",
+        "ref": "backend/src/services/aiOpsScheduler.ts:233"
+      },
+      {
+        "row": "AdmissionsConversationMemoryAgent",
+        "registry_name": "AdmissionsConversationMemory",
+        "ref": "backend/src/services/aiOpsScheduler.ts:230"
+      },
+      {
+        "row": "AdmissionsExecutiveUpdateAgent",
+        "registry_name": "AdmissionsExecutiveUpdate",
+        "ref": "backend/src/services/aiOpsScheduler.ts:236"
+      },
+      {
+        "row": "AdmissionsHighIntentLeadAgent",
+        "registry_name": "AdmissionsHighIntentDetection",
+        "ref": "backend/src/services/aiOpsScheduler.ts:234"
+      },
+      {
+        "row": "AdmissionsInsightsAgent",
+        "registry_name": "AdmissionsInsightsAggregation",
+        "ref": "backend/src/services/aiOpsScheduler.ts:235"
+      },
+      {
+        "row": "AdmissionsIntentDetectionAgent",
+        "registry_name": "AdmissionsIntentDetection",
+        "ref": "backend/src/services/aiOpsScheduler.ts:231"
+      },
+      {
+        "row": "AdmissionsProactiveOutreachAgent",
+        "registry_name": "AdmissionsProactiveOutreach",
+        "ref": "backend/src/services/aiOpsScheduler.ts:232"
+      },
+      {
+        "row": "AdmissionsVisitorActivityAgent",
+        "registry_name": "AdmissionsVisitorActivity",
+        "ref": "backend/src/services/aiOpsScheduler.ts:229"
+      },
+      {
+        "row": "OpenclawBrowserWorkerAgent",
+        "registry_name": "OpenclawBrowserWorker",
+        "ref": "backend/src/services/aiOpsScheduler.ts:251"
+      },
+      {
+        "row": "OpenclawContentResponseAgent",
+        "registry_name": "OpenclawContentResponse",
+        "ref": "backend/src/services/aiOpsScheduler.ts:249"
+      },
+      {
+        "row": "OpenclawConversationDetectionAgent",
+        "registry_name": "OpenclawConversationDetection",
+        "ref": "backend/src/services/aiOpsScheduler.ts:245"
+      },
+      {
+        "row": "OpenclawEngagementMonitorAgent",
+        "registry_name": "OpenclawEngagementMonitor",
+        "ref": "backend/src/services/aiOpsScheduler.ts:246"
+      },
+      {
+        "row": "OpenclawFollowUpAgent",
+        "registry_name": "OpenclawFollowUp",
+        "ref": "backend/src/services/aiOpsScheduler.ts:248"
+      },
+      {
+        "row": "OpenclawInfraMonitorAgent",
+        "registry_name": "OpenclawInfrastructureMonitor",
+        "ref": "backend/src/services/aiOpsScheduler.ts:253"
+      },
+      {
+        "row": "OpenclawLearningOptimizationAgent",
+        "registry_name": "OpenclawLearningOptimization",
+        "ref": "backend/src/services/aiOpsScheduler.ts:252"
+      },
+      {
+        "row": "OpenclawLinkedInCommentMonitorAgent",
+        "registry_name": "OpenclawLinkedInCommentMonitor",
+        "ref": "backend/src/services/aiOpsScheduler.ts:255"
+      },
+      {
+        "row": "OpenclawMarketSignalAgent",
+        "registry_name": "OpenclawMarketSignal",
+        "ref": "backend/src/services/aiOpsScheduler.ts:244"
+      },
+      {
+        "row": "OpenclawQualityGateAgent",
+        "registry_name": "OpenclawQualityGate",
+        "ref": "backend/src/services/aiOpsScheduler.ts:250"
+      },
+      {
+        "row": "OpenclawResponseOrchestratorAgent",
+        "registry_name": "OpenclawResponseOrchestrator",
+        "ref": "backend/src/services/aiOpsScheduler.ts:247"
+      },
+      {
+        "row": "OpenclawSupervisorAgent",
+        "registry_name": "OpenclawSupervisor",
+        "ref": "backend/src/services/aiOpsScheduler.ts:243"
+      },
+      {
+        "row": "OpenclawTechResearchAgent",
+        "registry_name": "OpenclawTechResearch",
+        "ref": "backend/src/services/aiOpsScheduler.ts:254"
+      }
+    ],
+    "untracked_names_that_record_on_a_row": [
+      {
+        "registry_name": "AdmissionsAssistant",
+        "row": "AdmissionsAssistantAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:240"
+      },
+      {
+        "registry_name": "AdmissionsCallCompliance",
+        "row": "AdmissionsCallComplianceMonitor",
+        "ref": "backend/src/services/aiOpsScheduler.ts:237"
+      },
+      {
+        "registry_name": "AdmissionsCallbackManagement",
+        "row": "AdmissionsCallbackManagementAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:238"
+      },
+      {
+        "registry_name": "AdmissionsConversationContinuity",
+        "row": "AdmissionsConversationContinuityAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:233"
+      },
+      {
+        "registry_name": "AdmissionsConversationMemory",
+        "row": "AdmissionsConversationMemoryAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:230"
+      },
+      {
+        "registry_name": "AdmissionsExecutiveUpdate",
+        "row": "AdmissionsExecutiveUpdateAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:236"
+      },
+      {
+        "registry_name": "AdmissionsHighIntentDetection",
+        "row": "AdmissionsHighIntentLeadAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:234"
+      },
+      {
+        "registry_name": "AdmissionsInsightsAggregation",
+        "row": "AdmissionsInsightsAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:235"
+      },
+      {
+        "registry_name": "AdmissionsIntentDetection",
+        "row": "AdmissionsIntentDetectionAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:231"
+      },
+      {
+        "registry_name": "AdmissionsProactiveOutreach",
+        "row": "AdmissionsProactiveOutreachAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:232"
+      },
+      {
+        "registry_name": "AdmissionsVisitorActivity",
+        "row": "AdmissionsVisitorActivityAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:229"
+      },
+      {
+        "registry_name": "OpenclawBrowserWorker",
+        "row": "OpenclawBrowserWorkerAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:251"
+      },
+      {
+        "registry_name": "OpenclawContentResponse",
+        "row": "OpenclawContentResponseAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:249"
+      },
+      {
+        "registry_name": "OpenclawConversationDetection",
+        "row": "OpenclawConversationDetectionAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:245"
+      },
+      {
+        "registry_name": "OpenclawEngagementMonitor",
+        "row": "OpenclawEngagementMonitorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:246"
+      },
+      {
+        "registry_name": "OpenclawFollowUp",
+        "row": "OpenclawFollowUpAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:248"
+      },
+      {
+        "registry_name": "OpenclawInfrastructureMonitor",
+        "row": "OpenclawInfraMonitorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:253"
+      },
+      {
+        "registry_name": "OpenclawLearningOptimization",
+        "row": "OpenclawLearningOptimizationAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:252"
+      },
+      {
+        "registry_name": "OpenclawLinkedInCommentMonitor",
+        "row": "OpenclawLinkedInCommentMonitorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:255"
+      },
+      {
+        "registry_name": "OpenclawMarketSignal",
+        "row": "OpenclawMarketSignalAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:244"
+      },
+      {
+        "registry_name": "OpenclawQualityGate",
+        "row": "OpenclawQualityGateAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:250"
+      },
+      {
+        "registry_name": "OpenclawResponseOrchestrator",
+        "row": "OpenclawResponseOrchestratorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:247"
+      },
+      {
+        "registry_name": "OpenclawSupervisor",
+        "row": "OpenclawSupervisorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:243"
+      },
+      {
+        "registry_name": "OpenclawTechResearch",
+        "row": "OpenclawTechResearchAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:254"
+      }
+    ],
+    "untracked_names_that_have_a_row": [],
+    "runs_recorded_under_another_row": [
+      {
+        "registry_name": "AdmissionsVisitorActivity",
+        "row": "AdmissionsVisitorActivityAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:229"
+      },
+      {
+        "registry_name": "AdmissionsConversationMemory",
+        "row": "AdmissionsConversationMemoryAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:230"
+      },
+      {
+        "registry_name": "AdmissionsIntentDetection",
+        "row": "AdmissionsIntentDetectionAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:231"
+      },
+      {
+        "registry_name": "AdmissionsProactiveOutreach",
+        "row": "AdmissionsProactiveOutreachAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:232"
+      },
+      {
+        "registry_name": "AdmissionsConversationContinuity",
+        "row": "AdmissionsConversationContinuityAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:233"
+      },
+      {
+        "registry_name": "AdmissionsHighIntentDetection",
+        "row": "AdmissionsHighIntentLeadAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:234"
+      },
+      {
+        "registry_name": "AdmissionsInsightsAggregation",
+        "row": "AdmissionsInsightsAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:235"
+      },
+      {
+        "registry_name": "AdmissionsExecutiveUpdate",
+        "row": "AdmissionsExecutiveUpdateAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:236"
+      },
+      {
+        "registry_name": "AdmissionsCallCompliance",
+        "row": "AdmissionsCallComplianceMonitor",
+        "ref": "backend/src/services/aiOpsScheduler.ts:237"
+      },
+      {
+        "registry_name": "AdmissionsCallbackManagement",
+        "row": "AdmissionsCallbackManagementAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:238"
+      },
+      {
+        "registry_name": "AdmissionsAssistant",
+        "row": "AdmissionsAssistantAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:240"
+      },
+      {
+        "registry_name": "OpenclawSupervisor",
+        "row": "OpenclawSupervisorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:243"
+      },
+      {
+        "registry_name": "OpenclawMarketSignal",
+        "row": "OpenclawMarketSignalAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:244"
+      },
+      {
+        "registry_name": "OpenclawConversationDetection",
+        "row": "OpenclawConversationDetectionAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:245"
+      },
+      {
+        "registry_name": "OpenclawEngagementMonitor",
+        "row": "OpenclawEngagementMonitorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:246"
+      },
+      {
+        "registry_name": "OpenclawResponseOrchestrator",
+        "row": "OpenclawResponseOrchestratorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:247"
+      },
+      {
+        "registry_name": "OpenclawFollowUp",
+        "row": "OpenclawFollowUpAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:248"
+      },
+      {
+        "registry_name": "OpenclawContentResponse",
+        "row": "OpenclawContentResponseAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:249"
+      },
+      {
+        "registry_name": "OpenclawQualityGate",
+        "row": "OpenclawQualityGateAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:250"
+      },
+      {
+        "registry_name": "OpenclawBrowserWorker",
+        "row": "OpenclawBrowserWorkerAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:251"
+      },
+      {
+        "registry_name": "OpenclawLearningOptimization",
+        "row": "OpenclawLearningOptimizationAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:252"
+      },
+      {
+        "registry_name": "OpenclawInfrastructureMonitor",
+        "row": "OpenclawInfraMonitorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:253"
+      },
+      {
+        "registry_name": "OpenclawTechResearch",
+        "row": "OpenclawTechResearchAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:254"
+      },
+      {
+        "registry_name": "OpenclawLinkedInCommentMonitor",
+        "row": "OpenclawLinkedInCommentMonitorAgent",
+        "ref": "backend/src/services/aiOpsScheduler.ts:255"
+      }
+    ],
+    "registry_entries_recording_no_run": [
+      {
+        "registry_name": "WorkforceStudentSuccessDirector",
+        "ref": "backend/src/services/aiOpsScheduler.ts:363"
+      },
+      {
+        "registry_name": "WorkforceCareerDirector",
+        "ref": "backend/src/services/aiOpsScheduler.ts:368"
+      },
+      {
+        "registry_name": "WorkforceFinanceDirector",
+        "ref": "backend/src/services/aiOpsScheduler.ts:376"
+      },
+      {
+        "registry_name": "WorkforceOperationsDirector",
+        "ref": "backend/src/services/aiOpsScheduler.ts:377"
+      },
+      {
+        "registry_name": "WorkforceCommunityDirector",
+        "ref": "backend/src/services/aiOpsScheduler.ts:378"
+      },
+      {
+        "registry_name": "WorkforceTechnologyDirector",
+        "ref": "backend/src/services/aiOpsScheduler.ts:379"
+      },
+      {
+        "registry_name": "WorkforceResearchDirector",
+        "ref": "backend/src/services/aiOpsScheduler.ts:380"
+      }
+    ],
+    "registry_runners_not_read": [],
+    "timers_with_no_name": [
+      {
+        "ref": "backend/src/server.ts:3540",
+        "schedule": "*/10 * * * *"
+      },
+      {
+        "ref": "backend/src/server.ts:3561",
+        "schedule": "*/5 * * * *"
+      },
+      {
+        "ref": "backend/src/server.ts:3574",
+        "schedule": "*/2 * * * *"
+      },
+      {
+        "ref": "backend/src/server.ts:3620",
+        "schedule": "*/2 * * * *"
+      },
+      {
+        "ref": "backend/src/server.ts:3630",
+        "schedule": "0 */4 * * *"
+      },
+      {
+        "ref": "backend/src/server.ts:3646",
+        "schedule": "* * * * *"
+      },
+      {
+        "ref": "backend/src/server.ts:3654",
+        "schedule": "*/5 * * * *"
+      },
+      {
+        "ref": "backend/src/server.ts:3666",
+        "schedule": "*/5 * * * *"
+      },
+      {
+        "ref": "backend/src/services/aiOpsScheduler.ts:798",
+        "schedule": "* * * * *"
+      },
+      {
+        "ref": "backend/src/services/broadcast/broadcastHealthLoop.ts:99",
+        "schedule": "(HEALTH_CRON)"
+      },
+      {
+        "ref": "backend/src/services/repoTree/repoTreeRefreshService.ts:197",
+        "schedule": "(schedule)"
+      },
+      {
+        "ref": "backend/src/services/schedulerService.ts:3432",
+        "schedule": "10,25,40,55 * * * *"
+      },
+      {
+        "ref": "backend/src/services/schedulerService.ts:3443",
+        "schedule": "12,27,42,57 * * * *"
+      },
+      {
+        "ref": "backend/src/services/schedulerService.ts:3455",
+        "schedule": "13,28,43,58 * * * *"
+      }
+    ]
+  },
+  "names_built_at_run_time": [
+    "entry.agentName"
+  ],
+  "cannot_say": [
+    "what fires in production: a cron_schedule_configs row replaces the registry schedule or switches an entry off at start-up and on reload (aiOpsScheduler.ts:748-750, :767-769, :652), and only a live export of that table shows it",
+    "rows created at run time by agentFactory, and rows a production database holds from earlier seeds",
+    "whether an environment-gated timer is running (for example the community-rooms timers in server.ts run only when that flag is on)",
+    "what a timer with no name records: Ellis read its callback, not every function the callback calls"
+  ],
+  "statement": "Measured 2026-11-04T16:56:38.842Z at platform commit cc1ebc55e: the platform's five definitions give 79 seed rows advertising cron with no timer registered under their own name, 67 fired names with no seed row, 2 schedule disagreements, 1 fired name(s) whose row denies a schedule, and 1 name(s) pooling several registry entries. Against the platform's accepted list: 0 new, 0 healed. A match means nothing new, not that the drift is gone. Beyond the platform's reconciler: 24 of the phantom rows do receive runs from a timer under another name, and 24 of the untracked names record their runs on such a row, because runAgent looks up and writes to the row its runner names (aiOrchestrator.ts:184); 7 registry entries record no run at all, and 14 timers fire with no name, no row and no run record.",
+  "registration_proposals": {
+    "measured_at": "2026-11-04T16:56:38.842Z",
+    "source_commit": "cc1ebc55e",
+    "count": 67,
+    "proposals": [
+      {
+        "name": "AdmissionsAssistant",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "AdmissionsAssistantAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:240"
+        ],
+        "schedules": [
+          "4,14,24,34,44,54 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row AdmissionsAssistantAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row AdmissionsAssistantAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "AdmissionsCallCompliance",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "AdmissionsCallComplianceMonitor",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:237"
+        ],
+        "schedules": [
+          "7,22,37,52 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row AdmissionsCallComplianceMonitor, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row AdmissionsCallComplianceMonitor; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "AdmissionsCallbackManagement",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "AdmissionsCallbackManagementAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:238"
+        ],
+        "schedules": [
+          "2,7,12,17,22,27,32,37,42,47,52,57 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row AdmissionsCallbackManagementAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row AdmissionsCallbackManagementAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "AdmissionsConversationContinuity",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "AdmissionsConversationContinuityAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:233"
+        ],
+        "schedules": [
+          "2,7,12,17,22,27,32,37,42,47,52,57 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row AdmissionsConversationContinuityAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row AdmissionsConversationContinuityAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "AdmissionsConversationMemory",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "AdmissionsConversationMemoryAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:230"
+        ],
+        "schedules": [
+          "*/30 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row AdmissionsConversationMemoryAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row AdmissionsConversationMemoryAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "AdmissionsExecutiveUpdate",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "AdmissionsExecutiveUpdateAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:236"
+        ],
+        "schedules": [
+          "0 */4 * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row AdmissionsExecutiveUpdateAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row AdmissionsExecutiveUpdateAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "AdmissionsHighIntentDetection",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "AdmissionsHighIntentLeadAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:234"
+        ],
+        "schedules": [
+          "6,16,26,36,46,56 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row AdmissionsHighIntentLeadAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row AdmissionsHighIntentLeadAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "AdmissionsInsightsAggregation",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "AdmissionsInsightsAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:235"
+        ],
+        "schedules": [
+          "10,40 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row AdmissionsInsightsAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row AdmissionsInsightsAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "AdmissionsIntentDetection",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "AdmissionsIntentDetectionAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:231"
+        ],
+        "schedules": [
+          "3,13,23,33,43,53 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row AdmissionsIntentDetectionAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row AdmissionsIntentDetectionAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "AdmissionsProactiveOutreach",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "AdmissionsProactiveOutreachAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:232"
+        ],
+        "schedules": [
+          "*/5 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row AdmissionsProactiveOutreachAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row AdmissionsProactiveOutreachAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "AdmissionsVisitorActivity",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "AdmissionsVisitorActivityAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:229"
+        ],
+        "schedules": [
+          "*/10 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row AdmissionsVisitorActivityAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row AdmissionsVisitorActivityAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "AgentReportSubscriptionDispatch",
+        "runs_today": "yes_untracked",
+        "governed_by": "AgentReportSubscriptionDispatch",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:1788"
+        ],
+        "schedules": [
+          "*/15 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "AgentReportSubscriptionDispatch",
+          "trigger_type": "cron",
+          "schedule": "*/15 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "AliPersonalOutreach",
+        "runs_today": "yes_untracked",
+        "governed_by": "AliPersonalOutreach",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:3266"
+        ],
+        "schedules": [
+          "20 14-22 * * 1-5"
+        ],
+        "proposed_row": {
+          "agent_name": "AliPersonalOutreach",
+          "trigger_type": "cron",
+          "schedule": "20 14-22 * * 1-5",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "AlumniLifecycleProcessor",
+        "runs_today": "yes_untracked",
+        "governed_by": "AlumniLifecycleProcessor",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:3021"
+        ],
+        "schedules": [
+          "0 11 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "AlumniLifecycleProcessor",
+          "trigger_type": "cron",
+          "schedule": "0 11 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "AnthropicCatalogScraper",
+        "runs_today": "yes_untracked",
+        "governed_by": "AnthropicCatalogScraper",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:3559"
+        ],
+        "schedules": [
+          "45 1 * * 1"
+        ],
+        "proposed_row": {
+          "agent_name": "AnthropicCatalogScraper",
+          "trigger_type": "cron",
+          "schedule": "45 1 * * 1",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "AnthropicChangeDetector",
+        "runs_today": "yes_untracked",
+        "governed_by": "AnthropicChangeDetector",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:3526"
+        ],
+        "schedules": [
+          "30 2 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "AnthropicChangeDetector",
+          "trigger_type": "cron",
+          "schedule": "30 2 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "AnthropicContentWatcher",
+        "runs_today": "yes_untracked",
+        "governed_by": "AnthropicContentWatcher",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:3512"
+        ],
+        "schedules": [
+          "0 2 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "AnthropicContentWatcher",
+          "trigger_type": "cron",
+          "schedule": "0 2 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "AnthropicCurriculumImpactAgent",
+        "runs_today": "yes_untracked",
+        "governed_by": "AnthropicCurriculumImpactAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:3540"
+        ],
+        "schedules": [
+          "0 3 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "AnthropicCurriculumImpactAgent",
+          "trigger_type": "cron",
+          "schedule": "0 3 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "AppPaymentReconcile",
+        "runs_today": "yes_untracked",
+        "governed_by": "AppPaymentReconcile",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2223"
+        ],
+        "schedules": [
+          "*/20 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "AppPaymentReconcile",
+          "trigger_type": "cron",
+          "schedule": "*/20 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "ArchitectEvaluationAgent",
+        "runs_today": "yes_untracked",
+        "governed_by": "ArchitectEvaluationAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:3609"
+        ],
+        "schedules": [
+          "0 6 * * 6"
+        ],
+        "proposed_row": {
+          "agent_name": "ArchitectEvaluationAgent",
+          "trigger_type": "cron",
+          "schedule": "0 6 * * 6",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "AutopayDisclosure",
+        "runs_today": "yes_untracked",
+        "governed_by": "AutopayDisclosure",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2335"
+        ],
+        "schedules": [
+          "30 8 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "AutopayDisclosure",
+          "trigger_type": "cron",
+          "schedule": "30 8 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "BillingWatch",
+        "runs_today": "yes_untracked",
+        "governed_by": "BillingWatch",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2364"
+        ],
+        "schedules": [
+          "0 8 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "BillingWatch",
+          "trigger_type": "cron",
+          "schedule": "0 8 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "BlogRefresh",
+        "runs_today": "yes_untracked",
+        "governed_by": "BlogRefresh",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2114"
+        ],
+        "schedules": [
+          "30 3 * * 1"
+        ],
+        "proposed_row": {
+          "agent_name": "BlogRefresh",
+          "trigger_type": "cron",
+          "schedule": "30 3 * * 1",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "BuildLogDraftGenerator",
+        "runs_today": "yes_untracked",
+        "governed_by": "BuildLogDraftGenerator",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:3467"
+        ],
+        "schedules": [
+          "0 11 * * 1"
+        ],
+        "proposed_row": {
+          "agent_name": "BuildLogDraftGenerator",
+          "trigger_type": "cron",
+          "schedule": "0 11 * * 1",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "CampaignGraduation",
+        "runs_today": "yes_untracked",
+        "governed_by": "CampaignGraduation",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2606"
+        ],
+        "schedules": [
+          "0 */6 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "CampaignGraduation",
+          "trigger_type": "cron",
+          "schedule": "0 */6 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "CampaignWatchdog",
+        "runs_today": "yes_untracked",
+        "governed_by": "CampaignWatchdog",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2406"
+        ],
+        "schedules": [
+          "*/7 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "CampaignWatchdog",
+          "trigger_type": "cron",
+          "schedule": "*/7 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "ColdOutboundPhaseGraduation",
+        "runs_today": "yes_untracked",
+        "governed_by": "ColdOutboundPhaseGraduation",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:3279"
+        ],
+        "schedules": [
+          "0 12 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "ColdOutboundPhaseGraduation",
+          "trigger_type": "cron",
+          "schedule": "0 12 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "CommunityDigest",
+        "runs_today": "yes_untracked",
+        "governed_by": "CommunityDigest",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:3629"
+        ],
+        "schedules": [
+          "0 8 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "CommunityDigest",
+          "trigger_type": "cron",
+          "schedule": "0 8 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "FeedReleaseTick",
+        "runs_today": "yes_untracked",
+        "governed_by": "FeedReleaseTick",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2129"
+        ],
+        "schedules": [
+          "*/15 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "FeedReleaseTick",
+          "trigger_type": "cron",
+          "schedule": "*/15 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "GithubWriteAccessReconcile",
+        "runs_today": "yes_untracked",
+        "governed_by": "GithubWriteAccessReconcile",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:1988"
+        ],
+        "schedules": [
+          "23 6 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "GithubWriteAccessReconcile",
+          "trigger_type": "cron",
+          "schedule": "23 6 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "GovOpportunityDailySweep",
+        "runs_today": "yes_untracked",
+        "governed_by": "GovOpportunityDailySweep",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:453"
+        ],
+        "schedules": [
+          "30 7 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "GovOpportunityDailySweep",
+          "trigger_type": "cron",
+          "schedule": "30 7 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "GovOpportunityDailySync",
+        "runs_today": "yes_untracked",
+        "governed_by": "GovOpportunityDailySync",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:441"
+        ],
+        "schedules": [
+          "0 7 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "GovOpportunityDailySync",
+          "trigger_type": "cron",
+          "schedule": "0 7 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "HotLeadEscalation",
+        "runs_today": "yes_untracked",
+        "governed_by": "HotLeadEscalation",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:3034"
+        ],
+        "schedules": [
+          "3,18,33,48 14-22 * * 1-5"
+        ],
+        "proposed_row": {
+          "agent_name": "HotLeadEscalation",
+          "trigger_type": "cron",
+          "schedule": "3,18,33,48 14-22 * * 1-5",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "InboxCaseAutoSync",
+        "runs_today": "yes_untracked",
+        "governed_by": "InboxCaseAutoSync",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2625"
+        ],
+        "schedules": [
+          "0 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "InboxCaseAutoSync",
+          "trigger_type": "cron",
+          "schedule": "0 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "InboxDeletedSync",
+        "runs_today": "yes_untracked",
+        "governed_by": "InboxDeletedSync",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2727"
+        ],
+        "schedules": [
+          "25 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "InboxDeletedSync",
+          "trigger_type": "cron",
+          "schedule": "25 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "InboxLivenessReconcile",
+        "runs_today": "yes_untracked",
+        "governed_by": "InboxLivenessReconcile",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2648"
+        ],
+        "schedules": [
+          "2-57/5 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "InboxLivenessReconcile",
+          "trigger_type": "cron",
+          "schedule": "2-57/5 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "LearnerMemoryDistill",
+        "runs_today": "yes_untracked",
+        "governed_by": "LearnerMemoryDistill",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2192"
+        ],
+        "schedules": [
+          "15 2 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "LearnerMemoryDistill",
+          "trigger_type": "cron",
+          "schedule": "15 2 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "MissedOpportunitiesReport",
+        "runs_today": "yes_untracked",
+        "governed_by": "MissedOpportunitiesReport",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2673"
+        ],
+        "schedules": [
+          "0 20 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "MissedOpportunitiesReport",
+          "trigger_type": "cron",
+          "schedule": "0 20 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "OpenclawBrowserWorker",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "OpenclawBrowserWorkerAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:251"
+        ],
+        "schedules": [
+          "15,45 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row OpenclawBrowserWorkerAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row OpenclawBrowserWorkerAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "OpenclawContentResponse",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "OpenclawContentResponseAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:249"
+        ],
+        "schedules": [
+          "10,40 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row OpenclawContentResponseAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row OpenclawContentResponseAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "OpenclawConversationDetection",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "OpenclawConversationDetectionAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:245"
+        ],
+        "schedules": [
+          "5,35 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row OpenclawConversationDetectionAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row OpenclawConversationDetectionAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "OpenclawEngagementMonitor",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "OpenclawEngagementMonitorAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:246"
+        ],
+        "schedules": [
+          "15,45 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row OpenclawEngagementMonitorAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row OpenclawEngagementMonitorAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "OpenclawFollowUp",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "OpenclawFollowUpAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:248"
+        ],
+        "schedules": [
+          "0 15 * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row OpenclawFollowUpAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row OpenclawFollowUpAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "OpenclawInfrastructureMonitor",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "OpenclawInfraMonitorAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:253"
+        ],
+        "schedules": [
+          "*/5 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row OpenclawInfraMonitorAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row OpenclawInfraMonitorAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "OpenclawLearningOptimization",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "OpenclawLearningOptimizationAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:252"
+        ],
+        "schedules": [
+          "0 */4 * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row OpenclawLearningOptimizationAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row OpenclawLearningOptimizationAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "OpenclawLinkedInCommentMonitor",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "OpenclawLinkedInCommentMonitorAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:255"
+        ],
+        "schedules": [
+          "0 8,12,16 * * 1-5"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row OpenclawLinkedInCommentMonitorAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row OpenclawLinkedInCommentMonitorAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "OpenclawMarketSignal",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "OpenclawMarketSignalAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:244"
+        ],
+        "schedules": [
+          "*/30 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row OpenclawMarketSignalAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row OpenclawMarketSignalAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "OpenclawQualityGate",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "OpenclawQualityGateAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:250"
+        ],
+        "schedules": [
+          "12,42 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row OpenclawQualityGateAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row OpenclawQualityGateAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "OpenclawResponseOrchestrator",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "OpenclawResponseOrchestratorAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:247"
+        ],
+        "schedules": [
+          "20,50 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row OpenclawResponseOrchestratorAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row OpenclawResponseOrchestratorAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "OpenclawSupervisor",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "OpenclawSupervisorAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:243"
+        ],
+        "schedules": [
+          "*/2 * * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row OpenclawSupervisorAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row OpenclawSupervisorAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "OpenclawTechResearch",
+        "runs_today": "yes_on_another_row",
+        "governed_by": "OpenclawTechResearchAgent",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:254"
+        ],
+        "schedules": [
+          "0 6 * * *"
+        ],
+        "proposed_row": null,
+        "enabled_because": "no new row is needed: its runner reads row OpenclawTechResearchAgent, which exists and already gates it",
+        "govern_or_retire": "a person decides",
+        "notes": [
+          "its runs are recorded today on row OpenclawTechResearchAgent; a row under its own name would not gate it"
+        ]
+      },
+      {
+        "name": "PaySimplePaymentSync",
+        "runs_today": "yes_untracked",
+        "governed_by": "PaySimplePaymentSync",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2207"
+        ],
+        "schedules": [
+          "*/30 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "PaySimplePaymentSync",
+          "trigger_type": "cron",
+          "schedule": "*/30 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "PaySimpleWebhookHealth",
+        "runs_today": "yes_untracked",
+        "governed_by": "PaySimpleWebhookHealth",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2261"
+        ],
+        "schedules": [
+          "*/15 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "PaySimpleWebhookHealth",
+          "trigger_type": "cron",
+          "schedule": "*/15 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "PodcastRefresh",
+        "runs_today": "yes_untracked",
+        "governed_by": "PodcastRefresh",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2098"
+        ],
+        "schedules": [
+          "0 3 * * 1"
+        ],
+        "proposed_row": {
+          "agent_name": "PodcastRefresh",
+          "trigger_type": "cron",
+          "schedule": "0 3 * * 1",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "ProofDeskOutcomeMeasurements",
+        "runs_today": "yes_untracked",
+        "governed_by": "ProofDeskOutcomeMeasurements",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:1946"
+        ],
+        "schedules": [
+          "0 4 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "ProofDeskOutcomeMeasurements",
+          "trigger_type": "cron",
+          "schedule": "0 4 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "ReliabilityAlerting",
+        "runs_today": "yes_untracked",
+        "governed_by": "ReliabilityAlerting",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:1933"
+        ],
+        "schedules": [
+          "*/15 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "ReliabilityAlerting",
+          "trigger_type": "cron",
+          "schedule": "*/15 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "RenewalReminders",
+        "runs_today": "yes_untracked",
+        "governed_by": "RenewalReminders",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2310"
+        ],
+        "schedules": [
+          "0 9 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "RenewalReminders",
+          "trigger_type": "cron",
+          "schedule": "0 9 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "SessionRecordingIngest",
+        "runs_today": "yes_untracked",
+        "governed_by": "SessionRecordingIngest",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:2918"
+        ],
+        "schedules": [
+          "12,42 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "SessionRecordingIngest",
+          "trigger_type": "cron",
+          "schedule": "12,42 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "SkoolBrowserWorker",
+        "runs_today": "yes_untracked",
+        "governed_by": "SkoolBrowserWorker",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:262"
+        ],
+        "schedules": [
+          "14,34,54 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "SkoolBrowserWorker",
+          "trigger_type": "cron",
+          "schedule": "14,34,54 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "SkoolContentResponse",
+        "runs_today": "yes_untracked",
+        "governed_by": "SkoolContentResponse",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:260"
+        ],
+        "schedules": [
+          "8,28,48 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "SkoolContentResponse",
+          "trigger_type": "cron",
+          "schedule": "8,28,48 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "SkoolNotificationResponse",
+        "runs_today": "yes_untracked",
+        "governed_by": "SkoolNotificationResponse",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:263"
+        ],
+        "schedules": [
+          "0,30 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "SkoolNotificationResponse",
+          "trigger_type": "cron",
+          "schedule": "0,30 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "SkoolQualityGate",
+        "runs_today": "yes_untracked",
+        "governed_by": "SkoolQualityGate",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:261"
+        ],
+        "schedules": [
+          "11,31,51 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "SkoolQualityGate",
+          "trigger_type": "cron",
+          "schedule": "11,31,51 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "SkoolSignalDetection",
+        "runs_today": "yes_untracked",
+        "governed_by": "SkoolSignalDetection",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:259"
+        ],
+        "schedules": [
+          "3,33 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "SkoolSignalDetection",
+          "trigger_type": "cron",
+          "schedule": "3,33 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "SkoolSupervisor",
+        "runs_today": "yes_untracked",
+        "governed_by": "SkoolSupervisor",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:258"
+        ],
+        "schedules": [
+          "*/5 * * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "SkoolSupervisor",
+          "trigger_type": "cron",
+          "schedule": "*/5 * * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "SystemHealthMonitor",
+        "runs_today": "yes_untracked",
+        "governed_by": "SystemHealthMonitor",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/schedulerService.ts:3317"
+        ],
+        "schedules": [
+          "3,18,33,48 * * * 1-5"
+        ],
+        "proposed_row": {
+          "agent_name": "SystemHealthMonitor",
+          "trigger_type": "cron",
+          "schedule": "3,18,33,48 * * * 1-5",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "WeeklyReport",
+        "runs_today": "yes_untracked",
+        "governed_by": "WeeklyReport",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:266"
+        ],
+        "schedules": [
+          "0 13 * * 0"
+        ],
+        "proposed_row": {
+          "agent_name": "WeeklyReport",
+          "trigger_type": "cron",
+          "schedule": "0 13 * * 0",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      },
+      {
+        "name": "WorkforceIntelligence",
+        "runs_today": "yes_untracked",
+        "governed_by": "WorkforceIntelligence",
+        "measured_at": "2026-11-04T16:56:38.842Z",
+        "source_commit": "cc1ebc55e",
+        "call_sites": [
+          "backend/src/services/aiOpsScheduler.ts:269"
+        ],
+        "schedules": [
+          "0 */6 * * *"
+        ],
+        "proposed_row": {
+          "agent_name": "WorkforceIntelligence",
+          "trigger_type": "cron",
+          "schedule": "0 */6 * * *",
+          "enabled": true
+        },
+        "enabled_because": "it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.",
+        "govern_or_retire": "a person decides",
+        "notes": []
+      }
+    ],
+    "statement": "67 untracked timer name(s) measured 2026-11-04T16:56:38.842Z at platform commit cc1ebc55e: 43 run today untracked, 0 do nothing for want of a row, 24 are already gated by another row and need none, and 0 cannot be said. Each proposal names its call sites and the enabled value the row would arrive with; 0 proposed row(s) need a person to read a note first. Govern or retire is a person's decision for every one."
+  }
+}
