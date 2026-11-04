@@ -60,14 +60,19 @@ Rules the code enforces:
 - The code-quality and data checks have adapters in `src/output/qualityAdapters.ts`: error-class coverage, the
   idempotency harness, retention sweeps, the bug baseline and prompt performance. A proven harness still leaves
   every platform job `unknown`, and a prompt change proposed with no measurement before it is the problem case.
-- The remaining older checks move over in batches of five or six.
+- The last eight have adapters in `src/output/actionAdapters.ts` (the disable recommendation, ticket resolution and
+  orchestration repair, whose sandbox answers say in `as_of` that they are not production) and
+  `src/output/governanceAdapters.ts` (evolution proposals, promotion evidence, reliability thresholds, the manager
+  briefing and technology direction). Meeting promotion criteria is `ok`, never a promotion.
+- As of 2026-11-04 every check returns the envelope.
 - Until K.D. writes the first rules, the broker can rank by verdict only.
 
 ## Evidence
 - `src/output/toolOutput.ts`, `src/output/monitorAdapters.ts`, `src/output/foldAdapters.ts`,
   `src/output/jobAdapters.ts`, `src/output/schedulerAdapters.ts`, `src/output/deployAdapters.ts`,
-  `src/output/securityAdapters.ts`, `src/output/qualityAdapters.ts`, `test/toolOutput.test.ts` (16 tests),
-  `test/foldAdapters.test.ts` (8 tests), `test/jobAdapters.test.ts` (10 tests), `test/schedulerAdapters.test.ts`
-  (8 tests), `test/deployAdapters.test.ts` (8 tests), `test/securityAdapters.test.ts` (9 tests),
-  `test/qualityAdapters.test.ts` (8 tests).
-- Seventy-three deliberate breaks of these rules, each caught by a named test (decision 004).
+  `src/output/securityAdapters.ts`, `src/output/qualityAdapters.ts`, `src/output/actionAdapters.ts`,
+  `src/output/governanceAdapters.ts`, `test/toolOutput.test.ts` (16 tests), `test/foldAdapters.test.ts` (8 tests),
+  `test/jobAdapters.test.ts` (10 tests), `test/schedulerAdapters.test.ts` (8 tests), `test/deployAdapters.test.ts`
+  (8 tests), `test/securityAdapters.test.ts` (9 tests), `test/qualityAdapters.test.ts` (8 tests),
+  `test/finalAdapters.test.ts` (9 tests).
+- Eighty-nine deliberate breaks of these rules, each caught by a named test (decision 004).
