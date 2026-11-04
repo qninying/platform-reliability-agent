@@ -1,0 +1,25 @@
+{
+  "captured_at": "2026-11-04T18:00:00Z",
+  "captured_by": "example: the shape of the platform's access records at cc1ebc5, with invented ids and example.com addresses",
+  "ai_agents": [
+    { "id": "agent-ellis", "agent_name": "PlatformAgent", "reports_to_type": "human", "reports_to_id": "om-manager" },
+    { "id": "agent-staff", "agent_name": "PlatformHelper", "reports_to_type": "agent", "reports_to_id": "agent-ellis" },
+    { "id": "agent-dara", "agent_name": "Dara", "reports_to_type": "human", "reports_to_id": "om-other" }
+  ],
+  "org_members": [
+    { "id": "om-manager", "email": "manager.personal@example.com" },
+    { "id": "om-builder", "email": "builder@example.com" },
+    { "id": "om-other", "email": "other.manager@example.com" }
+  ],
+  "admin_users": [
+    { "id": "au-owner", "email": "owner@example.com", "role": "super_admin" }
+  ],
+  "management_grants": [
+    { "enrollment_id": "enr-manager-work", "email": "manager@work.example.com", "mgmt_role": "admin" },
+    { "enrollment_id": "enr-builder", "email": "builder@example.com", "mgmt_role": "platform" }
+  ],
+  "manager_directives": [
+    { "id": "md-1", "agent_id": "agent-ellis", "status": "active", "created_by_email": "owner@example.com" },
+    { "id": "md-2", "agent_id": "agent-dara", "status": "active", "created_by_email": "other.manager@example.com" }
+  ]
+}

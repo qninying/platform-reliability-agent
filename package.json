@@ -49,7 +49,8 @@
     "overlap-guard": "node src/cli/overlapGuard.ts",
     "command-center-domain": "node scripts/buildCommandCenterDomain.ts",
     "default-on-timers": "node src/cli/defaultOnTimers.ts",
-    "scheduler-liveness": "node src/cli/schedulerLiveness.ts"
+    "scheduler-liveness": "node src/cli/schedulerLiveness.ts",
+    "manager-access": "node src/cli/managerAccess.ts"
   },
   "devDependencies": {
     "@types/node": "22.15.3",

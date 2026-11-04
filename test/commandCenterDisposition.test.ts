@@ -44,13 +44,13 @@ test('a verified story is never relabelled by its notes', () => {
   assert.equal(s.disposition, null);
 });
 
-test('on the real files, every story that is not verified explains itself: five folded, three planned merges, two held', () => {
+test('on the real files, every story that is not verified explains itself: seven folded, none planned, three held', () => {
   const cc = page();
   const open = cc.joinStories(PLAN, PROGRESS).filter((s: { platform_state: string }) => s.platform_state !== 'verified');
   const count = (k: string) => open.filter((s: { state: string }) => s.state === k).length;
-  assert.equal(count('folded'), 5);
-  assert.equal(count('fold_planned'), 3);
-  assert.equal(count('held'), 2);
+  assert.equal(count('folded'), 7);
+  assert.equal(count('fold_planned'), 0);
+  assert.equal(count('held'), 3);
   assert.equal(open.filter((s: { disposition: unknown }) => s.disposition === null).length, 0, 'no unexplained absence');
 });
 

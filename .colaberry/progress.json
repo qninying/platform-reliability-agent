@@ -872,13 +872,25 @@
       "criteria": [
         {
           "text": "The answer names the org_members id and the absent admin_users row as two separate facts, and does not claim the surface is reachable under any current configuration.",
-          "passed": false
+          "passed": true,
+          "evidence": "Test 'acceptance (reachable surface): the org_members row and the missing login are two separate facts, and the surface is not claimed reachable' in test/managerAccess.test.ts."
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": "To be merged with platform.CAP.manager_restriction_directives and platform.CAP.manager_scoped_authorization into one manager-access check that reports all three (A.M.'s ruling of 2026-11-04). Not built yet.",
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/managerAccess.ts",
+        "src/cli/managerAccess.ts",
+        "test/managerAccess.test.ts",
+        "examples/manager-access.example.json",
+        "docs/capabilities/manager-access.md",
+        "docs/capabilities/README.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/managerAccess.test.ts"
+      ],
+      "notes": "Folded into platform.CAP.manager_scoped_authorization (A.M.'s ruling of 2026-11-04): one manager-access check answers it, reporting the accountable manager's org_members row and, as a separate fact, whether any login carries that row's email.",
+      "updated_at": "2026-11-04",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
@@ -900,13 +912,25 @@
       "criteria": [
         {
           "text": "A directive with no runtime enforcement path is reported as recorded-but-unenforced, not as in force.",
-          "passed": false
+          "passed": true,
+          "evidence": "Test 'acceptance (directives): a directive with no runtime enforcement path is recorded-but-unenforced, not in force' in test/managerAccess.test.ts; the reader is agentBlueprint/agentSystemPrompt.ts:21-32 at cc1ebc5."
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": "To be merged with platform.CAP.manager_reachable_agent_surface and platform.CAP.manager_scoped_authorization into one manager-access check that reports all three (A.M.'s ruling of 2026-11-04). Not built yet.",
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/managerAccess.ts",
+        "src/cli/managerAccess.ts",
+        "test/managerAccess.test.ts",
+        "examples/manager-access.example.json",
+        "docs/capabilities/manager-access.md",
+        "docs/capabilities/README.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/managerAccess.test.ts"
+      ],
+      "notes": "Folded into platform.CAP.manager_scoped_authorization (A.M.'s ruling of 2026-11-04): one manager-access check answers it. At cc1ebc5 only Dara's and Reese's prompt builders read directives, as prompt text; for every other agent a directive is recorded but enforced nowhere.",
+      "updated_at": "2026-11-04",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
@@ -928,13 +952,25 @@
       "criteria": [
         {
           "text": "For Kesetebirhan Delele and any platform agent the answer is 'nobody, via no route, because he holds no admin_users row' — a positive control that the gap is reported rather than papered over.",
-          "passed": false
+          "passed": false,
+          "evidence": "Not met as written, by design: the line expects 'nobody, via no route, because he holds no admin_users row'. The portal mints access from a management role (mgmtBridgeService.ts:97-112 at cc1ebc5), and super admins pass the gate (agentManagerAuthMiddleware.ts:50-91). Ellis reports who may act and by which route, and says separately when the accountable manager has none: test 'acceptance (scoped authorization): who may act and by which route, and a manager with no route is reported, not papered over'. Proposed replacement sent to A.M."
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": "To be merged with platform.CAP.manager_reachable_agent_surface and platform.CAP.manager_restriction_directives into one manager-access check that reports all three (A.M.'s ruling of 2026-11-04). Not built yet.",
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/managerAccess.ts",
+        "src/cli/managerAccess.ts",
+        "test/managerAccess.test.ts",
+        "examples/manager-access.example.json",
+        "docs/capabilities/manager-access.md",
+        "docs/capabilities/README.md",
+        "package.json",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/managerAccess.test.ts"
+      ],
+      "notes": "Held: built as one manager-access check that also answers manager_reachable_agent_surface and manager_restriction_directives (A.M.'s ruling of 2026-11-04), in src/capabilities/managerAccess.ts. Its acceptance line rests on the no-admin-login fact A.M. called stale on 2026-11-04, and super admins can always act, so 'nobody' is never true; a replacement line waits on A.M. 11 tests; ten deliberate breaks each caught.",
+      "updated_at": "2026-11-04",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
