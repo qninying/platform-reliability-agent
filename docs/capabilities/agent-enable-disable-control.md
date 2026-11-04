@@ -188,7 +188,9 @@ What the code showed:
    check, and lets them through if the flag cannot be read. The build plan's acceptance line for this story
    says a recommendation for a `schedulerService` job "must instead name the scheduler pause"; on the code,
    that would tell a person the job stopped when it did not. Ellis names the scheduler pause as blocking sends
-   only, and says when nothing stops the job.
+   only, and says when nothing stops the job. A.M. replaced the line on 2026-11-04 with: "A recommendation never
+   names a lever that does not stop the job, and says when none does." The send check failing open is a
+   platform defect A.M. is recording separately.
 2. **The emergency stop is a disable of every row,** so the 33 timers with no row keep running, the same gap
    as above.
 3. **Emergency resume can undo a person's choice.** It re-enables every row that is disabled with status

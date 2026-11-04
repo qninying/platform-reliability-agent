@@ -62,7 +62,7 @@
       ],
       "files_touched": [],
       "tests_added": [],
-      "notes": null,
+      "notes": "To be folded into platform.CAP.agent_registry_read_surface (A.M.'s ruling of 2026-11-04). Not built yet.",
       "updated_at": null,
       "verification": {
         "state": "in_progress",
@@ -160,7 +160,7 @@
       ],
       "files_touched": [],
       "tests_added": [],
-      "notes": null,
+      "notes": "Held: it would duplicate what the governance gate and tool broker will do, and neither exists yet, so there is nothing to fold it into (A.M.'s ruling of 2026-11-04). Not built.",
       "updated_at": null,
       "verification": {
         "state": "in_progress",
@@ -650,13 +650,24 @@
       "criteria": [
         {
           "text": "A recommendation that names a per-agent stop for a schedulerService-registered job is wrong and must instead name the scheduler pause — a positive control that the recommendation understands the layering.",
-          "passed": false
+          "passed": true,
+          "evidence": "A.M. replaced this criterion on 2026-11-04 with: 'A recommendation never names a lever that does not stop the job, and says when none does.' The original asked Ellis to name the scheduler pause, which stops no timer (it only blocks sends). Met by tests 'acceptance: for a schedulerService job no row reaches, no per-agent stop is named, and the scheduler pause is named as blocking sends only' and 'acceptance, on the code as it is: the scheduler pause stops no timer at all' in test/fleetStopLevers.test.ts."
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/fleetStopLevers.ts",
+        "src/capabilities/agentEnableDisableControl.ts",
+        "src/cli/disableRecommendation.ts",
+        "test/fleetStopLevers.test.ts",
+        "docs/capabilities/agent-enable-disable-control.md",
+        "docs/capabilities/README.md",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/fleetStopLevers.test.ts"
+      ],
+      "notes": "Folded into platform.CAP.agent_enable_disable_control (A.M.'s ruling of 2026-11-04). Not built on its own: agent enable/disable control now also answers this story's question with --fleet-stop (src/capabilities/fleetStopLevers.ts), which shows what the emergency stop, kill switch, scheduler pause and governance row each reach, and what an emergency resume would undo. Read at platform cc1ebc5. 10 tests; eleven deliberate breaks each caught. Commit 49783e7.",
+      "updated_at": "2026-11-04",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
@@ -719,7 +730,7 @@
       ],
       "files_touched": [],
       "tests_added": [],
-      "notes": null,
+      "notes": "Held: it would duplicate what the governance gate and tool broker will do, and neither exists yet, so there is nothing to fold it into (A.M.'s ruling of 2026-11-04). Not built.",
       "updated_at": null,
       "verification": {
         "state": "in_progress",
@@ -856,7 +867,7 @@
       ],
       "files_touched": [],
       "tests_added": [],
-      "notes": null,
+      "notes": "To be merged with platform.CAP.manager_restriction_directives and platform.CAP.manager_scoped_authorization into one manager-access check that reports all three (A.M.'s ruling of 2026-11-04). Not built yet.",
       "updated_at": null,
       "verification": {
         "state": "in_progress",
@@ -884,7 +895,7 @@
       ],
       "files_touched": [],
       "tests_added": [],
-      "notes": null,
+      "notes": "To be merged with platform.CAP.manager_reachable_agent_surface and platform.CAP.manager_scoped_authorization into one manager-access check that reports all three (A.M.'s ruling of 2026-11-04). Not built yet.",
       "updated_at": null,
       "verification": {
         "state": "in_progress",
@@ -912,7 +923,7 @@
       ],
       "files_touched": [],
       "tests_added": [],
-      "notes": null,
+      "notes": "To be merged with platform.CAP.manager_reachable_agent_surface and platform.CAP.manager_restriction_directives into one manager-access check that reports all three (A.M.'s ruling of 2026-11-04). Not built yet.",
       "updated_at": null,
       "verification": {
         "state": "in_progress",
@@ -1278,7 +1289,7 @@
       ],
       "files_touched": [],
       "tests_added": [],
-      "notes": null,
+      "notes": "To be folded into platform.CAP.registry_runtime_reconciliation (A.M.'s ruling of 2026-11-04): reconciliation will report the drift and propose the registration. Not built yet.",
       "updated_at": null,
       "verification": {
         "state": "in_progress",
@@ -1559,13 +1570,24 @@
       "criteria": [
         {
           "text": "The report explicitly names 'scheduler never registered' as undetectable by GET /health — a disclosure the probe itself cannot make.",
-          "passed": false
+          "passed": true,
+          "evidence": "Test 'acceptance: the report names \"scheduler never registered\" as undetectable by GET /health, on every answer' in test/platformHealthProbe.test.ts; the disclosure cites routes/healthRoutes.ts:7-15 at cc1ebc5."
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/platformHealthProbe.ts",
+        "src/cli/resiliencePosture.ts",
+        "test/platformHealthProbe.test.ts",
+        "examples/health-full.example.json",
+        "docs/capabilities/system-resilience-supervision.md",
+        "docs/capabilities/README.md",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/platformHealthProbe.test.ts"
+      ],
+      "notes": "Folded into platform.CAP.system_resilience_supervision (A.M.'s ruling of 2026-11-04). Not built on its own: resilience supervision now also reads an export of GET /health/full with --health-full (src/capabilities/platformHealthProbe.ts), judges each check on what it can show, and lists on every answer what the probes cannot see. Read at platform cc1ebc5. 11 tests; ten deliberate breaks each caught. Commit ed3c52b.",
+      "updated_at": "2026-11-04",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
@@ -1629,7 +1651,7 @@
       ],
       "files_touched": [],
       "tests_added": [],
-      "notes": null,
+      "notes": "To be folded into platform.CAP.registry_runtime_reconciliation (A.M.'s ruling of 2026-11-04): reconciliation will report the drift and propose the registration. Not built yet.",
       "updated_at": null,
       "verification": {
         "state": "in_progress",

@@ -38,6 +38,7 @@
     return `${back(backHref)}
       <section><span class="label">${esc(s.id)}</span><h1>${esc(s.title)}${sampleChip()}</h1></section>
       <div class="panel"><p>${stateChip(s.state)} Release ${esc(s.release)}. Due ${esc(s.due_on || 'not set')}; first given ${esc(s.due_baseline_on || 'not set')}.</p>
+        ${s.disposition && s.disposition.into ? `<p>${s.disposition.kind === 'folded' ? 'Folded into' : 'To be folded into'} <a href="#/pm/${enc(s.disposition.into)}"><code>${esc(s.disposition.into)}</code></a>. The platform still records this story as ${esc(String(s.platform_state).replace('_', ' '))}.</p>` : ''}
         ${commit ? `<p>Verified by commit <a href="${esc(commit)}"><code>${esc((v.commit_sha || '').slice(0, 7))}</code></a>${v.points_awarded != null ? `, ${esc(v.points_awarded)} points` : ''}.</p>` : '<p>No verified commit yet.</p>'}</div>
       <div class="panel"><h2>Acceptance criteria</h2>${s.criteria.length ? `<ul class="checks">${s.criteria.map((c) => `<li class="${c.passed ? 'yes' : 'no'}">${c.passed ? 'Passed' : 'Not yet'}: ${esc(c.text)}</li>`).join('')}</ul>` : '<p>None listed in the plan.</p>'}</div>
       ${s.narrative ? `<div class="panel"><h2>Story</h2><p>${esc(s.narrative)}</p></div>` : ''}

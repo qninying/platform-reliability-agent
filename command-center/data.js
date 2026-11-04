@@ -28,18 +28,39 @@
     return out;
   }
 
+  // Why a story that is not verified is absent, recorded at the start of its notes (A.M., 2026-11-04): an absence
+  // must explain itself, so "folded into that one" and "held" never render as "nobody did this".
+  const DISPOSITIONS = [
+    [/^Folded into (platform\.[\w.]+)/, 'folded'],
+    [/^To be folded into (platform\.[\w.]+)/, 'fold_planned'],
+    [/^To be merged /, 'fold_planned'],
+    [/^Held: /, 'held'],
+  ];
+  function disposition(notes) {
+    for (const [re, kind] of DISPOSITIONS) {
+      const m = notes && re.exec(notes);
+      if (m) return { kind, into: m[1] || null };
+    }
+    return null;
+  }
+
   // Joins plan stories to progress stories on id. The plan carries the title, release and
-  // dates; progress carries the verification state, commit and points.
+  // dates; progress carries the verification state, commit and points. A recorded disposition
+  // replaces the shown state only for a story the platform has not verified; platform_state keeps the original.
   function joinStories(plan, progress) {
     const prog = new Map(((progress && progress.stories) || []).map((s) => [s.id, s]));
     return ((plan && plan.stories) || []).map((s) => {
       const p = prog.get(s.id) || {};
       const v = p.verification || null;
+      const platform_state = (v && v.state) || 'not_started';
+      const d = platform_state === 'verified' ? null : disposition(p.notes);
       return {
         ...s,
         criteria: p.criteria || (s.acceptance || []).map((text) => ({ text, passed: false })),
         verification: v,
-        state: (v && v.state) || 'not_started',
+        state: d ? d.kind : platform_state,
+        platform_state,
+        disposition: d,
         notes: p.notes || null,
       };
     });
@@ -77,5 +98,5 @@
   }
 
   window.CC = window.CC || {};
-  Object.assign(window.CC, { load, joinStories, releaseStatus, currentRelease, dataAge, FILES });
+  Object.assign(window.CC, { load, joinStories, disposition, releaseStatus, currentRelease, dataAge, FILES });
 })();

@@ -64,6 +64,7 @@ p { margin: 0; max-width: 70ch; }
 .chip.verified { background: var(--ok-soft); color: var(--ok); }
 .chip.in_progress, .chip.submitted { background: var(--warn-soft); color: var(--warn); }
 .chip.not_started { background: var(--unknown-soft); color: var(--unknown); }
+.chip.folded, .chip.fold_planned, .chip.held { background: var(--surface); color: var(--link); border: 1px solid var(--line); }
 .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--unknown); margin-right: 6px; }
 
 .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
