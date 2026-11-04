@@ -1,0 +1,4 @@
+{ "fixture_id": "bad", "description": "a container naming a stack that is not in the inventory", "now": "2026-11-04T15:00:00Z",
+  "stacks": [{ "id": "st-a", "slug": "a", "expect": "stopped", "status": "running", "last_accessed_at": null, "last_started_at": null, "last_stopped_at": null, "stack_path": "/stacks/a/repo" }],
+  "containers": [{ "id": "ghost-0", "stack": "ghost", "service": "backend", "state": "running" }],
+  "interrupt": [] }

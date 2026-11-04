@@ -6,6 +6,7 @@ import type { Recommendation } from '../capabilities/agentEnableDisableControl.t
 import type { Verification } from '../capabilities/agentTicketAutoResolution.ts';
 import type { RepairReport } from '../capabilities/orchestrationAutoRepair.ts';
 import type { Rehearsal } from '../capabilities/staleRecoveryRehearsal.ts';
+import type { Rehearsal as ReapRehearsal } from '../capabilities/previewReapRehearsal.ts';
 import type { Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 import type { Capture } from './monitorAdapters.ts';
@@ -58,6 +59,20 @@ export function staleRehearsalOutput(r: Rehearsal, c: Capture, table: SeverityTa
   return envelope({
     tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase ?? 'verified', platform_signal: null,
     evidence: (r.verified || !wrong.length ? r.rows : wrong).map(row), blind_spots: r.limits, detail: r,
+  }, table);
+}
+
+// Each stack is cited with its end state; a failed rehearsal cites the stacks and containers it is about.
+export function reapRehearsalOutput(r: ReapRehearsal, c: Capture, table: SeverityTable): ToolOutput<ReapRehearsal> {
+  const tool = 'platform.CAP.preview_stack_reaping';
+  const stack = (s: ReapRehearsal['stacks'][number]): Evidence => ({ table: 'sandbox_preview_stacks', id: s.slug, fields: ['status', `${s.containers_running} container(s) running`, `${s.stop_events} stop event(s)`] });
+  const orphans: Evidence[] = r.after_rerun.orphans.map((id) => ({ table: 'sandbox_containers', id, fields: ['state'] }));
+  const bad = [...orphans, ...r.stacks.filter((s) => s.expect === 'stopped' && (s.status !== 'stopped' || s.containers_running > 0)).map(stack)];
+  const kase = !r.checks.control_order_leaves_orphans ? 'harness_cannot_fail' : !r.checks.rerun_ends_clean ? 'orphaned_resources' : Object.entries(r.checks).find(([, v]) => !v)?.[0] ?? null;
+  return envelope({
+    tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase ?? 'verified', platform_signal: null,
+    evidence: r.verified || !bad.length ? r.stacks.map(stack) : bad,
+    blind_spots: [...r.stops_not_recorded.map((s) => `${s}: stopped with no stop event, because a failed event write is only printed`), ...r.limits], detail: r,
   }, table);
 }
 

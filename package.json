@@ -12,6 +12,7 @@
     "check:readme": "node scripts/checkReadme.ts",
     "orchestration-health": "node src/cli/orchestrationHealth.ts",
     "orchestration-repair": "node src/cli/orchestrationRepair.ts",
+    "preview-reap-sandbox": "node src/cli/previewReapRehearsal.ts",
     "security-posture": "node src/cli/securityPosture.ts",
     "access-watch": "node src/cli/accessWatch.ts",
     "behavior-watch": "node src/cli/behaviorWatch.ts",

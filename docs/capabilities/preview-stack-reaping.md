@@ -1,13 +1,14 @@
 # Preview stack reaping
 
-**Story:** `platform.CAP.preview_stack_reaping` · **Autonomy:** starts R0, first release R2, ceiling R4 · **Approver:** K.D.
-**Code:** `src/capabilities/previewStackReaping.ts` · **Tests:** `test/previewStackReaping.test.ts`
+**Story:** `platform.CAP.preview_stack_reaping` · **Autonomy:** starts R0, first release R2, rung R4 built in a sandbox, ceiling R4 · **Approver:** K.D.
+**Code:** `src/capabilities/previewStackReaping.ts` (R2), `src/capabilities/previewReapRehearsal.ts` (R4) · **Tests:** `test/previewStackReaping.test.ts`, `test/previewReapRehearsal.test.ts`
 
 Ellis answers **"which preview stacks are live, how idle is each, and which are reap candidates?"**
 Ellis only reads. Stopping a stack destroys running resources, and `cloud_resource_deletion` is
 default-denied, so the platform's own timer does the stopping, never an agent.
 
-Platform facts cite the public Colaberry platform repository at upstream commit `4a34e9e`.
+Platform facts cite the public Colaberry platform repository at upstream commit `4a34e9e` for R2 and `c150d4c48`
+for R4.
 
 ## Idle comes from real access, never from age
 
@@ -32,6 +33,41 @@ Besides the live stacks, the report lists:
 
 The brief listed it as unknown whether the reaper has an `ai_agents` row. It does
 (`backend/src/services/agentRegistrySeed.ts:173`), so its runs are recorded.
+
+## R4: an interrupted teardown, re-run, ends clean
+
+The rung's acceptance: **an interrupted teardown, re-run, reaches a fully clean end state with no orphaned
+resources.**
+
+Ellis runs the platform's reap decision (`backend/src/services/previewStackReaper.ts:17-30`) and a
+simulated stop (`previewStackService.ts:298-311`) on a sandbox inventory of stacks and their containers.
+The platform's stop runs `docker compose stop` first, then marks the row stopped, then logs a stop event.
+The fixture interrupts three stops at different points:
+
+- **during the container stop:** one container stopped, the rest still running, the row still `running`;
+- **after the container stop:** every container stopped, the row still `running`;
+- **at the event write:** the stack is stopped, but the stop event is lost, because a failed event write is
+  only printed (`previewStackService.ts:123-129`).
+
+After the interruption, two stacks are out of step with their rows. The re-run picks up exactly those two,
+because their rows still say `running`, and finishes them. The end state has no container running behind
+a stack that is not running, and the stack in active use and the stack already stopped are untouched. The
+lost stop event is reported as a missing record, not as an orphan.
+
+**The check can see orphans.** The same scenario is run again with the order reversed, marking the row
+before stopping the containers, which is the order the platform's destructive teardown uses
+(`previewStackService.ts:370-374`). Interrupted mid-stop, that leaves containers running behind a row that
+says `stopped`, and the re-run never reaches them. If the reversed order did not strand anything, the
+rehearsal is not verified: the check would prove nothing.
+
+**Latent: a running stack with no stack path.** The stop skips `docker compose` when the row has no path
+but still marks it stopped, which would leave its containers running for good. The platform's own code
+does not produce that state, since booting requires a path (`previewStackService.ts:283`, `:320`), so it is
+reported here as latent, with a test that shows the outcome.
+
+**What this does not prove.** Containers are modelled as running or stopped; `docker compose` is not run.
+Each fault is injected once at one point. Volumes and the repo clone are kept by design when a stack is
+stopped, so they are not orphans here. Each answer states these limits.
 
 ## What the code showed
 
@@ -65,6 +101,9 @@ The brief listed it as unknown whether the reaper has an `ai_agents` row. It doe
 
 ## How to run it
 
+R4, the sandbox rehearsal: `npm run preview-reap-sandbox -- --fixture examples/preview-reap.fixture.json`
+(exit 0 verified, 3 not verified, 1 bad input). R2:
+
 ```
 npm run preview-reaping -- --snapshot examples/preview-reaping.example.json [--idle-minutes 30]
 ```
@@ -86,14 +125,23 @@ Exit codes:
 - **Named passing tests:**
   - "acceptance: a stack with no activity signal at all is reported as unknown-idle, not as idle"
   - "acceptance: stack age is not activity: a never-accessed stack is unknown-idle even when the platform would stop it by age"
+  - R4: "acceptance (R4): an interrupted teardown, re-run, reaches a fully clean end state with no orphaned resources"
 
-  There are 11 tests in this file and 100 in the repo, all passing under `npm test`.
+  There are 11 tests for R2 and 11 for R4, all passing under `npm test`.
 - **The tests catch defects.** Each check was done by editing the code, running the tests and restoring
   the code:
   - measuring idle from stack age, as the platform does, fails the second acceptance test;
   - treating a missing signal as idle fails both;
   - accepting a future access time fails 1;
   - dropping the stuck-transition check fails 1.
+  - R4: marking the row before the containers fails 5; never interrupting mid-stop fails 4; not reporting a
+    lost stop event fails 2; not reaping a never-accessed stack by age fails 4; halving the idle threshold
+    fails 1; a control check that always passes fails 1; a clean check that always passes fails 1; never
+    counting orphans fails 5; skipping the re-run fails 4; a fault that fires again on the re-run fails 4.
+    The stop's "skip a stack that is not running" guard was removed: the reap decision only hands it running
+    stacks, so in the sandbox it could not be reached.
+- **R4 is sandbox only.** Nothing reaches docker or a database. Its rung story id is on the platform board
+  but not yet in this repository's plan, so it is recorded here and in the commit.
 - **Not yet run on live records.** The inventory comes from `GET /api/admin/preview-stacks`, which needs
   an admin login (`previewStackRoutes.ts:20`). The first live check is one export of that response, the
   recent `preview_events` rows, and the reaper's `ai_agents` and activity rows.

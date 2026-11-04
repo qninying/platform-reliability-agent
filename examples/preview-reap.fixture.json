@@ -1,0 +1,32 @@
+{
+  "fixture_id": "preview-reap-sandbox-1",
+  "description": "Sandbox inventory shaped like preview_stacks and their compose containers. Three idle stacks have their stop interrupted at a different point each; one never-accessed stack is reaped by age; one stack is in active use; one is already stopped. Invented slugs and paths; not production data.",
+  "now": "2026-11-04T15:00:00Z",
+  "stacks": [
+    { "id": "st-a", "slug": "idle-a", "expect": "stopped", "status": "running", "last_accessed_at": "2026-11-04T14:00:00Z", "last_started_at": "2026-11-04T09:00:00Z", "last_stopped_at": null, "stack_path": "/stacks/idle-a/repo" },
+    { "id": "st-b", "slug": "idle-b", "expect": "stopped", "status": "running", "last_accessed_at": "2026-11-04T14:15:00Z", "last_started_at": "2026-11-04T09:00:00Z", "last_stopped_at": null, "stack_path": "/stacks/idle-b/repo" },
+    { "id": "st-c", "slug": "idle-c", "expect": "stopped", "status": "running", "last_accessed_at": "2026-11-04T14:20:00Z", "last_started_at": "2026-11-04T09:00:00Z", "last_stopped_at": null, "stack_path": "/stacks/idle-c/repo" },
+    { "id": "st-n", "slug": "never-used", "expect": "stopped", "status": "running", "last_accessed_at": null, "last_started_at": "2026-11-04T13:00:00Z", "last_stopped_at": null, "stack_path": "/stacks/never-used/repo" },
+    { "id": "st-r", "slug": "in-review", "expect": "untouched", "status": "running", "last_accessed_at": "2026-11-04T14:55:00Z", "last_started_at": "2026-11-04T09:00:00Z", "last_stopped_at": null, "stack_path": "/stacks/in-review/repo" },
+    { "id": "st-s", "slug": "already-stopped", "expect": "untouched", "status": "stopped", "last_accessed_at": "2026-11-03T10:00:00Z", "last_started_at": "2026-11-03T09:00:00Z", "last_stopped_at": "2026-11-03T11:00:00Z", "stack_path": "/stacks/already-stopped/repo" }
+  ],
+  "containers": [
+    { "id": "idle-a-backend", "stack": "idle-a", "service": "backend", "state": "running" },
+    { "id": "idle-a-frontend", "stack": "idle-a", "service": "frontend", "state": "running" },
+    { "id": "idle-a-db", "stack": "idle-a", "service": "db", "state": "running" },
+    { "id": "idle-b-backend", "stack": "idle-b", "service": "backend", "state": "running" },
+    { "id": "idle-b-db", "stack": "idle-b", "service": "db", "state": "running" },
+    { "id": "idle-c-backend", "stack": "idle-c", "service": "backend", "state": "running" },
+    { "id": "idle-c-db", "stack": "idle-c", "service": "db", "state": "running" },
+    { "id": "never-used-backend", "stack": "never-used", "service": "backend", "state": "running" },
+    { "id": "never-used-db", "stack": "never-used", "service": "db", "state": "running" },
+    { "id": "in-review-backend", "stack": "in-review", "service": "backend", "state": "running" },
+    { "id": "in-review-db", "stack": "in-review", "service": "db", "state": "running" },
+    { "id": "already-stopped-backend", "stack": "already-stopped", "service": "backend", "state": "stopped" }
+  ],
+  "interrupt": [
+    { "slug": "idle-a", "at": "during_compose_stop" },
+    { "slug": "idle-b", "at": "after_compose_stop" },
+    { "slug": "idle-c", "at": "event_write" }
+  ]
+}
