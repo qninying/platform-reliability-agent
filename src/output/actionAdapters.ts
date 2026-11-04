@@ -9,6 +9,7 @@ import type { Rehearsal } from '../capabilities/staleRecoveryRehearsal.ts';
 import type { Rehearsal as ReapRehearsal } from '../capabilities/previewReapRehearsal.ts';
 import type { Rehearsal as SweepRehearsal } from '../capabilities/retentionSweepRehearsal.ts';
 import type { Rehearsal as OverlapRehearsal } from '../capabilities/cronOverlapRehearsal.ts';
+import type { Rehearsal as DefaultOnRehearsal } from '../capabilities/defaultOnRehearsal.ts';
 import type { Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 import type { Capture } from './monitorAdapters.ts';
@@ -111,6 +112,18 @@ export function overlapRehearsalOutput(r: OverlapRehearsal, c: Capture, table: S
   return envelope({
     tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
     evidence: r.verified || !bad.length ? runs : [...new Map(bad.map((e) => [e.id, e])).values()], blind_spots: r.limits, detail: r,
+  }, table);
+}
+
+// Each registry name is cited with its row and whether the guard started it; a failure cites the names it is about.
+export function defaultOnRehearsalOutput(r: DefaultOnRehearsal, c: Capture, table: SeverityTable): ToolOutput<DefaultOnRehearsal> {
+  const tool = 'platform.CAP.default_on_timer_guard';
+  const name = (x: DefaultOnRehearsal['names'][number]): Evidence => ({ table: 'sandbox_cron_schedule_configs', id: x.name, fields: [`row ${x.row}`, x.guard ? 'started' : 'not started'] });
+  const bad = r.names.filter((x) => x.guard !== (x.row === 'enabled'));
+  const kase = Object.entries(r.checks).find(([, v]) => !v)?.[0] ?? 'verified';
+  return envelope({
+    tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
+    evidence: (r.verified || !bad.length ? r.names : bad).map(name), blind_spots: r.limits, detail: r,
   }, table);
 }
 

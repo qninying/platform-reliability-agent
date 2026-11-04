@@ -1,0 +1,18 @@
+{
+  "fixture_id": "default-on-sandbox-1",
+  "description": "Five registry timers, one registered twice, and four cron_schedule_configs rows: two enabled, one an operator switched off, and one that names no registry entry. Two timers have no row. Invented names; not production data.",
+  "registry": [
+    { "name": "SandboxReportJob", "schedule": "0 6 * * *" },
+    { "name": "SandboxDigestJob", "schedule": "*/30 * * * *" },
+    { "name": "SandboxCleanupJob", "schedule": "0 2 * * *" },
+    { "name": "SandboxSyncJob", "schedule": "*/5 * * * *" },
+    { "name": "SandboxAuditJob", "schedule": "0 * * * *" },
+    { "name": "SandboxAuditJob", "schedule": "30 * * * *" }
+  ],
+  "rows": [
+    { "agent_name": "SandboxReportJob", "enabled": true },
+    { "agent_name": "SandboxDigestJob", "enabled": true },
+    { "agent_name": "SandboxCleanupJob", "enabled": false },
+    { "agent_name": "SandboxRetiredJob", "enabled": true }
+  ]
+}

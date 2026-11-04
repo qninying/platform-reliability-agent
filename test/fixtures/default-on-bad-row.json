@@ -1,0 +1,1 @@
+{ "fixture_id": "bad-row", "description": "A row whose enabled is a string.", "registry": [{ "name": "A", "schedule": "* * * * *" }], "rows": [{ "agent_name": "A", "enabled": "yes" }] }

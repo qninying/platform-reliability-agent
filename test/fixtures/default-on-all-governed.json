@@ -1,0 +1,1 @@
+{ "fixture_id": "all-governed", "description": "Every registry name has an enabled row, so the no-row case is not exercised.", "registry": [{ "name": "A", "schedule": "* * * * *" }], "rows": [{ "agent_name": "A", "enabled": true }] }
