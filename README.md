@@ -13,7 +13,7 @@ evidence and judgement layer, read-only, against the real platform's code and re
 | **Engineering ownership** | Quincy Nkwain Ninying: system architecture and forward-deployed engineering |
 | **Platform** | [Colaberry platform](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator) (public): 100+ scheduled agents, Node, TypeScript, PostgreSQL |
 | **Capabilities** | 38 of 48 verified by the platform ([catalog](docs/capabilities/README.md)) |
-| **Tests** | 586 passing, each capability's key rules shown to fail when broken ([how](docs/decisions/004-prove-each-test-can-fail.md)) |
+| **Tests** | 599 passing, each capability's key rules shown to fail when broken ([how](docs/decisions/004-prove-each-test-can-fail.md)) |
 | **Autonomy** | every capability starts at R0; first releases at R2 (answer from records), with two at R4 and one at R1, all in a sandbox |
 | **Production writes** | none: read-only, or a sandbox copy ([decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md)) |
 | **Runtime dependencies** | none (Node 23.6+ runs the TypeScript directly) |
@@ -45,6 +45,7 @@ platform often merges: *healthy*, *broken*, and *unknown*.
 | **Bounded autonomy** | Read-only by type: capabilities see the platform through an interface with no write method ([`readSource.ts`](src/readSource.ts)) |
 | **Pinned to the platform** | Every copied rule names the platform commit and file:line it came from; `--source` re-reads it live and fails if it changed shape ([decision 003](docs/decisions/003-pin-to-platform-code.md)) |
 | **Prove the test can fail** | For each capability, key rules are deliberately broken and a named test is confirmed to fail ([decision 004](docs/decisions/004-prove-each-test-can-fail.md)) |
+| **One output shape** | The four first monitors return one envelope: verdict, severity from K.D.'s table only (none yet, so `unassigned`), and the rows behind it; an uncited `problem` or `ok` is refused ([decision 006](docs/decisions/006-one-output-shape-for-every-tool.md)) |
 | **Verify after a change** | In the sandbox, each changed value is read back, and a second run must change nothing ([example below](#end-to-end-a-repair-proven-safe-to-repeat)) |
 
 ## Architecture

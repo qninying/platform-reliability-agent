@@ -132,7 +132,9 @@ test('acceptance: trust: no panel shows a number, grant or rung this domain has 
   assert.equal(panels(html)[1].split('Human decision</span>').length - 1, REAL.capabilities.filter((c: { human_decision: boolean }) => c.human_decision).length);
   assert.equal(panels(html)[1].match(/<tr>/g)!.length, 49);
   const emp = panels(html)[0];
-  assert.match(emp, /Not named on the platform yet <small>\(this repository calls it Ellis; naming it on the portal is pending/);
+  // Named on the portal on 2026-11-03; the unnamed case is still shown in words, never as a blank.
+  assert.match(emp, /<td>agent_name<\/td><td>Ellis<\/td>/);
+  assert.match(panels(view(page(), REAL, false, snap({ agent: { ...SNAP.agent, display_name: null } })))[0], /Not named on the platform yet <small>\(this repository calls it Ellis; naming it on the portal is pending/);
   assert.match(panels(view(page(), REAL, false, snap({ agent: { ...SNAP.agent, display_name: 'Named' } })))[0], /<td>agent_name<\/td><td>Named<\/td>/);
   assert.match(emp, /<td>enabled<\/td><td>No<\/td>/);
   assert.match(emp, /<td>Tools granted<\/td><td>0<\/td>/);
