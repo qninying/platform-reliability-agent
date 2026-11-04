@@ -78,10 +78,36 @@ None of these is a live risk.
 6. **K.D. cannot open this surface.** Every route is behind `requireAdmin`, and K.D. has no admin row, as the
    brief says.
 
+## Before anyone presses "discover"
+
+Added 2026-11-04, when A.M. folded the agent discovery sync story into this capability. The registry tab's
+discover button (`POST /api/admin/ai-ops/discover`) can switch timers on, so pressing it stays a person's
+decision. Ellis answers **"which rows would it create, would each arrive enabled, and what would that start?"**
+before anything is written. Read from the platform at `cc1ebc5`:
+
+1. **It discovers from the seed, not from what runs.** It re-runs the registry seed and creates a row for each
+   seed entry with none (`aiOpsService.ts:451-464`, `agentRegistrySeed.ts:3291-3296`). A timer whose row is in
+   neither the registry nor the seed is never discovered, however long it runs.
+2. **A new row arrives enabled unless its entry says otherwise,** because the column defaults to true
+   (`models/AiAgent.ts:423-427`). ContentOptimizationAgent and the two retired agents are switched off right
+   after (`agentRegistrySeed.ts:3342-3345`, `:3253-3289`).
+3. **That can start a timer that does nothing today.** A runAgent timer with no row returns without running;
+   once its row exists and is enabled, it runs. A tracked-cron timer runs today untracked; a new enabled row only
+   starts tracking it, and a new disabled row stops it.
+4. **`new_agents` is a change in the table's row count,** floored at zero, so anything else creating or deleting
+   rows during the run changes it.
+5. **The same seed runs whenever the AI Ops scheduler starts** (`aiOpsScheduler.ts:715`). On a platform whose
+   scheduler started, discover usually creates nothing; it matters when that start never happened, or for entries
+   added since.
+
+The example registry below has six rows, so against the seed read from code the preview would create 248 rows,
+228 arriving enabled. That is the shape of a platform whose scheduler never started, not a production figure.
+
 ## How to run it
 
 ```
 npm run registry-ask -- --snapshot examples/registry-ask.example.json --name AliPersonalOutreach --name Dara
+npm run registry-ask -- --snapshot examples/registry-ask.example.json --discovery-preview --seed examples/timer-inventory.example.json
 ```
 
 The example is not production data. Names, schedules and timer wiring are the platform's; counts and times
@@ -99,8 +125,16 @@ Exit codes:
 - 3: any name not registered or ambiguous
 - 1: bad input
 
+With `--discovery-preview`: 0 when discover would create no row, 3 when it would create any.
+
 ## Evidence
 
+- **Discovery preview** (`src/capabilities/discoveryPreview.ts`, `test/discoveryPreview.test.ts`, 9 tests). Named
+  test: "acceptance: the report names each row that would be created and states whether each would arrive
+  enabled". Ten deliberate breaks, each caught by a named test: ignoring the forced-off rows, treating every row
+  as enabled, counting governance rows as seed entries, missing a dead timer it would start, listing seeded timers
+  as never discovered, counting a duplicated entry twice, ignoring the inventory's timers, dropping the row-count
+  caveat, leaving citations unsorted, and cutting off output longer than a pipe buffer.
 - **Named passing test:** "acceptance: a question about a name with no ai_agents row returns 'not
   registered', never 'disabled' and never 'zero runs'". It asks about a timer that runs untracked, a timer
   that checks another row and a name nothing knows. In each case the answer has no enabled state, no run

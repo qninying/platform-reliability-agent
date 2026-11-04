@@ -57,13 +57,23 @@
       "criteria": [
         {
           "text": "The report names each row that would be created and states that each would arrive enabled, so the consequence is visible before the action.",
-          "passed": false
+          "passed": true,
+          "evidence": "Test 'acceptance: the report names each row that would be created and states whether each would arrive enabled' in test/discoveryPreview.test.ts. Enabled comes from the seed entry, the column default (models/AiAgent.ts:423-427) and the rows the seed forces off (agentRegistrySeed.ts:3342-3345, :3253-3289) at cc1ebc5."
         }
       ],
-      "files_touched": [],
-      "tests_added": [],
-      "notes": "To be folded into platform.CAP.agent_registry_read_surface (A.M.'s ruling of 2026-11-04). Not built yet.",
-      "updated_at": null,
+      "files_touched": [
+        "src/capabilities/discoveryPreview.ts",
+        "src/cli/registryAsk.ts",
+        "test/discoveryPreview.test.ts",
+        "docs/capabilities/agent-registry-read-surface.md",
+        "docs/capabilities/README.md",
+        "README.md"
+      ],
+      "tests_added": [
+        "test/discoveryPreview.test.ts"
+      ],
+      "notes": "Folded into platform.CAP.agent_registry_read_surface (A.M.'s ruling of 2026-11-04). Not built on its own: the registry read surface now also previews the discover action with --discovery-preview (src/capabilities/discoveryPreview.ts): which rows it would create from the seed, whether each arrives enabled, which timers that would start or stop, and which timers no discovery run will ever register. Read at platform cc1ebc5. 9 tests; ten deliberate breaks each caught.",
+      "updated_at": "2026-11-04",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,

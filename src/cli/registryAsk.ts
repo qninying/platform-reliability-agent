@@ -3,11 +3,15 @@
 // schedule and run history. A name with no ai_agents row is 'not registered', never 'disabled' and never
 // 'zero runs'. Reads only. Exit code 0 when every name is registered, 3 when any is not or is ambiguous,
 // 1 for bad input.
+// --discovery-preview --seed <timer-inventory.json> previews the registry's discover action instead: which rows it
+// would create, whether each arrives enabled, and which timers that would switch on. Exit 0 when it would create
+// no row, 3 when it would create any, 1 for bad input.
 import { readFileSync } from 'node:fs';
 import { parseArgs } from 'node:util';
 import { askRegistry, type RegistrySnapshot } from '../capabilities/registryReadSurface.ts';
+import { previewDiscovery, type SeedInventory } from '../capabilities/discoveryPreview.ts';
 
-const { values } = parseArgs({ options: { snapshot: { type: 'string' }, name: { type: 'string', multiple: true } } });
+const { values } = parseArgs({ options: { snapshot: { type: 'string' }, name: { type: 'string', multiple: true }, 'discovery-preview': { type: 'boolean' }, seed: { type: 'string' } } });
 
 class InputError extends Error {
   readonly errorClass: 'SourceUnavailable' | 'ContractViolation';
@@ -40,12 +44,36 @@ function load(path: string): RegistrySnapshot {
   return s as RegistrySnapshot;
 }
 
+function loadSeed(path: string): SeedInventory {
+  let s: Partial<SeedInventory>;
+  try {
+    s = JSON.parse(readFileSync(path, 'utf8'));
+  } catch (err) {
+    throw new InputError('SourceUnavailable', `${path} could not be read as JSON: ${(err as Error).message}`);
+  }
+  if (!Array.isArray(s.ai_agents) || !s.ai_agents.some((r) => typeof r.id === 'string' && r.id.startsWith('seed:'))) {
+    throw new InputError('ContractViolation', `${path} needs ai_agents[] with seed: rows (the output of npm run timer-inventory)`);
+  }
+  if (!Array.isArray(s.timers)) throw new InputError('ContractViolation', `${path} needs timers[]`);
+  return s as SeedInventory;
+}
+
 try {
-  if (!values.snapshot || !values.name?.length) throw new InputError('ContractViolation', 'needs --snapshot and at least one --name');
-  const snap = load(values.snapshot);
-  const answers = [...new Set(values.name)].sort().map((n) => askRegistry(snap, n));
-  console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, answers }, null, 2));
-  process.exit(answers.every((a) => a.registration === 'registered') ? 0 : 3);
+  if (values['discovery-preview']) {
+    if (!values.snapshot || !values.seed) throw new InputError('ContractViolation', 'needs --snapshot and --seed with --discovery-preview');
+    if (values.name?.length) throw new InputError('ContractViolation', 'use --name or --discovery-preview, not both');
+    const snap = load(values.snapshot);
+    const preview = previewDiscovery(snap, loadSeed(values.seed));
+    console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, discovery_preview: preview }, null, 2));
+    // exitCode, not exit(): the preview can exceed a pipe's buffer, and exit() would cut it off.
+    process.exitCode = preview.would_create.length === 0 ? 0 : 3;
+  } else {
+    if (!values.snapshot || !values.name?.length) throw new InputError('ContractViolation', 'needs --snapshot and at least one --name');
+    const snap = load(values.snapshot);
+    const answers = [...new Set(values.name)].sort().map((n) => askRegistry(snap, n));
+    console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, answers }, null, 2));
+    process.exit(answers.every((a) => a.registration === 'registered') ? 0 : 3);
+  }
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));
