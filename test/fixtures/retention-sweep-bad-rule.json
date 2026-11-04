@@ -1,0 +1,3 @@
+{ "fixture_id": "bad", "description": "a stated rule with no days", "now": "2026-11-04T15:00:00Z", "batch_limit": 3,
+  "stated_rule": { "days": 0, "boundary": "older_than", "source": "test" },
+  "decisions": [], "strategic_actions": [], "company_directives": [] }

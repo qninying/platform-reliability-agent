@@ -1,0 +1,80 @@
+{
+ "fixture_id": "no-rule",
+ "description": "the example seed with no stated rule",
+ "now": "2026-11-04T15:00:00Z",
+ "batch_limit": 3,
+ "stated_rule": null,
+ "decisions": [
+  {
+   "decision_id": "d-old-1",
+   "timestamp": "2026-09-05T09:00:00Z",
+   "expect": "deleted"
+  },
+  {
+   "decision_id": "d-old-2",
+   "timestamp": "2026-09-10T09:00:00Z",
+   "expect": "deleted"
+  },
+  {
+   "decision_id": "d-old-3",
+   "timestamp": "2026-09-15T09:00:00Z",
+   "expect": "deleted"
+  },
+  {
+   "decision_id": "d-old-4",
+   "timestamp": "2026-09-20T09:00:00Z",
+   "expect": "deleted"
+  },
+  {
+   "decision_id": "d-old-5",
+   "timestamp": "2026-09-25T09:00:00Z",
+   "expect": "deleted"
+  },
+  {
+   "decision_id": "d-edge-before",
+   "timestamp": "2026-10-05T14:59:59Z",
+   "expect": "deleted"
+  },
+  {
+   "decision_id": "d-edge",
+   "timestamp": "2026-10-05T15:00:00Z",
+   "expect": "kept"
+  },
+  {
+   "decision_id": "d-edge-after",
+   "timestamp": "2026-10-05T15:00:01Z",
+   "expect": "kept"
+  },
+  {
+   "decision_id": "d-recent",
+   "timestamp": "2026-11-02T09:00:00Z",
+   "expect": "kept"
+  },
+  {
+   "decision_id": "d-ref-action",
+   "timestamp": "2026-09-12T09:00:00Z",
+   "expect": "held"
+  },
+  {
+   "decision_id": "d-ref-directive",
+   "timestamp": "2026-09-22T09:00:00Z",
+   "expect": "held"
+  }
+ ],
+ "strategic_actions": [
+  {
+   "id": "sa-1",
+   "decision_id": "d-ref-action"
+  },
+  {
+   "id": "sa-2",
+   "decision_id": null
+  }
+ ],
+ "company_directives": [
+  {
+   "id": "cd-1",
+   "cory_decision_id": "d-ref-directive"
+  }
+ ]
+}

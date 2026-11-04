@@ -1,0 +1,29 @@
+{
+  "fixture_id": "retention-sweep-sandbox-1",
+  "description": "Sandbox copy of intelligence_decisions with rows either side of a 30 day boundary, one exactly on it, and two old rows still referenced: one by a strategic action, one by a company directive. One old row's archive write fails, so it must not be deleted. Batch limit 3, so the old rows take more than one batch. The stated rule is a test input, not an approved policy. Invented ids; not production data.",
+  "now": "2026-11-04T15:00:00Z",
+  "batch_limit": 3,
+  "stated_rule": { "days": 30, "boundary": "older_than", "source": "fixture input, not an approved policy: rows older than 30 days are removed; a row exactly 30 days old is kept" },
+  "decisions": [
+    { "decision_id": "d-old-1", "timestamp": "2026-09-05T09:00:00Z", "expect": "deleted" },
+    { "decision_id": "d-old-2", "timestamp": "2026-09-10T09:00:00Z", "expect": "deleted" },
+    { "decision_id": "d-old-3", "timestamp": "2026-09-15T09:00:00Z", "expect": "deleted" },
+    { "decision_id": "d-old-4", "timestamp": "2026-09-20T09:00:00Z", "expect": "deleted" },
+    { "decision_id": "d-old-5", "timestamp": "2026-09-25T09:00:00Z", "expect": "deleted" },
+    { "decision_id": "d-archive-fails", "timestamp": "2026-09-08T09:00:00Z", "expect": "kept" },
+    { "decision_id": "d-edge-before", "timestamp": "2026-10-05T14:59:59Z", "expect": "deleted" },
+    { "decision_id": "d-edge", "timestamp": "2026-10-05T15:00:00Z", "expect": "kept" },
+    { "decision_id": "d-edge-after", "timestamp": "2026-10-05T15:00:01Z", "expect": "kept" },
+    { "decision_id": "d-recent", "timestamp": "2026-11-02T09:00:00Z", "expect": "kept" },
+    { "decision_id": "d-ref-action", "timestamp": "2026-09-12T09:00:00Z", "expect": "held" },
+    { "decision_id": "d-ref-directive", "timestamp": "2026-09-22T09:00:00Z", "expect": "held" }
+  ],
+  "strategic_actions": [
+    { "id": "sa-1", "decision_id": "d-ref-action" },
+    { "id": "sa-2", "decision_id": null }
+  ],
+  "company_directives": [
+    { "id": "cd-1", "cory_decision_id": "d-ref-directive" }
+  ],
+  "archive_fails": ["d-archive-fails"]
+}

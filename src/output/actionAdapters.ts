@@ -7,6 +7,7 @@ import type { Verification } from '../capabilities/agentTicketAutoResolution.ts'
 import type { RepairReport } from '../capabilities/orchestrationAutoRepair.ts';
 import type { Rehearsal } from '../capabilities/staleRecoveryRehearsal.ts';
 import type { Rehearsal as ReapRehearsal } from '../capabilities/previewReapRehearsal.ts';
+import type { Rehearsal as SweepRehearsal } from '../capabilities/retentionSweepRehearsal.ts';
 import type { Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 import type { Capture } from './monitorAdapters.ts';
@@ -73,6 +74,27 @@ export function reapRehearsalOutput(r: ReapRehearsal, c: Capture, table: Severit
     tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase ?? 'verified', platform_signal: null,
     evidence: r.verified || !bad.length ? r.stacks.map(stack) : bad,
     blind_spots: [...r.stops_not_recorded.map((s) => `${s}: stopped with no stop event, because a failed event write is only printed`), ...r.limits], detail: r,
+  }, table);
+}
+
+// With no stated rule the sweep is not run, so the answer is unknown. What the platform's cycle lost on the seed
+// is shown as a blind spot of the platform, not as Ellis's verdict: it is the control, not the subject.
+export function sweepRehearsalOutput(r: SweepRehearsal, c: Capture, table: SeverityTable): ToolOutput<SweepRehearsal> {
+  const tool = 'platform.CAP.data_retention_sweep';
+  const pl = r.platform_control.losses;
+  const control = [
+    ...(pl.unarchived_deleted.length ? [`the platform's cycle, on the same seed, deleted rows it never archived: ${pl.unarchived_deleted.join(', ')}`] : []),
+    ...(pl.references_broken.length ? [`the platform's cycle, on the same seed, removed rows other tables reference: ${pl.references_broken.join(', ')}`] : []),
+  ];
+  if (!r.stated_rule) {
+    return envelope({ tool, as_of: sandbox(r.fixture_id, c), verdict: 'unknown', case: 'no_stated_rule', platform_signal: null, evidence: [], blind_spots: [r.statement, ...control, ...r.limits], detail: r }, table);
+  }
+  const row = (x: SweepRehearsal['rows'][number]): Evidence => ({ table: 'sandbox_intelligence_decisions', id: x.decision_id, fields: ['timestamp', x.got] });
+  const wrong = r.rows.filter((x) => x.got !== x.expect);
+  const kase = !r.checks.control_shows_a_loss ? 'seed_exercises_nothing' : Object.entries(r.checks).find(([, v]) => !v)?.[0] ?? 'verified';
+  return envelope({
+    tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
+    evidence: (r.verified || !wrong.length ? r.rows : wrong).map(row), blind_spots: [...control, ...r.limits], detail: r,
   }, table);
 }
 

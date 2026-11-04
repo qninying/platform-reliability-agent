@@ -18,6 +18,7 @@
     "behavior-watch": "node src/cli/behaviorWatch.ts",
     "security-rollup": "node src/cli/securityRollup.ts",
     "retention-sweep": "node src/cli/retentionSweep.ts",
+    "retention-sweep-sandbox": "node src/cli/retentionSweepRehearsal.ts",
     "preview-reaping": "node src/cli/previewReaping.ts",
     "stale-actions": "node src/cli/staleActions.ts",
     "stale-recovery-sandbox": "node src/cli/staleRecoveryRehearsal.ts",
