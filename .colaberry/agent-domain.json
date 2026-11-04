@@ -28,288 +28,528 @@
     {
       "capability_id": "platform.agent_behavior_safety_watch",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R6",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "It already writes tickets in production today, so a production pilot rung is the honest ceiling. R7 is withheld because 'stop that agent' is the obvious next action and it is a live-timer change, which stays human-decided under platform.agent_enable_disable_control."
     },
     {
       "capability_id": "platform.agent_discovery_sync",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R2",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Running discovery writes registry rows whose enabled flag defaults to true, which means a discovery run can start timers. That makes it a human action, and the agent's ceiling is reporting what a discovery run would add."
     },
     {
       "capability_id": "platform.agent_enable_disable_control",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R2",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Turning a live timer off is explicitly a human decision in this domain's brief. The agent's ceiling is therefore answering from records and recommending — it may say 'this agent should be stopped and here is why', and a human performs the stop. R2 is the highest rung that involves no state change."
     },
     {
       "capability_id": "platform.agent_health_scoring",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R4",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Scoring is computation over records, so R2 covers reporting it and R4 covers producing and verifying a corrected score over a sandbox fixture. Replacing the live score is a change to what a human sees when triaging, which belongs to a reviewed change rather than to an autonomy rung."
     },
     {
       "capability_id": "platform.agent_identity_attribution",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R2",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Who an agent reports to is an accountability decision made by the founder and recorded in the seed, not something an agent may adjust. The ceiling is answering questions about the current chain and naming where it is broken."
     },
     {
       "capability_id": "platform.agent_promotion_and_approval_decision",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R2",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "An agent that could promote itself is not governed. Its ceiling is assembling and presenting the evidence for a rung it does not grant. This is the capability that makes every other max_permitted_autonomy in this file meaningful."
     },
     {
       "capability_id": "platform.agent_registry_read_surface",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R2",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "A read surface's whole job is answering questions from approved records, which is the definition of autonomy:R2. There is nothing above R2 for it to do, so a higher ceiling would be decoration."
     },
     {
       "capability_id": "platform.agent_ticket_auto_resolution",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R7",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "This is the one inherited behaviour whose action class is genuinely enumerable — each resolver has a written completion rule, and closing a ticket is reversible. R7 is therefore reachable, but only per-resolver: an R7 grant for the workforce resolver authorizes nothing for the BPOS resolver."
     },
     {
       "capability_id": "platform.backup_and_restore_verification",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R3",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Restoring a backup into an isolated sandbox target is an approved, operator-initiated sandbox operation, which is exactly R3. Reading a production backup artefact needs production credentials a run never holds, and anything resembling an operator-free restore is categorically off the table."
     },
     {
       "capability_id": "platform.capability_autonomy_authority_resolution",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R2",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "An agent that could raise its own approved level would make the whole ladder decorative. Approval is never inferred from behaviour — it is a recorded human decision — so the ceiling is answering questions about what is currently approved."
     },
     {
       "capability_id": "platform.cron_health_alerting",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R5",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "The evaluator is already a pure function over existing data, which makes shadow comparison against an approved reference alert set both cheap and the right top rung. Emitting production alerts stays with the deterministic service; an agent that could raise its own pages would be a new, unapproved external effect."
     },
     {
       "capability_id": "platform.cron_overlap_guard",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R4",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Identifying at-risk timers and building and proving the guard is sandbox work with a clear pass condition. Applying it to live timers changes execution behaviour and ships via a reviewed deploy, so the ladder stops at verified sandbox execution."
     },
     {
       "capability_id": "platform.cron_run_instrumentation",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R2",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "This is deterministic plumbing that must stay deterministic — CLAUDE.md's core principle is that production systems are deterministic and the agent is never the runtime executor. The agent's role is to read what the instrumentation recorded and report on its gaps, not to become the instrumentation."
     },
     {
       "capability_id": "platform.data_retention_sweep",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R4",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Deletion is irreversible, so the ladder stops at verified multi-step sandbox execution. Reaching production would require production_database, which is default-denied; the live sweeps keep running as the existing deterministic timers, not as agent actions."
     },
     {
       "capability_id": "platform.dead_letter_capture",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R4",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Capture is deterministic plumbing the agent reads rather than performs; R4 covers exercising the capture path end to end against a sandbox fixture, including the restart case the in-memory counter makes fragile. Reading and acting on the queue is the separate triage capability."
     },
     {
       "capability_id": "platform.dead_letter_triage",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R4",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Reading, grouping and recommending is well within reach, and R4 covers verifying a replay end to end in a sandbox. Replaying in production re-fires real side effects, so the replay decision stays with a human until the job's idempotency is proven — and that proof is a separate capability."
     },
     {
       "capability_id": "platform.default_on_timer_guard",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R4",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Changing what starts at boot in production changes which automation runs, which is a human decision. The agent can build and verify the guard in a sandbox and enumerate the ungoverned set, which is R4; applying the change is a reviewed deploy performed by a human."
     },
     {
       "capability_id": "platform.deploy_verification_evidence",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R2",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Verification is reading, but everything it reads sits behind production access. The agent's ceiling is assembling and judging evidence a human or the deploy script collected; it never performs the deploy and never reaches the host itself."
     },
     {
       "capability_id": "platform.emergency_stop_and_kill_switch",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R2",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "A kill switch that an agent can pull is a kill switch an agent can pull on its own supervision. The agent's ceiling is recommending a halt with evidence; the pull is always a human's. R2 involves no state change and is therefore the only safe rung here."
     },
     {
       "capability_id": "platform.error_class_coverage",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R4",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Classifying and measuring coverage is sandbox-verifiable work with an objective pass condition. The change ships through a reviewed deploy, so R4 is the ceiling; and the vocabulary itself is a decision rather than a derivation."
     },
     {
       "capability_id": "platform.execution_policy_enforcement",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R2",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "This is the gate that bounds every other capability in the domain. An agent that could act on it could widen its own authority, so its ceiling is answering questions about the policy from the policy. Changing the denied set is a compliance and security boundary and an escalation under CLAUDE.md."
     },
     {
       "capability_id": "platform.idempotency_and_replay_audit",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R4",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "The whole method is run-it-twice-in-a-sandbox-and-compare, which is precisely stateful multi-step sandbox execution with verification. Nothing above R4 is needed, and nothing above R4 would be safe, because the next rung would mean double-running jobs against production."
     },
     {
       "capability_id": "platform.incident_trace_and_error_triage",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R5",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Tracing and diagnosing is reading and reasoning over records, which reaches shadow comparison against approved reference diagnoses. Marking an error resolved is a claim about reality and stays with a human, so it is excluded from this capability's grants."
     },
     {
       "capability_id": "platform.infrastructure_evolution_proposals",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R5",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Whether an architectural proposal is adopted is a governance decision, which CLAUDE.md lists as an escalation boundary. human_decision is therefore true, and autonomyLadder.ts:170-176 caps a human-decision capability at autonomy:R5 in code — this value matches that cap rather than asserting a higher one."
     },
     {
       "capability_id": "platform.manager_reachable_agent_surface",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R2",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Provisioning a human's login and choosing their permission scope is an identity and authorization decision — a governance boundary under CLAUDE.md and the one decision an agent in this domain must never make, since it would be granting access to its own supervisor's seat."
     },
     {
       "capability_id": "platform.manager_restriction_directives",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R2",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "A directive is the manager's instrument for constraining the agent. An agent that could write directives could write its own constraints, which inverts the control. Its ceiling is reading and explaining the directives in force."
     },
     {
       "capability_id": "platform.manager_scoped_authorization",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R2",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "This is the authorization boundary itself. An agent with any write authority over it could grant itself a manager, so the ceiling is answering questions about who is authorised for what. Authentication and authorization posture is an escalation boundary under CLAUDE.md."
     },
     {
       "capability_id": "platform.orchestration_auto_repair",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R6",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "This writes repairs, so it cannot stop at read-only. R6 is the ceiling because a supervised production pilot is separately approved per capability (autonomyLadder.ts:156-159 flags production_requires_separate_pilot_approval); R7 would let it automate repair classes nobody has enumerated, and the authorized repair set is not written down anywhere today."
     },
     {
       "capability_id": "platform.orchestration_health_watch",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R5",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Read-and-report over existing records. Shadow evaluation against an approved reference verdict is the highest rung that needs no new production side effect; anything above R5 would mean acting on the verdict, which is a separate capability."
     },
     {
       "capability_id": "platform.platform_bug_fix_dispatch",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R4",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "A fix becomes real only when it merges and deploys, and both push_to_protected_main and production_deploy are default-denied. The honest ceiling is a verified sandbox fix with a human taking it from there; the entry's maxRiskTier 'R4' is a risk-tier ceiling in a different vocabulary and does not raise this."
     },
     {
       "capability_id": "platform.preview_stack_reaping",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R4",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Teardown destroys resources. cloud_resource_deletion is one of the eight default-denied capabilities, so this capability can never hold the tool that would let an agent reap for real; sandbox verification is the ceiling by construction, not by preference."
     },
     {
       "capability_id": "platform.production_deploy_review_and_approval",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R1",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Both halves of this capability name a default-denied capability: merging is push_to_protected_main and releasing is production_deploy. No autonomy rung can grant either, so the honest ceiling is preparing the change in isolation with its tests. R1 is where this stops, permanently."
     },
     {
       "capability_id": "platform.prompt_and_performance_optimization",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R5",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "A shipped prompt is production behaviour for every agent that uses it, and CLAUDE.md treats prompts that ship as code. Adopting a prompt change is therefore human-decided, and autonomyLadder.ts:170-176 caps a human-decision capability at autonomy:R5."
     },
     {
       "capability_id": "platform.registry_runtime_reconciliation",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R4",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Reconciliation is pure comparison, and R4 covers running the full multi-step comparison against fixtures and verifying it. Shrinking the baseline means accepting that a known defect is fixed, which is a human judgement, so the ladder stops below R5 for the acceptance half of the job."
     },
     {
       "capability_id": "platform.reliability_briefing_for_manager",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R5",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Composing an evidence-cited report is reading and writing prose over records, and shadow comparison against a briefing a human has already written is the right top rung. Sending it is a live external effect, so delivery stays with the existing deterministic briefing service."
     },
     {
       "capability_id": "platform.reliability_threshold_ownership",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R5",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Proposing and simulating a threshold change is analysis the agent can do well, and shadow replay against an observed window is exactly the evidence the decision needs. Setting the number stays with the named owner, and autonomyLadder.ts:170-176 caps a human-decision capability at autonomy:R5."
     },
     {
       "capability_id": "platform.runtime_cron_drift_detection",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R5",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Detection is comparison and reporting, and shadow evaluation against the existing build-time reconciler is a genuinely useful top rung — the build-time result is already an approved reference outcome. Acting on a drift finding means registering or disabling a timer, which is human-decided under separate capabilities."
     },
     {
       "capability_id": "platform.runtime_threat_and_access_watch",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R5",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Detection only. Changing anyone's access is a privilege grant, which is the single thing an agent in this domain must never do on its own authority, so the ladder stops below any action rung for this capability."
     },
     {
       "capability_id": "platform.schedule_governance_live_reload",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R2",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Changing a live schedule or disabling a live timer is a human decision by this domain's own rule. The agent may propose a cadence change with the cost and signal evidence behind it; a human applies it. R2 is the ceiling because every rung above involves touching the live schedule."
     },
     {
       "capability_id": "platform.scheduler_registration_liveness_probe",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R4",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Building and verifying a probe is sandbox work the agent can complete and prove, which is R4. Shipping it changes what external monitoring treats as an outage, which is a reviewed deploy and a human's call."
     },
     {
       "capability_id": "platform.schema_drift_detection",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R3",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Detecting drift is reading metadata, and R3 covers an approved user-initiated comparison in a sandbox. Resolving drift is a schema change, which CLAUDE.md lists as an escalation boundary and which the platform's own risk vocabulary rates R3 for schema_security_or_external_side_effect — so remediation never belongs to this capability."
     },
     {
       "capability_id": "platform.security_oversight_rollup",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R5",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "A rollup's only output is a judgement. Shadow comparison against an approved reference verdict is exactly the right top rung, and is also the only rung that would have caught the unfalsifiable-green defect the supervisor audit found."
     },
     {
       "capability_id": "platform.security_posture_scan",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R5",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Scanning is read-only and can reach shadow comparison against an approved reference finding set. Remediation — rotating a credential, bumping a dependency, rewriting history — is a different capability with production consequences and is deliberately excluded from this one."
     },
     {
       "capability_id": "platform.stale_action_recovery",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R4",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Recovery mutates work state, and getting it wrong double-executes real side effects. Sandbox verification with a concurrency fixture is the ceiling until the slow-versus-stuck distinction is specified by the manager."
     },
     {
       "capability_id": "platform.system_health_probe_and_alerting",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R5",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Probing and judging health is read-only and reaches shadow comparison against approved reference verdicts. Sending the alert stays with the deterministic service because live_email is default-denied, so no rung lets the agent page a human itself."
     },
     {
       "capability_id": "platform.system_resilience_supervision",
       "effective_autonomy": "autonomy:R0",
-      "reasons": []
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R5",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "A supervisor's output is a judgement about other systems. Shadow evaluation against approved reference outcomes is both the top rung that needs no new side effect and the only one that can prove the verdict is falsifiable."
     },
     {
       "capability_id": "platform.untracked_timer_registration_proposal",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R3",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Proposing is analysis; creating the rows is a production registry change that alters which jobs are gated and counted. R3 covers an operator-initiated sandbox run that generates and validates the proposal set, and the rows themselves are created by a human."
     },
     {
       "capability_id": "platform.workforce_technology_direction",
       "effective_autonomy": "autonomy:R0",
       "reasons": [
         "human_decision_required_at_every_level"
-      ]
+      ],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R5",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Setting the fleet's technology direction is a strategic decision — CLAUDE.md names AI model class changes and external dependency introduction as escalation boundaries. human_decision is true, and autonomyLadder.ts:170-176 caps such a capability at autonomy:R5."
     }
   ],
   "authority_rule": {
@@ -322,6 +562,1712 @@
     "disclosure": "A filed request grants nothing. Status is what a named human decided, and a pending row means nobody has decided yet.",
     "requests": [],
     "pending": 0
+  },
+  "verification": {
+    "known": true,
+    "disclosure": "A criterion counts as passing when it is marked in `.colaberry/progress.json` in this repository. The verifier reads that file on every sync and records what it found. A story showing 0 of N is not a rejection: nothing has been claimed yet.",
+    "summary": {
+      "stories": 136,
+      "checked": 55,
+      "verified": 45,
+      "awaiting_criteria": 3,
+      "outstanding_criteria": 3
+    },
+    "stories": [
+      {
+        "story_id": "platform.CAP.agent_behavior_safety_watch",
+        "title": "Agent behaviour and AI-safety watch",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
+        "outstanding": [],
+        "commit_sha": "f01081468dba747a45178f254e516fdfd691520a"
+      },
+      {
+        "story_id": "platform.CAP.agent_behavior_safety_watch.autonomy:R2",
+        "title": "Agent behaviour and AI-safety watch · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.agent_behavior_safety_watch.autonomy:R6",
+        "title": "Agent behaviour and AI-safety watch · R6",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.agent_discovery_sync",
+        "title": "Agent registry discovery sync",
+        "status": "not_started",
+        "verification_state": "submitted",
+        "verified": false,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "No commit in the repo names platform.CAP.agent_discovery_sync and changes a file. Commit your work with a `Story: platform.CAP.agent_discovery_sync` trailer (or platform.CAP.agent_discovery_sync in the subject line) and push."
+        ],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.agent_discovery_sync.autonomy:R2",
+        "title": "Agent registry discovery sync · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.agent_enable_disable_control",
+        "title": "Agent enable, disable, pause and resume control",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "2cccba97dd46727a615d3b93869976cd30a6d12c"
+      },
+      {
+        "story_id": "platform.CAP.agent_enable_disable_control.autonomy:R2",
+        "title": "Agent enable, disable, pause and resume control · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.agent_health_scoring",
+        "title": "Agent health scoring",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "10039fe808bcabf3def187eea37a687d0488248a"
+      },
+      {
+        "story_id": "platform.CAP.agent_health_scoring.autonomy:R2",
+        "title": "Agent health scoring · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.agent_health_scoring.autonomy:R4",
+        "title": "Agent health scoring · R4",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.agent_identity_attribution",
+        "title": "Agent identity and reporting-chain attribution",
+        "status": "not_started",
+        "verification_state": "in_progress",
+        "verified": false,
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "reasons": [
+          "None of the 1 acceptance criteria are marked as passing yet.",
+          "No commit in the repo names platform.CAP.agent_identity_attribution and changes a file. Commit your work with a `Story: platform.CAP.agent_identity_attribution` trailer (or platform.CAP.agent_identity_attribution in the subject line) and push."
+        ],
+        "outstanding": [
+          "A chain passing through a disabled intermediary is reported as resolving-but-degraded, not as resolved; and an actor id matching no admin_users row is reported as unattributable."
+        ],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.agent_identity_attribution.autonomy:R2",
+        "title": "Agent identity and reporting-chain attribution · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.agent_promotion_and_approval_decision",
+        "title": "Agent promotion and approval decision",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "02842d9c59dc9baf460eb61c60fd0c2b8ac34e87"
+      },
+      {
+        "story_id": "platform.CAP.agent_promotion_and_approval_decision.autonomy:R2",
+        "title": "Agent promotion and approval decision · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.agent_registry_read_surface",
+        "title": "Agent registry read surface",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "b4618072580ab0a475ca4b9e6ed7812a66174054"
+      },
+      {
+        "story_id": "platform.CAP.agent_registry_read_surface.autonomy:R2",
+        "title": "Agent registry read surface · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.agent_ticket_auto_resolution",
+        "title": "Agent ticket auto-resolution",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
+        "outstanding": [],
+        "commit_sha": "a2a40ee601fbc20621886e55d7e90ee4abea7417"
+      },
+      {
+        "story_id": "platform.CAP.agent_ticket_auto_resolution.autonomy:R4",
+        "title": "Agent ticket auto-resolution · R4",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.agent_ticket_auto_resolution.autonomy:R7",
+        "title": "Agent ticket auto-resolution · R7",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.backup_and_restore_verification",
+        "title": "Backup and restore verification",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "b59f0dfeaa4f7a0482dd882dc92a882fe498a91f"
+      },
+      {
+        "story_id": "platform.CAP.backup_and_restore_verification.autonomy:R2",
+        "title": "Backup and restore verification · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.backup_and_restore_verification.autonomy:R3",
+        "title": "Backup and restore verification · R3",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.capability_autonomy_authority_resolution",
+        "title": "Per-capability autonomy authority resolution",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "a00c719bd4aae6209f4910cf9282a22108f175a1"
+      },
+      {
+        "story_id": "platform.CAP.capability_autonomy_authority_resolution.autonomy:R2",
+        "title": "Per-capability autonomy authority resolution · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.cron_health_alerting",
+        "title": "Cron health alerting",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "be1836de54c38b804008f29ea1fe127f1c2b0b7e"
+      },
+      {
+        "story_id": "platform.CAP.cron_health_alerting.autonomy:R2",
+        "title": "Cron health alerting · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.cron_health_alerting.autonomy:R5",
+        "title": "Cron health alerting · R5",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.cron_overlap_guard",
+        "title": "Cron overlap guard",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "ece5f6cc50c7a852665b3c7a2bb9f09fc7f39ad1"
+      },
+      {
+        "story_id": "platform.CAP.cron_overlap_guard.autonomy:R2",
+        "title": "Cron overlap guard · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.cron_overlap_guard.autonomy:R4",
+        "title": "Cron overlap guard · R4",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.cron_run_instrumentation",
+        "title": "Cron run instrumentation",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "b1eba8878347062bcdd61e9a063ee45fe069a349"
+      },
+      {
+        "story_id": "platform.CAP.cron_run_instrumentation.autonomy:R2",
+        "title": "Cron run instrumentation · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.data_retention_sweep",
+        "title": "Platform data retention sweeps",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
+        "outstanding": [],
+        "commit_sha": "d267672c3611d398d51fc1b16435e78cc5ae0b45"
+      },
+      {
+        "story_id": "platform.CAP.data_retention_sweep.autonomy:R2",
+        "title": "Platform data retention sweeps · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.data_retention_sweep.autonomy:R4",
+        "title": "Platform data retention sweeps · R4",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.dead_letter_capture",
+        "title": "Dead-letter capture for repeatedly failing jobs",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "730bfaecb33a8374c169121353d89ded8376ee9b"
+      },
+      {
+        "story_id": "platform.CAP.dead_letter_capture.autonomy:R2",
+        "title": "Dead-letter capture for repeatedly failing jobs · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.dead_letter_capture.autonomy:R4",
+        "title": "Dead-letter capture for repeatedly failing jobs · R4",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.dead_letter_triage",
+        "title": "Dead-letter triage and recovery runbook",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "ce04db2774dd43265e1d9b99a0bdfad7af7f0e46"
+      },
+      {
+        "story_id": "platform.CAP.dead_letter_triage.autonomy:R2",
+        "title": "Dead-letter triage and recovery runbook · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.dead_letter_triage.autonomy:R4",
+        "title": "Dead-letter triage and recovery runbook · R4",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.default_on_timer_guard",
+        "title": "Default-on timer guard",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "279489b8e5b33f8827a26d5cfe8a705725737d3f"
+      },
+      {
+        "story_id": "platform.CAP.default_on_timer_guard.autonomy:R2",
+        "title": "Default-on timer guard · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.default_on_timer_guard.autonomy:R4",
+        "title": "Default-on timer guard · R4",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.deploy_verification_evidence",
+        "title": "Deploy verification evidence",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "709e5b30bb68f944b7d49086c575e4c9dc1dc801"
+      },
+      {
+        "story_id": "platform.CAP.deploy_verification_evidence.autonomy:R2",
+        "title": "Deploy verification evidence · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.emergency_stop_and_kill_switch",
+        "title": "Emergency stop, resume and kill switch",
+        "status": "not_started",
+        "verification_state": "submitted",
+        "verified": false,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "No commit in the repo names platform.CAP.emergency_stop_and_kill_switch and changes a file. Commit your work with a `Story: platform.CAP.emergency_stop_and_kill_switch` trailer (or platform.CAP.emergency_stop_and_kill_switch in the subject line) and push."
+        ],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.emergency_stop_and_kill_switch.autonomy:R2",
+        "title": "Emergency stop, resume and kill switch · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.error_class_coverage",
+        "title": "Error classification coverage",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "6a1c0afb8983d0750692adde20a3a9acf594ec34"
+      },
+      {
+        "story_id": "platform.CAP.error_class_coverage.autonomy:R2",
+        "title": "Error classification coverage · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.error_class_coverage.autonomy:R4",
+        "title": "Error classification coverage · R4",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.execution_policy_enforcement",
+        "title": "Execution policy and default-deny enforcement",
+        "status": "not_started",
+        "verification_state": "in_progress",
+        "verified": false,
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "reasons": [
+          "None of the 1 acceptance criteria are marked as passing yet.",
+          "No commit in the repo names platform.CAP.execution_policy_enforcement and changes a file. Commit your work with a `Story: platform.CAP.execution_policy_enforcement` trailer (or platform.CAP.execution_policy_enforcement in the subject line) and push."
+        ],
+        "outstanding": [
+          "A request naming production_deploy is answered as denied with enforcedBy no_provider; a positive control asserts the same request is never answered as permitted."
+        ],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.execution_policy_enforcement.autonomy:R2",
+        "title": "Execution policy and default-deny enforcement · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.idempotency_and_replay_audit",
+        "title": "Idempotency and replay-safety audit",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "ff99053c18ef63445c1f93074a20df3e8f66b542"
+      },
+      {
+        "story_id": "platform.CAP.idempotency_and_replay_audit.autonomy:R1",
+        "title": "Idempotency and replay-safety audit · R1",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.idempotency_and_replay_audit.autonomy:R4",
+        "title": "Idempotency and replay-safety audit · R4",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.incident_trace_and_error_triage",
+        "title": "Incident trace and error triage",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "e9d8ecc34b57772a3881bb5703405bf137d5fb80"
+      },
+      {
+        "story_id": "platform.CAP.incident_trace_and_error_triage.autonomy:R2",
+        "title": "Incident trace and error triage · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.incident_trace_and_error_triage.autonomy:R5",
+        "title": "Incident trace and error triage · R5",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.infrastructure_evolution_proposals",
+        "title": "Infrastructure and platform evolution proposals",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "20f265e25c78d06e0d0296c200177b55c2d9ed04"
+      },
+      {
+        "story_id": "platform.CAP.infrastructure_evolution_proposals.autonomy:R2",
+        "title": "Infrastructure and platform evolution proposals · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.infrastructure_evolution_proposals.autonomy:R5",
+        "title": "Infrastructure and platform evolution proposals · R5",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.manager_reachable_agent_surface",
+        "title": "Manager-reachable agent surface",
+        "status": "not_started",
+        "verification_state": "submitted",
+        "verified": false,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "No commit in the repo names platform.CAP.manager_reachable_agent_surface and changes a file. Commit your work with a `Story: platform.CAP.manager_reachable_agent_surface` trailer (or platform.CAP.manager_reachable_agent_surface in the subject line) and push."
+        ],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.manager_reachable_agent_surface.autonomy:R2",
+        "title": "Manager-reachable agent surface · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.manager_restriction_directives",
+        "title": "Manager restriction directives",
+        "status": "not_started",
+        "verification_state": "submitted",
+        "verified": false,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "No commit in the repo names platform.CAP.manager_restriction_directives and changes a file. Commit your work with a `Story: platform.CAP.manager_restriction_directives` trailer (or platform.CAP.manager_restriction_directives in the subject line) and push."
+        ],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.manager_restriction_directives.autonomy:R2",
+        "title": "Manager restriction directives · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.manager_scoped_authorization",
+        "title": "Manager-scoped authorization for agent management",
+        "status": "not_started",
+        "verification_state": "in_progress",
+        "verified": false,
+        "criteria_passed": 0,
+        "criteria_total": 1,
+        "reasons": [
+          "None of the 1 acceptance criteria are marked as passing yet.",
+          "No commit in the repo names platform.CAP.manager_scoped_authorization and changes a file. Commit your work with a `Story: platform.CAP.manager_scoped_authorization` trailer (or platform.CAP.manager_scoped_authorization in the subject line) and push."
+        ],
+        "outstanding": [
+          "For Kesetebirhan Delele and any platform agent the answer is 'nobody, via no route, because he holds no admin_users row' — a positive control that the gap is reported rather than papered over."
+        ],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.manager_scoped_authorization.autonomy:R2",
+        "title": "Manager-scoped authorization for agent management · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.orchestration_auto_repair",
+        "title": "Orchestration auto-repair",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
+        "outstanding": [],
+        "commit_sha": "add84c905fd550b798a99696da5ab70ba90361f1"
+      },
+      {
+        "story_id": "platform.CAP.orchestration_auto_repair.autonomy:R4",
+        "title": "Orchestration auto-repair · R4",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.orchestration_auto_repair.autonomy:R6",
+        "title": "Orchestration auto-repair · R6",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.orchestration_health_watch",
+        "title": "Orchestration health watch",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
+        "outstanding": [],
+        "commit_sha": "cd225afb5c023d414572c58b53927efafdf8f3d7"
+      },
+      {
+        "story_id": "platform.CAP.orchestration_health_watch.autonomy:R2",
+        "title": "Orchestration health watch · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.orchestration_health_watch.autonomy:R5",
+        "title": "Orchestration health watch · R5",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.platform_bug_fix_dispatch",
+        "title": "On-demand platform bug fix dispatch",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "872a5866f70310303e7edca0a02330665e6c1fab"
+      },
+      {
+        "story_id": "platform.CAP.platform_bug_fix_dispatch.autonomy:R1",
+        "title": "On-demand platform bug fix dispatch · R1",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.platform_bug_fix_dispatch.autonomy:R4",
+        "title": "On-demand platform bug fix dispatch · R4",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.preview_stack_reaping",
+        "title": "Preview stack reaping",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
+        "outstanding": [],
+        "commit_sha": "76a41d35bf94f37486ec52ac29a682dd9994537b"
+      },
+      {
+        "story_id": "platform.CAP.preview_stack_reaping.autonomy:R2",
+        "title": "Preview stack reaping · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.preview_stack_reaping.autonomy:R4",
+        "title": "Preview stack reaping · R4",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.production_deploy_review_and_approval",
+        "title": "Production deploy review and approval",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "db13ddff4fde7630b93ff0be440fe450156ec6c3"
+      },
+      {
+        "story_id": "platform.CAP.production_deploy_review_and_approval.autonomy:R1",
+        "title": "Production deploy review and approval · R1",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.prompt_and_performance_optimization",
+        "title": "Prompt and performance optimisation loop",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "67e2bc0258ce6fce014df2c266e014ad6c421524"
+      },
+      {
+        "story_id": "platform.CAP.prompt_and_performance_optimization.autonomy:R2",
+        "title": "Prompt and performance optimisation loop · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.prompt_and_performance_optimization.autonomy:R5",
+        "title": "Prompt and performance optimisation loop · R5",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.registry_runtime_reconciliation",
+        "title": "Timer registry and agent registry reconciliation",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "04dd0fb2830dee89d1dcca7f981ad4a7e210f1eb"
+      },
+      {
+        "story_id": "platform.CAP.registry_runtime_reconciliation.autonomy:R2",
+        "title": "Timer registry and agent registry reconciliation · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.registry_runtime_reconciliation.autonomy:R4",
+        "title": "Timer registry and agent registry reconciliation · R4",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.reliability_briefing_for_manager",
+        "title": "Reliability briefing for the accountable manager",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "bd6336cc2f99bfe520d8aae2851f196fae96319b"
+      },
+      {
+        "story_id": "platform.CAP.reliability_briefing_for_manager.autonomy:R2",
+        "title": "Reliability briefing for the accountable manager · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.reliability_briefing_for_manager.autonomy:R5",
+        "title": "Reliability briefing for the accountable manager · R5",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.reliability_threshold_ownership",
+        "title": "Reliability threshold ownership",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "efff59bb5499c65e4bfd8c9205587a009c4a0158"
+      },
+      {
+        "story_id": "platform.CAP.reliability_threshold_ownership.autonomy:R2",
+        "title": "Reliability threshold ownership · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.reliability_threshold_ownership.autonomy:R5",
+        "title": "Reliability threshold ownership · R5",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.runtime_cron_drift_detection",
+        "title": "Runtime cron drift detection",
+        "status": "not_started",
+        "verification_state": "submitted",
+        "verified": false,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "No commit in the repo names platform.CAP.runtime_cron_drift_detection and changes a file. Commit your work with a `Story: platform.CAP.runtime_cron_drift_detection` trailer (or platform.CAP.runtime_cron_drift_detection in the subject line) and push."
+        ],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.runtime_cron_drift_detection.autonomy:R2",
+        "title": "Runtime cron drift detection · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.runtime_cron_drift_detection.autonomy:R5",
+        "title": "Runtime cron drift detection · R5",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.runtime_threat_and_access_watch",
+        "title": "Runtime threat and access-control watch",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
+        "outstanding": [],
+        "commit_sha": "8263fa2034f200bc66c49f28d3a47339960c95f4"
+      },
+      {
+        "story_id": "platform.CAP.runtime_threat_and_access_watch.autonomy:R2",
+        "title": "Runtime threat and access-control watch · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.runtime_threat_and_access_watch.autonomy:R5",
+        "title": "Runtime threat and access-control watch · R5",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.schedule_governance_live_reload",
+        "title": "Schedule governance and live reload",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "1052ddd624b067b8985c45d974114f542d750d67"
+      },
+      {
+        "story_id": "platform.CAP.schedule_governance_live_reload.autonomy:R2",
+        "title": "Schedule governance and live reload · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.scheduler_registration_liveness_probe",
+        "title": "Scheduler registration liveness probe",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "b336b03a65686540355b97c07e589eaa107e1a13"
+      },
+      {
+        "story_id": "platform.CAP.scheduler_registration_liveness_probe.autonomy:R2",
+        "title": "Scheduler registration liveness probe · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.scheduler_registration_liveness_probe.autonomy:R4",
+        "title": "Scheduler registration liveness probe · R4",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.schema_drift_detection",
+        "title": "Schema drift detection between environments",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "15d81be49b3d6fb7d7f49166d9ccba310a6c9fac"
+      },
+      {
+        "story_id": "platform.CAP.schema_drift_detection.autonomy:R2",
+        "title": "Schema drift detection between environments · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.schema_drift_detection.autonomy:R3",
+        "title": "Schema drift detection between environments · R3",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.security_oversight_rollup",
+        "title": "Security oversight rollup",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
+        "outstanding": [],
+        "commit_sha": "a520ec200c01f98fc7e0506869e5baa5efa85fd0"
+      },
+      {
+        "story_id": "platform.CAP.security_oversight_rollup.autonomy:R2",
+        "title": "Security oversight rollup · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.security_oversight_rollup.autonomy:R5",
+        "title": "Security oversight rollup · R5",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.security_posture_scan",
+        "title": "Static security posture scanning",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
+        "outstanding": [],
+        "commit_sha": "8ad3ba90ccaeabdce88a312f57abf7defe68da68"
+      },
+      {
+        "story_id": "platform.CAP.security_posture_scan.autonomy:R2",
+        "title": "Static security posture scanning · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.security_posture_scan.autonomy:R5",
+        "title": "Static security posture scanning · R5",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.stale_action_recovery",
+        "title": "Stale action recovery",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
+        "outstanding": [],
+        "commit_sha": "5ca2e3e940a98c048535efa454e93b7a994a6b3a"
+      },
+      {
+        "story_id": "platform.CAP.stale_action_recovery.autonomy:R2",
+        "title": "Stale action recovery · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.stale_action_recovery.autonomy:R4",
+        "title": "Stale action recovery · R4",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.system_health_probe_and_alerting",
+        "title": "System health probes and alerting",
+        "status": "not_started",
+        "verification_state": "submitted",
+        "verified": false,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "No commit in the repo names platform.CAP.system_health_probe_and_alerting and changes a file. Commit your work with a `Story: platform.CAP.system_health_probe_and_alerting` trailer (or platform.CAP.system_health_probe_and_alerting in the subject line) and push."
+        ],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.system_health_probe_and_alerting.autonomy:R2",
+        "title": "System health probes and alerting · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.system_health_probe_and_alerting.autonomy:R5",
+        "title": "System health probes and alerting · R5",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.system_resilience_supervision",
+        "title": "System resilience supervision",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "9b251a186e1e52e8e2aed0e8f2fc76a390fd1d2d"
+      },
+      {
+        "story_id": "platform.CAP.system_resilience_supervision.autonomy:R2",
+        "title": "System resilience supervision · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.system_resilience_supervision.autonomy:R5",
+        "title": "System resilience supervision · R5",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.untracked_timer_registration_proposal",
+        "title": "Untracked timer registration proposal",
+        "status": "not_started",
+        "verification_state": "submitted",
+        "verified": false,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [
+          "No commit in the repo names platform.CAP.untracked_timer_registration_proposal and changes a file. Commit your work with a `Story: platform.CAP.untracked_timer_registration_proposal` trailer (or platform.CAP.untracked_timer_registration_proposal in the subject line) and push."
+        ],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.untracked_timer_registration_proposal.autonomy:R2",
+        "title": "Untracked timer registration proposal · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.untracked_timer_registration_proposal.autonomy:R3",
+        "title": "Untracked timer registration proposal · R3",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.workforce_technology_direction",
+        "title": "Workforce technology direction",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
+        "criteria_total": 1,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "22cff653a3d37fcb9f03318498a7baa59ad920e8"
+      },
+      {
+        "story_id": "platform.CAP.workforce_technology_direction.autonomy:R2",
+        "title": "Workforce technology direction · R2",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.workforce_technology_direction.autonomy:R5",
+        "title": "Workforce technology direction · R5",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.LEGACY-MIGRATION-PLAN",
+        "title": "Legacy migration plan",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 3,
+        "criteria_total": 3,
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
+        "outstanding": [],
+        "commit_sha": "0f7444465e5f07260f74a4b504b0e1f31efa418b"
+      },
+      {
+        "story_id": "platform.RESEARCH-1-SYSTEM-CLASSES",
+        "title": "Compare the five system classes, and place this domain among them",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 3,
+        "criteria_total": 3,
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
+        "outstanding": [],
+        "commit_sha": "a6ee5057ec3063297ddb2e027df778c02ee96c0d"
+      },
+      {
+        "story_id": "platform.RESEARCH-2-AGENT-ANATOMY",
+        "title": "Map the nine anatomy elements onto this domain's agent",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 3,
+        "criteria_total": 3,
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
+        "outstanding": [],
+        "commit_sha": "2e70593c8a4e1c5c125c3a5dc8ada3f2bd42963b"
+      },
+      {
+        "story_id": "platform.RESEARCH-3-ROLE-AND-DA-TRANSITION",
+        "title": "Document Kesetebirhan Delele's role, and which DA responsibilities transition",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 3,
+        "criteria_total": 3,
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
+        "outstanding": [],
+        "commit_sha": "d623759e041b34092ea962f037c04089364bb80b"
+      },
+      {
+        "story_id": "platform.RESEARCH-4-MANAGER-INTERVIEW",
+        "title": "Prepare a 30-minute interview with Kesetebirhan Delele and propose a weekly check-in",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 3,
+        "criteria_total": 3,
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
+        "outstanding": [],
+        "commit_sha": "b826421ae7dcb8953a11e9f029ef89cffeec9970"
+      },
+      {
+        "story_id": "platform.RESEARCH-5-THREE-PROPOSED-TASKS",
+        "title": "Capture three proposed agent tasks with boundaries and completion evidence",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 3,
+        "criteria_total": 3,
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
+        "outstanding": [],
+        "commit_sha": "8e75cc3a51d8cc0daadf5e339eca273c2b22a66a"
+      },
+      {
+        "story_id": "platform.STORY-000",
+        "title": "STORY-000 · Build your Command Center",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 6,
+        "criteria_total": 6,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "be7079d9d1cba875d2670148f7b125b39ab4c8fe"
+      }
+    ]
   },
   "not_recorded": [
     {

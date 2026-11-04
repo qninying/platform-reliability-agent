@@ -4,11 +4,11 @@
   "totals": {
     "stories_total": 55,
     "stories_verified": 45,
-    "stories_submitted": 0,
-    "stories_in_progress": 10,
+    "stories_submitted": 7,
+    "stories_in_progress": 3,
     "stories_not_started": 0,
     "criteria_total": 72,
-    "criteria_passed": 62,
+    "criteria_passed": 69,
     "points_awarded": 675
   },
   "stories": [
@@ -75,17 +75,15 @@
       "notes": "Folded into platform.CAP.agent_registry_read_surface (A.M.'s ruling of 2026-11-04). Not built on its own: the registry read surface now also previews the discover action with --discovery-preview (src/capabilities/discoveryPreview.ts): which rows it would create from the seed, whether each arrives enabled, which timers that would start or stop, and which timers no discovery run will ever register. Read at platform cc1ebc5. 9 tests; ten deliberate breaks each caught.",
       "updated_at": "2026-11-04",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "submitted",
+        "criteria_passed": 1,
         "criteria_total": 1,
         "verified_at": null,
         "commit_sha": null,
         "commit_url": null,
         "commit_at": null,
         "points_awarded": null,
-        "outstanding": [
-          "The report names each row that would be created and states that each would arrive enabled, so the consequence is visible before the action."
-        ]
+        "outstanding": []
       }
     },
     {
@@ -679,17 +677,15 @@
       "notes": "Folded into platform.CAP.agent_enable_disable_control (A.M.'s ruling of 2026-11-04). Not built on its own: agent enable/disable control now also answers this story's question with --fleet-stop (src/capabilities/fleetStopLevers.ts), which shows what the emergency stop, kill switch, scheduler pause and governance row each reach, and what an emergency resume would undo. Read at platform cc1ebc5. 10 tests; eleven deliberate breaks each caught. Commit 49783e7.",
       "updated_at": "2026-11-04",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "submitted",
+        "criteria_passed": 1,
         "criteria_total": 1,
         "verified_at": null,
         "commit_sha": null,
         "commit_url": null,
         "commit_at": null,
         "points_awarded": null,
-        "outstanding": [
-          "A recommendation that names a per-agent stop for a schedulerService-registered job is wrong and must instead name the scheduler pause — a positive control that the recommendation understands the layering."
-        ]
+        "outstanding": []
       }
     },
     {
@@ -892,17 +888,15 @@
       "notes": "Folded into platform.CAP.manager_scoped_authorization (A.M.'s ruling of 2026-11-04): one manager-access check answers it, reporting the accountable manager's org_members row and, as a separate fact, whether any login carries that row's email.",
       "updated_at": "2026-11-04",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "submitted",
+        "criteria_passed": 1,
         "criteria_total": 1,
         "verified_at": null,
         "commit_sha": null,
         "commit_url": null,
         "commit_at": null,
         "points_awarded": null,
-        "outstanding": [
-          "The answer names the org_members id and the absent admin_users row as two separate facts, and does not claim the surface is reachable under any current configuration."
-        ]
+        "outstanding": []
       }
     },
     {
@@ -932,17 +926,15 @@
       "notes": "Folded into platform.CAP.manager_scoped_authorization (A.M.'s ruling of 2026-11-04): one manager-access check answers it. At cc1ebc5 only Dara's and Reese's prompt builders read directives, as prompt text; for every other agent a directive is recorded but enforced nowhere.",
       "updated_at": "2026-11-04",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "submitted",
+        "criteria_passed": 1,
         "criteria_total": 1,
         "verified_at": null,
         "commit_sha": null,
         "commit_url": null,
         "commit_at": null,
         "points_awarded": null,
-        "outstanding": [
-          "A directive with no runtime enforcement path is reported as recorded-but-unenforced, not as in force."
-        ]
+        "outstanding": []
       }
     },
     {
@@ -1346,17 +1338,15 @@
       "notes": "Folded into platform.CAP.registry_runtime_reconciliation (A.M.'s ruling of 2026-11-04). Not built on its own: reconciliation already measured each drift class from source at run time as a list of names with its measurement time and commit; the fold adds the guarantee that no name is published without a call site, and records the run at cc1ebc5 (examples/registry-reconciliation.run-cc1ebc5.json). It measures the source at a commit, not the live process: what fires in production needs a live export of cron_schedule_configs, which the answer states.",
       "updated_at": "2026-11-04",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "submitted",
+        "criteria_passed": 1,
         "criteria_total": 1,
         "verified_at": null,
         "commit_sha": null,
         "commit_url": null,
         "commit_at": null,
         "points_awarded": null,
-        "outstanding": [
-          "Every count is accompanied by the list of names behind it; a count with no name list is not published. A positive control asserts WorkforceIntelligence appears in the no-seed-row class."
-        ]
+        "outstanding": []
       }
     },
     {
@@ -1643,17 +1633,15 @@
       "notes": "Folded into platform.CAP.system_resilience_supervision (A.M.'s ruling of 2026-11-04). Not built on its own: resilience supervision now also reads an export of GET /health/full with --health-full (src/capabilities/platformHealthProbe.ts), judges each check on what it can show, and lists on every answer what the probes cannot see. Read at platform cc1ebc5. 11 tests; ten deliberate breaks each caught. Commit ed3c52b.",
       "updated_at": "2026-11-04",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "submitted",
+        "criteria_passed": 1,
         "criteria_total": 1,
         "verified_at": null,
         "commit_sha": null,
         "commit_url": null,
         "commit_at": null,
         "points_awarded": null,
-        "outstanding": [
-          "The report explicitly names 'scheduler never registered' as undetectable by GET /health — a disclosure the probe itself cannot make."
-        ]
+        "outstanding": []
       }
     },
     {
@@ -1720,17 +1708,15 @@
       "notes": "Folded into platform.CAP.registry_runtime_reconciliation (A.M.'s ruling of 2026-11-04). Not built on its own: reconciliation now proposes, with --proposals (src/capabilities/registrationProposal.ts), a registry row for every untracked name just measured, naming the row its runner reads and the enabled value it would arrive with. At cc1ebc5: 67 untracked names, 43 run today untracked and get a proposed row, 24 are already gated by a row under another name and need none. Govern or retire stays a person's decision. 11 tests; ten deliberate breaks each caught.",
       "updated_at": "2026-11-04",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "submitted",
+        "criteria_passed": 1,
         "criteria_total": 1,
         "verified_at": null,
         "commit_sha": null,
         "commit_url": null,
         "commit_at": null,
         "points_awarded": null,
-        "outstanding": [
-          "Every entry carries a real call-site citation and a measurement date; the published count is the one just measured, not 33 or 34 quoted from a document."
-        ]
+        "outstanding": []
       }
     },
     {
