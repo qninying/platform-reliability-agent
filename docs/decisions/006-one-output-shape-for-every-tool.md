@@ -49,11 +49,16 @@ Rules the code enforces:
   default-on timers, schedule governance, registry reconciliation and the registry ask. Most read platform source,
   so their evidence is a file:line at a named commit. A sweep with nothing to propose cites nothing, so it is
   `unknown`, not `ok`.
+- The deploy and recovery checks have adapters in `src/output/deployAdapters.ts`: deploy readiness, release
+  evidence, backup position, schema drift and preview stack reaping. Some read no table, so a git ref, the release
+  evidence a person captured, or a drift log stamp is their evidence. The backup position stays `unknown` by
+  design: no backup age or restore is ever read, only searched for.
 - The remaining older checks move over in batches of five or six.
 - Until K.D. writes the first rules, the broker can rank by verdict only.
 
 ## Evidence
 - `src/output/toolOutput.ts`, `src/output/monitorAdapters.ts`, `src/output/foldAdapters.ts`,
-  `src/output/jobAdapters.ts`, `src/output/schedulerAdapters.ts`, `test/toolOutput.test.ts` (16 tests),
-  `test/foldAdapters.test.ts` (8 tests), `test/jobAdapters.test.ts` (10 tests), `test/schedulerAdapters.test.ts` (8 tests).
-- Forty-three deliberate breaks of these rules, each caught by a named test (decision 004).
+  `src/output/jobAdapters.ts`, `src/output/schedulerAdapters.ts`, `src/output/deployAdapters.ts`,
+  `test/toolOutput.test.ts` (16 tests), `test/foldAdapters.test.ts` (8 tests), `test/jobAdapters.test.ts` (10 tests),
+  `test/schedulerAdapters.test.ts` (8 tests), `test/deployAdapters.test.ts` (8 tests).
+- Fifty-two deliberate breaks of these rules, each caught by a named test (decision 004).
