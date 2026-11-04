@@ -1,0 +1,1 @@
+{ "fixture_id": "bad", "description": "a lease shorter than the run", "job": "J", "interval_ms": 300000, "run_ms": 720000, "lease_ms": 600000, "ticks": 4, "processes": ["p1"], "crash": null }

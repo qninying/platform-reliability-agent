@@ -8,6 +8,7 @@ import type { RepairReport } from '../capabilities/orchestrationAutoRepair.ts';
 import type { Rehearsal } from '../capabilities/staleRecoveryRehearsal.ts';
 import type { Rehearsal as ReapRehearsal } from '../capabilities/previewReapRehearsal.ts';
 import type { Rehearsal as SweepRehearsal } from '../capabilities/retentionSweepRehearsal.ts';
+import type { Rehearsal as OverlapRehearsal } from '../capabilities/cronOverlapRehearsal.ts';
 import type { Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 import type { Capture } from './monitorAdapters.ts';
@@ -95,6 +96,21 @@ export function sweepRehearsalOutput(r: SweepRehearsal, c: Capture, table: Sever
   return envelope({
     tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
     evidence: (r.verified || !wrong.length ? r.rows : wrong).map(row), blind_spots: [...control, ...r.limits], detail: r,
+  }, table);
+}
+
+// Each run is cited; a failure cites the overlapping runs or the ticks that left no record.
+export function overlapRehearsalOutput(r: OverlapRehearsal, c: Capture, table: SeverityTable): ToolOutput<OverlapRehearsal> {
+  const tool = 'platform.CAP.cron_overlap_guard';
+  const runs: Evidence[] = r.runs.map((x) => ({ table: 'sandbox_activity_log', id: x.id, fields: ['started', 'ended'] }));
+  const bad: Evidence[] = [
+    ...r.overlaps.flat().map((id) => ({ table: 'sandbox_activity_log', id, fields: ['overlaps another run'] })),
+    ...r.silent_skips.map((id) => ({ table: 'sandbox_ticks', id, fields: ['no record'] })),
+  ];
+  const kase = Object.entries(r.checks).find(([, v]) => !v)?.[0] ?? 'verified';
+  return envelope({
+    tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
+    evidence: r.verified || !bad.length ? runs : [...new Map(bad.map((e) => [e.id, e])).values()], blind_spots: r.limits, detail: r,
   }, table);
 }
 

@@ -32,6 +32,7 @@
     "bug-baseline": "node src/cli/bugBaseline.ts",
     "registry-ask": "node src/cli/registryAsk.ts",
     "cron-runs": "node src/cli/cronRuns.ts",
+    "cron-overlap-sandbox": "node src/cli/cronOverlapRehearsal.ts",
     "cron-health": "node src/cli/cronHealth.ts",
     "agent-health": "node src/cli/agentHealth.ts",
     "registry-reconcile": "node src/cli/registryReconcile.ts",

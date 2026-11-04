@@ -1,13 +1,14 @@
 # Cron overlap guard
 
-**Story:** `platform.CAP.cron_overlap_guard` · **Autonomy:** starts R0, first release R2, ceiling R4 · **Approver:** K.D.
-**Code:** `src/capabilities/cronOverlapGuard.ts`, `src/inventory/claimSites.ts`, `src/cli/overlapGuard.ts` · **Tests:** `test/cronOverlapGuard.test.ts`
+**Story:** `platform.CAP.cron_overlap_guard` · **Autonomy:** starts R0, first release R2, rung R4 built in a sandbox, ceiling R4 · **Approver:** K.D.
+**Code:** `src/capabilities/cronOverlapGuard.ts`, `src/inventory/claimSites.ts`, `src/cli/overlapGuard.ts` (R2), `src/capabilities/cronOverlapRehearsal.ts` (R4) · **Tests:** `test/cronOverlapGuard.test.ts`, `test/cronOverlapRehearsal.test.ts`
 
 This first release answers from records and source. It names every timer whose recorded duration can exceed its
 own interval, gives both figures, and says which jobs hold their own claim. It changes no timer. Applying a guard
 is a deploy, and that stays a person's.
 
-Platform facts cite the public Colaberry platform repository at upstream commit `bbde6ef`.
+Platform facts cite the public Colaberry platform repository at upstream commit `bbde6ef` for R2 and `c150d4c48`
+for R4.
 
 ## How it decides
 
@@ -117,8 +118,38 @@ overlap has been read yet. That needs a snapshot taken by someone with access.
 **K.D.:** should a skipped tick be recorded as a missed run? It changes what the missed-run detector reports. The
 answer carries this as `policy_open`, and Ellis assumes nothing.
 
-## What comes next
+## R4: the guard, built and proven in a sandbox
 
-The later steps on the ladder build the guard and prove it in the sandbox: force a long run and confirm the second
-tick is skipped. The twice-run harness from the idempotency audit is the starting point. Applying it to live timers
-stays a reviewed deploy, so the ladder stops at R4.
+The rung's acceptance: **the second tick does not start while the first is running, and the skip is recorded; a
+silent skip fails the criterion.**
+
+`npm run cron-overlap-sandbox -- --fixture examples/cron-overlap.fixture.json` (exit 0 verified, 3 not, 1 bad input).
+
+Ellis builds the guard the section above calls for: **one claim shared by every scheduler process**, not a flag
+inside one. The platform runs three scheduler instances by design (`backend/src/services/scheduling/claimLease.ts:19`
+at `c150d4c48`), and its timers pass only a timezone (`aiOpsScheduler.ts:572`, `:583`), so today nothing stops two
+processes running the same job. The guard:
+
+- takes a claim before a run, and releases it when the run ends;
+- gives the claim a **lease**, so a process that dies mid-run does not block the job for good: the next tick after
+  the lease runs out starts, and its record says the previous claim expired;
+- **records every tick it skips**, with the run that held the claim, so no tick on any process goes unrecorded.
+
+The fixture runs a five-minute timer that takes twelve minutes, on three processes, for twelve ticks, and kills the
+process running the tick-6 run halfway through. No two runs overlap, every skipped tick has a record, and the job
+starts again once the dead run's lease is gone.
+
+**The control.** node-cron's own `noOverlap` runs on the same timeline. It holds a tick only while the same process
+has a run in flight, and it skips without a record. On the fixture it lets 16 pairs of runs overlap across processes
+and skips 23 ticks with no record. With one process it cannot overlap, but its skips are still silent.
+
+**What this does not prove.** Time is simulated; clock skew and a claim write that times out are not run. The lease
+must outlast the longest run, and the fixture is refused if it does not; renewing a lease during a run is not built.
+Applying the guard to a live timer is a reviewed deploy by a person, so the ladder stops at R4. Whether a skipped
+tick counts as a missed run stays K.D.'s open decision above.
+
+**Tested:** 10 tests, including the acceptance test named after the criterion. Ten deliberate breaks to the guard:
+eight were caught at once. Two showed gaps: a run that kept its claim after finishing went unnoticed because the
+test's lease ended exactly on the next tick (the test now uses a longer lease, and catches it), and a "control fails"
+check could never be false while an overrun was forced, so it was removed. Its rung story id is on the platform
+board but not yet in this repository's plan, so it is recorded here and in the commit.

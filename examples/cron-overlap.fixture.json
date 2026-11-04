@@ -1,0 +1,11 @@
+{
+  "fixture_id": "cron-overlap-sandbox-1",
+  "description": "One job on a five-minute timer that takes twelve minutes to run, fired by three scheduler processes, as the platform runs three. The process holding the run at tick 6 dies halfway through without releasing its claim. Simulated time; not production data.",
+  "job": "SandboxReportJob",
+  "interval_ms": 300000,
+  "run_ms": 720000,
+  "lease_ms": 900000,
+  "ticks": 12,
+  "processes": ["scheduler-1", "scheduler-2", "scheduler-3"],
+  "crash": { "process": "scheduler-1", "at_tick": 6 }
+}
