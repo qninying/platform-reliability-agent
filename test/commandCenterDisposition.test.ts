@@ -57,6 +57,9 @@ test('on the real files, every story that is not verified explains itself: seven
 test('the story page names the story it was folded into, and the platform\'s own state', () => {
   const cc = page();
   const html = cc.ui.storyDetail({ plan: PLAN, progress: PROGRESS }, 'platform.CAP.emergency_stop_and_kill_switch', '#/pm');
-  assert.match(html, /Folded into <a href="#\/pm\/platform\.CAP\.agent_enable_disable_control"><code>platform\.CAP\.agent_enable_disable_control<\/code><\/a>\. The platform still records this story as in progress\./);
+  // The platform's state moves (in progress, then submitted) as it syncs; the page must say whichever it is.
+  const state = PROGRESS.stories.find((s: { id: string }) => s.id === 'platform.CAP.emergency_stop_and_kill_switch').verification.state.replace('_', ' ');
+  assert.ok(html.includes('Folded into <a href="#/pm/platform.CAP.agent_enable_disable_control"><code>platform.CAP.agent_enable_disable_control</code></a>.'));
+  assert.ok(html.includes(`The platform still records this story as ${state}.`), state);
   assert.match(html, /<span class="chip folded">folded<\/span>/);
 });
