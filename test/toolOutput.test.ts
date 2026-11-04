@@ -10,7 +10,9 @@ import { cronHealth, type HealthSnapshot } from '../src/capabilities/cronHealthA
 import { agentHealth, type ScoreRow } from '../src/capabilities/agentHealthScoring.ts';
 import { trace, type TraceSnapshot } from '../src/capabilities/incidentTrace.ts';
 import { envelope, applySeverity, loadSeverityTable, ContractViolation, type SeverityTable, type ToolOutput } from '../src/output/toolOutput.ts';
-import { orchestrationOutput, cronHealthOutput, agentHealthOutput, incidentTraceOutput } from '../src/output/monitorAdapters.ts';
+import { orchestrationOutput, cronHealthOutput, agentHealthOutput, incidentTraceOutput, resilienceOutput, healthProbeOutput } from '../src/output/monitorAdapters.ts';
+import { resiliencePosture, type ResilienceSnapshot } from '../src/capabilities/systemResilienceSupervision.ts';
+import { probeHealth, ALWAYS_REPORTED } from '../src/capabilities/platformHealthProbe.ts';
 
 // Rows are test inputs shaped like the platform's, not production data.
 const EMPTY: SeverityTable = { owner: 'K.D.', status: 'not agreed yet, ISS-032', rules: [] };
@@ -169,4 +171,48 @@ test('the same answer always gives the same output', () => {
   const s = traces();
   const a = trace(s, { trace_id: 't-reese-1' });
   assert.deepEqual(incidentTraceOutput(a, s, EMPTY), incidentTraceOutput(a, s, EMPTY));
+});
+
+// System resilience supervision, and the health probes folded into it.
+const RESILIENCE = (): ResilienceSnapshot => JSON.parse(readFileSync(new URL('../examples/resilience-posture.example.json', import.meta.url), 'utf8'));
+
+test('resilience: the example has a degraded supervisor, so it is a problem citing only the degraded rows, with the unknown parts as blind spots', () => {
+  const snap = RESILIENCE();
+  const a = resiliencePosture(snap, { now: snap.captured_at });
+  const o = resilienceOutput(a, snap, EMPTY);
+  holdsContract(o, a);
+  assert.ok(a.degraded.length > 0 && a.unknown.length > 0);
+  assert.equal(o.verdict, 'problem');
+  const degradedIds = new Set(a.subsystems.filter((x) => x.state === 'degraded').flatMap((x) => x.citations.map((c) => c.id)));
+  for (const e of o.evidence) assert.ok(degradedIds.has(e.id), e.id);
+  assert.equal(o.blind_spots.length, a.unknown.length);
+});
+
+test('resilience: with nothing degraded, some unknown parts make it partly unknown, and all unknown makes it unknown', () => {
+  const snap = RESILIENCE();
+  const a = resiliencePosture(snap, { now: snap.captured_at });
+  const noProblem = { ...a, subsystems: a.subsystems.map((x) => (x.state === 'degraded' ? { ...x, state: 'healthy' as const } : x)) };
+  assert.equal(resilienceOutput(noProblem, snap, EMPTY).verdict, 'partly_unknown');
+  const allUnknown = { ...a, subsystems: a.subsystems.map((x) => ({ ...x, state: 'unknown' as const })) };
+  const o = resilienceOutput(allUnknown, snap, EMPTY);
+  holdsContract(o, allUnknown);
+  assert.equal(o.verdict, 'unknown');
+});
+
+test('health probes: the export is the evidence, an ok report with dropped checks is partly unknown, and no export is unknown', () => {
+  const at = '2026-10-27T15:05:00Z';
+  const all = ALWAYS_REPORTED.map((name) => ({ name, severity: 'ok' as const, detail: 'fine', metric: 1 }));
+  const full = probeHealth({ captured_at: at, captured_by: 't', report: { timestamp: at, overall_status: 'ok', duration_ms: 1, checks: all } }, '2026-10-27T15:10:00Z');
+  const ok = healthProbeOutput(full, CAPTURE, EMPTY);
+  holdsContract(ok, full);
+  assert.equal(ok.verdict, 'ok');
+  assert.deepEqual(ok.evidence.map((e) => [e.table, e.id]), [['health_full_export', at]]);
+  assert.ok(ok.blind_spots.some((b) => /never registered/.test(b)), 'what the probes cannot see travels with every answer');
+  const dropped = probeHealth({ captured_at: at, captured_by: 't', report: { timestamp: at, overall_status: 'ok', duration_ms: 1, checks: all.slice(1) } }, '2026-10-27T15:10:00Z');
+  assert.equal(healthProbeOutput(dropped, CAPTURE, EMPTY).verdict, 'partly_unknown');
+  const none = probeHealth(null, '2026-10-27T15:10:00Z');
+  const u = healthProbeOutput(none, CAPTURE, EMPTY);
+  holdsContract(u, none);
+  assert.equal(u.verdict, 'unknown');
+  assert.deepEqual(u.evidence, []);
 });

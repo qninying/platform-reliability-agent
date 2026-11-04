@@ -1,6 +1,6 @@
 # 006: One output shape for every tool, with severity set only by K.D.'s table
 
-**Status:** applied to the four built first monitors on 2026-11-04 · format sent to K.D. and A.M. for review
+**Status:** applied to the four built first monitors on 2026-11-04 and to the fifth the same day · A.M. approved the shape on 2026-11-04; K.D.'s two questions (partly_unknown, the severity table) are open and not blocking
 
 ## Context
 K.D.'s architecture (2026-10-28) makes each coded check a tool the agent calls through a broker. The broker
@@ -36,9 +36,11 @@ Rules the code enforces:
   (BRD RULE-015).
 
 ## Consequences
-- No monitor's logic changed; each has a small adapter in `src/output/monitorAdapters.ts`.
+- No monitor's logic changed; each has a small adapter in `src/output/monitorAdapters.ts`. The fifth first monitor,
+  the system health probe, folded into system resilience supervision on 2026-11-04, so it has two adapters there:
+  the posture, and the health probes, whose evidence is the `GET /health/full` export rather than a table row.
 - Until K.D. writes the first rules, the broker can rank by verdict only.
 
 ## Evidence
-- `src/output/toolOutput.ts`, `src/output/monitorAdapters.ts`, `test/toolOutput.test.ts` (13 tests).
-- Ten deliberate breaks of these rules, each caught by a named test (decision 004).
+- `src/output/toolOutput.ts`, `src/output/monitorAdapters.ts`, `test/toolOutput.test.ts` (16 tests).
+- Seventeen deliberate breaks of these rules, each caught by a named test (decision 004).

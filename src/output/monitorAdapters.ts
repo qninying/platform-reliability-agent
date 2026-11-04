@@ -1,10 +1,13 @@
-// Adapters from the four built first monitors to the shared tool output. No monitor's logic changes:
+// Adapters from K.D.'s five first monitors to the shared tool output (the fifth, the system health probe, folded
+// into system resilience supervision on 2026-11-04, so it is two adapters there). No monitor's logic changes:
 // each adapter only reads the answer it already gives and maps it onto the envelope.
 
 import type { HealthAnswer as OrchestrationAnswer, Refusal, Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import type { HealthAnswer as CronAnswer } from '../capabilities/cronHealthAlerting.ts';
 import type { ScoreAnswer } from '../capabilities/agentHealthScoring.ts';
 import type { TraceAnswer } from '../capabilities/incidentTrace.ts';
+import type { PostureReport } from '../capabilities/systemResilienceSupervision.ts';
+import type { ProbeAnswer } from '../capabilities/platformHealthProbe.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 
 export interface Capture { captured_at: string; captured_by: string }
@@ -66,4 +69,25 @@ export function incidentTraceOutput(a: TraceAnswer, c: Capture, table: SeverityT
   const blind_spots = verdict === 'unknown' ? [a.statement, ...a.cannot_say] : a.cannot_say;
   const platform_signal = a.error_record ? `campaign_errors severity: ${a.error_record.severity}` : null;
   return envelope({ tool, as_of: captured(c), verdict, case: verdict === 'problem' ? 'failure_traced' : a.verdict, platform_signal, evidence, blind_spots, detail: a }, table);
+}
+
+export function resilienceOutput(a: PostureReport, c: Capture, table: SeverityTable): ToolOutput<PostureReport> {
+  const tool = 'platform.CAP.system_resilience_supervision';
+  const degraded = a.subsystems.filter((x) => x.state === 'degraded');
+  const unknown = a.subsystems.filter((x) => x.state === 'unknown');
+  // A known problem is reported even while other parts are unknown; unknown parts never read as healthy.
+  const verdict = degraded.length ? 'problem' : unknown.length === a.subsystems.length ? 'unknown' : unknown.length ? 'partly_unknown' : 'ok';
+  const cited = verdict === 'problem' ? degraded : a.subsystems.filter((x) => x.state !== 'unknown');
+  const sup = a.platform_supervisor;
+  const platform_signal = sup.health ? `platform supervisor reads ${sup.health}${sup.disagrees ? ', which Ellis does not' : ''}` : null;
+  return envelope({ tool, as_of: captured(c), verdict, case: verdict === 'problem' ? 'subsystem_degraded' : verdict, platform_signal, evidence: fromCitations(cited.flatMap((x) => x.citations)), blind_spots: unknown.map((x) => `${x.subsystem}: ${x.reason}`), detail: a }, table);
+}
+
+// The health probes read an export of GET /health/full, not table rows: the export itself is the evidence.
+export function healthProbeOutput(a: ProbeAnswer, c: Capture, table: SeverityTable): ToolOutput<ProbeAnswer> {
+  const tool = 'platform.CAP.system_resilience_supervision';
+  const evidence: Evidence[] = a.report_at ? [{ table: 'health_full_export', id: a.report_at, fields: a.checks.filter((x) => x.platform_severity !== 'not_reported').map((x) => x.name) }] : [];
+  const blind_spots = [...a.checks.filter((x) => x.state === 'unknown').map((x) => `${x.name}: ${x.why}`), ...a.cannot_see.map((b) => b.what)];
+  const verdict = a.verdict !== 'unknown' && evidence.length === 0 ? 'unknown' : a.verdict;
+  return envelope({ tool, as_of: captured(c), verdict, case: verdict === 'problem' ? 'health_check_failing' : verdict, platform_signal: a.platform_overall ? `GET /health/full overall_status: ${a.platform_overall}` : null, evidence, blind_spots, detail: a }, table);
 }
