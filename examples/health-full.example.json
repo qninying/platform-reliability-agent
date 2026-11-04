@@ -1,0 +1,16 @@
+{
+  "captured_at": "2026-10-27T15:05:00Z",
+  "captured_by": "example: the shape of GET /health/full at cc1ebc5, with invented values",
+  "report": {
+    "timestamp": "2026-10-27T15:04:30Z",
+    "overall_status": "ok",
+    "duration_ms": 812,
+    "checks": [
+      { "name": "scheduler_liveness", "severity": "ok", "detail": "Scheduler last ran 3 minutes ago.", "metric": 3 },
+      { "name": "database_connectivity", "severity": "ok", "detail": "Database responding (14ms).", "metric": 14 },
+      { "name": "database_connections", "severity": "ok", "detail": "9 active database connections.", "metric": 9 },
+      { "name": "process_uptime", "severity": "ok", "detail": "Backend uptime: 41h.", "metric": 147600 },
+      { "name": "email_delivery", "severity": "ok", "detail": "No email activity in the last 2 hours.", "metric": 0 }
+    ]
+  }
+}

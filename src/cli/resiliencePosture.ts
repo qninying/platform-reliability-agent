@@ -2,11 +2,14 @@
 // Prints the resilience posture: each subsystem's state and the age of its last signal. Reads only.
 // --now defaults to the snapshot's captured_at. Exit code 0 when healthy, 3 when any subsystem is
 // unknown, 4 when degraded with no unknowns, 1 for bad input.
+// --health-full <export.json> adds the platform's own probes (an export of GET /health/full) and what they cannot
+// see. With it, an unknown or partly unknown probe also gives 3, and a probe problem gives 4 when nothing is unknown.
 import { readFileSync } from 'node:fs';
 import { parseArgs } from 'node:util';
 import { resiliencePosture, type ResilienceSnapshot } from '../capabilities/systemResilienceSupervision.ts';
+import { probeHealth, type HealthFullExport } from '../capabilities/platformHealthProbe.ts';
 
-const { values } = parseArgs({ options: { snapshot: { type: 'string' }, now: { type: 'string' } } });
+const { values } = parseArgs({ options: { snapshot: { type: 'string' }, now: { type: 'string' }, 'health-full': { type: 'string' } } });
 
 class InputError extends Error {
   readonly errorClass: 'SourceUnavailable' | 'ContractViolation';
@@ -40,14 +43,29 @@ function load(path: string): ResilienceSnapshot {
   return s as ResilienceSnapshot;
 }
 
+function loadHealth(path: string): HealthFullExport {
+  let e: Partial<HealthFullExport>;
+  try {
+    e = JSON.parse(readFileSync(path, 'utf8'));
+  } catch (err) {
+    throw new InputError('SourceUnavailable', `${path} could not be read as JSON: ${(err as Error).message}`);
+  }
+  if (typeof e.captured_at !== 'string' || e.report === undefined) throw new InputError('ContractViolation', `${path} needs captured_at and report (use null when the call failed)`);
+  if (e.report !== null && (typeof e.report.timestamp !== 'string' || !Array.isArray(e.report.checks))) throw new InputError('ContractViolation', `${path} report needs timestamp and checks[]`);
+  return e as HealthFullExport;
+}
+
 try {
   if (!values.snapshot) throw new InputError('ContractViolation', 'missing --snapshot <resilience.json>');
   const snap = load(values.snapshot);
   const now = values.now ?? snap.captured_at;
   if (!Number.isFinite(Date.parse(now))) throw new InputError('ContractViolation', `--now '${now}' is not a readable time`);
   const report = resiliencePosture(snap, { now });
-  console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, now, ...report }, null, 2));
-  process.exit(report.verdict === 'healthy' ? 0 : report.verdict === 'unknown' ? 3 : 4);
+  const probes = values['health-full'] ? probeHealth(loadHealth(values['health-full']), now) : null;
+  console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, now, ...report, ...(probes ? { platform_probes: probes } : {}) }, null, 2));
+  const unknown = report.verdict === 'unknown' || (probes !== null && (probes.verdict === 'unknown' || probes.verdict === 'partly_unknown'));
+  const problem = report.verdict === 'degraded' || probes?.verdict === 'problem';
+  process.exit(unknown ? 3 : problem ? 4 : 0);
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

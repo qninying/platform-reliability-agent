@@ -77,11 +77,44 @@ Ellis does not.
 Not in this release: cross-subsystem failure patterns. They need failure records with a shared error
 class and time, which the supervisors do not keep.
 
+## The platform's own health probes
+
+Added 2026-11-04, when A.M. folded the system health probe story into this capability. Given an export of
+`GET /health/full`, Ellis judges each check on what it can actually show, and on every answer lists what the
+probes cannot see. Ellis sends no alert; the platform's monitor does. Read from the platform at `cc1ebc5`:
+
+| Check result | Ellis reads it as |
+|---|---|
+| A warning or critical that ran | problem |
+| A warning whose detail starts "Check failed:" (`systemHealthService.ts:167`, `:281`) | unknown: the check did not run |
+| `email_delivery` ok with no email in the window (`:262-264`) | unknown: no evidence is not health |
+| One of the six checks recorded on every run, missing from the report | unknown: the platform dropped it |
+| A report older than 30 minutes, dated in the future, or undated | the whole report is unknown |
+
+What the probes cannot see, stated on every answer:
+1. **A scheduler that never registered is undetectable by `GET /health`.** It runs `SELECT 1` and nothing
+   else (`routes/healthRoutes.ts:7-15`). The scheduler liveness probe measures this in full.
+2. **`scheduler_liveness` reads one job's heartbeat,** written only by `processScheduledActions`
+   (`schedulerService.ts:473`, `:839`). It says nothing about the AI Ops scheduler or any other timer.
+3. **The monitor runs only on weekdays, 07:00 to 18:00 Central** (`schedulerService.ts:3316`, `:3319-3320`).
+   Nights and weekends are neither checked nor alerted by it.
+4. **After every restart the first alert waits two hours.** The alert clock starts at boot
+   (`schedulerService.ts:3314`) and the cooldown is two hours (`:3345-3351`); the comment says five minutes
+   (`:3313`).
+5. **A critical is alerted at most once every two hours,** however often it recurs.
+6. **A check that throws without recording is dropped,** because the checks run under `Promise.allSettled`
+   (`systemHealthService.ts:446-457`), and the overall status reads as if it passed.
+7. **The monitor's own runs are not recorded:** `SystemHealthMonitor` has no `ai_agents` row.
+
 ## How to run it
 
 ```
 npm run resilience-posture -- --snapshot examples/resilience-posture.example.json [--now <ISO time>]
+npm run resilience-posture -- --snapshot examples/resilience-posture.example.json --health-full examples/health-full.example.json --now 2026-10-27T15:10:00Z
 ```
+
+`examples/health-full.example.json` has the shape of `GET /health/full` with invented values: the platform
+reads ok, and Ellis reads partly unknown (no email in the window, two checks missing).
 
 The example is not production data. It shows:
 - a supervisor that never reported;
@@ -97,12 +130,21 @@ Exit codes:
 - 4: degraded with no unknowns
 - 1: bad input
 
+With `--health-full`, an unknown or partly unknown probe also gives 3, and a probe problem gives 4 when nothing is
+unknown.
+
 ## Evidence
 
 - **Named passing test:** "acceptance: a subsystem with no signal is reported as unknown and prevents a
   healthy overall verdict". It removes each of the 13 signals in turn and checks the subsystem reads
   unknown and the verdict is not healthy. There are 12 tests in this file and 149 in the repo, all
   passing under `npm test`.
+- **Health probes** (`src/capabilities/platformHealthProbe.ts`, `test/platformHealthProbe.test.ts`, 11 tests).
+  Named test: "acceptance: the report names "scheduler never registered" as undetectable by GET /health, on
+  every answer". Ten deliberate breaks, each caught by a named test: reading "Check failed" as a warning,
+  reading no email as ok, ignoring a missing check, accepting a stale report, accepting a future one, letting an
+  unknown outrank a problem, reading unknowns as ok, accepting a null report, dropping the disclosure, and
+  making the answer depend on check order.
 - **The tests catch defects.** Each check was done by editing the code, running the tests and restoring
   the code:
   - letting a degraded subsystem outrank an unknown one fails 3;
