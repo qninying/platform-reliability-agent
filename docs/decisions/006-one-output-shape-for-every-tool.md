@@ -57,13 +57,17 @@ Rules the code enforces:
   behaviour watch, the security rollup and autonomy authority. A scanner's finding severity and the platform
   director's verdict travel as `platform_signal`, never as Ellis's severity. A clean behaviour window keeps no row
   ids, so it is `unknown` with the count it examined.
+- The code-quality and data checks have adapters in `src/output/qualityAdapters.ts`: error-class coverage, the
+  idempotency harness, retention sweeps, the bug baseline and prompt performance. A proven harness still leaves
+  every platform job `unknown`, and a prompt change proposed with no measurement before it is the problem case.
 - The remaining older checks move over in batches of five or six.
 - Until K.D. writes the first rules, the broker can rank by verdict only.
 
 ## Evidence
 - `src/output/toolOutput.ts`, `src/output/monitorAdapters.ts`, `src/output/foldAdapters.ts`,
   `src/output/jobAdapters.ts`, `src/output/schedulerAdapters.ts`, `src/output/deployAdapters.ts`,
-  `src/output/securityAdapters.ts`, `test/toolOutput.test.ts` (16 tests), `test/foldAdapters.test.ts` (8 tests),
-  `test/jobAdapters.test.ts` (10 tests), `test/schedulerAdapters.test.ts` (8 tests), `test/deployAdapters.test.ts`
-  (8 tests), `test/securityAdapters.test.ts` (9 tests).
-- Sixty-two deliberate breaks of these rules, each caught by a named test (decision 004).
+  `src/output/securityAdapters.ts`, `src/output/qualityAdapters.ts`, `test/toolOutput.test.ts` (16 tests),
+  `test/foldAdapters.test.ts` (8 tests), `test/jobAdapters.test.ts` (10 tests), `test/schedulerAdapters.test.ts`
+  (8 tests), `test/deployAdapters.test.ts` (8 tests), `test/securityAdapters.test.ts` (9 tests),
+  `test/qualityAdapters.test.ts` (8 tests).
+- Seventy-three deliberate breaks of these rules, each caught by a named test (decision 004).
