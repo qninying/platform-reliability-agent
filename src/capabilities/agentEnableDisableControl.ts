@@ -57,7 +57,8 @@ export interface TimerRow {
   gates: Array<{ gate: Gate; flag: string | null }>;
 }
 
-export interface ControlAgentRow { id: string; agent_name: string; enabled: boolean; status: string }
+// category matters only to the kill switch, which disables outbound categories (fleetStopLevers.ts).
+export interface ControlAgentRow { id: string; agent_name: string; enabled: boolean; status: string; category?: string | null }
 export interface GovernanceRow { agent_name: string; enabled: boolean; schedule: string | null }
 export interface Evidence { source: string; ref: string; summary: string }
 export interface ControlRequest { agent_name: string; evidence: Evidence[] }

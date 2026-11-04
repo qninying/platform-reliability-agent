@@ -168,6 +168,38 @@ At `c699e58` it finds all 69 timers, the same as at `7c70f0a`; the example is re
 
 Production may hold rows the code does not create, so a missing row here means "no row in code".
 
+## Stopping the whole fleet
+
+Added 2026-11-04, when A.M. folded the emergency stop and kill switch story into this capability. Ellis
+answers **"to halt the fleet, which lever reaches what, and what would resuming undo?"** Pulling any of these
+is a human decision at every autonomy level; Ellis names the lever and what it does and does not stop.
+
+Read from the platform at `cc1ebc5`:
+
+| Lever | What it writes | What it stops |
+|---|---|---|
+| Emergency stop (`aiOpsRoutes.ts:90`, `agentGovernanceRoutes.ts:31`) | every enabled row to disabled and `paused` (`agentPermissionService.ts:366-375`) | exactly what a per-agent disable stops, fleet-wide: never a timer with no row |
+| Kill switch (`aiOpsRoutes.ts:124`) | `system_kill_switch`, pauses active campaigns, disables outbound-category rows (`launchSafety.ts:155-188`) | the runs of outbound rows; every send at the send check |
+| Scheduler pause (`schedulerControlRoutes.ts:12`) | `scheduler_paused` only (`adminSchedulerController.ts:11-14`) | **no timer.** Sends at the send check, and only while the flag can be read (`communicationSafetyService.ts:298-310`) |
+| Governance row | `cron_schedule_configs` | that timer itself |
+
+What the code showed:
+1. **The scheduler pause stops no job.** No timer reads `scheduler_paused`. It refuses sends at the send
+   check, and lets them through if the flag cannot be read. The build plan's acceptance line for this story
+   says a recommendation for a `schedulerService` job "must instead name the scheduler pause"; on the code,
+   that would tell a person the job stopped when it did not. Ellis names the scheduler pause as blocking sends
+   only, and says when nothing stops the job.
+2. **The emergency stop is a disable of every row,** so the 33 timers with no row keep running, the same gap
+   as above.
+3. **Emergency resume can undo a person's choice.** It re-enables every row that is disabled with status
+   `paused` (`agentPermissionService.ts:380-395`). A row a person disabled and paused before the stop is
+   re-enabled, and a row a person paused comes back enabled and idle, its pause lost. Ellis lists those rows
+   and recommends resuming by name.
+
+On the timer inventory (code at `4443087`, not production data): the emergency stop would disable 239 rows and
+stop 32 of the 69 timers; 4 are already off and 33 keep running. No row in code is paused, so a resume would
+undo nothing there; production may differ.
+
 ## How to run it
 
 ```
@@ -176,6 +208,7 @@ npm run disable-recommendation -- --snapshot examples/disable-recommendation.exa
 npm run disable-recommendation -- --snapshot examples/disable-recommendation.example.json --pause-gaps
 npm run timer-inventory -- --source <platform checkout> --commit <sha>
 npm run disable-recommendation -- --snapshot examples/timer-inventory.example.json --pause-gaps
+npm run disable-recommendation -- --snapshot examples/timer-inventory.example.json --fleet-stop
 ```
 
 `examples/timer-inventory.example.json` is the inventory built from the platform at `c699e58`: code, not
@@ -193,7 +226,8 @@ Exit codes:
 - 1: bad input
 
 With `--agent`: 0 when pause contains the agent as fully as disable, 3 otherwise. With `--pause-gaps`: 0
-when every agent is fully contained by pause and every timer has a row, 3 otherwise. `timer-inventory`
+when every agent is fully contained by pause and every timer has a row, 3 otherwise. With `--fleet-stop`: 0
+when the emergency stop reaches every running timer and a resume would undo nothing, 3 otherwise. `timer-inventory`
 exits 0 when every call site resolved, 3 when any did not, 1 for bad input.
 
 ## Evidence
@@ -258,6 +292,14 @@ exits 0 when every call site resolved, 3 when any did not, 1 for bad input.
   - accepting lowercase constants fails 1;
   - inverting the no-row filter fails 1;
   - leaving the no-row list unsorted fails 1.
+- **Fleet levers** (`src/capabilities/fleetStopLevers.ts`, `test/fleetStopLevers.test.ts`, 10 tests). Named
+  tests: "acceptance: for a schedulerService job no row reaches, no per-agent stop is named, and the scheduler
+  pause is named as blocking sends only" and "acceptance, on the code as it is: the scheduler pause stops no
+  timer at all". Eleven deliberate breaks, each caught by a named test: reaching a timer with no row, reaching
+  an already-disabled row, letting the scheduler pause stop a job, letting the kill switch stop every row,
+  dropping the governance lever, missing a disabled and paused row on resume, missing a lost pause, counting an
+  unknown wrapper, reaching a wrapper that never reads its row, counting an already-off timer as running, and
+  dropping a citation.
 - **Checked against the platform's own list.** The 33 timers with no row match the platform's cron registry
   baseline name for name (`diff` of the two sorted lists: identical).
 - **Not yet run on live records.** K.D. cannot reach the control route (`backend/src/routes/admin/aiOpsRoutes.ts:72`).
