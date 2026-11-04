@@ -569,9 +569,9 @@
     "summary": {
       "stories": 136,
       "checked": 55,
-      "verified": 45,
-      "awaiting_criteria": 3,
-      "outstanding_criteria": 3
+      "verified": 46,
+      "awaiting_criteria": 2,
+      "outstanding_criteria": 2
     },
     "stories": [
       {
@@ -648,7 +648,7 @@
         "criteria_total": 1,
         "reasons": [],
         "outstanding": [],
-        "commit_sha": "2cccba97dd46727a615d3b93869976cd30a6d12c"
+        "commit_sha": "b81d00bac32ba9d25e41b997b4e2147a3dcae435"
       },
       {
         "story_id": "platform.CAP.agent_enable_disable_control.autonomy:R2",
@@ -977,11 +977,9 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [
-          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
-        ],
+        "reasons": [],
         "outstanding": [],
-        "commit_sha": "d267672c3611d398d51fc1b16435e78cc5ae0b45"
+        "commit_sha": "3612aca5818e327c14e7651567a8839eb9c1a21d"
       },
       {
         "story_id": "platform.CAP.data_retention_sweep.autonomy:R2",
@@ -1310,7 +1308,9 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [],
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
         "outstanding": [],
         "commit_sha": "20f265e25c78d06e0d0296c200177b55c2d9ed04"
       },
@@ -1393,19 +1393,14 @@
       {
         "story_id": "platform.CAP.manager_scoped_authorization",
         "title": "Manager-scoped authorization for agent management",
-        "status": "not_started",
-        "verification_state": "in_progress",
-        "verified": false,
-        "criteria_passed": 0,
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [
-          "None of the 1 acceptance criteria are marked as passing yet.",
-          "No commit in the repo names platform.CAP.manager_scoped_authorization and changes a file. Commit your work with a `Story: platform.CAP.manager_scoped_authorization` trailer (or platform.CAP.manager_scoped_authorization in the subject line) and push."
-        ],
-        "outstanding": [
-          "For Kesetebirhan Delele and any platform agent the answer is 'nobody, via no route, because he holds no admin_users row' — a positive control that the gap is reported rather than papered over."
-        ],
-        "commit_sha": null
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "cdec00f207965cb4bdfd698ed4fdff70ddd62927"
       },
       {
         "story_id": "platform.CAP.manager_scoped_authorization.autonomy:R2",
@@ -1539,11 +1534,9 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [
-          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
-        ],
+        "reasons": [],
         "outstanding": [],
-        "commit_sha": "76a41d35bf94f37486ec52ac29a682dd9994537b"
+        "commit_sha": "b519ce648c8a80d7dd3f8aa923cbc9a3f27710f6"
       },
       {
         "story_id": "platform.CAP.preview_stack_reaping.autonomy:R2",
@@ -1993,11 +1986,9 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [
-          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
-        ],
+        "reasons": [],
         "outstanding": [],
-        "commit_sha": "5ca2e3e940a98c048535efa454e93b7a994a6b3a"
+        "commit_sha": "c97bff6dda4163bb42e423e7601fc7adf65d319c"
       },
       {
         "story_id": "platform.CAP.stale_action_recovery.autonomy:R2",
@@ -2069,7 +2060,9 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [],
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
         "outstanding": [],
         "commit_sha": "9b251a186e1e52e8e2aed0e8f2fc76a390fd1d2d"
       },
@@ -2143,7 +2136,9 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [],
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
         "outstanding": [],
         "commit_sha": "22cff653a3d37fcb9f03318498a7baa59ad920e8"
       },
