@@ -35,6 +35,7 @@ test("acceptance: the answer separates 'past the threshold' from 'past the attem
   assert.equal(left.state, 'past_threshold');
   assert.equal(left.recyclable, true);
   assert.deepEqual(left.attempt, { this_run: 1, cap: 2 });
+  assert.equal(left.platform_outcome, 'recycled_and_rerun', 'the platform sends it back to pending with an attempt spent');
   assert.equal(last.state, 'past_attempt_cap');
   assert.equal(last.recyclable, false);
   assert.deepEqual(last.attempt, { this_run: 2, cap: 2 });
@@ -43,19 +44,19 @@ test("acceptance: the answer separates 'past the threshold' from 'past the attem
   assert.equal(r.escalate, true);
 });
 
-test('acceptance: a single-attempt action (the platform default) stuck once is past its cap, even though the platform would rerun it', () => {
+test('acceptance: a single-attempt action (the platform default) stuck once is past its cap, and the platform fails it rather than rerunning it', () => {
   const r = staleReport(snap([row('single', { attempts_made: 0, max_attempts: 1 })]), { now: NOW });
   const a = action(r, 'single');
   assert.equal(a.state, 'past_attempt_cap');
   assert.equal(a.recyclable, false);
-  assert.equal(a.platform_outcome, 'recycled_and_rerun');
-  assert.match(a.reason, /must not be recycled/);
+  assert.equal(a.platform_outcome, 'failed_not_recycled');
+  assert.match(a.reason, /must not be recycled; the platform timer fails it and counts the attempt/);
 });
 
-test('a row already at its cap is reported as one the platform resets but never claims again', () => {
+test('a row already at its cap is failed by the platform, not recycled', () => {
   const a = action(staleReport(snap([row('over', { attempts_made: 2, max_attempts: 2 })]), { now: NOW }), 'over');
   assert.equal(a.state, 'past_attempt_cap');
-  assert.equal(a.platform_outcome, 'recycled_but_unclaimable');
+  assert.equal(a.platform_outcome, 'failed_not_recycled');
 });
 
 test('the threshold boundary: exactly at the threshold is still in flight, one minute past is stuck', () => {

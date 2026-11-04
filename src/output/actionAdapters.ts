@@ -5,6 +5,7 @@
 import type { Recommendation } from '../capabilities/agentEnableDisableControl.ts';
 import type { Verification } from '../capabilities/agentTicketAutoResolution.ts';
 import type { RepairReport } from '../capabilities/orchestrationAutoRepair.ts';
+import type { Rehearsal } from '../capabilities/staleRecoveryRehearsal.ts';
 import type { Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 import type { Capture } from './monitorAdapters.ts';
@@ -44,6 +45,19 @@ export function ticketOutput(v: Verification, c: Capture, table: SeverityTable):
   return envelope({
     tool, as_of: sandbox(v.fixture_id, c), verdict, case: kase ?? verdict, platform_signal: null, evidence,
     blind_spots: verdict === 'unknown' && !blind.length ? ['no ticket was checked, so nothing is cited'] : blind, detail: v,
+  }, table);
+}
+
+// Each seeded row is cited, with the run that recovered it; a failed check cites the rows it is about.
+export function staleRehearsalOutput(r: Rehearsal, c: Capture, table: SeverityTable): ToolOutput<Rehearsal> {
+  const tool = 'platform.CAP.stale_action_recovery';
+  const row = (x: Rehearsal['rows'][number]): Evidence => ({ table: 'sandbox_scheduled_emails', id: x.id, fields: ['status', 'attempts_made', ...(x.recovered_by.length ? [`recovered by run ${x.recovered_by.join(', ')}`] : [])] });
+  const wrong = r.rows.filter((x) => x.got !== x.expect || x.recovered_by.length > 1);
+  const failed = Object.entries(r.checks).filter(([, v]) => !v).map(([k]) => k);
+  const kase = !r.checks.harness_catches_double_recovery ? 'harness_cannot_fail' : !r.checks.one_recovery_each ? 'recovered_twice_or_wrongly' : failed[0] ?? null;
+  return envelope({
+    tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase ?? 'verified', platform_signal: null,
+    evidence: (r.verified || !wrong.length ? r.rows : wrong).map(row), blind_spots: r.limits, detail: r,
   }, table);
 }
 

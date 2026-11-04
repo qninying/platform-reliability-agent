@@ -1,0 +1,12 @@
+{
+  "fixture_id": "stale-recovery-sandbox-1",
+  "description": "Sandbox queue shaped like scheduled_emails: one stuck row with attempts left, one slow row whose owner is alive and renews its claim, one stuck row on its last attempt, a row claimed three minutes ago, and a pending row. Invented ids; not production data.",
+  "now": "2026-11-04T15:00:00Z",
+  "rows": [
+    { "id": "sb-stuck-1", "role": "stuck", "expect": "requeued", "status": "processing", "attempts_made": 0, "max_attempts": 3, "processing_started_at": "2026-11-04T14:30:00Z", "processor_id": "proc-dead" },
+    { "id": "sb-slow-1", "role": "slow", "expect": "untouched", "status": "processing", "attempts_made": 0, "max_attempts": 3, "processing_started_at": "2026-11-04T14:30:00Z", "processor_id": "proc-alive" },
+    { "id": "sb-cap-1", "role": "cap_exceeded", "expect": "parked", "status": "processing", "attempts_made": 1, "max_attempts": 2, "processing_started_at": "2026-11-04T14:30:00Z", "processor_id": "proc-dead" },
+    { "id": "sb-fresh-1", "role": "fresh", "expect": "untouched", "status": "processing", "attempts_made": 0, "max_attempts": 1, "processing_started_at": "2026-11-04T14:57:00Z", "processor_id": "proc-other" },
+    { "id": "sb-idle-1", "role": "idle", "expect": "untouched", "status": "pending", "attempts_made": 0, "max_attempts": 1, "processing_started_at": null, "processor_id": null }
+  ]
+}

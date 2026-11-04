@@ -5,19 +5,20 @@
 // is 'unknown' and never recyclable. Read-only; Ellis recovers nothing (production_database is
 // default-denied, so the live recovery stays with the platform's timer).
 //
-// Platform behaviour this rests on (platform repo, commit 4f6b4d5):
-// - StaleActionRecovery runs every 15 minutes (backend/src/services/schedulerService.ts:2344-2349) and
-//   resets every scheduled_emails row in 'processing' for more than 10 minutes back to 'pending'
-//   (:832-845, threshold :833). It does not touch attempts_made and does not check max_attempts.
-// - The processor claims only rows with attempts_made < max_attempts (:457). attempts_made goes up only
-//   when a run finishes (sent :1100-1105, failed :793-811), so a run that hangs is never counted.
-// - max_attempts defaults to 1 (backend/src/models/ScheduledEmail.ts:112-116).
-// - A batch claims up to 40 rows at once (:461) and works them one at a time, at least 5 seconds apart
-//   (:783, pacing up to 180 more :786-789), so a row can sit in 'processing' while its batch is still
-//   working through the rows before it. The records cannot tell that slow row from a stuck one.
+// Platform behaviour this rests on (platform repo, commit c150d4c48; first pinned at 4f6b4d5, before the
+// platform's 27 October fix a2d4e6cd7):
+// - StaleActionRecovery runs every 15 minutes (backend/src/services/schedulerService.ts:2316-2317). A row in
+//   'processing' for more than 10 minutes (scheduling/claimLease.ts:32) is recovered and spends an attempt:
+//   with none left it is failed, otherwise it goes back to 'pending' (claimLease.ts:81-120). A row with no
+//   start time is never selected.
+// - The processor claims only rows with attempts_made < max_attempts (schedulerService.ts:458).
+// - A batch claims up to 40 rows at once (:462) and works them one at a time with pacing. Before each send
+//   the batch renews its claim and skips a row recovered in the meantime (:539, claimLease.ts:55-67), so a
+//   row still waiting its turn can be recovered but is not sent twice. The records cannot tell that slow row
+//   from a stuck one.
 //
-// Ellis counts the stuck run as an attempt, as the brief's workflow does: a row is past the cap when
-// attempts_made + 1 >= max_attempts, i.e. recycling it would run it more times than allowed.
+// Ellis counts the stuck run as an attempt, as the brief's workflow does and as the platform now does: a row
+// is past the cap when attempts_made + 1 >= max_attempts, i.e. recycling it would run it more times than allowed.
 
 import type { ActivityLogRow, AiAgentRow } from '../records.ts';
 import { newestFirst } from '../readSource.ts';
@@ -48,7 +49,7 @@ export interface StaleSnapshot {
 }
 
 export type StuckState = 'in_flight' | 'past_threshold' | 'past_attempt_cap' | 'unknown';
-export type PlatformOutcome = 'left_alone' | 'recycled_and_rerun' | 'recycled_but_unclaimable' | 'never_recovered' | 'unknown';
+export type PlatformOutcome = 'left_alone' | 'recycled_and_rerun' | 'failed_not_recycled' | 'never_recovered' | 'unknown';
 
 export interface ActionAnswer {
   id: string;
@@ -121,14 +122,10 @@ function judge(r: ScheduledActionRow, minutes: number, now: Date, batchSize: num
   if (!attempt) {
     return answer('unknown', age, false, 'unknown', `past the threshold (${age} minutes) but attempts_made ${r.attempts_made} / max_attempts ${r.max_attempts} are not usable, so whether it may be recycled cannot be known${slow}`);
   }
-  const platform: PlatformOutcome = r.attempts_made < r.max_attempts ? 'recycled_and_rerun' : 'recycled_but_unclaimable';
   if (attempt.this_run >= attempt.cap) {
-    const what = platform === 'recycled_and_rerun'
-      ? 'the platform timer will recycle it anyway and the processor will run it again'
-      : 'the platform timer will reset it to pending, where the processor never claims it again';
-    return answer('past_attempt_cap', age, false, platform, `stuck ${age} minutes on attempt ${attempt.this_run} of ${attempt.cap}, its last allowed attempt, so it must not be recycled; ${what}${slow}`);
+    return answer('past_attempt_cap', age, false, 'failed_not_recycled', `stuck ${age} minutes on attempt ${attempt.this_run} of ${attempt.cap}, its last allowed attempt, so it must not be recycled; the platform timer fails it and counts the attempt${slow}`);
   }
-  return answer('past_threshold', age, true, platform, `stuck ${age} minutes on attempt ${attempt.this_run} of ${attempt.cap}, past the ${minutes}-minute threshold with attempts left${slow}`);
+  return answer('past_threshold', age, true, 'recycled_and_rerun', `stuck ${age} minutes on attempt ${attempt.this_run} of ${attempt.cap}, past the ${minutes}-minute threshold with attempts left${slow}`);
 }
 
 function timerStatus(snap: StaleSnapshot, now: Date): StaleReport['timer'] {

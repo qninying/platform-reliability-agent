@@ -19,6 +19,7 @@
     "retention-sweep": "node src/cli/retentionSweep.ts",
     "preview-reaping": "node src/cli/previewReaping.ts",
     "stale-actions": "node src/cli/staleActions.ts",
+    "stale-recovery-sandbox": "node src/cli/staleRecoveryRehearsal.ts",
     "ticket-resolution": "node src/cli/ticketResolution.ts",
     "evolution-proposals": "node src/cli/evolutionProposals.ts",
     "resilience-posture": "node src/cli/resiliencePosture.ts",
