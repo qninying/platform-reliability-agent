@@ -44,6 +44,7 @@
     "registry-ratchet-sandbox": "node src/cli/ratchetRehearsal.ts",
     "schema-compare-sandbox": "node src/cli/schemaCompareRehearsal.ts",
     "timer-proposal-sandbox": "node src/cli/proposalApplyRehearsal.ts",
+    "restore-sandbox": "node src/cli/restoreRehearsal.ts",
     "cron-health": "node src/cli/cronHealth.ts",
     "agent-health": "node src/cli/agentHealth.ts",
     "registry-reconcile": "node src/cli/registryReconcile.ts",

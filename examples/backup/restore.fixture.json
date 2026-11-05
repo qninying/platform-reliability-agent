@@ -1,0 +1,10 @@
+{
+  "fixture_id": "restore-sandbox-1",
+  "description": "A sandbox backup and the queries a correct restore must answer. The backup and its rows were written for this demonstration.",
+  "artefact": "sandbox-backup.sql",
+  "queries": [
+    { "id": "agent_count", "sql": "SELECT count(*) AS n FROM ai_agents", "expect": [{ "n": 6 }] },
+    { "id": "disabled_agents", "sql": "SELECT agent_name FROM ai_agents WHERE enabled = 0 ORDER BY agent_name", "expect": [{ "agent_name": "SampleQuietAgent" }, { "agent_name": "SampleRetiredAgent" }] },
+    { "id": "unresolved_dead_letters", "sql": "SELECT job_name, error_class FROM dead_letter_jobs WHERE resolved = 0 ORDER BY id", "expect": [{ "job_name": "SampleSweepAgent", "error_class": "TimeoutError" }, { "job_name": "SampleDigestAgent", "error_class": "RateLimitError" }] }
+  ]
+}

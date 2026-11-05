@@ -20,6 +20,7 @@ import type { Rehearsal as ModelRehearsal } from '../capabilities/healthModelReh
 import type { Rehearsal as RatchetRehearsal } from '../capabilities/ratchetRehearsal.ts';
 import type { Rehearsal as CompareRehearsal } from '../capabilities/schemaCompareRehearsal.ts';
 import type { Rehearsal as ProposalRehearsal } from '../capabilities/proposalApplyRehearsal.ts';
+import type { Rehearsal as RestoreRehearsal } from '../capabilities/restoreRehearsal.ts';
 import type { Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 import type { Capture } from './monitorAdapters.ts';
@@ -269,6 +270,20 @@ export function proposalApplyOutput(r: ProposalRehearsal, c: Capture, table: Sev
     tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
     evidence: [...(r.verified || !wrong.length ? r.timers : wrong).map(timer), ...problems],
     blind_spots: [...r.not_ticked.map((n) => `${n}: not ticked, because what its runner does with a row is not known`), ...r.limits], detail: r,
+  }, table);
+}
+
+// Each restore attempt is cited with how it ended and which known queries it answered; a failure cites the attempts
+// whose outcome was not the one the run needs (the full backup answering, each truncated copy not).
+export function restoreRehearsalOutput(r: RestoreRehearsal, c: Capture, table: SeverityTable): ToolOutput<RestoreRehearsal> {
+  const tool = 'platform.CAP.backup_and_restore_verification';
+  const ended = (x: RestoreRehearsal['attempts'][number]) => (x.refused ? 'refused: isolation not proven' : !x.restored ? `did not restore: ${x.error}` : x.answered ? 'restored, answered every known query' : `restored, answered wrongly: ${x.answers.filter((a) => !a.ok).map((a) => a.id).join(', ')}`);
+  const att = (x: RestoreRehearsal['attempts'][number]): Evidence => ({ table: 'sandbox_restores', id: x.attempt, fields: [`${x.bytes} bytes`, ended(x)] });
+  const wrong = r.attempts.filter((x) => (x.attempt === 'full') !== (x.restored && x.answered) || x.refused);
+  const kase = Object.entries(r.checks).find(([, v]) => !v)?.[0] ?? 'verified';
+  return envelope({
+    tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
+    evidence: (r.verified || !wrong.length ? r.attempts : wrong).map(att), blind_spots: r.limits, detail: r,
   }, table);
 }
 

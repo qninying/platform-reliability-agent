@@ -1,7 +1,7 @@
 # Backup and restore verification
 
-**Story:** `platform.CAP.backup_and_restore_verification` · **Autonomy:** starts R0, first release R2, ceiling R3 · **Approver:** K.D.
-**Code:** `src/capabilities/backupRestoreVerification.ts`, `src/cli/backupPosition.ts` · **Tests:** `test/backupRestoreVerification.test.ts`
+**Story:** `platform.CAP.backup_and_restore_verification` · **Autonomy:** starts R0, first release R2, rung R3 built in a sandbox, ceiling R3 · **Approver:** K.D.
+**Code:** `src/capabilities/backupRestoreVerification.ts`, `src/cli/backupPosition.ts` (R2), `src/sandbox/sandboxRestore.ts`, `src/capabilities/restoreRehearsal.ts` (R3) · **Tests:** `test/backupRestoreVerification.test.ts`, `test/restoreRehearsal.test.ts`
 
 This first release states the recovery position and shows the search behind it. Today that position is
 `unknown, no backup verification exists in this repository`. It takes no backup and restores nothing. Taking, reading
@@ -90,3 +90,59 @@ to agree them. The answer leaves all three null and records nobody as having agr
 - **On the real source:** run at `bbde6ef`, it read 7,951 files, found the control, classified 8 hits (1 schema-only,
   6 prose, 1 test), found 0 candidates and listed 6 claims. It answered the exact statement, exit 4.
 - **Not done:** no backup policy exists, nobody has checked the host for backups, and the R3 sandbox restore is not built.
+
+## R3: a supplied backup, restored into an isolated sandbox target
+
+The rung's acceptance: **a deliberately truncated artefact fails the restore assertion, the positive control that
+the check can fail; and the restore target is proven isolated before the restore begins.**
+
+`npm run restore-sandbox -- --fixture examples/backup/restore.fixture.json --sandbox <empty dir> --operator <name>`
+(exit 0 verified, 3 not, 1 bad input). A run without `--operator` is refused.
+
+The R2 answer is unchanged: the platform's recovery position is unknown, because no backup verification exists.
+This rung builds the check a person could run once there is a backup to verify. A person supplies the backup; Ellis
+never takes or reads one.
+
+**Isolation, proven before the restore begins.** Each attempt gets a fresh folder. Before anything is restored,
+Ellis reads, not assumes, that the folder was new and empty, the target resolves inside it, nothing exists at the
+target, the backup lies outside it, and no statement in the backup could reach another file (`ATTACH`, `DETACH`,
+`VACUUM INTO`, `load_extension`, or a temporary table, which SQLite keeps outside the database file). If any fails,
+the restore is never begun and nothing is written. The restore is one transaction, so a backup that stops partway
+leaves no table behind. The known queries run on a read-only connection.
+
+**The assertion.** The restored database must answer each known query with exactly the rows the fixture expects:
+6 agents, the 2 disabled ones by name, and the 2 unresolved dead-letter jobs by name and class.
+
+| Attempt | Bytes | Restored | Answered |
+|---|---|---|---|
+| the backup as supplied | 2,004 | yes | **all 3 queries** |
+| cut inside a statement | 1,350 | **no**: incomplete input | |
+| cut after every statement but the last | 1,858 | **yes, with no error** | **wrongly**: one unresolved dead-letter job, not two |
+
+The second truncated copy is the point of the control. It restores cleanly, so a check that only asks whether the
+restore succeeded would pass it. Only a query whose answer depends on the lost rows catches it, and a fixture without
+one is not verified.
+
+**What this does not prove.**
+- The backup is SQL restored into SQLite. A platform backup is a Postgres dump restored with Postgres tools; restoring
+  one needs both, and the artefact needs `production_database`, which is default-denied.
+- The known queries are the fixture's. A real verification needs queries K.D. and A.M. agree answer for the platform,
+  alongside the recovery objective, destination and cadence they have not set.
+- A restore that answers its queries shows the backup holds those answers, not that it is current, complete beyond
+  what is queried, or taken on schedule.
+- The reach-out check reads the backup's text, so a value that merely contains one of those words is refused too:
+  it errs toward refusing.
+- Taking, reading and restoring a production backup, and keeping or rotating backups, are a person's actions.
+
+**Tested:** 9 tests, including the acceptance test named after the criterion. 44 deliberate breaks: 43 caught.
+- **Removed.** A check that each database held only its own schema after the restore. It could not fail: a
+  temporary schema closes with its connection, and `ATTACH` is refused before the restore. Temporary tables are
+  now refused before the restore instead.
+- **Tests added.** That the reach-out check ignores case, that a query cannot write, that a cut landing in a comment
+  restores and passes a query blind to the lost rows (so the control can fail), and that a missing backup is
+  `SourceUnavailable`.
+- **The survivor.** Removing the explicit rollback changes nothing: closing the connection without a commit
+  discards the transaction anyway. It stays for the reader.
+
+Its rung story id is on the platform board but not yet in this repository's plan, so it is recorded here and in the
+commit.
