@@ -1,7 +1,7 @@
 # Timer registry and agent registry reconciliation
 
-**Story:** `platform.CAP.registry_runtime_reconciliation` · **Autonomy:** starts R0, first release R2, ceiling R4 · **Approver:** K.D.
-**Code:** `src/capabilities/registryReconciliation.ts`, `src/inventory/registrySource.ts`, `src/inventory/sourceScan.ts` · **Tests:** `test/registryReconciliation.test.ts`
+**Story:** `platform.CAP.registry_runtime_reconciliation` · **Autonomy:** starts R0, first release R2, rung R4 built in a sandbox, ceiling R4 · **Approver:** K.D.
+**Code:** `src/capabilities/registryReconciliation.ts`, `src/inventory/registrySource.ts`, `src/inventory/sourceScan.ts` (R2), `src/capabilities/ratchetRehearsal.ts` (R4) · **Tests:** `test/registryReconciliation.test.ts`, `test/ratchetRehearsal.test.ts`
 
 Ellis answers **"which timers are untracked, which registry rows are phantom, and which schedules
 disagree"** by measuring both lists from the platform's source at run time. Every count is one Ellis
@@ -208,3 +208,57 @@ Exit codes:
   - skipping the intel sources fails 3.
 - **Not yet run against a live export:** that would also be the first check of what actually fires once
   `cron_schedule_configs` overrides are applied.
+
+## R4: the ratchet fails in both directions
+
+The rung's acceptance: **a planted new violation fails the ratchet and a planted healed entry also fails it, both
+directions proven, not just the one that is easy to assert.**
+
+`npm run registry-ratchet-sandbox -- --fixture examples/registry-ratchet.fixture.json` (exit 0 verified, 3 not, 1 bad input).
+
+The platform's ratchet compares what the reconciler observes with the frozen baseline, and fails on a new entry
+and on a baseline entry no longer observed, "because a baseline that is never pruned is an allowlist"
+(`cronRegistryRatchet.ts:147-160` at `a29dfb245`, unchanged since `4443087`). It runs in the platform's test suite
+only.
+
+Ellis runs the full reconciliation (every file read, the platform's five definitions) and the ratchet over a
+sandbox checkout shaped like the platform's, whose baseline equals what it measures. Then it plants one change at a
+time and runs both again:
+
+| Plant | Class | Direction | The ratchet fails on |
+|---|---|---|---|
+| a cron seed row no timer registers | seed rows with no registration | new | NewPhantom |
+| the row Phantom deleted | seed rows with no registration | healed | Phantom |
+| a timer firing a name with no row | scheduled names with no seed row | new | NewUntracked |
+| a seed row added for Mystery | scheduled names with no seed row | healed | Mystery |
+| Same's registry schedule moved | schedule disagreements | new | Same, `*/7` against `*/5` |
+| Disagree's seed schedule corrected | schedule disagreements | healed | Disagree |
+| Same's row made event-driven | rows denying a schedule | new | Same |
+| Denier's row made cron | rows denying a schedule | healed | Denier |
+| a second registry entry named Same | duplicate registry names | new | Same |
+| Dup's second entry removed | duplicate registry names | healed | Dup, and its schedule disagreement |
+
+**The checks.** The untouched checkout must pass; otherwise a failing plant means nothing. Each plant must fail
+the ratchet with exactly the entries its record expects: a plant that changes nothing, an entry in the wrong
+direction, or a failure the record did not expect all fail the check. A fixture without a plant for every class in
+both directions is refused, and so is a plant that edits the baseline.
+
+**The contrast.** A ratchet that checks new entries only is the platform's own listed mutant (M8,
+`cronRegistryReconciliation.test.ts:81`). Run beside the real one, it catches all 5 new plants and lets all 5
+healed plants through.
+
+**What this does not prove.**
+- The checkout is a small one shaped like the platform's. The count over the real checkout is the R2 answer above.
+- Each plant changes one thing. A new entry and a healed one that cancel out in the same class are not planted.
+- Nothing in production compares the two lists. Running a ratchet anywhere outside the platform's test suite is a
+  change a person makes.
+
+**Tested:** 8 tests, including the acceptance test named after the criterion. 49 deliberate breaks: 49 caught.
+- **Fixed first.** The sandbox reader took a file listed with no text as present; it is now refused as missing.
+- **Tests added.** That every file is read, that a healed-only ratchet ignores a new entry, that a plant labelled
+  new which only heals breaks the contrast, that an expected entry with an unknown class is refused, and that one
+  wrong plant is cited alone.
+
+Its rung story id is on the platform board but not yet in this repository's plan, so it is recorded here and in the
+commit.
+

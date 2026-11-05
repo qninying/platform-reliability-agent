@@ -17,6 +17,7 @@ import type { Rehearsal as ClassRehearsal } from '../capabilities/errorClassRehe
 import type { Rehearsal as AuditRehearsal } from '../capabilities/replayVerdicts.ts';
 import type { Rehearsal as FixRehearsal } from '../capabilities/fixVerification.ts';
 import type { Rehearsal as ModelRehearsal } from '../capabilities/healthModelRehearsal.ts';
+import type { Rehearsal as RatchetRehearsal } from '../capabilities/ratchetRehearsal.ts';
 import type { Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 import type { Capture } from './monitorAdapters.ts';
@@ -221,6 +222,21 @@ export function healthModelOutput(r: ModelRehearsal, c: Capture, table: Severity
   return envelope({
     tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
     evidence: (r.verified || !bad.length ? r.cases : bad).map(agent), blind_spots: r.limits, detail: r,
+  }, table);
+}
+
+// Each plant is cited with the class and direction it planted and what the ratchet failed on; a failure cites the
+// plants whose result was not the one expected, and anything the untouched checkout failed on.
+export function ratchetRehearsalOutput(r: RatchetRehearsal, c: Capture, table: SeverityTable): ToolOutput<RatchetRehearsal> {
+  const tool = 'platform.CAP.registry_runtime_reconciliation';
+  const seen = (x: RatchetRehearsal['plants'][number]) => x.missed ?? (x.failures!.map((f) => `${f.direction} ${f.class}: ${f.entry}`).join('; ') || 'passed the ratchet');
+  const plant = (x: RatchetRehearsal['plants'][number]): Evidence => ({ table: 'sandbox_plants', id: x.id, fields: [`${x.direction} ${x.class}`, seen(x)] });
+  const bad = r.plants.filter((x) => !r.checks[x.id]);
+  const stray = r.untouched.map((f): Evidence => ({ table: 'sandbox_checkout', id: f.entry, fields: [`${f.direction} ${f.class}`] }));
+  const kase = Object.entries(r.checks).find(([, v]) => !v)?.[0] ?? 'verified';
+  return envelope({
+    tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
+    evidence: [...(r.verified || !bad.length ? r.plants : bad).map(plant), ...stray], blind_spots: r.limits, detail: r,
   }, table);
 }
 

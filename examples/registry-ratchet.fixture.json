@@ -1,0 +1,229 @@
+{
+  "fixture_id": "registry-ratchet-sandbox-1",
+  "description": "A small platform checkout shaped like the real one, with a baseline equal to what it measures, and one planted change per drift class and direction. Names are test inputs, not production names.",
+  "baseline_file": "backend/src/services/__tests__/fixtures/cronRegistryBaseline.ts",
+  "files": {
+    "backend/src/services/aiOpsScheduler.ts": "\nconst UNINSTRUMENTED_AGENTS = new Set([\n  'Uninst', // goes through instrumentCronJob\n]);\nexport const SCHEDULE_REGISTRY: ScheduleEntry[] = [\n  { agentName: 'Same', hardcodedSchedule: '*/5 * * * *', runner: runSame, label: 'Same' },\n  { agentName: 'Drift', hardcodedSchedule: '*/10 * * * *', runner: runDrift, label: 'Drift' },\n  { agentName: 'Disagree', hardcodedSchedule: '0 * * * *', runner: runDisagree, label: 'Disagree' },\n  { agentName: 'Tracked', hardcodedSchedule: '0 6 * * *', runner: () => trackAgentRun('Tracked', async () => { await go(); }), label: 'Tracked' },\n  { agentName: 'Director', hardcodedSchedule: '0 9 * * 1', runner: async () => { const m = await import('./workforce/directorActions'); return m.runX(); }, label: 'Director' },\n  { agentName: 'Dup', hardcodedSchedule: '0 1 * * *', runner: runDup, label: 'Dup one' },\n  { agentName: 'Dup', hardcodedSchedule: '0 2 * * *', runner: runDup, label: 'Dup two' },\n  { agentName: 'Uninst', hardcodedSchedule: '0 3 * * *', runner: runUninst, label: 'Uninst' },\n  { agentName: 'Mystery', hardcodedSchedule: '0 4 * * *', runner: runMystery, label: 'Mystery' },\n];\nconst DYNAMIC_SCHEDULE_REGISTRY: DynamicScheduleEntry[] = [\n  { agentName: 'Briefing', hardcodedSchedule: '45 6 * * *', dynamicImport: async () => { await brief(); }, label: 'Briefing' },\n];\nfunction startStandardTask(entry, schedule) {\n  const task = cron.schedule(schedule, () => { wrapWithDeadLetter(entry.agentName, entry.label, () => entry.runner()); });\n}\nfunction startDynamicTask(entry, schedule) {\n  const task = cron.schedule(schedule, () => { instrumentCronJob(entry.agentName, entry.dynamicImport); });\n}\ncron.schedule('* * * * *', async () => { await evaluateAndRespond(); });\n",
+    "backend/src/services/aiOrchestrator.ts": "\nasync function runAgent(agentName, executor) { const agent = await AiAgent.findOne({ where: { agent_name: agentName } }); }\nexport async function runSame(): Promise<X> {\n  return runAgent('Same', exec);\n}\nexport async function runDrift(): Promise<X> {\n  return runAgent('DriftAgent', exec);\n}\nexport async function runDisagree(): Promise<X> {\n  return runAgent('Disagree', exec);\n}\nexport async function runDup(): Promise<X> {\n  return runAgent('Dup', exec);\n}\nexport async function runMystery(): Promise<X> {\n  return somethingElse();\n}\n",
+    "backend/src/services/agentRegistrySeed.ts": "\nconst AGENT_REGISTRY: AgentSeedEntry[] = [\n  {\n    agent_name: 'Same',\n    trigger_type: 'cron',\n    schedule: '*/5 * * * *',\n  },\n  {\n    agent_name: 'DriftAgent',\n    trigger_type: 'cron',\n    schedule: '*/10 * * * *',\n  },\n  {\n    agent_name: 'Phantom',\n    trigger_type: 'cron',\n    schedule: '0 0 * * *',\n  },\n  {\n    agent_name: 'Disagree',\n    trigger_type: 'cron',\n    schedule: '30 * * * *',\n  },\n  {\n    agent_name: 'Denier',\n    trigger_type: 'event_driven',\n    schedule: '',\n    config: { agent_name: 'NestedNotARow', trigger_type: 'cron' },\n  },\n  {\n    agent_name: 'Dup',\n    trigger_type: 'cron',\n    schedule: '0 1 * * *',\n  },\n  ...GROWTH_JOURNEY_AGENT_ENTRIES,\n  ...DOMAIN_AGENT_ENTRIES,\n];\n",
+    "backend/src/services/agentRegistry/growthJourneyAgents.ts": "\nexport const GROWTH_JOURNEY_AGENT_ENTRIES: AgentSeedEntry[] = [\n  {\n    agent_name: 'GrowthDigest',\n    trigger_type: 'cron',\n    schedule: '20 4 * * *',\n  },\n];\n",
+    "backend/src/services/agentRegistry/domainAgents.ts": "\nexport const DOMAIN_AGENT_ENTRIES: AgentSeedEntry[] = [\n  {\n    ...releaseZero(),\n    agent_name: 'DomainScheduled',\n  },\n];\n",
+    "backend/src/services/governanceService.ts": "\nconst GOVERNANCE_AGENTS = [\n  { agent_name: 'visitor_tracker', agent_type: 'signal_detector' },\n];\n",
+    "backend/src/services/schedulerService.ts": "\nconst HANDOFF = 'GrowthDigest';\ncron.schedule('0 7 * * *', () => {\n  instrumentCronJob('Denier', async () => { await deny(); });\n});\ncron.schedule('20 4 * * *', () => { instrumentCronJob(HANDOFF, run); });\ncron.schedule('0 8 * * *', () => { instrumentCronJob('DomainScheduled', run); });\n// instrumentCronJob('InComment', fn);\nconst doc = \"instrumentCronJob('InString', fn)\";\nconst fix = text.replace(/'/g, \"''\"); instrumentCronJob('AfterRegex', fn);\nfor (const src of listIntelSources()) cron.schedule(src.cron, () => { instrumentCronJob(`Intel_${src.slug}`, () => src.run()); });\ncron.schedule('10,25,40,55 * * * *', () => { checkCronHealth(); });\n",
+    "backend/src/services/intel/sources/index.ts": "import './alpha';\nimport './helper';\n",
+    "backend/src/services/intel/sources/alpha.ts": "const SLUG = 'alpha';\nregisterIntelSource({ slug: SLUG });\n",
+    "backend/src/services/intel/sources/helper.ts": "export const x = 1;\n",
+    "backend/src/server.ts": "cron.schedule('*/2 * * * *', () => { import('./ops').then((m) => m.sync()); });\n",
+    "backend/src/services/__tests__/fixtures/cronRegistryBaseline.ts": "\nexport const KNOWN_CRON_SEED_ROWS_WITH_NO_REGISTRATION: ReadonlyArray<string> = [\n  'DriftAgent', // drift\n  'Phantom',\n];\nexport const KNOWN_SCHEDULED_NAMES_WITH_NO_SEED_ROW: ReadonlyArray<string> = [\n  'AfterRegex', 'Briefing', 'Director', 'DomainScheduled', 'Drift', 'Intel_alpha', 'Mystery', 'Tracked', 'Uninst',\n];\nexport const KNOWN_SCHEDULE_DISAGREEMENTS: ReadonlyArray<string> = [\n  'Disagree|0 * * * *|30 * * * *',\n  'Dup|0 2 * * *|0 1 * * *',\n];\nexport const KNOWN_REGISTERED_ROWS_DENYING_SCHEDULE: ReadonlyArray<string> = [\n  'Denier|event_driven||instrumentCronJob',\n];\nexport const KNOWN_DUPLICATE_REGISTRY_NAMES: ReadonlyArray<string> = [\n  'Dup|SCHEDULE_REGISTRY|0 1 * * *,0 2 * * *',\n];\n",
+    "backend/src/services/__tests__/other.test.ts": "instrumentCronJob('OnlyInATest', fn);\n",
+    "backend/src/services/oldCopy-Ali-AI.ts": "instrumentCronJob('OnlyInAnAliCopy', fn);\n",
+    "backend/src/services/beside.test.ts": "instrumentCronJob('OnlyInATestBesideCode', fn);\n"
+  },
+  "plants": [
+    {
+      "id": "new-phantom-row",
+      "class": "cronSeedRowsWithNoRegistration",
+      "direction": "new",
+      "what": "a seed row advertising cron that no timer registers",
+      "edits": [
+        {
+          "file": "backend/src/services/agentRegistrySeed.ts",
+          "find": "  ...GROWTH_JOURNEY_AGENT_ENTRIES,",
+          "replace": "  {\n    agent_name: 'NewPhantom',\n    trigger_type: 'cron',\n    schedule: '0 5 * * *',\n  },\n  ...GROWTH_JOURNEY_AGENT_ENTRIES,"
+        }
+      ],
+      "expect": [
+        {
+          "class": "cronSeedRowsWithNoRegistration",
+          "direction": "new",
+          "entry": "NewPhantom"
+        }
+      ]
+    },
+    {
+      "id": "phantom-row-removed",
+      "class": "cronSeedRowsWithNoRegistration",
+      "direction": "healed",
+      "what": "the phantom row Phantom deleted from the seed",
+      "edits": [
+        {
+          "file": "backend/src/services/agentRegistrySeed.ts",
+          "find": "  {\n    agent_name: 'Phantom',\n    trigger_type: 'cron',\n    schedule: '0 0 * * *',\n  },\n",
+          "replace": ""
+        }
+      ],
+      "expect": [
+        {
+          "class": "cronSeedRowsWithNoRegistration",
+          "direction": "healed",
+          "entry": "Phantom"
+        }
+      ]
+    },
+    {
+      "id": "new-untracked-timer",
+      "class": "scheduledNamesWithNoSeedRow",
+      "direction": "new",
+      "what": "a timer firing a name with no seed row",
+      "edits": [
+        {
+          "file": "backend/src/services/schedulerService.ts",
+          "find": "cron.schedule('10,25,40,55 * * * *'",
+          "replace": "cron.schedule('0 9 * * *', () => { instrumentCronJob('NewUntracked', run); });\ncron.schedule('10,25,40,55 * * * *'"
+        }
+      ],
+      "expect": [
+        {
+          "class": "scheduledNamesWithNoSeedRow",
+          "direction": "new",
+          "entry": "NewUntracked"
+        }
+      ]
+    },
+    {
+      "id": "untracked-name-given-a-row",
+      "class": "scheduledNamesWithNoSeedRow",
+      "direction": "healed",
+      "what": "a seed row added for Mystery, on its registry schedule",
+      "edits": [
+        {
+          "file": "backend/src/services/agentRegistrySeed.ts",
+          "find": "  ...GROWTH_JOURNEY_AGENT_ENTRIES,",
+          "replace": "  {\n    agent_name: 'Mystery',\n    trigger_type: 'cron',\n    schedule: '0 4 * * *',\n  },\n  ...GROWTH_JOURNEY_AGENT_ENTRIES,"
+        }
+      ],
+      "expect": [
+        {
+          "class": "scheduledNamesWithNoSeedRow",
+          "direction": "healed",
+          "entry": "Mystery"
+        }
+      ]
+    },
+    {
+      "id": "new-schedule-disagreement",
+      "class": "scheduleDisagreements",
+      "direction": "new",
+      "what": "Same's registry schedule moved off its seed schedule",
+      "edits": [
+        {
+          "file": "backend/src/services/aiOpsScheduler.ts",
+          "find": "{ agentName: 'Same', hardcodedSchedule: '*/5 * * * *'",
+          "replace": "{ agentName: 'Same', hardcodedSchedule: '*/7 * * * *'"
+        }
+      ],
+      "expect": [
+        {
+          "class": "scheduleDisagreements",
+          "direction": "new",
+          "entry": "Same|*/7 * * * *|*/5 * * * *"
+        }
+      ]
+    },
+    {
+      "id": "schedule-disagreement-resolved",
+      "class": "scheduleDisagreements",
+      "direction": "healed",
+      "what": "Disagree's seed schedule set to its registry schedule",
+      "edits": [
+        {
+          "file": "backend/src/services/agentRegistrySeed.ts",
+          "find": "  {\n    agent_name: 'Disagree',\n    trigger_type: 'cron',\n    schedule: '30 * * * *',\n  },\n",
+          "replace": "  {\n    agent_name: 'Disagree',\n    trigger_type: 'cron',\n    schedule: '0 * * * *',\n  },\n"
+        }
+      ],
+      "expect": [
+        {
+          "class": "scheduleDisagreements",
+          "direction": "healed",
+          "entry": "Disagree|0 * * * *|30 * * * *"
+        }
+      ]
+    },
+    {
+      "id": "new-row-denying-schedule",
+      "class": "registeredRowsDenyingSchedule",
+      "direction": "new",
+      "what": "Same's seed row changed to event-driven while its timer still fires",
+      "edits": [
+        {
+          "file": "backend/src/services/agentRegistrySeed.ts",
+          "find": "  {\n    agent_name: 'Same',\n    trigger_type: 'cron',\n    schedule: '*/5 * * * *',\n  },\n",
+          "replace": "  {\n    agent_name: 'Same',\n    trigger_type: 'event_driven',\n    schedule: '*/5 * * * *',\n  },\n"
+        }
+      ],
+      "expect": [
+        {
+          "class": "registeredRowsDenyingSchedule",
+          "direction": "new",
+          "entry": "Same|event_driven|*/5 * * * *|*/5 * * * *"
+        }
+      ]
+    },
+    {
+      "id": "denying-row-corrected",
+      "class": "registeredRowsDenyingSchedule",
+      "direction": "healed",
+      "what": "Denier's seed row set to cron on the schedule it fires on",
+      "edits": [
+        {
+          "file": "backend/src/services/agentRegistrySeed.ts",
+          "find": "    agent_name: 'Denier',\n    trigger_type: 'event_driven',\n    schedule: '',",
+          "replace": "    agent_name: 'Denier',\n    trigger_type: 'cron',\n    schedule: '0 7 * * *',"
+        }
+      ],
+      "expect": [
+        {
+          "class": "registeredRowsDenyingSchedule",
+          "direction": "healed",
+          "entry": "Denier|event_driven||instrumentCronJob"
+        }
+      ]
+    },
+    {
+      "id": "new-duplicate-name",
+      "class": "duplicateRegistryNames",
+      "direction": "new",
+      "what": "a second registry entry under the name Same, on the same schedule",
+      "edits": [
+        {
+          "file": "backend/src/services/aiOpsScheduler.ts",
+          "find": "  { agentName: 'Drift',",
+          "replace": "  { agentName: 'Same', hardcodedSchedule: '*/5 * * * *', runner: runSame, label: 'Same again' },\n  { agentName: 'Drift',"
+        }
+      ],
+      "expect": [
+        {
+          "class": "duplicateRegistryNames",
+          "direction": "new",
+          "entry": "Same|SCHEDULE_REGISTRY|*/5 * * * *,*/5 * * * *"
+        }
+      ]
+    },
+    {
+      "id": "duplicate-entry-removed",
+      "class": "duplicateRegistryNames",
+      "direction": "healed",
+      "what": "Dup's second registry entry removed; its schedule disagreement goes with it",
+      "edits": [
+        {
+          "file": "backend/src/services/aiOpsScheduler.ts",
+          "find": "  { agentName: 'Dup', hardcodedSchedule: '0 2 * * *', runner: runDup, label: 'Dup two' },\n",
+          "replace": ""
+        }
+      ],
+      "expect": [
+        {
+          "class": "duplicateRegistryNames",
+          "direction": "healed",
+          "entry": "Dup|SCHEDULE_REGISTRY|0 1 * * *,0 2 * * *"
+        },
+        {
+          "class": "scheduleDisagreements",
+          "direction": "healed",
+          "entry": "Dup|0 2 * * *|0 1 * * *"
+        }
+      ]
+    }
+  ]
+}
