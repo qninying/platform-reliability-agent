@@ -3,16 +3,17 @@
 // rest on zero runs. A score derived from run_count 0 is labelled unscored, never 100; what a zero-run agent
 // should score is K.D.'s decision, so Ellis does not invent a number for it. Read-only.
 //
-// Platform behaviour this rests on (platform repo, commit 4443087):
+// Platform behaviour this rests on (platform repo, commit a29dfb245):
 // - healthScore = max(0, round(100 - (error_count / max(run_count, 1)) * 200 - (status 'error' ? 30 : 0)))
 //   and error_rate = run_count > 0 ? error_count / run_count : 0 (services/aiOpsService.ts:466-484), from the
 //   lifetime counters on the ai_agents row. With run_count 0 and error_count 0 that is 100.
 // - The registry tab colours 80 and up green (AgentRegistryTab.tsx:67-71), shows 100 for any agent missing
 //   from the health response (:241), and lists agents by category then name (aiOpsService.ts:245), not by score.
 // - What moves the counters depends on the wrapper. runAgent adds to error_count but not run_count when the
-//   agent throws (aiOrchestrator.ts:158-166, :300-306), so error_count can exceed run_count; instrumentCronJob
+//   agent throws (aiOrchestrator.ts:158-166, :300-312), so error_count can exceed run_count; instrumentCronJob
 //   adds both and always writes status idle (cronInstrumentation.ts:68-81); trackAgentRun adds run_count on
-//   success and failure and never touches error_count or status (agentRunTracker.ts:44-70); a director gate
+//   success and failure, adds error_count on failure, and never writes status (agentRunTracker.ts:44-97; the
+//   error count was added upstream in fd4d7646e on 2026-10-28, after finding 54); a director gate
 //   records no run on the row, only activity rows for a success or a skip (workforceAgentRuntime.ts:66-69,
 //   :164-173).
 
@@ -36,7 +37,7 @@ export interface ScoreSnapshot {
   timer_scope: string[];
 }
 
-export const PINNED_AT = 'aiOpsService.ts:466-484 at 4443087';
+export const PINNED_AT = 'aiOpsService.ts:466-484 at a29dfb245';
 const FORMULA = /Math\.round\(100 - \(a\.error_count \/ Math\.max\(a\.run_count, 1\)\) \* 200 - \(a\.status === 'error' \? 30 : 0\)\)/;
 const RATE = /const errorRate = a\.run_count > 0 \? a\.error_count \/ a\.run_count : 0;/;
 
@@ -50,7 +51,7 @@ export function confirmLiveFormula(source: string): void {
 export const platformScore = (r: ScoreRow) => Math.max(0, Math.round(100 - (r.error_count / Math.max(r.run_count, 1)) * 200 - (r.status === 'error' ? 30 : 0)));
 export const platformErrorRate = (r: ScoreRow) => (r.run_count > 0 ? Math.round((r.error_count / r.run_count) * 100) / 100 : 0);
 
-export type ScoreState = 'scored' | 'unscored' | 'score_cannot_fall';
+export type ScoreState = 'scored' | 'unscored';
 export interface AgentScore {
   name: string;
   row_id: string;
@@ -62,7 +63,7 @@ export interface AgentScore {
   // What the registry tab shows for this row today.
   platform_shows: { health_score: number; error_rate: number };
   state: ScoreState;
-  // The platform's number where it means something; null when unscored or when it cannot fall.
+  // The platform's number where it means something; null when unscored.
   score: number | null;
   label: string;
   // Failures are on record although the score says nothing about them: triage these first.
@@ -79,7 +80,6 @@ export interface FleetCounts {
   scored: number;
   unscored: number;
   unscored_with_failures: number;
-  score_cannot_fall: number;
   timers_with_no_row: number;
   platform_shows_100: number;
   platform_100_on_zero_runs: number;
@@ -92,7 +92,6 @@ export interface ScoreAnswer {
   triage: TriageEntry[];
   scored: AgentScore[];
   unscored: AgentScore[];
-  score_cannot_fall: AgentScore[];
   no_row: NoRow[];
   fleet: FleetCounts;
   cannot_say: string[];
@@ -116,23 +115,18 @@ function assess(row: ScoreRow, ds: Decider[], scope: string[]): AgentScore {
     if (row.error_count > 0) {
       attention = true;
       label = `unscored: 0 runs counted, but ${row.error_count} failure(s) recorded`;
-      notes.push(`every recorded attempt failed before it counted as a run: a thrown failure adds to error_count but not run_count (aiOrchestrator.ts:158-166, :300-306); the registry tab shows ${shows.health_score} with error rate ${shows.error_rate}`);
+      notes.push(`every recorded attempt failed before it counted as a run: a thrown failure adds to error_count but not run_count (aiOrchestrator.ts:158-166, :300-312); the registry tab shows ${shows.health_score} with error rate ${shows.error_rate}`);
     } else {
       label = 'unscored: no run recorded';
       notes.push(`no run has been counted, so there is nothing to score; the registry tab shows ${shows.health_score}${shows.health_score >= 80 ? ', in green,' : ''} as if the agent were flawless`);
       if (row.status === 'error') attention = true;
     }
     if (gates.length === 1 && gates[0] === 'director_gate') notes.push(`its timer runs through a director gate that records no run (workforceAgentRuntime.ts:66-69), so run_count stays 0 however often it runs`);
-    if (gates.length > 0 && gates.every((g) => g === 'track_agent_run')) notes.push('once it runs it still cannot fall: trackAgentRun counts a failed run as a run and never adds to error_count or sets status (agentRunTracker.ts:58-70)');
-  } else if (row.error_count === 0 && gates.length > 0 && gates.every((g) => g === 'track_agent_run')) {
-    state = 'score_cannot_fall';
-    score = null;
-    label = 'not scored: this agent\'s failures never reach the counters';
-    notes.push(`trackAgentRun counts a failed run as a run and never adds to error_count or sets status (agentRunTracker.ts:58-70), so the registry tab shows ${shows.health_score} whether it succeeds or fails`);
   } else {
-    if (row.error_count > row.run_count) notes.push(`error_count (${row.error_count}) exceeds run_count (${row.run_count}): thrown failures are counted as errors but not as runs (aiOrchestrator.ts:158-166, :300-306), so the error rate of ${shows.error_rate} is not a share of runs`);
+    if (row.error_count > row.run_count) notes.push(`error_count (${row.error_count}) exceeds run_count (${row.run_count}): thrown failures are counted as errors but not as runs (aiOrchestrator.ts:158-166, :300-312), so the error rate of ${shows.error_rate} is not a share of runs`);
     if (shows.health_score === 0) notes.push(`the score floors at 0 once errors reach half the run count (35% with status error), so agents in this band are ranked here by error rate, not by score`);
     if (row.error_count > 0 && gates.includes('instrument_cron_job')) notes.push(`instrumentCronJob always writes status idle (cronInstrumentation.ts:74), so this agent never takes the 30-point error penalty a runAgent agent would`);
+    if (row.error_count > 0 && gates.includes('track_agent_run')) notes.push(`trackAgentRun counts a failure as a run and an error but writes no status (agentRunTracker.ts:89-97), so this agent never takes the 30-point error penalty a runAgent agent would`);
   }
   if (ds.length === 0) notes.push(`no timer in ${scope.join(', ')} records under this row; a timer outside that scope, an event or a manual run may`);
   const schedules = [...new Set(ds.map((d) => d.schedule))];
@@ -179,11 +173,10 @@ export function agentHealth(snap: ScoreSnapshot, source = PINNED_AT): ScoreAnswe
 
   const scored = all.filter((a) => a.state === 'scored').sort(byName);
   const unscored = all.filter((a) => a.state === 'unscored').sort(byName);
-  const cannotFall = all.filter((a) => a.state === 'score_cannot_fall').sort(byName);
   const rows = snap.ai_agents;
   const fleet: FleetCounts = {
     rows: rows.length, scored: scored.length, unscored: unscored.length,
-    unscored_with_failures: unscored.filter((a) => a.attention).length, score_cannot_fall: cannotFall.length,
+    unscored_with_failures: unscored.filter((a) => a.attention).length,
     timers_with_no_row: noRow.length,
     platform_shows_100: all.filter((a) => a.platform_shows.health_score === 100).length,
     platform_100_on_zero_runs: unscored.filter((a) => a.platform_shows.health_score === 100).length,
@@ -202,8 +195,8 @@ export function agentHealth(snap: ScoreSnapshot, source = PINNED_AT): ScoreAnswe
   ];
   const statement = `${fleet.scored} of ${fleet.rows} agents scored, ${fleet.unscored} unscored because no run has been counted`
     + (fleet.unscored_with_failures ? ` (${fleet.unscored_with_failures} of them with failures on record)` : '')
-    + `, ${fleet.score_cannot_fall} whose failures never reach the score, and ${fleet.timers_with_no_row} timer(s) with no row and so no score.`
+    + `, and ${fleet.timers_with_no_row} timer(s) with no row and so no score.`
     + ` The registry tab shows 100 for ${fleet.platform_shows_100} agents; ${fleet.platform_100_on_zero_runs} of those rest on zero runs.`
     + ` Formula from ${source}.`;
-  return { now: snap.captured_at, formula_source: source, triage: triage(all), scored, unscored, score_cannot_fall: cannotFall, no_row: noRow, fleet, cannot_say: cannot, statement };
+  return { now: snap.captured_at, formula_source: source, triage: triage(all), scored, unscored, no_row: noRow, fleet, cannot_say: cannot, statement };
 }

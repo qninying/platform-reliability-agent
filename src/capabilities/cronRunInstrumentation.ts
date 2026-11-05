@@ -12,8 +12,9 @@
 //   (:88-100). Only err.message and err.stack are kept; the error's class is never recorded (:62-65).
 // - A disabled or paused row is skipped with a log line and no activity row (:46-51), so a skip is never
 //   persisted, although 'skipped' is in the activity log's vocabulary (models/AiAgentActivityLog.ts:4).
-// - trackAgentRun keeps counters only: no activity row, and a failure sets last_error but never
-//   error_count (services/agentRunTracker.ts:40-65).
+// - trackAgentRun keeps counters only: no activity row. At bb1d3c3 a failure set last_error but never
+//   error_count (services/agentRunTracker.ts:40-65); since fd4d7646e (2026-10-28) it adds to error_count too
+//   (agentRunTracker.ts:89-97 at a29dfb245), so its error count now counts failures.
 // - A failure to set status 'running' is caught as the job's own failure (cronInstrumentation.ts:59-66),
 //   so a failed record does not prove the job started.
 
@@ -157,7 +158,6 @@ export function askRun(snap: RunSnapshot, name: string): RunAnswer {
     if (!failedLast) cannot.push('whether the last run succeeded: with no run row, only a last error recorded at the same moment shows a failure');
   }
 
-  if (recording === 'counters_only') cannot.push('a failure count: this wrapper never increments error_count, so 0 errors here does not mean no failures (agentRunTracker.ts:52-64)');
   if (recording === 'unknown') cannot.push(deciding.length === 0 ? `which timer records under this row: none in ${snap.timer_scope.join(', ')} does` : 'what this row\'s wrapper records per run');
   if (deciding.length > 1) cannot.push(`which timer a run came from: ${deciding.length} timers record under this one row (${deciding.map((t) => t.ref).join(', ')})`);
   if (!row.enabled || row.status === 'paused') cannot.push(`skipped ticks: a ${row.enabled ? 'paused' : 'disabled'} job is skipped with no activity row (cronInstrumentation.ts:46-51), so no record tells a skip from a tick that never fired`);

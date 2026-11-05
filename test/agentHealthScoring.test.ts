@@ -11,7 +11,7 @@ import type { TimerRow } from '../src/capabilities/agentEnableDisableControl.ts'
 const row = (name: string, over: Partial<ScoreRow> = {}): ScoreRow => ({ id: `row-${name}`, agent_name: name, enabled: true, status: 'idle', run_count: 10, error_count: 0, category: 'operations', ...over });
 const timer = (t: string, schedule: string, ref: string, gate: TimerRow['gates'][0]['gate'], flag: string | null = t): TimerRow => ({ timer: t, schedule, label: t, ref, gates: [{ gate, flag }] });
 const snap = (rows: ScoreRow[], timers: TimerRow[] = []): ScoreSnapshot => ({ captured_at: '2026-10-27T18:00:00Z', captured_by: 'test', ai_agents: rows, timers, timer_scope: ['aiOpsScheduler.ts', 'schedulerService.ts'] });
-const all = (a: ReturnType<typeof agentHealth>) => [...a.scored, ...a.unscored, ...a.score_cannot_fall];
+const all = (a: ReturnType<typeof agentHealth>) => [...a.scored, ...a.unscored];
 const by = (a: ReturnType<typeof agentHealth>) => new Map(all(a).map((x) => [x.name, x]));
 
 // The lines of aiOpsService.ts at 4443087 that the answer reproduces.
@@ -88,22 +88,21 @@ test('reproduces the registry tab\'s score and error rate exactly', () => {
   }
 });
 
-test('a trackAgentRun agent with no errors cannot fall, so its 100 is not reported as a score', () => {
+test('a trackAgentRun agent is scored: since fd4d7646e its failures reach error_count, though never the 30-point status penalty', () => {
   const a = agentHealth(snap([row('MetaAgentLoop', { run_count: 40 }), row('AutonomousEngine', { run_count: 40, error_count: 2 })], [
     timer('MetaAgentLoop', '0 */6 * * *', 'aiOpsScheduler.ts:420', 'track_agent_run'),
     timer('AutonomousEngine', '*/30 * * * *', 'aiOpsScheduler.ts:410', 'track_agent_run'),
   ]));
   const m = by(a).get('MetaAgentLoop')!;
-  assert.equal(m.state, 'score_cannot_fall');
-  assert.equal(m.score, null);
-  assert.equal(m.platform_shows.health_score, 100);
-  assert.match(m.notes.join(' '), /agentRunTracker\.ts:58-70/);
-  // Errors written by something else do move it, so that one is scored.
-  assert.equal(by(a).get('AutonomousEngine')!.state, 'scored');
-  assert.equal(a.triage.some((t) => t.name === 'MetaAgentLoop'), false);
+  assert.deepEqual([m.state, m.score], ['scored', 100]);
+  assert.equal(m.notes.some((n) => /agentRunTracker/.test(n)), false, 'with no errors there is nothing to qualify');
+  assert.equal(a.triage.some((t) => t.name === 'MetaAgentLoop'), true);
+  const e = by(a).get('AutonomousEngine')!;
+  assert.deepEqual([e.state, e.score], ['scored', 90]);
+  assert.match(e.notes.join(' '), /trackAgentRun counts a failure as a run and an error but writes no status \(agentRunTracker\.ts:89-97\)/);
   const fresh = by(agentHealth(snap([row('CoryEvolutionCycle', { run_count: 0 })], [timer('CoryEvolutionCycle', '0 3 * * *', 'aiOpsScheduler.ts:430', 'track_agent_run')]))).get('CoryEvolutionCycle')!;
   assert.equal(fresh.state, 'unscored');
-  assert.match(fresh.notes.join(' '), /once it runs it still cannot fall/);
+  assert.equal(fresh.notes.some((n) => /cannot fall/.test(n)), false);
 });
 
 test('triage is worst first, and agents floored at 0 are ranked by error rate', () => {

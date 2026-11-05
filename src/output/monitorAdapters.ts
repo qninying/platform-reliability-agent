@@ -45,9 +45,9 @@ const RED_BAND = 60;
 export function agentHealthOutput(a: ScoreAnswer, c: Capture, table: SeverityTable): ToolOutput<ScoreAnswer> {
   const tool = 'platform.CAP.agent_health_scoring';
   const red = a.scored.filter((s) => s.score !== null && s.score < RED_BAND);
-  const attention = [...a.scored, ...a.unscored, ...a.score_cannot_fall].filter((s) => s.attention);
+  const attention = [...a.scored, ...a.unscored].filter((s) => s.attention);
   const problems = [...new Map([...red, ...attention].map((s) => [s.row_id, s])).values()];
-  const unseen = [...a.unscored, ...a.score_cannot_fall];
+  const unseen = a.unscored;
   const blind_spots = [
     ...a.cannot_say,
     ...unseen.map((s) => `${s.name}: ${s.label}`),

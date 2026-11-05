@@ -32,7 +32,8 @@ Every answer lists what the records cannot show, with the line that explains why
   although `skipped` is in the activity log's vocabulary (`backend/src/models/AiAgentActivityLog.ts:4`).
 - **Each run's duration and outcome** for the four timers on `trackAgentRun`. That wrapper keeps counters
   only. Ellis reads a failure from `last_error_at` landing with `last_run_at`
-  (`agentRunTracker.ts:57-63`), and says 0 errors does not mean no failures.
+  (`agentRunTracker.ts:57-63`). Since `fd4d7646e` (28 October) the wrapper also counts a failure in `error_count`,
+  so Ellis no longer says 0 errors does not mean no failures.
 - **The current run** when status is `running`. Its start time is not recorded: `last_run_at` is the
   previous run's finish.
 - **Whether a failed run started its job.** A failure to mark the row running is recorded the same way as
@@ -55,12 +56,13 @@ None of these is a live risk. All are gaps in what gets recorded.
 **New**
 
 1. **Four timers' failures are counted nowhere the alerts look.** `trackAgentRun` writes no activity row
-   and never increments `error_count` (`agentRunTracker.ts:40-65`). The cron health check reads failures
-   from the last 10 activity rows and needs at least 5 (`cronHealthAlertService.ts:150-156`, `:47-48`, `:60`). So
-   AutonomousEngine (six runs an hour), AICOOStrategicCycle, MetaAgentLoop and CoryEvolutionCycle can fail
-   every run with no error-rate alert, and their error count stays 0. Not baselined:
-   `agentRunTracker.test.ts:40` checks the failure path but asserts nothing about `error_count` or an
-   activity row.
+   (`agentRunTracker.ts:40-65`). The cron health check reads failures from the last 10 activity rows and needs
+   at least 5 (`cronHealthAlertService.ts:150-156`, `:47-48`, `:60`). So AutonomousEngine (six runs an hour),
+   AICOOStrategicCycle, MetaAgentLoop and CoryEvolutionCycle can fail every run with no error-rate alert.
+   **Partly fixed upstream in `fd4d7646e`** (28 October): the wrapper now adds to `error_count` on a failure
+   (`agentRunTracker.ts:89-97` at `a29dfb245`), so the registry's health score falls. The alert half stands:
+   it still writes no activity row. The fix added a test for the error count (`agentRunTracker.test.ts:73`);
+   no test asserts an activity row.
 2. **A failed status write is recorded as a failed run of a job that never started.** Setting status
    `running` sits inside the job's own try (`cronInstrumentation.ts:59-61`). If that write fails, the job
    never runs, but the row gains a run and an error and the activity log says `failed` with the database

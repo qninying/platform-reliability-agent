@@ -135,14 +135,14 @@ test('activity rows that are not runs (no trace or no duration, or a pending res
   assert.equal(a.last_run, null);
 });
 
-test('counters-only wrapper: a failure is read from last_error_at, and 0 errors is not taken as no failures', () => {
+test('counters-only wrapper: a failure is read from last_error_at, and its error count is no longer disclaimed (fd4d7646e)', () => {
   const t = [timer('AutonomousEngine', '5,15,25,35,45,55 * * * *', 'aiOpsScheduler.ts:214', [{ gate: 'track_agent_run', flag: 'AutonomousEngine' }])];
   const failed = askRun(snap({ timers: t, ai_agent_activity_logs: [], ai_agents: [row('AutonomousEngine', { run_count: 40, last_run_at: '2026-10-27T11:55:09.300Z', last_error: '429', last_error_at: '2026-10-27T11:55:09.301Z' })] }), 'AutonomousEngine') as Instrumented;
   assert.equal(failed.recording, 'counters_only');
   assert.equal(failed.failed, true);
   assert.equal(failed.last_run?.source, 'counters');
   assert.equal(failed.last_run?.started_at, null);
-  assert.ok(failed.cannot_say.some((c) => /never increments error_count/.test(c)));
+  assert.equal(failed.cannot_say.some((c) => /error_count/.test(c)), false);
   assert.match(failed.cannot_say[0], /agentRunTracker\.ts:61/);
 
   const older = askRun(snap({ timers: t, ai_agent_activity_logs: [], ai_agents: [row('AutonomousEngine', { last_run_at: '2026-10-27T11:55:09.300Z', last_error: '429', last_error_at: '2026-10-27T09:00:00.000Z' })] }), 'AutonomousEngine') as Instrumented;

@@ -7,7 +7,8 @@ Ellis reports **each agent's health score the way the registry tab computes it, 
 which scores rest on zero runs. A score derived from `run_count` 0 is labelled **unscored**, never 100. It is
 read-only.
 
-Platform facts cite the public Colaberry platform repository at upstream commit `4443087`.
+Platform facts cite the public Colaberry platform repository at upstream commit `a29dfb245` (re-checked 5 November).
+The example fleet snapshot was built at `4443087`.
 
 ## Why 100 is the wrong answer for a job that never ran
 
@@ -19,13 +20,12 @@ The registry tab's score is
 What a never-run agent should score is K.D.'s decision. Until K.D. decides, Ellis does not invent a number:
 it labels the agent unscored, and still shows what the tab displays.
 
-## The three states
+## The two states
 
 | State | When | What Ellis reports |
 |---|---|---|
 | **scored** | at least one run counted, and the agent's failures can reach the counters | the tab's score, with notes where it misleads |
 | **unscored** | `run_count` is 0 | no score; "no run recorded", or "0 runs counted, but N failures recorded" |
-| **score cannot fall** | runs counted, no errors, and every timer for the row uses `trackAgentRun` | no score: that wrapper never adds to `error_count` or sets status (`agentRunTracker.ts:58-70`), so the tab shows 100 whatever happens |
 
 Timers with no `ai_agents` row are listed separately as having no score at all, because the score is read
 only from rows (`aiOpsService.ts:466-467`). Each one says what its wrapper does when it finds no row.
@@ -35,7 +35,7 @@ only from rows (`aiOpsService.ts:466-467`). Each one says what its wrapper does 
 The registry lists agents by category, then name (`aiOpsService.ts:245`), not by score. Ellis orders them:
 
 1. agents with failures on record and no score: an agent that throws every time has `run_count` 0, because
-   a thrown failure adds to `error_count` but not `run_count` (`aiOrchestrator.ts:158-166`, `:300-306`).
+   a thrown failure adds to `error_count` but not `run_count` (`aiOrchestrator.ts:158-166`, `:300-312`).
    Labelling it unscored must not bury it, so it goes first;
 2. scored agents from the lowest score, ties broken by the higher error rate. The score floors at 0 once
    errors reach half the run count, so many failing agents share 0.
@@ -49,6 +49,8 @@ Ellis adds a note when:
   rate is not a share of runs;
 - the agent's wrapper is `instrumentCronJob`, which always writes status idle (`cronInstrumentation.ts:74`),
   so it never takes the 30-point penalty a `runAgent` agent would;
+- the agent's wrapper is `trackAgentRun` and it has errors: that wrapper counts a failure as a run and an error
+  but writes no status (`agentRunTracker.ts:89-97`), so it never takes the 30-point penalty either;
 - several timers on different schedules share the row, as Dara's three do, so one score covers all of them;
 - no timer in the inventory's scope records under the row.
 
@@ -75,8 +77,12 @@ The answer also says what it cannot tell:
 3. **Reporting gap. Nothing orders agents by score.** Worst-first triage means scanning every badge.
 
 **Added to earlier findings**
-- **The four `trackAgentRun` agents score 100 whatever happens** (finding 54 covers their missing error
-  counts; this is the effect on the score).
+- **Fixed upstream: the four `trackAgentRun` agents no longer score 100 whatever happens.** Until
+  `fd4d7646e` (28 October, after finding 54) the wrapper never added to `error_count`, so a timer that failed
+  every run showed 100. Ellis reported those rows in a third state, "score cannot fall", which was removed on
+  5 November once the fix was confirmed on main (`agentRunTracker.ts:89-97`). Two parts stand: the wrapper
+  still writes no status, so these agents never take the 30-point penalty, and it still writes no activity
+  row, so their failures raise no alert (finding 54's other half).
 - **The default repair returns the score to 100 with no run in between** (finding 21 covers its effect on
   tickets). The decision monitor judges the repair by the before and after states stored at the moment of
   the reset (`ExecutionAgent.ts:57`, `:152`; `MonitorAgent.ts:65-67`, `:105`), so it always reads as improved.
@@ -104,7 +110,7 @@ A row without `run_count` or `error_count` is refused: a missing counter is not 
 Exit codes:
 - 0: every agent is scored
 - 4: an agent has failures on record and no score
-- 3: some agent is unscored, cannot fall, or has no row
+- 3: some agent is unscored or has no row
 - 1: bad input
 
 ## Evidence
@@ -121,7 +127,6 @@ Exit codes:
   - leaving zero-run agents with errors scored fails 3;
   - keeping the tab's number for unscored agents fails 2;
   - leaving failing zero-run agents out of triage fails 1;
-  - dropping the cannot-fall state fails 1;
   - dropping the error-rate tie break fails 1;
   - a wrong multiplier fails 2, and a wrong penalty fails 1;
   - noting a shared row only from three schedules fails 1;
@@ -130,6 +135,7 @@ Exit codes:
   - accepting a missing counter fails 1;
   - never exiting 4 fails 1;
   - not flagging failures behind no score fails 2;
-  - saying an unscored `trackAgentRun` agent can fall fails 1.
+  - dropping the `trackAgentRun` no-penalty note fails 1, and showing it with no errors fails 1 (added
+    5 November, with the correction above).
 - **Not yet run on live records.** The first live check is one export of `ai_agents` with `run_count`,
   `error_count` and `status`, compared with what the registry tab shows at the same time.
