@@ -10,6 +10,7 @@ import type { Rehearsal as ReapRehearsal } from '../capabilities/previewReapRehe
 import type { Rehearsal as SweepRehearsal } from '../capabilities/retentionSweepRehearsal.ts';
 import type { Rehearsal as OverlapRehearsal } from '../capabilities/cronOverlapRehearsal.ts';
 import type { Rehearsal as DefaultOnRehearsal } from '../capabilities/defaultOnRehearsal.ts';
+import type { Rehearsal as LivenessRehearsal } from '../capabilities/livenessProbeRehearsal.ts';
 import type { Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 import type { Capture } from './monitorAdapters.ts';
@@ -124,6 +125,18 @@ export function defaultOnRehearsalOutput(r: DefaultOnRehearsal, c: Capture, tabl
   return envelope({
     tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
     evidence: (r.verified || !bad.length ? r.names : bad).map(name), blind_spots: r.limits, detail: r,
+  }, table);
+}
+
+// Each case is cited with what both probes returned; a failure cites the cases where Ellis's probe answered wrongly.
+export function livenessRehearsalOutput(r: LivenessRehearsal, c: Capture, table: SeverityTable): ToolOutput<LivenessRehearsal> {
+  const tool = 'platform.CAP.scheduler_registration_liveness_probe';
+  const row = (x: LivenessRehearsal['cases'][number]): Evidence => ({ table: 'sandbox_probe_responses', id: x.id, fields: [`${x.registered} registered`, `probe ${x.ellis.status}`, `GET /health ${x.platform.status}`] });
+  const bad = r.cases.filter((x) => x.ellis.status !== x.expect);
+  const kase = Object.entries(r.checks).find(([, v]) => !v)?.[0] ?? 'verified';
+  return envelope({
+    tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
+    evidence: (r.verified || !bad.length ? r.cases : bad).map(row), blind_spots: r.limits, detail: r,
   }, table);
 }
 

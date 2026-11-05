@@ -13,7 +13,7 @@ evidence and judgement layer, read-only, against the real platform's code and re
 | **Engineering ownership** | Quincy Nkwain Ninying: system architecture and forward-deployed engineering |
 | **Platform** | [Colaberry platform](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator) (public): 100+ scheduled agents, Node, TypeScript, PostgreSQL |
 | **Capabilities** | 39 of 48 verified by the platform ([catalog](docs/capabilities/README.md)) |
-| **Tests** | 774 passing, each capability's key rules shown to fail when broken ([how](docs/decisions/004-prove-each-test-can-fail.md)) |
+| **Tests** | 785 passing, each capability's key rules shown to fail when broken ([how](docs/decisions/004-prove-each-test-can-fail.md)) |
 | **Autonomy** | every capability starts at R0; first releases at R2 (answer from records), with two at R4 and one at R1, all in a sandbox |
 | **Production writes** | none: read-only, or a sandbox copy ([decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md)) |
 | **Runtime dependencies** | none (Node 23.6+ runs the TypeScript directly) |
@@ -68,7 +68,7 @@ Ellis climbs it one step at a time, on evidence K.D. approves.
 | R0 | Define the workflow, requirements, risks and human decisions | every capability starts here ([discovery](docs/discovery/)) |
 | R1 | Prepare isolated development, fixtures and baseline tests | bug fix dispatch: a sealed baseline test, run in a locked sandbox |
 | R2 | Answer questions using approved knowledge and records | 17 first releases: report and recommend, change nothing |
-| R4 | Execute and verify stateful, multi-step sandbox tasks | auto-repair and ticket resolution, and the R4 rungs of stale action recovery, preview stack reaping, data retention, the cron overlap guard and the default-on timer guard, on sandbox copies only |
+| R4 | Execute and verify stateful, multi-step sandbox tasks | auto-repair and ticket resolution, and the R4 rungs of stale action recovery, preview stack reaping, data retention, the cron overlap guard, the default-on timer guard and the scheduler liveness probe, on sandbox copies only |
 | R5 | Evaluate in shadow mode against approved reference outcomes | next step for monitoring, once K.D. sets the acceptable misses and false alarms |
 | R6+ | Supervised production pilot, then authorized automation | not started; each needs its own approval |
 
@@ -168,8 +168,8 @@ The pattern behind many of them is written up as a rule for anyone building a mo
 
 | | |
 |---|---|
-| **Implemented** | 39 of 48 capabilities verified by the platform, the merged manager-access check among them; under A.M.'s 4 November ruling, 7 more are folded into others, and 2 are held. 774 tests. Every check returns one output shape. |
-| **Validated in a sandbox** | Auto-repair and ticket resolution (R4), the R4 rungs of stale action recovery, preview stack reaping, data retention, the cron overlap guard and the default-on timer guard, bug baselines (R1). |
+| **Implemented** | 39 of 48 capabilities verified by the platform, the merged manager-access check among them; under A.M.'s 4 November ruling, 7 more are folded into others, and 2 are held. 785 tests. Every check returns one output shape. |
+| **Validated in a sandbox** | Auto-repair and ticket resolution (R4), the R4 rungs of stale action recovery, preview stack reaping, data retention, the cron overlap guard, the default-on timer guard and the scheduler liveness probe, bug baselines (R1). |
 | **Not yet done** | No capability has run on a live production export; each read-only capability's write-up lists that check as outstanding. K.D. signs in through a management role, from which the portal mints an admin login (A.M., 4 November); A.M. is correcting the domain record to K.D.'s work address, which the agent's own pages need. |
 | **Next** | The first live export and comparison with what the platform shows; the gate and broker that call these checks as tools; shadow-mode evaluation (R5) once K.D. sets the thresholds and the severity table; choosing the model and prompt for the reasoning layer. |
 

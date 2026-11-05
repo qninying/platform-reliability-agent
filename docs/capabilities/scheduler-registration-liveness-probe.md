@@ -1,7 +1,7 @@
 # Scheduler registration liveness probe
 
-**Story:** `platform.CAP.scheduler_registration_liveness_probe` · **Autonomy:** starts R0, first release R2, ceiling R4 · **Approver:** K.D.
-**Code:** `src/capabilities/schedulerLiveness.ts`, `src/cli/schedulerLiveness.ts` · **Tests:** `test/schedulerLiveness.test.ts`
+**Story:** `platform.CAP.scheduler_registration_liveness_probe` · **Autonomy:** starts R0, first release R2, rung R4 built in a sandbox, ceiling R4 · **Approver:** K.D.
+**Code:** `src/capabilities/schedulerLiveness.ts`, `src/cli/schedulerLiveness.ts` (R2), `src/capabilities/livenessProbeRehearsal.ts` (R4) · **Tests:** `test/schedulerLiveness.test.ts`, `test/livenessProbeRehearsal.test.ts`
 
 This first release reports what decides whether any timer registers at all, and what the platform's probes can see
 of it. It names the flag that gates every timer and the one function that starts the AI Ops scheduler, both measured
@@ -66,3 +66,48 @@ At `bbde6ef`:
 - **Not done:** no production boot log has been read, so the running count is unmeasured. The expected count has
   never been pinned, and K.D. has not approved a failure condition. The dependencies `system_health_probe_and_alerting`
   and `runtime_cron_drift_detection` are held, and nothing here is validated yet.
+
+## R4: the probe, built and proven in a sandbox
+
+The rung's acceptance: **with the flag unset the probe returns non-200 while the database is healthy, the exact case
+the current probe returns 200 for.**
+
+`npm run liveness-probe-sandbox -- --fixture examples/liveness-probe.fixture.json` (exit 0 verified, 3 not, 1 bad input).
+
+Ellis builds the probe the story's workflow describes. At boot the sandbox process **records how many timers it
+actually registered**. The probe:
+
+- returns **503 when the database is down**, as `GET /health` does today, and says so first;
+- returns **503 when no timer registered**, naming the flag's value;
+- returns **503 when the count is above zero but below a pinned floor**;
+- otherwise returns **200 with the registered count and the pinned expected count** in the body.
+
+The expected count and the floor are pinned in the fixture, not derived from the registry, because a registry that
+shrinks would lower a derived expectation to match.
+
+The fixture has eight timers, an expected count of eight and a floor of six. It leaves `ENABLE_FOLLOWUP_SCHEDULER`
+absent, empty, `TRUE` and `1`. None of these is the exact string `true` the platform's parse requires
+(`backend/src/config/env.ts:182` at `350243226`), so none starts the scheduler (`server.ts:3701`). In each case
+no timer registered, and the probe returned 503. With the flag set it returned 200 and a count of 8. With three timers
+failing to register, it returned 503 at a count of 5. With the database down it returned 503.
+
+**The control.** The platform's `GET /health` runs `SELECT 1` and nothing else (`routes/healthRoutes.ts:7-15`). On the
+same cases it returned 200 in all four flag-unset cases and in the shortfall case, five in all. That is the exact case
+the acceptance names.
+
+Graded as the subject instead of Ellis's probe, `GET /health` fails the flag and shortfall checks. With Ellis's probe as
+the control, the positive control fails. A fixture whose floor is above what the registry can register fails the
+healthy-process check, because such a probe would never pass.
+
+**What this does not prove.** A registered count is not a fired count: a timer can register and never fire, so the
+heartbeat check in `GET /health/full` stays the second signal. The floor is the fixture's; the real expected count and
+floor are K.D.'s to set. Timers registered outside the task registry are not counted. Changing what `GET /health`
+returns changes what external monitoring treats as an outage, so shipping it is a reviewed deploy by a person, and the
+ladder stops at R4.
+
+**Tested:** 11 tests, including the acceptance test named after the criterion. 42 deliberate breaks, all caught. The
+first run caught 38 of 44. Three survivors were check conditions the probe's own rules already imply, so they were
+removed: "registered above zero" on the healthy check, "below the floor" on the shortfall check, and "a down
+database still fails", which no probe built here can fail; the test that a down database gives 503 stays. The other
+three gained assertions. Its rung story id is on the platform board but not yet in this repository's plan, so it is
+recorded here and in the commit.
