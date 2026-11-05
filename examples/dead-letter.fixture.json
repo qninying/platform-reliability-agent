@@ -1,0 +1,7 @@
+{
+  "fixture_id": "dead-letter-sandbox-1",
+  "description": "One sandbox job seeded to fail with a timeout, run through the platform's capture logic against a sandbox dead_letter_jobs table: three failures in a row, a restart between the second and third, a success in between, six in a row, and a table write that fails on the third. Invented names; not production data.",
+  "job_name": "SandboxReportJob",
+  "label": "Sandbox report job",
+  "error": { "class": "TimeoutError", "message": "upstream did not answer within 30s" }
+}

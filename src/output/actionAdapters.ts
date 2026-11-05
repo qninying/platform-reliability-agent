@@ -11,6 +11,7 @@ import type { Rehearsal as SweepRehearsal } from '../capabilities/retentionSweep
 import type { Rehearsal as OverlapRehearsal } from '../capabilities/cronOverlapRehearsal.ts';
 import type { Rehearsal as DefaultOnRehearsal } from '../capabilities/defaultOnRehearsal.ts';
 import type { Rehearsal as LivenessRehearsal } from '../capabilities/livenessProbeRehearsal.ts';
+import type { Rehearsal as DeadLetterRehearsal } from '../capabilities/deadLetterRehearsal.ts';
 import type { Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 import type { Capture } from './monitorAdapters.ts';
@@ -133,6 +134,18 @@ export function livenessRehearsalOutput(r: LivenessRehearsal, c: Capture, table:
   const tool = 'platform.CAP.scheduler_registration_liveness_probe';
   const row = (x: LivenessRehearsal['cases'][number]): Evidence => ({ table: 'sandbox_probe_responses', id: x.id, fields: [`${x.registered} registered`, `probe ${x.ellis.status}`, `GET /health ${x.platform.status}`] });
   const bad = r.cases.filter((x) => x.ellis.status !== x.expect);
+  const kase = Object.entries(r.checks).find(([, v]) => !v)?.[0] ?? 'verified';
+  return envelope({
+    tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
+    evidence: (r.verified || !bad.length ? r.cases : bad).map(row), blind_spots: r.limits, detail: r,
+  }, table);
+}
+
+// Each case is cited with the rows it wrote; a failure cites the cases that wrote the wrong number.
+export function deadLetterRehearsalOutput(r: DeadLetterRehearsal, c: Capture, table: SeverityTable): ToolOutput<DeadLetterRehearsal> {
+  const tool = 'platform.CAP.dead_letter_capture';
+  const row = (x: DeadLetterRehearsal['cases'][number]): Evidence => ({ table: 'sandbox_dead_letter_jobs', id: x.id, fields: [`${x.rows.length} row(s), ${x.expect} expected`, `${x.contrast_rows} with a durable counter`] });
+  const bad = r.cases.filter((x) => x.rows.length !== x.expect);
   const kase = Object.entries(r.checks).find(([, v]) => !v)?.[0] ?? 'verified';
   return envelope({
     tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,

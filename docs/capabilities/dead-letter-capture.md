@@ -1,7 +1,7 @@
 # Dead-letter capture
 
-**Story:** `platform.CAP.dead_letter_capture` · **Autonomy:** starts R0, first release R2, ceiling R4 · **Approver:** K.D.
-**Code:** `src/capabilities/deadLetterCapture.ts`, `src/inventory/timerHomes.ts` · **Tests:** `test/deadLetterCapture.test.ts`
+**Story:** `platform.CAP.dead_letter_capture` · **Autonomy:** starts R0, first release R2, rung R4 built in a sandbox, ceiling R4 · **Approver:** K.D.
+**Code:** `src/capabilities/deadLetterCapture.ts`, `src/inventory/timerHomes.ts` (R2), `src/capabilities/deadLetterRehearsal.ts` (R4) · **Tests:** `test/deadLetterCapture.test.ts`, `test/deadLetterRehearsal.test.ts`
 
 Ellis reports what has been dead-lettered, by error class, and names the job families that cannot
 dead-letter. An empty queue is never reported as a healthy fleet. Ellis reads the queue and never writes to
@@ -109,3 +109,57 @@ Exit codes:
 - **Not yet run on live records.** The first live check is one export of both tables. Any row for a job in
   `wrapped_but_swallowed` should be looked at: it would mean a failure reached the wrapper by a path this
   report does not describe, such as a job with no `ai_agents` row.
+
+## R4: the capture path, exercised in a sandbox
+
+The rung's acceptance: **three consecutive failures write exactly one row; a restart between failures two and three
+writes none. The second case is the positive control for the in-memory counter's real behaviour.**
+
+`npm run dead-letter-sandbox -- --fixture examples/dead-letter.fixture.json` (exit 0 verified, 1 bad input).
+
+This rung builds no new guard. It runs the platform's own capture logic, as it stands at `350243226`, against a
+sandbox job seeded to fail and a sandbox `dead_letter_jobs` table. The logic:
+- counts consecutive failures in memory (`backend/src/services/deadLetterService.ts:19`);
+- resets the count on a success (`:32`);
+- writes one row when the count reaches 3 (`:17`, `:39-51`);
+- records the error class as the class name, then the error's name, then `Error` (`:46`);
+- clears the count after the write, whether the write succeeded or not (`:53-59`).
+
+The sandbox job throws a `TimeoutError`. Five cases run:
+
+| Case | Rows written | With a durable counter |
+|---|---|---|
+| Three failures in a row | 1, error class `TimeoutError` | 1 |
+| Two failures, a restart, one failure | **0** | 1 |
+| Two failures, a success, one failure | 0 | 0 |
+| Six failures in a row | 2, each at a count of 3 | 2 |
+| Two failures, a failed table write, three more failures | 1; the failed write left no row and no error | 1 |
+
+**The contrast.** A counter that survives a restart runs on the same steps. It writes the row the in-memory counter
+loses, so the restart case can tell the two apart. With the counters swapped, the restart case fails. The platform's
+file calls the reset on restart intended (`deadLetterService.ts:11-13`). This rung records the behaviour and does not
+propose a change.
+
+**What the error class records.** The class's name comes first. An `Error` whose `name` was changed is still recorded
+as `Error`, and a thrown string is recorded as `String`.
+
+**What this does not prove.** The real wrapper and the real table were not run. One job and one error class are run;
+two processes failing the same job, each with its own counter, are not. Nothing on the platform reads
+`dead_letter_jobs`, so a row written is recorded, not seen. Reading it is the triage capability.
+
+**Tested:** 11 tests, including the acceptance test named after the criterion. 32 deliberate breaks: 31 caught. The
+first run caught 28 of 41. Three changes fixed most of the rest:
+- The seeded error now has a real class, so the tests can tell the class name from the error name. Before, both were
+  the same.
+- Each check now compares a case's rows with the number expected for it. Before, the checks were written out by hand,
+  and a valid fixture could never fail them.
+- Two adapter breaks had hit another adapter's identical line, and now target this one.
+
+Two breaks are left out because they cannot change the result: the count never passes 3, so `>=` against `===`, and
+the recorded count against the constant 3, behave the same.
+
+The one survivor is the command's exit code 3. Every valid fixture verifies, because the rehearsal runs fixed logic;
+only a change to the code can make it fail.
+
+Its rung story id is on the platform board but not yet in this repository's plan, so it is recorded here and in the
+commit.
