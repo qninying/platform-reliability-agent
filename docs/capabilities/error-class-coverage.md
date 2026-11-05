@@ -1,7 +1,7 @@
 # Error classification coverage
 
-**Story:** `platform.CAP.error_class_coverage` · **Autonomy:** starts R0, first release R2, ceiling R4 · **Approver:** K.D.
-**Code:** `src/capabilities/errorClassCoverage.ts`, `src/inventory/catchSites.ts` · **Tests:** `test/errorClassCoverage.test.ts`
+**Story:** `platform.CAP.error_class_coverage` · **Autonomy:** starts R0, first release R2, rung R4 built in a sandbox, ceiling R4 · **Approver:** K.D.
+**Code:** `src/capabilities/errorClassCoverage.ts`, `src/inventory/catchSites.ts` (R2), `src/capabilities/errorClassRehearsal.ts` (R4) · **Tests:** `test/errorClassCoverage.test.ts`, `test/errorClassRehearsal.test.ts`
 
 Ellis reports how many recorded failures carry a specific error class, and names every catch site on the cron
 path that records none. It reads and reports. The vocabulary of classes is K.D.'s decision, so Ellis measures
@@ -14,7 +14,7 @@ Platform facts cite the public Colaberry platform repository at upstream commit 
 - **Over all recorded failures, not over classified ones.** The denominator is every failed row in
   `ai_agent_activity_logs` and every row in `dead_letter_jobs` inside the window (7 days by default). An
   activity row counts as failed when its result is `failed`, `failure` or `error`.
-- **A generic class counts as unclassified.** `Error`, `Unknown`, `UnknownError`, `Exception`, an empty value
+- **A generic class counts as unclassified.** `Error`, `Unknown`, `UnknownError`, `Unclassified`, `Exception`, an empty value
   and their other spellings all count against coverage. `deadLetterService.ts:46` falls back to `'Error'`,
   which is why a constructor name alone is coverage on paper only.
 - **The activity log has no class column,** and `details` is null on the cron path
@@ -87,3 +87,61 @@ Exit codes:
   - dropping the limits;
   - wrong exit codes, a missing table, or a bad window.
 - **Not yet run on live records.** The first live check is one export of the two tables for a week.
+
+## R4: the cron path, classified in a sandbox
+
+The rung's acceptance: **seeded timeout, rate-limit and validation failures land in three distinct classes and none in
+the generic class.**
+
+`npm run error-class-sandbox -- --fixture examples/error-class.fixture.json` (exit 0 verified, 3 not, 1 bad input).
+
+**Today, at `bc936a315`.** The cron path records the message and stack and no class
+(`backend/src/services/cronInstrumentation.ts:63-64`), and writes `details: null` (`:96`). The one rule that records a
+class is the dead-letter path's `err?.constructor?.name || err?.name || 'Error'` (`deadLetterService.ts:46`).
+
+**Ellis's classifier** reads what a failure is, not the class it was thrown as, and maps it to the six classes the
+platform standard names (`CLAUDE.md:672`). The rules apply in a fixed order:
+- a class already set from the vocabulary;
+- a timeout code or name, or HTTP 408, is a timeout;
+- HTTP 429 is a rate limit;
+- HTTP 401 or 403 is an auth failure;
+- a validation error name, or HTTP 400 or 422, is a validation failure;
+- a connection code, or HTTP 500 and above, is an upstream failure;
+- `ContractViolation` keeps its name.
+
+Anything else is recorded as `Unclassified`, which counts as generic. Messages are not parsed, because a guess from
+wording would group wrongly. A sandbox cron wrapper persists the class in `details.error_class`, beside the message.
+
+**Seeds.** Eleven failures, each an instance of the class its library throws, with that library's fields:
+- three timeouts (axios, fetch, undici);
+- two rate limits (axios, and an SDK that throws `RateLimitError`);
+- three validation failures (zod, Sequelize, an HTTP 422);
+- an auth failure, and a refused connection;
+- a plain `Error` that says "timed out" only in words.
+
+| | Timeout | Rate limit | Validation | Coverage over all 11 |
+|---|---|---|---|---|
+| Ellis's classifier | `TimeoutError` | `RateLimitError` | `ValidationError` | 10 (91%); the plain `Error` is `Unclassified` |
+| The platform's rule | `AxiosError`, `DOMException`, `HeadersTimeoutError` | `AxiosError`, `RateLimitError` | `ZodError`, `ValidationError`, `AxiosError` | 9 (82%) |
+
+**The control.** The platform's rule names a class for 9 of the 11, but it groups nothing: `AxiosError` covers a
+timeout, a rate limit, a validation failure and an auth failure. This is the story's "coverage on paper only", shown
+on seeds rather than assumed. It is right on two seeds, the ones whose library class already matches the vocabulary.
+Graded as the subject, it fails the acceptance and the other nine seeds.
+
+**What this does not prove.** The vocabulary is the standard's six classes; agreeing it is K.D.'s decision. A failure
+carrying no code, status or library name stays `Unclassified`. The seeds follow common libraries; an error from
+another library may carry its signal elsewhere. Persisting the class on the platform is a change to
+`cronInstrumentation.ts`, shipped by a reviewed deploy, so the ladder stops at R4.
+
+**Tested:** 11 tests, including the acceptance test named after the criterion. 56 deliberate breaks, all caught. The
+first run caught 55 of 58. One survivor gained a test (a vocabulary class set under `error_class`). Two were a
+"class persisted" check that compared each row with a value read back from the same row, so it could not fail; it was
+removed, and the test of the wrapper's persisted row stays.
+
+Two corrections came before the tests. Three seeds first used a plain `Error` where the real library throws a named
+class (`HeadersTimeoutError`, an SDK's `RateLimitError`, Sequelize's `ValidationError`). That understated the
+platform's rule, and they now follow the libraries. The R2 measure now also counts `Unclassified` as generic.
+
+Its rung story id is on the platform board but not yet in this repository's plan, so it is recorded here and in the
+commit.

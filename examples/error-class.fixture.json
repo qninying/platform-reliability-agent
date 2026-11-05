@@ -1,0 +1,18 @@
+{
+  "fixture_id": "error-class-sandbox-1",
+  "description": "Eleven failures seeded into one sandbox cron job, shaped like the errors common libraries throw, with the class each library throws: three timeouts, two rate limits, three validation failures, an auth failure, a refused connection, and a plain Error that says only what went wrong in words. Invented messages; not production data.",
+  "job": "SandboxReportJob",
+  "seeds": [
+    { "id": "timeout-axios", "kind": "timeout", "error": { "thrown_as": "AxiosError", "name": "AxiosError", "message": "timeout of 30000ms exceeded", "code": "ECONNABORTED" }, "expect": "TimeoutError" },
+    { "id": "timeout-fetch", "kind": "timeout", "error": { "thrown_as": "DOMException", "name": "AbortError", "message": "The operation was aborted." }, "expect": "TimeoutError" },
+    { "id": "timeout-undici", "kind": "timeout", "error": { "thrown_as": "HeadersTimeoutError", "name": "HeadersTimeoutError", "message": "Headers Timeout Error", "code": "UND_ERR_HEADERS_TIMEOUT" }, "expect": "TimeoutError" },
+    { "id": "rate-axios", "kind": "rate_limit", "error": { "thrown_as": "AxiosError", "name": "AxiosError", "message": "Request failed with status code 429", "response_status": 429 }, "expect": "RateLimitError" },
+    { "id": "rate-sdk", "kind": "rate_limit", "error": { "thrown_as": "RateLimitError", "message": "Rate limit reached for requests", "status": 429 }, "expect": "RateLimitError" },
+    { "id": "validation-zod", "kind": "validation", "error": { "thrown_as": "ZodError", "name": "ZodError", "message": "Expected string, received number" }, "expect": "ValidationError" },
+    { "id": "validation-sequelize", "kind": "validation", "error": { "thrown_as": "ValidationError", "name": "SequelizeValidationError", "message": "Validation error: email must be unique" }, "expect": "ValidationError" },
+    { "id": "validation-http", "kind": "validation", "error": { "thrown_as": "AxiosError", "name": "AxiosError", "message": "Request failed with status code 422", "response_status": 422 }, "expect": "ValidationError" },
+    { "id": "auth-http", "kind": "auth", "error": { "thrown_as": "AxiosError", "name": "AxiosError", "message": "Request failed with status code 401", "response_status": 401 }, "expect": "AuthError" },
+    { "id": "upstream-refused", "kind": "upstream", "error": { "thrown_as": "Error", "message": "connect ECONNREFUSED 127.0.0.1:5432", "code": "ECONNREFUSED" }, "expect": "UpstreamUnavailable" },
+    { "id": "plain-words", "kind": "unknown", "error": { "thrown_as": "Error", "message": "Request timed out while waiting for the report" }, "expect": "Unclassified" }
+  ]
+}

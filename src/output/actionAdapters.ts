@@ -13,6 +13,7 @@ import type { Rehearsal as DefaultOnRehearsal } from '../capabilities/defaultOnR
 import type { Rehearsal as LivenessRehearsal } from '../capabilities/livenessProbeRehearsal.ts';
 import type { Rehearsal as DeadLetterRehearsal } from '../capabilities/deadLetterRehearsal.ts';
 import type { Rehearsal as ReplayRehearsal } from '../capabilities/deadLetterReplayRehearsal.ts';
+import type { Rehearsal as ClassRehearsal } from '../capabilities/errorClassRehearsal.ts';
 import type { Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 import type { Capture } from './monitorAdapters.ts';
@@ -163,6 +164,18 @@ export function replayRehearsalOutput(r: ReplayRehearsal, c: Capture, table: Sev
   return envelope({
     tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
     evidence: (r.verified || !bad.length ? r.entries : bad).map(entry), blind_spots: r.limits, detail: r,
+  }, table);
+}
+
+// Each seed is cited with the class each rule gave it; a failure cites the seeds classified wrongly.
+export function classRehearsalOutput(r: ClassRehearsal, c: Capture, table: SeverityTable): ToolOutput<ClassRehearsal> {
+  const tool = 'platform.CAP.error_class_coverage';
+  const seed = (x: ClassRehearsal['seeds'][number]): Evidence => ({ table: 'sandbox_ai_agent_activity_logs', id: x.id, fields: [`error_class ${x.ellis}`, `platform rule ${x.platform}`] });
+  const bad = r.seeds.filter((x) => x.ellis !== x.expect);
+  const kase = Object.entries(r.checks).find(([, v]) => !v)?.[0] ?? 'verified';
+  return envelope({
+    tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
+    evidence: (r.verified || !bad.length ? r.seeds : bad).map(seed), blind_spots: r.limits, detail: r,
   }, table);
 }
 

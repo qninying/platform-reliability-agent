@@ -1,0 +1,5 @@
+{ "fixture_id": "wrong-expect", "description": "A plain Error expected to be a timeout: the classifier does not read wording, so this is not verified.", "job": "J", "seeds": [
+  { "id": "t", "kind": "timeout", "error": { "thrown_as": "Error", "message": "timed out" }, "expect": "TimeoutError" },
+  { "id": "r", "kind": "rate_limit", "error": { "thrown_as": "Error", "message": "m", "status": 429 }, "expect": "RateLimitError" },
+  { "id": "v", "kind": "validation", "error": { "thrown_as": "Error", "message": "m", "status": 422 }, "expect": "ValidationError" }
+] }

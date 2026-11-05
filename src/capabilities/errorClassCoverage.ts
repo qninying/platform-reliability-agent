@@ -39,8 +39,8 @@ export interface CoverageAnswer {
   limits: string[];
 }
 
-const GENERIC = new Set(['', 'error', 'unknown', 'unknownerror', 'exception', 'undefined', 'null', 'object']);
-const NAMED = new Set(['TimeoutError', 'RateLimitError', 'AuthError', 'ValidationError', 'UpstreamUnavailable', 'ContractViolation']);
+const GENERIC = new Set(['', 'error', 'unknown', 'unknownerror', 'unclassified', 'exception', 'undefined', 'null', 'object']);
+export const NAMED = new Set(['TimeoutError', 'RateLimitError', 'AuthError', 'ValidationError', 'UpstreamUnavailable', 'ContractViolation']);
 const BUILTIN = new Set(['TypeError', 'RangeError', 'ReferenceError', 'SyntaxError', 'EvalError', 'URIError', 'AggregateError']);
 const FAILED = new Set(['failed', 'failure', 'error']);
 const WRAPPERS = ['cronInstrumentation', 'agentRunTracker', 'aiOrchestrator', 'aiOpsScheduler', 'deadLetterService', 'schedulerService'].map((f) => `backend/src/services/${f}.ts`);
@@ -55,7 +55,7 @@ export const LIMITS: readonly string[] = [
   'A handler is read by the names in it, so a handler that delegates to a function counts by what is written at the site.',
 ];
 
-function isGeneric(c: unknown): boolean { return typeof c !== 'string' || GENERIC.has(c.trim().toLowerCase()); }
+export function isGeneric(c: unknown): boolean { return typeof c !== 'string' || GENERIC.has(c.trim().toLowerCase()); }
 const kindOfClass = (c: string): ClassKind => (NAMED.has(c) ? 'named_in_standard' : BUILTIN.has(c) ? 'language_builtin' : 'other');
 
 function store(rows: Array<{ id: string; cls: unknown }>): StoreCoverage {
