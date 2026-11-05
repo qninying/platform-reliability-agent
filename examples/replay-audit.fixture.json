@@ -1,0 +1,12 @@
+{
+  "fixture_id": "replay-audit-sandbox-1",
+  "description": "Five platform jobs across five families, each modelled from the lines it cites, plus the deliberately unsafe control from R1. Each is run once, twice in a row and twice at once from a fresh copy of its fixture. Invented rows; not production data.",
+  "jobs": [
+    { "job": "publishing_worker", "expect": "safe" },
+    { "job": "stale_action_recovery", "expect": "safe" },
+    { "job": "preview_stack_reaper", "expect": "unsafe" },
+    { "job": "intelligence_retention", "expect": "safe" },
+    { "job": "openclaw_content_response", "expect": "untestable_in_sandbox" },
+    { "job": "harness_control", "expect": "unsafe" }
+  ]
+}

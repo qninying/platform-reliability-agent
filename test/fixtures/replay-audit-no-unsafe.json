@@ -1,0 +1,1 @@
+{ "fixture_id": "no-unsafe", "description": "Only jobs expected safe, so the harness is never shown able to fail.", "jobs": [{ "job": "publishing_worker", "expect": "safe" }] }

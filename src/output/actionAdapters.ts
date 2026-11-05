@@ -14,6 +14,7 @@ import type { Rehearsal as LivenessRehearsal } from '../capabilities/livenessPro
 import type { Rehearsal as DeadLetterRehearsal } from '../capabilities/deadLetterRehearsal.ts';
 import type { Rehearsal as ReplayRehearsal } from '../capabilities/deadLetterReplayRehearsal.ts';
 import type { Rehearsal as ClassRehearsal } from '../capabilities/errorClassRehearsal.ts';
+import type { Rehearsal as AuditRehearsal } from '../capabilities/replayVerdicts.ts';
 import type { Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 import type { Capture } from './monitorAdapters.ts';
@@ -176,6 +177,20 @@ export function classRehearsalOutput(r: ClassRehearsal, c: Capture, table: Sever
   return envelope({
     tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
     evidence: (r.verified || !bad.length ? r.seeds : bad).map(seed), blind_spots: r.limits, detail: r,
+  }, table);
+}
+
+// Each job is cited with its verdict and reason; a failure cites the jobs whose verdict was not the one expected.
+// Untestable jobs are blind spots as well as rows: nothing was compared for them.
+export function auditRehearsalOutput(r: AuditRehearsal, c: Capture, table: SeverityTable): ToolOutput<AuditRehearsal> {
+  const tool = 'platform.CAP.idempotency_and_replay_audit';
+  const job = (x: AuditRehearsal['jobs'][number]): Evidence => ({ table: 'sandbox_job_models', id: x.job, fields: [x.verdict, x.reason] });
+  const bad = r.jobs.filter((x) => x.verdict !== x.expect);
+  const kase = Object.entries(r.checks).find(([, v]) => !v)?.[0] ?? 'verified';
+  const untested = r.jobs.filter((x) => x.verdict === 'untestable_in_sandbox').map((x) => `${x.job}: untestable in a sandbox, because ${x.reason}`);
+  return envelope({
+    tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
+    evidence: (r.verified || !bad.length ? r.jobs : bad).map(job), blind_spots: [...untested, ...r.limits], detail: r,
   }, table);
 }
 

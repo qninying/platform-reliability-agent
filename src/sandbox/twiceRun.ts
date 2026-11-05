@@ -23,6 +23,19 @@ export class World {
     Object.assign(row, change);
     return 1;
   }
+  // Adds a row unless one with its id exists, as a primary key would, and says whether it did.
+  insert(row: Row): number {
+    if (this.rows.has(row.id)) return 0;
+    this.rows.set(row.id, structuredClone(row));
+    return 1;
+  }
+  // Removes a row only if it still matches, and says whether it did.
+  remove(id: string, when: (r: Row) => boolean): number {
+    const row = this.rows.get(id);
+    if (!row || !when(row)) return 0;
+    this.rows.delete(id);
+    return 1;
+  }
   emit(effect: ExternalEffect): void { this.effects.push(effect); }
 }
 

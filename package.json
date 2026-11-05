@@ -38,6 +38,7 @@
     "dead-letter-sandbox": "node src/cli/deadLetterRehearsal.ts",
     "dead-letter-replay-sandbox": "node src/cli/deadLetterReplayRehearsal.ts",
     "error-class-sandbox": "node src/cli/errorClassRehearsal.ts",
+    "replay-audit-sandbox": "node src/cli/replayVerdicts.ts",
     "cron-health": "node src/cli/cronHealth.ts",
     "agent-health": "node src/cli/agentHealth.ts",
     "registry-reconcile": "node src/cli/registryReconcile.ts",
