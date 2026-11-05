@@ -40,6 +40,7 @@
     "error-class-sandbox": "node src/cli/errorClassRehearsal.ts",
     "replay-audit-sandbox": "node src/cli/replayVerdicts.ts",
     "bug-fix-sandbox": "node src/cli/fixVerification.ts",
+    "health-model-sandbox": "node src/cli/healthModelRehearsal.ts",
     "cron-health": "node src/cli/cronHealth.ts",
     "agent-health": "node src/cli/agentHealth.ts",
     "registry-reconcile": "node src/cli/registryReconcile.ts",

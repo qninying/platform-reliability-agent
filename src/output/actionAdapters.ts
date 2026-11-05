@@ -16,6 +16,7 @@ import type { Rehearsal as ReplayRehearsal } from '../capabilities/deadLetterRep
 import type { Rehearsal as ClassRehearsal } from '../capabilities/errorClassRehearsal.ts';
 import type { Rehearsal as AuditRehearsal } from '../capabilities/replayVerdicts.ts';
 import type { Rehearsal as FixRehearsal } from '../capabilities/fixVerification.ts';
+import type { Rehearsal as ModelRehearsal } from '../capabilities/healthModelRehearsal.ts';
 import type { Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 import type { Capture } from './monitorAdapters.ts';
@@ -206,6 +207,20 @@ export function fixRehearsalOutput(r: FixRehearsal, c: Capture, table: SeverityT
   return envelope({
     tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
     evidence: [...(r.verified || !bad.length ? r.attempts : bad).map(attempt), ...cited], blind_spots: r.limits, detail: r,
+  }, table);
+}
+
+// Each sandbox agent is cited with what the corrected model and the platform's formula give it; a failure cites the
+// agents whose corrected output was not the one expected.
+export function healthModelOutput(r: ModelRehearsal, c: Capture, table: SeverityTable): ToolOutput<ModelRehearsal> {
+  const tool = 'platform.CAP.agent_health_scoring';
+  const show = (o: ModelRehearsal['cases'][number]['subject']) => (o.state === 'scored' ? `${o.state} ${o.score}` : o.state);
+  const agent = (x: ModelRehearsal['cases'][number]): Evidence => ({ table: 'sandbox_agents', id: x.id, fields: [`${r.roles.subject}: ${show(x.subject)}`, `${r.roles.control}: ${show(x.control)}`] });
+  const bad = r.cases.filter((x) => x.subject.state !== x.expect.state || x.subject.score !== x.expect.score);
+  const kase = Object.entries(r.checks).find(([, v]) => !v)?.[0] ?? 'verified';
+  return envelope({
+    tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
+    evidence: (r.verified || !bad.length ? r.cases : bad).map(agent), blind_spots: r.limits, detail: r,
   }, table);
 }
 

@@ -1,7 +1,7 @@
 # Agent health scoring
 
-**Story:** `platform.CAP.agent_health_scoring` · **Autonomy:** starts R0, first release R2, ceiling R4 · **Approver:** K.D.
-**Code:** `src/capabilities/agentHealthScoring.ts` · **Tests:** `test/agentHealthScoring.test.ts`
+**Story:** `platform.CAP.agent_health_scoring` · **Autonomy:** starts R0, first release R2, rung R4 built in a sandbox, ceiling R4 · **Approver:** K.D.
+**Code:** `src/capabilities/agentHealthScoring.ts` (R2), `src/capabilities/healthModelRehearsal.ts` (R4) · **Tests:** `test/agentHealthScoring.test.ts`, `test/healthModelRehearsal.test.ts`
 
 Ellis reports **each agent's health score the way the registry tab computes it, worst first**, and states
 which scores rest on zero runs. A score derived from `run_count` 0 is labelled **unscored**, never 100. It is
@@ -139,3 +139,56 @@ Exit codes:
     5 November, with the correction above).
 - **Not yet run on live records.** The first live check is one export of `ai_agents` with `run_count`,
   `error_count` and `status`, compared with what the registry tab shows at the same time.
+
+## R4: a corrected scoring model, verified in a sandbox
+
+The rung's acceptance: **a zero-run agent and a zero-error hundred-run agent receive different outputs, the
+positive control that the current formula fails.**
+
+`npm run health-model-sandbox -- --fixture examples/health-model.fixture.json` (exit 0 verified, 3 not, 1 bad input).
+
+The corrected model, beside the platform's formula at `a29dfb245` (`aiOpsService.ts:466-484`):
+- **No counted run: unscored**, never 100. What an unscored agent should show is K.D.'s decision, so no number is
+  invented. An agent with failures on record and no run (it threw every time) is **unscored with failures**, so it
+  is never buried among agents that have not run.
+- **Otherwise the share of runs that did not fail:** `100 * (1 - errors / runs)`, with no floor. The platform's
+  doubled penalty floors at 0 once half the runs fail, so 50% and 100% failing read the same.
+- **Status is not read.** Only `runAgent` writes status error, so the platform's 30-point penalty charges the same
+  failures differently by wrapper.
+
+Ten sandbox agents, written for this demonstration:
+
+| Agent | Runs / errors, status | Corrected | Platform |
+|---|---|---|---|
+| never-run | 0 / 0, idle | **unscored** | 100 |
+| clean-hundred | 100 / 0, idle | **100** | 100 |
+| always-throws | 0 / 5, error | unscored with failures | 0 |
+| two-percent-failing | 100 / 2, idle | 98 | 96 |
+| two-percent-failing-error-status | 100 / 2, error | 98 | 66 |
+| quarter-failing | 40 / 10, idle | 75 | 50 |
+| half-failing | 100 / 50, idle | 50 | 0 |
+| all-failing | 10 / 10, error | 0 | 0 |
+| errors-above-runs | 4 / 6, error | 0 | 0 |
+| one-clean-run | 1 / 0, idle | 100 | 100 |
+
+**The checks.** Each agent's corrected output must be the one its case expects. Every zero-run agent must differ
+from every clean hundred-run agent (the acceptance), and the platform's formula, run as the control, must not tell
+them apart. A higher failure share must always score lower, and the same counts must score the same whatever the
+status. Graded as the subject, the platform's formula fails all four.
+
+**What this does not prove.**
+- The model is Ellis's proposal. Adopting it, and what an unscored agent should show, are K.D.'s decisions.
+- The counters are lifetime totals, so the score is still about every run ever, not how the agent is doing now.
+- When `error_count` exceeds `run_count`, thrown failures were counted as errors but not runs, and the counters
+  cannot say how many. The share is then taken over `error_count`, so the agent reads as all failing.
+- Changing the formula is a change to `aiOpsService.ts` and the registry tab, through a reviewed deploy by a person.
+
+**Tested:** 10 tests, including the acceptance test named after the criterion. 46 deliberate breaks: 45 caught.
+- **Tests added.** For an expectation with the right score but the wrong state, and for a fixture where one pair
+  of acceptance agents differs and another does not.
+- **Removed.** A separate refusal of an empty fixture: it has no acceptance agents, so it is refused anyway.
+- **The survivor.** Leaving one-run agents out of the ordering check changes nothing, because their score comes
+  from the same share as every other agent's.
+
+Its rung story id is on the platform board but not yet in this repository's plan, so it is recorded here and in the
+commit.

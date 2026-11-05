@@ -1,0 +1,126 @@
+{
+  "fixture_id": "health-model-sandbox-1",
+  "description": "Agents with varied run and error histories, written for this demonstration; no production rows. Each case expects the corrected model's output.",
+  "cases": [
+    {
+      "id": "never-run",
+      "row": {
+        "run_count": 0,
+        "error_count": 0,
+        "status": "idle"
+      },
+      "expect": {
+        "state": "unscored",
+        "score": null
+      }
+    },
+    {
+      "id": "clean-hundred",
+      "row": {
+        "run_count": 100,
+        "error_count": 0,
+        "status": "idle"
+      },
+      "expect": {
+        "state": "scored",
+        "score": 100
+      }
+    },
+    {
+      "id": "always-throws",
+      "row": {
+        "run_count": 0,
+        "error_count": 5,
+        "status": "error"
+      },
+      "expect": {
+        "state": "unscored_with_failures",
+        "score": null
+      }
+    },
+    {
+      "id": "two-percent-failing",
+      "row": {
+        "run_count": 100,
+        "error_count": 2,
+        "status": "idle"
+      },
+      "expect": {
+        "state": "scored",
+        "score": 98
+      }
+    },
+    {
+      "id": "two-percent-failing-error-status",
+      "row": {
+        "run_count": 100,
+        "error_count": 2,
+        "status": "error"
+      },
+      "expect": {
+        "state": "scored",
+        "score": 98
+      }
+    },
+    {
+      "id": "quarter-failing",
+      "row": {
+        "run_count": 40,
+        "error_count": 10,
+        "status": "idle"
+      },
+      "expect": {
+        "state": "scored",
+        "score": 75
+      }
+    },
+    {
+      "id": "half-failing",
+      "row": {
+        "run_count": 100,
+        "error_count": 50,
+        "status": "idle"
+      },
+      "expect": {
+        "state": "scored",
+        "score": 50
+      }
+    },
+    {
+      "id": "all-failing",
+      "row": {
+        "run_count": 10,
+        "error_count": 10,
+        "status": "error"
+      },
+      "expect": {
+        "state": "scored",
+        "score": 0
+      }
+    },
+    {
+      "id": "errors-above-runs",
+      "row": {
+        "run_count": 4,
+        "error_count": 6,
+        "status": "error"
+      },
+      "expect": {
+        "state": "scored",
+        "score": 0
+      }
+    },
+    {
+      "id": "one-clean-run",
+      "row": {
+        "run_count": 1,
+        "error_count": 0,
+        "status": "idle"
+      },
+      "expect": {
+        "state": "scored",
+        "score": 100
+      }
+    }
+  ]
+}
