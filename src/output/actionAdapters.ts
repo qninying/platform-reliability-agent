@@ -15,6 +15,7 @@ import type { Rehearsal as DeadLetterRehearsal } from '../capabilities/deadLette
 import type { Rehearsal as ReplayRehearsal } from '../capabilities/deadLetterReplayRehearsal.ts';
 import type { Rehearsal as ClassRehearsal } from '../capabilities/errorClassRehearsal.ts';
 import type { Rehearsal as AuditRehearsal } from '../capabilities/replayVerdicts.ts';
+import type { Rehearsal as FixRehearsal } from '../capabilities/fixVerification.ts';
 import type { Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 import type { Capture } from './monitorAdapters.ts';
@@ -191,6 +192,20 @@ export function auditRehearsalOutput(r: AuditRehearsal, c: Capture, table: Sever
   return envelope({
     tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
     evidence: (r.verified || !bad.length ? r.jobs : bad).map(job), blind_spots: [...untested, ...r.limits], detail: r,
+  }, table);
+}
+
+// Each fix attempt is cited with its verdict and reason, beside the hashed lines and tests it ran against; a failure
+// cites the attempts whose verdict was not the one expected.
+export function fixRehearsalOutput(r: FixRehearsal, c: Capture, table: SeverityTable): ToolOutput<FixRehearsal> {
+  const tool = 'platform.CAP.platform_bug_fix_dispatch';
+  const attempt = (x: FixRehearsal['attempts'][number]): Evidence => ({ table: 'sandbox_fix_attempts', id: x.id, fields: [x.verdict, x.reason] });
+  const bad = r.attempts.filter((x) => x.verdict !== x.expect);
+  const kase = Object.entries(r.checks).find(([, v]) => !v)?.[0] ?? 'verified';
+  const cited = r.baseline.citations.map((x): Evidence => ({ table: x.table, id: x.id, fields: x.fields }));
+  return envelope({
+    tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
+    evidence: [...(r.verified || !bad.length ? r.attempts : bad).map(attempt), ...cited], blind_spots: r.limits, detail: r,
   }, table);
 }
 

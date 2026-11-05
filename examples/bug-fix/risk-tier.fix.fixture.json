@@ -1,0 +1,63 @@
+{
+  "fixture_id": "bug-fix-sandbox-1",
+  "description": "Fix attempts for the R1 risk-tier baseline. The ticket and every fix were written for this demonstration; the copied lines are real platform code. One fix is right; the others are wrong in one way each, so each refusal is shown.",
+  "ticket": {
+    "id": "example-bug-1",
+    "type": "bug",
+    "title": "An unrecognised ticket risk tier clears every capability ceiling",
+    "description": "riskTierIndex() returns 0 for a tier it does not recognise, so a ticket with risk_tier 'high' passes an R0 ceiling as though it were read-only. Example ticket written for this demonstration, not a production ticket."
+  },
+  "reported_reason": { "error_name": "AssertionError", "message_includes": "unrecognised tier cleared the R0 ceiling" },
+  "excerpts": [
+    { "from": "backend/src/services/workGraph/capabilityRouter.ts", "lines": [26, 36], "to": "capabilityRouter.excerpt.ts", "exports": ["riskTierAllowed"] }
+  ],
+  "test": { "file": "risk-tier.baseline.test.mjs", "path": "../bug-baseline/risk-tier.baseline.test.mjs" },
+  "suite": [{ "file": "risk-tier.suite.test.mjs", "path": "risk-tier.suite.test.mjs" }],
+  "attempts": [
+    {
+      "id": "fail-closed",
+      "author": "a person, for this demonstration",
+      "files": ["capabilityRouter.excerpt.ts"],
+      "edits": [{ "file": "capabilityRouter.excerpt.ts", "find": "  return riskTierIndex(ticketRiskTier) <= riskTierIndex(maxRiskTier);", "replace": "  // An unrecognised tier, on the ticket or the ceiling, clears nothing.\n  const t = RISK_TIER_ORDER.indexOf(ticketRiskTier as any), max = RISK_TIER_ORDER.indexOf(maxRiskTier as any);\n  return t !== -1 && max !== -1 && t <= max;" }],
+      "expect": "fix_verified"
+    },
+    {
+      "id": "wrong-side",
+      "author": "a person, for this demonstration",
+      "files": ["capabilityRouter.excerpt.ts"],
+      "edits": [{ "file": "capabilityRouter.excerpt.ts", "find": "  if (!ticketRiskTier) return true; // no risk tier set on the ticket = unrestricted", "replace": "  if (!ticketRiskTier) return true; // no risk tier set on the ticket = unrestricted\n  if (!RISK_TIER_ORDER.includes(maxRiskTier as any)) return false;" }],
+      "expect": "still_fails"
+    },
+    {
+      "id": "refuse-everything",
+      "author": "a person, for this demonstration",
+      "files": ["capabilityRouter.excerpt.ts"],
+      "edits": [{ "file": "capabilityRouter.excerpt.ts", "find": "  return riskTierIndex(ticketRiskTier) <= riskTierIndex(maxRiskTier);", "replace": "  return false;" }],
+      "expect": "suite_not_green"
+    },
+    {
+      "id": "edit-the-test",
+      "author": "a person, for this demonstration",
+      "files": ["risk-tier.baseline.test.mjs"],
+      "edits": [{ "file": "risk-tier.baseline.test.mjs", "find": "riskTierAllowed('high', 'R0')", "replace": "riskTierAllowed('R1', 'R0')" }],
+      "expect": "edits_the_test"
+    },
+    {
+      "id": "unnamed-file",
+      "author": "a person, for this demonstration",
+      "files": ["capabilityRouter.excerpt.ts"],
+      "edits": [
+        { "file": "capabilityRouter.excerpt.ts", "find": "  return riskTierIndex(ticketRiskTier) <= riskTierIndex(maxRiskTier);", "replace": "  const t = RISK_TIER_ORDER.indexOf(ticketRiskTier as any), max = RISK_TIER_ORDER.indexOf(maxRiskTier as any);\n  return t !== -1 && max !== -1 && t <= max;" },
+        { "file": "riskTierVocabulary.ts", "content": "export const KNOWN_TIERS = ['R0', 'R1', 'R2', 'R3', 'R4'];\n" }
+      ],
+      "expect": "touches_unnamed_files"
+    },
+    {
+      "id": "stale-patch",
+      "author": "a person, for this demonstration",
+      "files": ["capabilityRouter.excerpt.ts"],
+      "edits": [{ "file": "capabilityRouter.excerpt.ts", "find": "  return idx === -1 ? 0 : idx; // riskTierIndex", "replace": "  return idx === -1 ? Infinity : idx;" }],
+      "expect": "fix_does_not_apply"
+    }
+  ]
+}

@@ -52,10 +52,14 @@ export function prepareSandbox(spec: BaselineSpec, sourceRoot: string, sandboxRo
 }
 
 export function runBaseline(prepared: Prepared, testTimeoutMs = 5000): RunResult {
-  const { dir, testFile } = prepared;
+  return runTests(prepared.dir, [prepared.testFile], testTimeoutMs);
+}
+
+// Runs the named test files in a sandbox directory under the same permissions as a baseline.
+export function runTests(dir: string, testFiles: string[], testTimeoutMs = 5000): RunResult {
   const r = spawnSync(process.execPath, [
     '--permission', `--allow-fs-read=${dir}`, `--allow-fs-write=${dir}`,
-    '--test', '--test-isolation=none', `--test-timeout=${testTimeoutMs}`, '--test-reporter=tap', testFile,
+    '--test', '--test-isolation=none', `--test-timeout=${testTimeoutMs}`, '--test-reporter=tap', ...testFiles,
   ], { cwd: dir, env: {}, encoding: 'utf8', timeout: testTimeoutMs * 4 });
   const timedOut = r.error !== undefined && (r.error as NodeJS.ErrnoException).code === 'ETIMEDOUT';
   return { exit_code: r.status, timed_out: timedOut, outcomes: parseTap(r.stdout ?? '') };

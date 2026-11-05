@@ -1,7 +1,7 @@
 # On-demand platform bug fix dispatch
 
-**Story:** `platform.CAP.platform_bug_fix_dispatch` · **Autonomy:** starts R0, first release R1, ceiling R4 · **Approver:** K.D.
-**Code:** `src/capabilities/bugBaseline.ts`, `src/sandbox/baselineRunner.ts` · **Tests:** `test/bugBaseline.test.ts`
+**Story:** `platform.CAP.platform_bug_fix_dispatch` · **Autonomy:** starts R0, first release R1, rung R4 built in a sandbox, ceiling R4 · **Approver:** K.D.
+**Code:** `src/capabilities/bugBaseline.ts`, `src/sandbox/baselineRunner.ts` (R1), `src/sandbox/fixRunner.ts`, `src/capabilities/fixVerification.ts` (R4) · **Tests:** `test/bugBaseline.test.ts`, `test/fixVerification.test.ts`
 
 For a reported bug, Ellis **prepares an isolated reproduction and a baseline test, and changes nothing
 else.** It does not attempt a fix. Fixing, merging and deploying are for a person at every autonomy level.
@@ -162,3 +162,56 @@ Exit codes:
   One mutation cannot fail: letting any failure kind match the reported reason. Load errors, timeouts and
   refusals are already ruled out before that check, so it is a backstop, not a separate rule.
 - **Live demonstration** on the platform checkout at `c35fbc5`: the example above, confirmed on both runs.
+
+## R4: a verified fix in a sandbox
+
+The rung's acceptance: **the reproduction test fails on the pre-fix tree and passes on the post-fix tree, and the
+diff touches only files named in the attempt record.**
+
+`npm run bug-fix-sandbox -- --fixture examples/bug-fix/risk-tier.fix.fixture.json --source <platform checkout> --sandbox <empty dir>`
+(exit 0 verified, 3 not, 1 bad input).
+
+1. **The pre-fix tree.** The R1 baseline, prepared the same way: the router lines copied from the checkout at
+   `a29dfb245` (unchanged since `c35fbc5`), the baseline test, and a suite file of behaviour the fix must keep (a
+   ticket with no tier is unrestricted, by design at `capabilityRouter.ts:34`). Run twice under Node's permission
+   model. The reproduction is the test that fails there for the reported reason; anything else failing means no
+   baseline, and no fix is judged.
+2. **The post-fix tree.** A copy of the pre-fix tree with the attempt's edits applied. Each edit replaces one exact
+   passage that must appear once, or writes a whole file. The pre-fix tree is never edited.
+3. **The diff, read from the trees.** Which files changed is taken by hashing both trees before any test runs, not
+   from the edit list. A changed test is refused whatever the record names, because a test changed to pass proves
+   nothing. Any other changed file must be named in the record.
+4. **The post-fix runs.** Twice. The reproduction test must pass and every other test with it, on both runs.
+
+Each attempt below is a fix written for this demonstration. One is right; the others are wrong in one way each, so
+each refusal is shown happening.
+
+| Attempt | What it does | Verdict |
+|---|---|---|
+| `fail-closed` | an unrecognised tier, on the ticket or the ceiling, clears nothing | **fix_verified** |
+| `wrong-side` | refuses an unrecognised ceiling, leaves the ticket side as it was | still_fails |
+| `refuse-everything` | returns false for every tier | suite_not_green |
+| `edit-the-test` | changes the test's tier from `high` to `R1` | edits_the_test |
+| `unnamed-file` | the right fix, plus a new file the record does not name | touches_unnamed_files |
+| `stale-patch` | replaces a passage that is not in the lines | fix_does_not_apply |
+
+A fix that stops the code loading is `did_not_run`, not a pass. A post-fix run that reaches outside its sandbox is
+`sandbox_violation`, and a fix that holds on one run and not the other is `inconsistent`.
+
+**The checks.** Each attempt's verdict must be the one its record expects. At least one fix must come out verified,
+and at least one wrong fix must be refused, so a run of only refusals, or of only a fix, is not verified.
+
+**What this does not prove.**
+- The fix is written by a person. Ellis applies and verifies it; writing fixes is a later phase.
+- The suite is the baseline test and the named suite files, run on the copied lines. The platform's full test suite
+  was not run.
+- Which defect classes may be attempted is still K.D.'s decision (the blocker above).
+- A verified fix is a proposal. Merging (`push_to_protected_main`) and deploying (`production_deploy`) are
+  default-denied, and a person does both.
+
+**Tested:** 10 tests, including the acceptance test named after the criterion. 57 deliberate breaks: 57 caught.
+- **Test added.** Removing the separate refusal for an edited test still refused it as an unnamed file, with the
+  wrong reason. A test now checks the reason.
+
+Its rung story id is on the platform board but not yet in this repository's plan, so it is recorded here and in the
+commit.
