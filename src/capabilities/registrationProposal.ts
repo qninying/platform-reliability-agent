@@ -15,7 +15,7 @@ import { ContractViolation } from '../output/toolOutput.ts';
 import type { Measurement, ReconAnswer } from './registryReconciliation.ts';
 
 export interface ProposedRow { agent_name: string; trigger_type: 'cron'; schedule: string | null; enabled: boolean }
-export type RunsToday = 'yes_untracked' | 'yes_on_another_row' | 'no_row_to_run_on' | 'cannot_say';
+export type RunsToday = 'yes_untracked' | 'yes_on_its_own_row' | 'yes_on_another_row' | 'no_row_to_run_on' | 'cannot_say';
 export interface Proposal {
   name: string;
   runs_today: RunsToday;
@@ -60,6 +60,11 @@ export function proposeRegistrations(m: Measurement, a: ReconAnswer): ProposalSe
     if (r && (r.how === 'director_gate' || r.how === 'unknown' || r.row === null)) {
       runs_today = 'cannot_say';
       enabled_because = 'whether it runs today cannot be read from its runner; a person checks before choosing enabled';
+    } else if (governed_by === name && codeRows.has(name)) {
+      // A domain or governance row already carries the name; a second row would collide with it. Found by the R3
+      // rung, when applying the set to a sandbox registry refused the duplicate.
+      runs_today = 'yes_on_its_own_row';
+      enabled_because = `no new row is needed: a ${hasRow.get(name) ?? 'code'} row under its own name exists outside the seed the reconciler reads, and already gates it`;
     } else if (governed_by !== name && codeRows.has(governed_by)) {
       runs_today = 'yes_on_another_row';
       enabled_because = `no new row is needed: its runner reads row ${governed_by}, which exists and already gates it`;
@@ -71,7 +76,7 @@ export function proposeRegistrations(m: Measurement, a: ReconAnswer): ProposalSe
       enabled_because = 'it runs today untracked; a row arriving enabled keeps it running and makes it governable, a row arriving disabled would stop it. A person chooses which.';
     }
     if (recordsOn.has(name)) notes.push(`its runs are recorded today on row ${recordsOn.get(name)}; a row under its own name would not gate it`);
-    const needed = runs_today !== 'yes_on_another_row';
+    const needed = runs_today !== 'yes_on_another_row' && runs_today !== 'yes_on_its_own_row';
     return {
       name, runs_today, governed_by, measured_at: m.measured_at, source_commit: m.source_commit,
       call_sites: sites.map((s) => s.ref),
@@ -86,7 +91,7 @@ export function proposeRegistrations(m: Measurement, a: ReconAnswer): ProposalSe
     measured_at: m.measured_at, source_commit: m.source_commit, count: proposals.length, proposals,
     statement: `${proposals.length} untracked timer name(s) measured ${m.measured_at}${m.source_commit ? ` at platform commit ${m.source_commit}` : ''}: `
       + `${proposals.filter((p) => p.runs_today === 'yes_untracked').length} run today untracked, ${proposals.filter((p) => p.runs_today === 'no_row_to_run_on').length} do nothing for want of a row, `
-      + `${proposals.filter((p) => p.runs_today === 'yes_on_another_row').length} are already gated by another row and need none, and ${proposals.filter((p) => p.runs_today === 'cannot_say').length} cannot be said. `
+      + `${proposals.filter((p) => p.runs_today === 'yes_on_another_row').length} are already gated by another row and ${proposals.filter((p) => p.runs_today === 'yes_on_its_own_row').length} by a row of their own outside the seed, and need none, and ${proposals.filter((p) => p.runs_today === 'cannot_say').length} cannot be said. `
       + `Each proposal names its call sites and the enabled value the row would arrive with; ${proposals.filter((p) => p.proposed_row && p.notes.length).length} proposed row(s) need a person to read a note first. Govern or retire is a person's decision for every one.`,
   };
 }

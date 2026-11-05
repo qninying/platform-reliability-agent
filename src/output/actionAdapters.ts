@@ -19,6 +19,7 @@ import type { Rehearsal as FixRehearsal } from '../capabilities/fixVerification.
 import type { Rehearsal as ModelRehearsal } from '../capabilities/healthModelRehearsal.ts';
 import type { Rehearsal as RatchetRehearsal } from '../capabilities/ratchetRehearsal.ts';
 import type { Rehearsal as CompareRehearsal } from '../capabilities/schemaCompareRehearsal.ts';
+import type { Rehearsal as ProposalRehearsal } from '../capabilities/proposalApplyRehearsal.ts';
 import type { Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 import type { Capture } from './monitorAdapters.ts';
@@ -252,6 +253,22 @@ export function schemaCompareOutput(r: CompareRehearsal, c: Capture, table: Seve
   return envelope({
     tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
     evidence: (r.verified || !bad.length ? r.plants : bad).map(plant), blind_spots: r.limits, detail: r,
+  }, table);
+}
+
+// Each ticked timer is cited with the enabled value proposed for the row it reads and whether it ran after the set was
+// applied; a failure cites the timers that ran when marked disabled or did not run when meant to, and each problem
+// in the set. Timers that could not be ticked are blind spots.
+export function proposalApplyOutput(r: ProposalRehearsal, c: Capture, table: SeverityTable): ToolOutput<ProposalRehearsal> {
+  const tool = 'platform.CAP.untracked_timer_registration_proposal';
+  const timer = (x: ProposalRehearsal['timers'][number]): Evidence => ({ table: 'sandbox_registry', id: x.governed_by, fields: [`timer ${x.name}`, `marked ${x.marked_enabled === null ? 'no new row' : x.marked_enabled ? 'enabled' : 'disabled'}`, x.after ? 'runs' : 'does not run'] });
+  const wrong = r.timers.filter((x) => (x.marked_enabled === false) === x.after);
+  const problems = [...r.problems, ...r.refused.map((x) => `${x.agent_name}: not applied, ${x.why}`)].map((p): Evidence => ({ table: 'proposal_set', id: p.split(':')[0], fields: [p] }));
+  const kase = Object.entries(r.checks).find(([, v]) => !v)?.[0] ?? 'verified';
+  return envelope({
+    tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
+    evidence: [...(r.verified || !wrong.length ? r.timers : wrong).map(timer), ...problems],
+    blind_spots: [...r.not_ticked.map((n) => `${n}: not ticked, because what its runner does with a row is not known`), ...r.limits], detail: r,
   }, table);
 }
 

@@ -79,8 +79,10 @@ test('an unreadable schedule is left for a person, and a row outside the seed is
   assert.equal(by(p, 'Intel_alpha').proposed_row!.schedule, null);
   assert.match(by(p, 'Intel_alpha').notes[0], /not a literal cron expression/);
   assert.equal(by(p, 'AfterRegex').proposed_row!.schedule, null, 'a name outside any cron.schedule call borrows no neighbour\'s schedule');
+  // A domain row already carries the name, so no second row is proposed (it would collide with the first).
   const d = by(p, 'DomainScheduled');
-  assert.equal(d.proposed_row!.schedule, '0 8 * * *');
+  assert.deepEqual([d.runs_today, d.proposed_row], ['yes_on_its_own_row', null]);
+  assert.match(d.enabled_because, /a domain row under its own name exists outside the seed/);
   assert.ok(d.notes.some((n) => /domain row already carries this name/.test(n)));
 });
 

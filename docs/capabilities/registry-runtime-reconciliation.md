@@ -1,7 +1,7 @@
 # Timer registry and agent registry reconciliation
 
-**Story:** `platform.CAP.registry_runtime_reconciliation` · **Autonomy:** starts R0, first release R2, rung R4 built in a sandbox, ceiling R4 · **Approver:** K.D.
-**Code:** `src/capabilities/registryReconciliation.ts`, `src/inventory/registrySource.ts`, `src/inventory/sourceScan.ts` (R2), `src/capabilities/ratchetRehearsal.ts` (R4) · **Tests:** `test/registryReconciliation.test.ts`, `test/ratchetRehearsal.test.ts`
+**Story:** `platform.CAP.registry_runtime_reconciliation` · **Autonomy:** starts R0, first release R2, rung R4 built in a sandbox, ceiling R4; folded-in untracked timer proposal rung R3 built in a sandbox · **Approver:** K.D.
+**Code:** `src/capabilities/registryReconciliation.ts`, `src/inventory/registrySource.ts`, `src/inventory/sourceScan.ts` (R2), `src/capabilities/ratchetRehearsal.ts` (R4), `src/sandbox/sandboxRegistry.ts`, `src/capabilities/proposalApplyRehearsal.ts` (proposal R3) · **Tests:** `test/registryReconciliation.test.ts`, `test/ratchetRehearsal.test.ts`, `test/proposalApplyRehearsal.test.ts`
 
 Ellis answers **"which timers are untracked, which registry rows are phantom, and which schedules
 disagree"** by measuring both lists from the platform's source at run time. Every count is one Ellis
@@ -138,6 +138,7 @@ arrive with. Creating the rows, and choosing to govern or retire each timer, sta
 |---|---|
 | yes, untracked | a row under its own name, arriving enabled: disabled would stop it |
 | yes, on another row | none: the row its runner reads exists and already gates it |
+| yes, on its own row outside the seed | none: a domain or governance row already carries the name; a second row would collide with it (added 5 November, found by the R3 rung below) |
 | no: its runner reads a row that does not exist | that row, arriving disabled: enabled would start a job that does nothing today |
 | cannot say: a director gate, or a runner Ellis cannot read | a row under its own name, with a person to check first |
 
@@ -262,3 +263,57 @@ healed plants through.
 Its rung story id is on the platform board but not yet in this repository's plan, so it is recorded here and in the
 commit.
 
+## R3 (untracked timer proposal): the proposed rows, applied to a sandbox registry
+
+Story `platform.CAP.untracked_timer_registration_proposal.autonomy:R3`. A.M. folded the capability into this one on
+4 November; its rung story stands on the board. The rung's acceptance: **each proposed row names its intended
+enabled value explicitly, and applying the set to a sandbox registry starts no timer that the proposal marked
+disabled.**
+
+`npm run timer-proposal-sandbox -- --fixture examples/timer-proposal.fixture.json --sandbox <empty dir> --operator <name>`
+(exit 0 verified, 3 not, 1 bad input). A run without `--operator` is refused.
+
+On an operator's request Ellis measures the sandbox checkout, generates the proposal set, and validates it as data:
+every proposed row names enabled as true or false, proposes the row its runner reads, and appears once. It then
+builds three SQLite registries in a fresh sandbox folder, each holding every row created in code: one left as it is,
+one with the set applied, and one with the same rows applied without enabled. Each `ai_agents` table defaults
+enabled to true, as the platform's model does (`backend/src/models/AiAgent.ts:423-427` at `a29dfb245`). Then it ticks
+every timer's gate: a row decides when there is one (`agents/agentControlGate.ts:38-44`); with none, an
+`instrumentCronJob` timer runs untracked (`cronInstrumentation.ts:35-39`) and a `runAgent` timer does not run
+(`aiOrchestrator.ts:184-188`).
+
+The fixture is the ratchet's sandbox checkout plus one registry entry, Ghost, whose runner reads a row that does not
+exist (GhostRow). Its proposed row arrives disabled.
+
+| Timer | Proposed row | Before | Applied | Applied without enabled |
+|---|---|---|---|---|
+| Ghost | GhostRow, **disabled** | does not run | **does not run** | runs |
+| Uninst, Tracked, Briefing, AfterRegex, Intel_alpha | own name, enabled | runs, untracked | runs | runs |
+| Drift | none: DriftAgent exists | runs | runs | runs |
+| DomainScheduled | none: its own domain row exists | runs | runs | runs |
+
+Director and Mystery are not ticked: a director gate and a runner Ellis cannot read do not say what a row would do.
+
+**The checks.** The set validates. At least one row is marked disabled, or "starts no disabled timer" says nothing.
+Every row applies. No timer marked disabled starts, and every timer meant to run does. The positive control: applied
+without enabled, the column's default starts Ghost, the timer the proposal kept off.
+
+**Found on the way.** Applying the set refused one row: the R2 proposal offered DomainScheduled a second row,
+although a domain row already carries the name (its own note said so). The proposal now says no new row is needed
+for such a name (`yes_on_its_own_row` in the table above). At `cc1ebc5` no fired name had such a row (measured 0), so
+the recorded run is unchanged.
+
+**What this does not prove.**
+- The checkout is a small one shaped like the platform's. The proposal set over the real checkout is the R2 answer.
+- The sandbox registry holds only rows created in code, all enabled. A production registry also holds rows from
+  earlier seeds and `agentFactory`, with whatever enabled values operators set.
+- Timers behind a director gate or a runner Ellis cannot read are not ticked.
+- Creating the rows in production, and choosing per timer to govern or retire it and with which enabled value, are
+  K.D.'s decisions and a person's action.
+
+**Tested:** 8 tests, including the acceptance test named after the criterion. 36 deliberate breaks: 36 caught.
+- **Fixed first.** The duplicate row above, in the R2 proposal code, with its R2 test updated.
+- **Simplified.** Three pieces of code no test could reach were removed: a seed row arriving disabled, the gate's
+  answer when there is no row, and a second test for an unnamed enabled value that the type test already covers.
+- **Test added.** A row marked disabled whose name already exists enabled is refused, so the timer keeps running,
+  and the run is not verified.
