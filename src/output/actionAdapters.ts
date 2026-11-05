@@ -12,6 +12,7 @@ import type { Rehearsal as OverlapRehearsal } from '../capabilities/cronOverlapR
 import type { Rehearsal as DefaultOnRehearsal } from '../capabilities/defaultOnRehearsal.ts';
 import type { Rehearsal as LivenessRehearsal } from '../capabilities/livenessProbeRehearsal.ts';
 import type { Rehearsal as DeadLetterRehearsal } from '../capabilities/deadLetterRehearsal.ts';
+import type { Rehearsal as ReplayRehearsal } from '../capabilities/deadLetterReplayRehearsal.ts';
 import type { Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 import type { Capture } from './monitorAdapters.ts';
@@ -150,6 +151,18 @@ export function deadLetterRehearsalOutput(r: DeadLetterRehearsal, c: Capture, ta
   return envelope({
     tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
     evidence: (r.verified || !bad.length ? r.cases : bad).map(row), blind_spots: r.limits, detail: r,
+  }, table);
+}
+
+// Each entry is cited with its trial and its verdict; a failure cites the entries judged wrongly.
+export function replayRehearsalOutput(r: ReplayRehearsal, c: Capture, table: SeverityTable): ToolOutput<ReplayRehearsal> {
+  const tool = 'platform.CAP.dead_letter_triage';
+  const entry = (x: ReplayRehearsal['entries'][number]): Evidence => ({ table: 'sandbox_publishing_jobs', id: x.id, fields: [`${x.trial_posts} post(s) after two trial replays`, x.verdict, x.replayed ? 'replayed once' : 'not replayed'] });
+  const bad = r.entries.filter((x) => x.verdict !== x.expect);
+  const kase = Object.entries(r.checks).find(([, v]) => !v)?.[0] ?? 'verified';
+  return envelope({
+    tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
+    evidence: (r.verified || !bad.length ? r.entries : bad).map(entry), blind_spots: r.limits, detail: r,
   }, table);
 }
 

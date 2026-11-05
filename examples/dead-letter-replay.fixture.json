@@ -1,0 +1,12 @@
+{
+  "fixture_id": "dead-letter-replay-sandbox-1",
+  "description": "Five dead-lettered publishing entries on sandbox provider accounts, triaged at noon. Two use a provider that dedups by idempotency key, two one that dedups identical text within six hours, as Meta's flows do, and one a provider with neither. Two failed attempts had already posted before the job was dead-lettered: one three hours before triage, one eight. Invented content; not production data.",
+  "triage_at": "2026-11-05T12:00:00Z",
+  "entries": [
+    { "id": "pjob-keyed-1", "provider": "keyed", "idempotency_key": "sandbox-item-1:2026-11-05", "text": "Sandbox post one", "prior_post_at": null, "expect": "replay_safe" },
+    { "id": "pjob-keyed-posted", "provider": "keyed", "idempotency_key": "sandbox-item-2:2026-11-05", "text": "Sandbox post two", "prior_post_at": "2026-11-05T04:00:00Z", "expect": "replay_safe" },
+    { "id": "pjob-window-recent", "provider": "text_window", "idempotency_key": "sandbox-item-3:2026-11-05", "text": "Sandbox post three", "prior_post_at": "2026-11-05T09:00:00Z", "expect": "replay_safe" },
+    { "id": "pjob-window-stale", "provider": "text_window", "idempotency_key": "sandbox-item-4:2026-11-05", "text": "Sandbox post four", "prior_post_at": "2026-11-05T04:00:00Z", "expect": "not_replay_safe" },
+    { "id": "pjob-unkeyed", "provider": "none", "idempotency_key": "sandbox-item-5:2026-11-05", "text": "Sandbox post five", "prior_post_at": null, "expect": "not_replay_safe" }
+  ]
+}

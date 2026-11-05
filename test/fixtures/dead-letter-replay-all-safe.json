@@ -1,0 +1,1 @@
+{ "fixture_id": "all-safe", "description": "Only replay-safe entries, so the not-replay-safe path is not exercised.", "triage_at": "2026-11-05T12:00:00Z", "entries": [{ "id": "a", "provider": "keyed", "idempotency_key": "k", "text": "t", "prior_post_at": null, "expect": "replay_safe" }] }

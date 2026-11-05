@@ -36,6 +36,7 @@
     "default-on-sandbox": "node src/cli/defaultOnRehearsal.ts",
     "liveness-probe-sandbox": "node src/cli/livenessProbeRehearsal.ts",
     "dead-letter-sandbox": "node src/cli/deadLetterRehearsal.ts",
+    "dead-letter-replay-sandbox": "node src/cli/deadLetterReplayRehearsal.ts",
     "cron-health": "node src/cli/cronHealth.ts",
     "agent-health": "node src/cli/agentHealth.ts",
     "registry-reconcile": "node src/cli/registryReconcile.ts",
