@@ -18,6 +18,7 @@ import type { Rehearsal as AuditRehearsal } from '../capabilities/replayVerdicts
 import type { Rehearsal as FixRehearsal } from '../capabilities/fixVerification.ts';
 import type { Rehearsal as ModelRehearsal } from '../capabilities/healthModelRehearsal.ts';
 import type { Rehearsal as RatchetRehearsal } from '../capabilities/ratchetRehearsal.ts';
+import type { Rehearsal as CompareRehearsal } from '../capabilities/schemaCompareRehearsal.ts';
 import type { Citation } from '../capabilities/orchestrationHealthWatch.ts';
 import { envelope, type AsOf, type Evidence, type SeverityTable, type ToolOutput } from './toolOutput.ts';
 import type { Capture } from './monitorAdapters.ts';
@@ -237,6 +238,20 @@ export function ratchetRehearsalOutput(r: RatchetRehearsal, c: Capture, table: S
   return envelope({
     tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
     evidence: [...(r.verified || !bad.length ? r.plants : bad).map(plant), ...stray], blind_spots: r.limits, detail: r,
+  }, table);
+}
+
+// Each plant is cited with the differences the comparison reported; a failure cites the plants whose differences
+// were not the ones expected.
+export function schemaCompareOutput(r: CompareRehearsal, c: Capture, table: SeverityTable): ToolOutput<CompareRehearsal> {
+  const tool = 'platform.CAP.schema_drift_detection';
+  const diff = (x: NonNullable<CompareRehearsal['plants'][number]['differences']>[number]) => `${x.kind} ${x.table}${x.item ? `.${x.item}` : ''}${x.reference !== null || x.compared !== null ? ` (${x.reference ?? '-'} to ${x.compared ?? '-'})` : ''}`;
+  const plant = (x: CompareRehearsal['plants'][number]): Evidence => ({ table: 'sandbox_databases', id: `compared-${x.id}`, fields: [x.what, x.missed ?? (x.differences!.map(diff).join('; ') || 'no difference reported')] });
+  const bad = r.plants.filter((x) => !r.checks[x.id]);
+  const kase = Object.entries(r.checks).find(([, v]) => !v)?.[0] ?? 'verified';
+  return envelope({
+    tool, as_of: sandbox(r.fixture_id, c), verdict: r.verified ? 'ok' : 'problem', case: kase, platform_signal: null,
+    evidence: (r.verified || !bad.length ? r.plants : bad).map(plant), blind_spots: r.limits, detail: r,
   }, table);
 }
 

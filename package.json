@@ -42,6 +42,7 @@
     "bug-fix-sandbox": "node src/cli/fixVerification.ts",
     "health-model-sandbox": "node src/cli/healthModelRehearsal.ts",
     "registry-ratchet-sandbox": "node src/cli/ratchetRehearsal.ts",
+    "schema-compare-sandbox": "node src/cli/schemaCompareRehearsal.ts",
     "cron-health": "node src/cli/cronHealth.ts",
     "agent-health": "node src/cli/agentHealth.ts",
     "registry-reconcile": "node src/cli/registryReconcile.ts",

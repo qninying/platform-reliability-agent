@@ -1,0 +1,140 @@
+{
+  "fixture_id": "schema-compare-sandbox-1",
+  "description": "Two sandbox databases built from DDL modelled on the platform's AiAgent, CronScheduleConfig and DeadLetterJob models (a subset of their columns), with one planted change per difference kind the comparison reports on the compared side. No production schema or data.",
+  "reference_ddl": "CREATE TABLE ai_agents (\n  id UUID PRIMARY KEY,\n  agent_name VARCHAR(100) NOT NULL UNIQUE,\n  agent_type VARCHAR(50) NOT NULL,\n  status VARCHAR(20) NOT NULL DEFAULT 'idle',\n  config JSONB DEFAULT '{}',\n  last_run_at TIMESTAMPTZ,\n  trigger_type VARCHAR(30),\n  schedule VARCHAR(50),\n  enabled BOOLEAN NOT NULL DEFAULT TRUE,\n  run_count INTEGER NOT NULL DEFAULT 0,\n  error_count INTEGER NOT NULL DEFAULT 0,\n  last_error TEXT,\n  last_error_at TIMESTAMPTZ\n);\nCREATE TABLE cron_schedule_configs (\n  id UUID PRIMARY KEY,\n  agent_name VARCHAR(100) NOT NULL UNIQUE,\n  default_schedule VARCHAR(100) NOT NULL,\n  active_schedule VARCHAR(100) NOT NULL,\n  enabled BOOLEAN NOT NULL DEFAULT TRUE,\n  updated_by VARCHAR(255),\n  updated_at TIMESTAMPTZ\n);\nCREATE TABLE dead_letter_jobs (\n  id UUID PRIMARY KEY,\n  job_name VARCHAR(100) NOT NULL,\n  consecutive_failures INTEGER NOT NULL DEFAULT 0,\n  error_message TEXT NOT NULL,\n  error_class VARCHAR(100) NOT NULL,\n  resolved BOOLEAN NOT NULL DEFAULT FALSE,\n  created_at TIMESTAMPTZ\n);\nCREATE INDEX dead_letter_jobs_job_name ON dead_letter_jobs (job_name);\nCREATE INDEX dead_letter_jobs_resolved ON dead_letter_jobs (resolved);\n",
+  "plants": [
+    {
+      "id": "type-change",
+      "what": "dead_letter_jobs.error_class widened from VARCHAR(100) to TEXT",
+      "edits": [
+        {
+          "find": "  error_class VARCHAR(100) NOT NULL,",
+          "replace": "  error_class TEXT NOT NULL,"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "column_type_changed",
+          "table": "dead_letter_jobs",
+          "item": "error_class",
+          "reference": "VARCHAR(100)",
+          "compared": "TEXT"
+        }
+      ]
+    },
+    {
+      "id": "dropped-column",
+      "what": "ai_agents.error_count dropped",
+      "edits": [
+        {
+          "find": "  error_count INTEGER NOT NULL DEFAULT 0,\n",
+          "replace": ""
+        }
+      ],
+      "expect": [
+        {
+          "kind": "column_only_in_reference",
+          "table": "ai_agents",
+          "item": "error_count",
+          "reference": null,
+          "compared": null
+        }
+      ]
+    },
+    {
+      "id": "added-column",
+      "what": "cron_schedule_configs gains paused_until on the compared side only",
+      "edits": [
+        {
+          "find": "  updated_by VARCHAR(255),",
+          "replace": "  updated_by VARCHAR(255),\n  paused_until TIMESTAMPTZ,"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "column_only_in_compared",
+          "table": "cron_schedule_configs",
+          "item": "paused_until",
+          "reference": null,
+          "compared": null
+        }
+      ]
+    },
+    {
+      "id": "nullability-change",
+      "what": "ai_agents.agent_type loses NOT NULL",
+      "edits": [
+        {
+          "find": "  agent_type VARCHAR(50) NOT NULL,",
+          "replace": "  agent_type VARCHAR(50),"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "nullability_changed",
+          "table": "ai_agents",
+          "item": "agent_type",
+          "reference": "not null",
+          "compared": "null"
+        }
+      ]
+    },
+    {
+      "id": "default-change",
+      "what": "cron_schedule_configs.enabled defaults to FALSE",
+      "edits": [
+        {
+          "find": "  active_schedule VARCHAR(100) NOT NULL,\n  enabled BOOLEAN NOT NULL DEFAULT TRUE,",
+          "replace": "  active_schedule VARCHAR(100) NOT NULL,\n  enabled BOOLEAN NOT NULL DEFAULT FALSE,"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "default_changed",
+          "table": "cron_schedule_configs",
+          "item": "enabled",
+          "reference": "TRUE",
+          "compared": "FALSE"
+        }
+      ]
+    },
+    {
+      "id": "dropped-index",
+      "what": "the job_name index on dead_letter_jobs dropped",
+      "edits": [
+        {
+          "find": "CREATE INDEX dead_letter_jobs_job_name ON dead_letter_jobs (job_name);\n",
+          "replace": ""
+        }
+      ],
+      "expect": [
+        {
+          "kind": "index_only_in_reference",
+          "table": "dead_letter_jobs",
+          "item": "(job_name)",
+          "reference": null,
+          "compared": null
+        }
+      ]
+    },
+    {
+      "id": "dropped-table",
+      "what": "cron_schedule_configs dropped",
+      "edits": [
+        {
+          "find": "CREATE TABLE cron_schedule_configs (\n  id UUID PRIMARY KEY,\n  agent_name VARCHAR(100) NOT NULL UNIQUE,\n  default_schedule VARCHAR(100) NOT NULL,\n  active_schedule VARCHAR(100) NOT NULL,\n  enabled BOOLEAN NOT NULL DEFAULT TRUE,\n  updated_by VARCHAR(255),\n  updated_at TIMESTAMPTZ\n);\n",
+          "replace": ""
+        }
+      ],
+      "expect": [
+        {
+          "kind": "table_only_in_reference",
+          "table": "cron_schedule_configs",
+          "item": null,
+          "reference": null,
+          "compared": null
+        }
+      ]
+    }
+  ]
+}

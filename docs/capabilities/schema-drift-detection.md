@@ -1,7 +1,7 @@
 # Schema drift detection
 
-**Story:** `platform.CAP.schema_drift_detection` · **Autonomy:** starts R0, first release R2, ceiling R3 · **Approver:** K.D.
-**Code:** `src/capabilities/schemaDriftDetection.ts`, `src/cli/schemaDrift.ts` · **Tests:** `test/schemaDriftDetection.test.ts`
+**Story:** `platform.CAP.schema_drift_detection` · **Autonomy:** starts R0, first release R2, rung R3 built in a sandbox, ceiling R3 · **Approver:** K.D.
+**Code:** `src/capabilities/schemaDriftDetection.ts`, `src/cli/schemaDrift.ts` (R2), `src/sandbox/schemaDatabases.ts`, `src/capabilities/schemaCompareRehearsal.ts` (R3) · **Tests:** `test/schemaDriftDetection.test.ts`, `test/schemaCompareRehearsal.test.ts`
 
 This first release reports what the latest nightly drift run found and names what that run never compares. It
 changes no schema. Applying a schema change, or re-syncing development, stays a person's decision at every autonomy
@@ -112,3 +112,57 @@ from source, so these figures stay current. The story also says there is no migr
   model among them, and 120 ensure-schema modules. With no log it answered `unknown, last run not found`, exit 4.
 - **Not done:** it has never read the real production log. Someone with VPS access needs to supply a copy of
   `/var/log/schema-drift.log`. The R3 sandbox comparison is not built.
+
+## R3: an operator-initiated comparison of two sandbox databases
+
+The rung's acceptance: **a planted type change and a planted dropped column are both reported, proving the
+comparison is not additive-only like the runtime reconciler.**
+
+`npm run schema-compare-sandbox -- --fixture examples/schema-compare.fixture.json --sandbox <empty dir> --operator <name>`
+(exit 0 verified, 3 not, 1 bad input). A run without `--operator` is refused: a person starts it.
+
+Ellis builds two real databases in a fresh sandbox folder: a reference database from the fixture's DDL, and one
+compared database per planted change. The DDL is modelled on the platform's `AiAgent`, `CronScheduleConfig` and
+`DeadLetterJob` models, a subset of their columns. Each schema is read back from the database's own catalog, not
+from the DDL, and compared in both directions: tables, columns, each column's type, nullability and default, and
+indexes.
+
+| Plant on the compared database | Reported | Additive-only view |
+|---|---|---|
+| `dead_letter_jobs.error_class` from `VARCHAR(100)` to `TEXT` | **type changed** | nothing |
+| `ai_agents.error_count` dropped | **column only in the reference** | sees it |
+| `cron_schedule_configs.paused_until` added | column only in the compared | nothing |
+| `ai_agents.agent_type` loses `NOT NULL` | nullability changed | nothing |
+| `cron_schedule_configs.enabled` defaults to `FALSE` | default changed | nothing |
+| the `job_name` index dropped | index only in the reference | nothing |
+| `cron_schedule_configs` dropped | table only in the reference | sees it |
+
+**The contrast.** Both platform tools look one way. The boot reconciler adds model columns the database lacks,
+always nullable (`backend/src/config/schemaReconcile.ts:59-70` at `a29dfb245`). The nightly check takes production
+minus development, by name (`scripts/syncDevSchemaFromProd.sh:56`, `:68-74`). Ellis runs that additive-only view,
+names the compared database lacks, on the same databases. It sees the dropped column and the dropped table, and
+nothing for the other five. It must miss the type change, or the run is not verified.
+
+**The checks.** Each plant must be reported with exactly the differences its record expects, so a difference the
+record did not expect, including a spurious one, fails the plant. A fixture without a plant whose one expected
+difference is a type change, and one whose one expected difference is a dropped column, is refused.
+
+**What this does not prove.**
+- The sandbox databases are SQLite. The platform runs Postgres, whose catalog also carries enum values,
+  constraints and column types SQLite does not check; those are not compared here.
+- A type is compared as declared, so two spellings of one type would be reported as a change.
+- A production database needs `production_database`, which is default-denied. This runs only on databases a person
+  points it at in a sandbox.
+- A difference is reported, never fixed. Changing a schema is a person's decision at every autonomy level.
+
+**Tested:** 9 tests, including the acceptance test named after the criterion. 55 deliberate breaks: 54 caught.
+- **Tests added.** That SQLite's own tables and a primary key's index are not counted, that a generated column is
+  read, and that a missing database is an error, never a new empty file. And a test of malformed plants that had
+  used the acceptance plant, so another error matched.
+- **Removed.** A check that two databases from the same DDL compare equal, and a "some difference reported"
+  condition. Any spurious difference already fails every plant's exact match, and every plant expects at least one.
+- **The survivor.** Treating a plant that did not apply as one with no differences changes nothing, because every
+  plant expects at least one.
+
+Its rung story id is on the platform board but not yet in this repository's plan, so it is recorded here and in the
+commit.
