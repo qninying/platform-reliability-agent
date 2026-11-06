@@ -43,6 +43,10 @@ Platform facts cite the public Colaberry platform repository at upstream commit 
 2. **A builder cannot open the agent they build.** The agent reports to its manager, not its builder, so the
    builder's login is refused with "This agent is not in your reporting chain." A.M. is deciding whether that is
    intended.
+   **Fixed upstream in `a247b82c0`** (5 Nov, after a builder reported it): a new gate,
+   `requireAgentManagerOrDomainBuilder`, lets the agent's domain builder read four pages (the agent, its charter,
+   explainability and goals), on GET only; every decision stays manager-only (`agentManagerAuthMiddleware.ts:81-104` at
+   `9eaf381e7`). Ellis's answer is about who may act, which is unchanged; it now names readers as a blind spot.
 3. **A manager whose org record carries another address is refused too.** The gate looks for an `org_members` row
    under the token's email. A.M. confirmed on 2026-11-04 that the platform domain's manager record carries a
    different address from the one their management role signs in with, and is correcting the record.

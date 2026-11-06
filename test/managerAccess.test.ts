@@ -83,6 +83,7 @@ test('every answer cites the rows it read and names what it cannot see; the same
   const a = managerAccess(load(), 'PlatformAgent');
   for (const t of ['ai_agents', 'org_members', 'admin_users', 'community_members', 'manager_directives']) assert.ok(a.citations.some((c) => c.table === t), t);
   assert.ok(a.cannot_see.some((c) => /joins on email/.test(c)));
+  assert.ok(a.cannot_see.some((c) => /domain builder may read four of its pages/.test(c)), 'readers since a247b82c0 are named as a blind spot, not as people who may act');
   assert.deepEqual(managerAccess(load(), 'PlatformAgent'), a);
 });
 

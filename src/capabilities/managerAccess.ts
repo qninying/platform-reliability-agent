@@ -16,6 +16,10 @@
 //   active directive text into a prompt (agentBlueprint/agentSystemPrompt.ts:21-32), and only Dara's and Reese's
 //   prompt builders pass the agent id that triggers it (curriculum/daraSystemPrompt.ts:19-26,
 //   reese/reeseSystemPrompt.ts:82-96). A directive is text, never a mechanical limit, and a failed lookup drops it.
+// - After the pin (a247b82c0, 2026-11-05): four GET routes (the agent's page, charter, explainability and goals) moved
+//   to requireAgentManagerOrDomainBuilder, which also admits the agent's domain builder, read-only and refused on any
+//   other method (agentManagerAuthMiddleware.ts:81-104 at 9eaf381e7). Acting is unchanged, so this check's answer is
+//   unchanged; it names readers as a blind spot instead of listing them.
 
 import type { Citation } from './orchestrationHealthWatch.ts';
 
@@ -93,6 +97,7 @@ export function managerAccess(s: AccessSnapshot, agentName: string): AccessAnswe
     'Whether a section gate also applies: these routes are checked by role and reporting chain here, not by the sections a management role grants',
     'Whether a login is in use or its password works: a row is a route, not proof anyone has signed in',
     'Who a person is beyond the email: the gate joins on email, so two addresses for one person are two people to it',
+    'Who may read but not act: since a247b82c0 the agent\'s domain builder may read four of its pages (the page, charter, explainability and goals); this check lists who may act',
   ];
   const matches = s.ai_agents.filter((a) => a.agent_name === agentName);
   if (matches.length !== 1) {

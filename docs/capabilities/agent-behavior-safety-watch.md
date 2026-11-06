@@ -62,6 +62,12 @@ the action, blocked it, would have denied it in shadow mode, or never checked it
    only (`agentBehaviorMonitorAgent.ts:29`, `:68`).
 5. **`tools_granted` is descriptive only.** It is free text used to classify autonomy levels, no action
    is checked against it, and the activity log records no tool names, so Ellis does not use it for findings.
+   **Changed upstream in `1e23eae0e`** (AF3.5, 5 Nov): `tools_granted` is now a structured list written only through
+   a recorded human approval (`routes/admin/agentToolGrantRoutes.ts`, the one writer), and the registry seed adds to it
+   instead of rewriting it on every boot. Re-checked at `9eaf381e7`: still no action is checked against it at runtime.
+   Besides display code, its one reader is a boot check that refuses to register a ticket-creating agent whose list is
+   empty (`agentIdentitySeed.ts:261-266`): it checks that a list exists, not what an action does. So Ellis still does
+   not use it for findings.
 
 ## How to run it
 
