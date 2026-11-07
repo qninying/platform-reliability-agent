@@ -44,11 +44,16 @@ test('a verified story is never relabelled by its notes', () => {
   assert.equal(s.disposition, null);
 });
 
-test('on the real files, every story that is not verified explains itself: seven folded, none planned, two held', () => {
+test('on the real files, every story that is not verified explains itself: the seven folded, none planned, two held', () => {
   const cc = page();
   const open = cc.joinStories(PLAN, PROGRESS).filter((s: { platform_state: string }) => s.platform_state !== 'verified');
   const count = (k: string) => open.filter((s: { state: string }) => s.state === k).length;
-  assert.equal(count('folded'), 7);
+  // Seven stories are recorded as folded. The platform may verify one (it credited the timer proposal's R3 commit
+  // on 7 Nov), and a verified story is never relabelled, so the open folded ones and the verified ones make seven.
+  const folded = PROGRESS.stories.filter((s: { notes?: string }) => cc.disposition(s.notes)?.kind === 'folded');
+  assert.equal(folded.length, 7);
+  const verifiedFolded = folded.filter((s: { verification?: { state: string } }) => s.verification?.state === 'verified').length;
+  assert.equal(count('folded') + verifiedFolded, 7);
   assert.equal(count('fold_planned'), 0);
   assert.equal(count('held'), 2);
   // A story with no note explains itself only by having every criterion passed: it waits on the platform's check.

@@ -5,7 +5,7 @@ release is R2 (answers from records) unless the table says otherwise. Nothing he
 the R4 first releases act only on a sandbox copy, and the R1 ones run tests in a locked sandbox.
 
 **Status** comes from the platform's own verification of this repository (`.colaberry/progress.json`):
-*Verified* means the platform confirmed it from a commit that names the story. The other 10 stories in the platform's build plan each carry why they are open (A.M.'s ruling of 2026-11-04): 5 folded into a built capability (emergency stop into row 13, health probe into row 12, discovery sync into row 17, cron drift detection and untracked timer proposals into row 21), 3 merged into one new check (row 39), and 2 held until the governance gate and tool broker exist. The plan for this domain is
+*Verified* means the platform confirmed it from a commit that names the story. The other 9 stories in the platform's build plan each carry why they are open (A.M.'s ruling of 2026-11-04): 4 folded into a built capability (emergency stop into row 13, health probe into row 12, discovery sync into row 17, cron drift detection into row 21), 3 merged into one new check (row 39), and 2 held until the governance gate and tool broker exist. Untracked timer proposals, also folded into row 21, was verified by the platform on 2026-11-07 from its R3 rung commit (`a15090c`). The plan for this domain is
 [`platform.json`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/44430870b/backend/src/services/agentDomain/capabilities/platform.json).
 
 ## Reliability engineering
