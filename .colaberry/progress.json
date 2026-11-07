@@ -3,13 +3,13 @@
   "project": "platform",
   "totals": {
     "stories_total": 55,
-    "stories_verified": 46,
-    "stories_submitted": 7,
+    "stories_verified": 47,
+    "stories_submitted": 6,
     "stories_in_progress": 2,
     "stories_not_started": 0,
     "criteria_total": 72,
     "criteria_passed": 70,
-    "points_awarded": 690
+    "points_awarded": 705
   },
   "stories": [
     {
@@ -117,7 +117,7 @@
         "verified_at": "2026-10-27T02:01:08.961Z",
         "commit_sha": "2cccba97dd46727a615d3b93869976cd30a6d12c",
         "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/2cccba97dd46727a615d3b93869976cd30a6d12c",
-        "commit_at": "2026-10-27T14:02:52Z",
+        "commit_at": "2026-10-27T14:13:10Z",
         "points_awarded": 15,
         "outstanding": []
       }
@@ -151,7 +151,7 @@
         "verified_at": "2026-10-28T00:34:44.049Z",
         "commit_sha": "10039fe808bcabf3def187eea37a687d0488248a",
         "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/10039fe808bcabf3def187eea37a687d0488248a",
-        "commit_at": "2026-10-28T00:34:27Z",
+        "commit_at": "2026-11-05T14:53:46Z",
         "points_awarded": 15,
         "outstanding": []
       }
@@ -1093,7 +1093,7 @@
         "verified_at": "2026-10-27T15:09:03.365Z",
         "commit_sha": "872a5866f70310303e7edca0a02330665e6c1fab",
         "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/872a5866f70310303e7edca0a02330665e6c1fab",
-        "commit_at": "2026-10-27T15:08:48Z",
+        "commit_at": "2026-11-05T14:28:28Z",
         "points_awarded": 15,
         "outstanding": []
       }
@@ -1238,7 +1238,7 @@
         "verified_at": "2026-10-28T01:06:20.432Z",
         "commit_sha": "04dd0fb2830dee89d1dcca7f981ad4a7e210f1eb",
         "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/04dd0fb2830dee89d1dcca7f981ad4a7e210f1eb",
-        "commit_at": "2026-10-28T01:06:03Z",
+        "commit_at": "2026-11-05T15:58:56Z",
         "points_awarded": 15,
         "outstanding": []
       }
@@ -1706,14 +1706,14 @@
       "notes": "Folded into platform.CAP.registry_runtime_reconciliation (A.M.'s ruling of 2026-11-04). Not built on its own: reconciliation now proposes, with --proposals (src/capabilities/registrationProposal.ts), a registry row for every untracked name just measured, naming the row its runner reads and the enabled value it would arrive with. At cc1ebc5: 67 untracked names, 43 run today untracked and get a proposed row, 24 are already gated by a row under another name and need none. Govern or retire stays a person's decision. 11 tests; ten deliberate breaks each caught.",
       "updated_at": "2026-11-04",
       "verification": {
-        "state": "submitted",
+        "state": "verified",
         "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
+        "verified_at": "2026-11-05T16:05:03.270Z",
+        "commit_sha": "a15090c50b056d69f8aa2b0b562dc6f4ac1814a0",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/a15090c50b056d69f8aa2b0b562dc6f4ac1814a0",
+        "commit_at": "2026-11-05T16:04:38Z",
+        "points_awarded": 15,
         "outstanding": []
       }
     },

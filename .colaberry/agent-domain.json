@@ -569,7 +569,7 @@
     "summary": {
       "stories": 136,
       "checked": 55,
-      "verified": 46,
+      "verified": 47,
       "awaiting_criteria": 2,
       "outstanding_criteria": 2
     },
@@ -646,9 +646,11 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [],
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
         "outstanding": [],
-        "commit_sha": "b81d00bac32ba9d25e41b997b4e2147a3dcae435"
+        "commit_sha": "2cccba97dd46727a615d3b93869976cd30a6d12c"
       },
       {
         "story_id": "platform.CAP.agent_enable_disable_control.autonomy:R2",
@@ -672,7 +674,7 @@
         "criteria_total": 1,
         "reasons": [],
         "outstanding": [],
-        "commit_sha": "10039fe808bcabf3def187eea37a687d0488248a"
+        "commit_sha": "f7724caf0fd5bac7e6f8a1b535921a2784b13d51"
       },
       {
         "story_id": "platform.CAP.agent_health_scoring.autonomy:R2",
@@ -759,7 +761,9 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [],
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
         "outstanding": [],
         "commit_sha": "b4618072580ab0a475ca4b9e6ed7812a66174054"
       },
@@ -881,7 +885,9 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [],
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
         "outstanding": [],
         "commit_sha": "be1836de54c38b804008f29ea1fe127f1c2b0b7e"
       },
@@ -953,7 +959,9 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [],
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
         "outstanding": [],
         "commit_sha": "b1eba8878347062bcdd61e9a063ee45fe069a349"
       },
@@ -1272,7 +1280,9 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [],
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
         "outstanding": [],
         "commit_sha": "e9d8ecc34b57772a3881bb5703405bf137d5fb80"
       },
@@ -1500,7 +1510,7 @@
         "criteria_total": 1,
         "reasons": [],
         "outstanding": [],
-        "commit_sha": "872a5866f70310303e7edca0a02330665e6c1fab"
+        "commit_sha": "b811e9acf2027d92015411780afe63f6617ea829"
       },
       {
         "story_id": "platform.CAP.platform_bug_fix_dispatch.autonomy:R1",
@@ -1594,7 +1604,9 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [],
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
         "outstanding": [],
         "commit_sha": "67e2bc0258ce6fce014df2c266e014ad6c421524"
       },
@@ -1632,7 +1644,7 @@
         "criteria_total": 1,
         "reasons": [],
         "outstanding": [],
-        "commit_sha": "04dd0fb2830dee89d1dcca7f981ad4a7e210f1eb"
+        "commit_sha": "9da41aac99b9237108a600089f49c21fb8152031"
       },
       {
         "story_id": "platform.CAP.registry_runtime_reconciliation.autonomy:R2",
@@ -2093,16 +2105,14 @@
       {
         "story_id": "platform.CAP.untracked_timer_registration_proposal",
         "title": "Untracked timer registration proposal",
-        "status": "not_started",
-        "verification_state": "submitted",
-        "verified": false,
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [
-          "No commit in the repo names platform.CAP.untracked_timer_registration_proposal and changes a file. Commit your work with a `Story: platform.CAP.untracked_timer_registration_proposal` trailer (or platform.CAP.untracked_timer_registration_proposal in the subject line) and push."
-        ],
+        "reasons": [],
         "outstanding": [],
-        "commit_sha": null
+        "commit_sha": "a15090c50b056d69f8aa2b0b562dc6f4ac1814a0"
       },
       {
         "story_id": "platform.CAP.untracked_timer_registration_proposal.autonomy:R2",
