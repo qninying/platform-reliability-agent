@@ -1,6 +1,6 @@
 # 006: One output shape for every tool, with severity set only by K.D.'s table
 
-**Status:** applied on 2026-11-04 to K.D.'s five first monitors and to the four checks A.M.'s ruling of that day added · A.M. approved the shape on 2026-11-04; K.D.'s two questions (partly_unknown, the severity table) are open and not blocking
+**Status:** applied on 2026-11-04 to K.D.'s five first monitors and to the four checks A.M.'s ruling of that day added · A.M. approved the shape on 2026-11-04 · K.D. agreed `partly_unknown` as a fourth verdict on 2026-11-08, always naming what could not be seen · the severity table: provisional rules for the five first monitors' cases sent to K.D. on 2026-11-08 for review, not yet in the table
 
 ## Context
 K.D.'s architecture (2026-10-28) makes each coded check a tool the agent calls through a broker. The broker
@@ -27,7 +27,9 @@ Rules the code enforces:
 - A `problem` or an `ok` that cites no row is refused before it leaves the tool.
 - A `partly_unknown` must name at least one blind spot, so it can never read as `ok`.
 - Only a `problem` gets a severity, and only from a rule in `governance/severity-table.json`, which K.D. owns.
-  The table has no rules yet (ISS-032), so every severity is `unassigned` and says why.
+  The table has no rules yet (ISS-032), so every severity is `unassigned` and says why. On 2026-11-08 Ellis sent
+  K.D. provisional rules for the five first monitors' problem cases. They go into the table, marked provisional,
+  once K.D. has reviewed them.
 
 ## Alternatives considered
 - **Report any blind spot as `unknown`.** Safer, but most sweeps would mark the whole fleet unknown, which

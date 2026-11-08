@@ -3,9 +3,13 @@
 **Story:** `platform.CAP.error_class_coverage` · **Autonomy:** starts R0, first release R2, rung R4 built in a sandbox, ceiling R4 · **Approver:** K.D.
 **Code:** `src/capabilities/errorClassCoverage.ts`, `src/inventory/catchSites.ts` (R2), `src/capabilities/errorClassRehearsal.ts` (R4) · **Tests:** `test/errorClassCoverage.test.ts`, `test/errorClassRehearsal.test.ts`
 
-Ellis reports how many recorded failures carry a specific error class, and names every catch site on the cron
-path that records none. It reads and reports. The vocabulary of classes is K.D.'s decision, so Ellis measures
-against none.
+Ellis reports how many recorded failures carry one of the six standard error classes, and names every catch
+site on the cron path that records none. It reads and reports.
+
+**K.D. decided on 2026-11-08:** keep the six standard classes (`TimeoutError`, `RateLimitError`, `AuthError`,
+`ValidationError`, `UpstreamUnavailable`, `ContractViolation`), with "unclassified" for the rest, for now. K.D.
+revisits the set once there are real failure counts. Until that day Ellis counted any class that was not generic;
+it now counts only the six, spelled exactly.
 
 Platform facts cite the public Colaberry platform repository at upstream commit `bbde6ef`.
 
@@ -22,9 +26,10 @@ Platform facts cite the public Colaberry platform repository at upstream commit 
   row is unclassified.
 - **No failures is unknown.** With nothing recorded, Ellis says coverage is unknown, not 100%.
 
-Each class seen is listed with its rows and marked as named in the platform standard, a language built-in such
-as `TypeError`, or other. A built-in counts as classified but is shown apart, because it names how code broke
-rather than why.
+Each class seen is listed with its rows and marked as one of the six, a language built-in such as `TypeError`, or
+other. Only the six count as classified. Each store's count of unclassified rows is split into no class, a generic
+class, and a named class outside the six (`outside_the_six`), so a library name such as `SequelizeTimeoutError`
+shows up by name rather than disappearing into a total.
 
 ## Catch sites on the cron path
 
@@ -43,7 +48,7 @@ inside a `cron.schedule` callback.
 
 ## What every answer also says
 
-- Until K.D. decides the vocabulary, classified means only not generic.
+- Classified means one of the six standard classes, as K.D. decided on 2026-11-08 for now.
 - A failure written only to `ai_agents`, as `trackAgentRun` does, has no row here, so it is outside this measure.
 - One failure can have both an activity row and a dead-letter row, so the total counts records.
 - A runner in another file is not read.
@@ -70,8 +75,8 @@ Exit codes:
   class is named", covers the other half.
 - **There are 13 tests in this file and 347 in the repo**, all passing under `npm test`.
 - **Run on the platform's source at `bbde6ef`,** read from a copy at run time: 162 catch sites across 10 files,
-  with the kinds read from the code. With the example rows: exit 3, and 3 of 7 recorded failures classified
-  (42.9%). That figure comes from hand-written rows and says nothing about production.
+  with the kinds read from the code. With the example rows: exit 3, and 1 of 7 recorded failures classified
+  (14.3%) under the six-class rule (3 of 7, 42.9%, under the earlier not-generic rule). That figure comes from hand-written rows and says nothing about production.
 - **The tests catch defects.** Each check was done by editing the code, running the tests and restoring the
   code. Each of these 38 edits failed at least one test:
   - treating `Error`, or a differently spelled generic value, as a class;
@@ -86,6 +91,9 @@ Exit codes:
   - reading `catch` in a comment or string, or guessing at a named handler;
   - dropping the limits;
   - wrong exit codes, a missing table, or a bad window.
+- **The six-class rule (2026-11-08):** one new test covers each of the six, a class outside them, the three kinds
+  of unclassified, and that case and padding matter. Eight deliberate breaks, across this check and the R4
+  rehearsal; the first pass left one uncaught (a padded name accepted), which gained a test, and all eight are caught.
 - **Not yet run on live records.** The first live check is one export of the two tables for a week.
 
 ## R4: the cron path, classified in a sandbox
@@ -122,14 +130,14 @@ wording would group wrongly. A sandbox cron wrapper persists the class in `detai
 | | Timeout | Rate limit | Validation | Coverage over all 11 |
 |---|---|---|---|---|
 | Ellis's classifier | `TimeoutError` | `RateLimitError` | `ValidationError` | 10 (91%); the plain `Error` is `Unclassified` |
-| The platform's rule | `AxiosError`, `DOMException`, `HeadersTimeoutError` | `AxiosError`, `RateLimitError` | `ZodError`, `ValidationError`, `AxiosError` | 9 (82%) |
+| The platform's rule | `AxiosError`, `DOMException`, `HeadersTimeoutError` | `AxiosError`, `RateLimitError` | `ZodError`, `ValidationError`, `AxiosError` | 2 (18%) under the six-class rule; 9 (82%) counting any name |
 
-**The control.** The platform's rule names a class for 9 of the 11, but it groups nothing: `AxiosError` covers a
+**The control.** The platform's rule names a class for 9 of the 11, only 2 of them among the six, and it groups nothing: `AxiosError` covers a
 timeout, a rate limit, a validation failure and an auth failure. This is the story's "coverage on paper only", shown
 on seeds rather than assumed. It is right on two seeds, the ones whose library class already matches the vocabulary.
 Graded as the subject, it fails the acceptance and the other nine seeds.
 
-**What this does not prove.** The vocabulary is the standard's six classes; agreeing it is K.D.'s decision. A failure
+**What this does not prove.** The vocabulary is the standard's six classes, which K.D. kept on 2026-11-08 for now. A failure
 carrying no code, status or library name stays `Unclassified`. The seeds follow common libraries; an error from
 another library may carry its signal elsewhere. Persisting the class on the platform is a change to
 `cronInstrumentation.ts`, shipped by a reviewed deploy, so the ladder stops at R4.

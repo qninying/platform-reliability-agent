@@ -17,8 +17,9 @@ The registry tab's score is
 (`backend/src/services/aiOpsService.ts:466-484`). With no runs and no errors that is 100, shown in green
 (`AgentRegistryTab.tsx:67-71`). A timer that never fires and a flawless agent look the same.
 
-What a never-run agent should score is K.D.'s decision. Until K.D. decides, Ellis does not invent a number:
-it labels the agent unscored, and still shows what the tab displays.
+What a never-run agent should score is K.D.'s decision, and K.D. adopted the corrected model on 2026-11-08: an
+agent with no runs shows "unscored", never 100. Ellis labels it so, and still shows what the tab displays. The
+registry tab itself still shows 100; changing it is a platform change, shipped by a reviewed deploy.
 
 ## The two states
 

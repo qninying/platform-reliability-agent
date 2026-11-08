@@ -51,11 +51,24 @@ test('acceptance: coverage is a share of all recorded failures; a generic fallba
   const a = answer(snap({ ai_agent_activity_logs: [run('a1'), run('a2'), run('a3', 'failed', 'RateLimitError')], dead_letter_jobs: [dl('d1', 'Error'), dl('d2', 'TimeoutError')] }));
   assert.deepEqual(a.coverage, { failures: 5, classified: 2, unclassified: 3, percent: 40 });
   assert.equal(a.verdict, 'measured');
-  assert.match(a.statement, /^2 of 5 recorded failures carry a specific class \(40%\), counted over all recorded failures in 7 days\./);
+  assert.match(a.statement, /^2 of 5 recorded failures carry one of the six standard classes \(40%\), counted over all recorded failures in 7 days\./);
   assert.deepEqual(a.by_store.dead_letter_jobs.unclassified_ids, ['d1']);
   assert.deepEqual(a.by_store.ai_agent_activity_logs.unclassified_ids, ['a1', 'a2']);
   assert.equal(a.by_store.dead_letter_jobs.generic, 1);
   assert.equal(a.by_store.ai_agent_activity_logs.no_class, 2);
+});
+
+test('K.D.\'s rule (2026-11-08): only the six standard classes count as classified; any other name is unclassified and listed', () => {
+  const a = answer(snap({ dead_letter_jobs: [dl('d1', 'TimeoutError'), dl('d2', 'TypeError'), dl('d3', 'SequelizeTimeoutError'), dl('d4', 'AuthError'), dl('d5', 'Error'), dl('d6', null)] }));
+  assert.deepEqual(a.coverage, { failures: 6, classified: 2, unclassified: 4, percent: 33.3 });
+  assert.deepEqual(a.by_store.dead_letter_jobs.unclassified_ids, ['d2', 'd3', 'd5', 'd6']);
+  assert.deepEqual([a.by_store.dead_letter_jobs.outside_the_six, a.by_store.dead_letter_jobs.generic, a.by_store.dead_letter_jobs.no_class], [2, 1, 1]);
+  for (const c of ['TimeoutError', 'RateLimitError', 'AuthError', 'ValidationError', 'UpstreamUnavailable', 'ContractViolation']) {
+    assert.equal(answer(snap({ dead_letter_jobs: [dl('d', c)] })).coverage.classified, 1, c);
+  }
+  // Case matters: the classes are names, so a near spelling is not one of them.
+  assert.equal(answer(snap({ dead_letter_jobs: [dl('d', 'timeouterror')] })).coverage.classified, 0);
+  assert.equal(answer(snap({ dead_letter_jobs: [dl('d', ' TimeoutError ')] })).coverage.classified, 0);
 });
 
 test('every generic spelling is unclassified, whatever its case or padding', () => {
@@ -82,12 +95,13 @@ test('no recorded failure is unknown, never 100%', () => {
   assert.match(a.statement, /coverage is unknown, not 100%/);
 });
 
-test('classes seen are listed by kind, and no vocabulary is assumed', () => {
+test('classes seen are listed by kind, and the vocabulary is K.D.\'s six', () => {
   const a = answer(snap({ dead_letter_jobs: [dl('d1', 'TimeoutError'), dl('d2', 'TimeoutError'), dl('d3', 'TypeError'), dl('d4', 'SequelizeTimeoutError')] }));
   assert.deepEqual(a.classes.map((c) => [c.error_class, c.kind, c.rows]), [['TimeoutError', 'named_in_standard', 2], ['SequelizeTimeoutError', 'other', 1], ['TypeError', 'language_builtin', 1]]);
   assert.deepEqual(a.classes[0].row_ids, ['d1', 'd2']);
-  assert.equal(a.vocabulary.decided, false);
+  assert.equal(a.vocabulary.decided, true);
   assert.equal(a.vocabulary.decided_by, 'K.D.');
+  assert.deepEqual(a.vocabulary.classes, ['TimeoutError', 'RateLimitError', 'AuthError', 'ValidationError', 'UpstreamUnavailable', 'ContractViolation']);
 });
 
 test('acceptance: every catch site on the cron path that records no class is named', () => {
@@ -148,5 +162,5 @@ test('cli: exit 3 unclassified, 0 all classified, 4 no failures, 1 for bad input
 test('the shipped example is labelled and counts as its write-up says', () => {
   const s = JSON.parse(readFileSync('examples/error-class-coverage.example.json', 'utf8')) as CoverageSnapshot;
   assert.match(s.captured_by, /not production data/);
-  assert.deepEqual(answer(s).coverage, { failures: 7, classified: 3, unclassified: 4, percent: 42.9 });
+  assert.deepEqual(answer(s).coverage, { failures: 7, classified: 1, unclassified: 6, percent: 14.3 });
 });

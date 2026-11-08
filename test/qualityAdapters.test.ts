@@ -22,13 +22,13 @@ function holds<D>(o: ToolOutput<D>, detail: D) {
   assert.equal(o.detail, detail);
 }
 
-const storeOf = (ids: string[]): StoreCoverage => ({ failures: ids.length + 1, classified: 1, unclassified: ids.length, unclassified_ids: ids, generic: ids.length, no_class: 0 });
+const storeOf = (ids: string[]): StoreCoverage => ({ failures: ids.length + 1, classified: 1, unclassified: ids.length, unclassified_ids: ids, generic: ids.length, no_class: 0, outside_the_six: 0 });
 const coverage = (activity: string[], dead: string[], sites: number, failures = true): CoverageAnswer => ({
   captured_at: CAP.captured_at, source_commit: 'abc', window_days: 7, verdict: failures ? 'measured' : 'no_failures', statement: failures ? 's' : 'No failure is recorded, so coverage is unknown, not 100%.',
   coverage: { failures: 2, classified: 1, unclassified: activity.length + dead.length, percent: 50 },
   by_store: { ai_agent_activity_logs: storeOf(activity), dead_letter_jobs: storeOf(dead) }, classes: [],
   catch_sites: { files_read: ['backend/src/services/cronInstrumentation.ts'], total: sites + 1, records_class: 1, no_class: sites, by_kind: {} as CoverageAnswer['catch_sites']['by_kind'], records_no_class: Array.from({ length: sites }, (_, i) => ({ file: 'jobs.ts', line: 10 + i, kind: 'silent' as const })) },
-  vocabulary: { decided: false, decided_by: 'K.D.', note: 'The vocabulary is a decision.' }, limits: [],
+  vocabulary: { decided: true, decided_by: 'K.D.', decided_on: '2026-11-08', classes: ['TimeoutError'], note: 'n' }, limits: [],
 });
 
 test('error classes: unclassified failures are a problem citing each row in its store, then any catch site that records no class', () => {

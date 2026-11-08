@@ -15,7 +15,7 @@
 
 import { readFileSync } from 'node:fs';
 import { SandboxError } from '../sandbox/sandboxStore.ts';
-import { isGeneric, NAMED, type ActivityRow } from './errorClassCoverage.ts';
+import { isGeneric, isStandardClass, NAMED, type ActivityRow } from './errorClassCoverage.ts';
 
 export const PINNED_AT = 'bc936a315';
 export const UNCLASSIFIED = 'Unclassified';
@@ -98,7 +98,8 @@ export interface Rehearsal {
 }
 
 const measure = (rows: ActivityRow[]) => {
-  const classified = rows.filter((r) => !isGeneric(r.details?.error_class)).length;
+  // K.D., 2026-11-08: classified means one of the six standard classes.
+  const classified = rows.filter((r) => isStandardClass(r.details?.error_class)).length;
   return { failures: rows.length, classified, share: rows.length ? classified / rows.length : 0 };
 };
 // The acceptance kinds land in one class each, distinct from one another, and none is generic.

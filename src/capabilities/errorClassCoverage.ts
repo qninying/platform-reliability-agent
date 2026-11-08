@@ -24,7 +24,7 @@ export const TABLES = ['ai_agent_activity_logs', 'dead_letter_jobs'] as const;
 
 export type ClassKind = 'named_in_standard' | 'language_builtin' | 'other';
 export interface ClassCount { error_class: string; kind: ClassKind; rows: number; row_ids: string[] }
-export interface StoreCoverage { failures: number; classified: number; unclassified: number; unclassified_ids: string[]; generic: number; no_class: number }
+export interface StoreCoverage { failures: number; classified: number; unclassified: number; unclassified_ids: string[]; generic: number; no_class: number; outside_the_six: number }
 export interface CoverageAnswer {
   captured_at: string;
   source_commit: string | null;
@@ -35,7 +35,7 @@ export interface CoverageAnswer {
   by_store: { ai_agent_activity_logs: StoreCoverage; dead_letter_jobs: StoreCoverage };
   classes: ClassCount[];
   catch_sites: { files_read: string[]; total: number; records_class: number; no_class: number; by_kind: Record<CatchKind, number>; records_no_class: CatchSite[] };
-  vocabulary: { decided: false; decided_by: 'K.D.'; note: string };
+  vocabulary: { decided: true; decided_by: 'K.D.'; decided_on: '2026-11-08'; classes: string[]; note: string };
   limits: string[];
 }
 
@@ -47,8 +47,7 @@ const WRAPPERS = ['cronInstrumentation', 'agentRunTracker', 'aiOrchestrator', 'a
 const KINDS: CatchKind[] = ['records_class', 'class_may_be_generic', 'records_no_class', 'rethrows', 'logs_only', 'silent', 'not_read'];
 
 export const LIMITS: readonly string[] = [
-  'A class-looking word is not an agreed class: until K.D. decides the vocabulary, classified means only not generic.',
-  'A language built-in such as TypeError counts as classified here, and is shown apart: it names how code broke, not why.',
+  'Classified means one of the six standard classes (K.D., 2026-11-08, for now; revisited once real counts exist). Any other class, a language built-in such as TypeError or a library name such as SequelizeTimeoutError included, counts as unclassified and is listed by name.',
   'A failure written only to ai_agents, as trackAgentRun does, has no row here, so it is outside this measure.',
   'One failure can have both an activity row and a dead-letter row, so the total counts records, not distinct failures.',
   'Catch sites are read in the cron wrappers, the scheduler and inside cron.schedule callbacks. A runner in another file is not read.',
@@ -56,12 +55,15 @@ export const LIMITS: readonly string[] = [
 ];
 
 export function isGeneric(c: unknown): boolean { return typeof c !== 'string' || GENERIC.has(c.trim().toLowerCase()); }
+// K.D., 2026-11-08: keep the six standard classes, with "unclassified" for the rest, for now.
+export function isStandardClass(c: unknown): boolean { return typeof c === 'string' && NAMED.has(c); }
 const kindOfClass = (c: string): ClassKind => (NAMED.has(c) ? 'named_in_standard' : BUILTIN.has(c) ? 'language_builtin' : 'other');
 
 function store(rows: Array<{ id: string; cls: unknown }>): StoreCoverage {
-  const unclassified = rows.filter((r) => isGeneric(r.cls));
+  const unclassified = rows.filter((r) => !isStandardClass(r.cls));
   const noClass = unclassified.filter((r) => r.cls === null || r.cls === undefined).length;
-  return { failures: rows.length, classified: rows.length - unclassified.length, unclassified: unclassified.length, unclassified_ids: unclassified.map((r) => r.id).sort(), generic: unclassified.length - noClass, no_class: noClass };
+  const generic = unclassified.filter((r) => r.cls !== null && r.cls !== undefined && isGeneric(r.cls)).length;
+  return { failures: rows.length, classified: rows.length - unclassified.length, unclassified: unclassified.length, unclassified_ids: unclassified.map((r) => r.id).sort(), generic, no_class: noClass, outside_the_six: unclassified.length - noClass - generic };
 }
 
 export function cronPathFiles(ix: TimerIndex): string[] {
@@ -90,13 +92,13 @@ export function coverage(r: Reader, ix: TimerIndex, s: CoverageSnapshot, opts: {
     captured_at: s.captured_at, source_commit: ix.source_commit, window_days: opts.window_days,
     verdict: failures ? 'measured' : 'no_failures',
     statement: failures
-      ? `${classified} of ${failures} recorded failures carry a specific class (${percent}%), counted over all recorded failures in ${opts.window_days} days. ${siteLine}`
+      ? `${classified} of ${failures} recorded failures carry one of the six standard classes (${percent}%), counted over all recorded failures in ${opts.window_days} days. ${siteLine}`
       : `No failure is recorded in ${opts.window_days} days, so coverage is unknown, not 100%. ${siteLine}`,
     coverage: { failures, classified, unclassified: failures - classified, percent },
     by_store: { ai_agent_activity_logs: a, dead_letter_jobs: d },
     classes,
     catch_sites: { files_read: files, total: sites.length, records_class: by_kind.records_class + by_kind.class_may_be_generic, no_class: noClass.length, by_kind, records_no_class: noClass },
-    vocabulary: { decided: false, decided_by: 'K.D.', note: 'The vocabulary is a decision. Ellis measures against none, and marks only the classes the platform standard names as examples.' },
+    vocabulary: { decided: true, decided_by: 'K.D.', decided_on: '2026-11-08', classes: [...NAMED], note: 'The six standard classes, with unclassified for the rest, for now. K.D. revisits once there are real failure counts.' },
     limits: [...LIMITS],
   };
 }

@@ -20,12 +20,13 @@ test('acceptance (R4): seeded timeout, rate-limit and validation failures land i
   assert.equal(r.limits.length, 4);
 });
 
-test('the platform\'s rule names a class for most seeds but groups nothing: AxiosError spans timeout, rate limit, validation and auth', () => {
+test('the platform\'s rule names a class for most seeds, only 2 of them standard, and groups nothing: AxiosError spans timeout, rate limit, validation and auth', () => {
   const r = rehearse(load());
   assert.deepEqual(r.seeds.filter((s) => s.platform === 'AxiosError').map((s) => s.kind), ['timeout', 'rate_limit', 'validation', 'auth']);
-  assert.deepEqual(r.platform_coverage, { failures: 11, classified: 9, share: 9 / 11 });
+  // K.D., 2026-11-08: only the six standard classes count, so AxiosError and the like are unclassified.
+  assert.deepEqual(r.platform_coverage, { failures: 11, classified: 2, share: 2 / 11 });
   assert.equal(r.checks.control_fails_acceptance, true);
-  assert.match(r.statement, /classified 9 of 11 \(82%\); its cron path records no class at all/);
+  assert.match(r.statement, /classified 2 of 11 \(18%\); its cron path records no class at all/);
 });
 
 test('coverage is over all failures: the one Ellis cannot place is Unclassified and counts against it', () => {
