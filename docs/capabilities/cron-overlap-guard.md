@@ -98,6 +98,15 @@ All tests ran on 2026-10-31 with `node --test` and `tsc --noEmit`.
 - **Source run:** against a copy of platform `bbde6ef` with an empty snapshot, it found 204 timers, exit 4. All 204
   were unassessable, as they should be with no records, and it tied the publishing worker's claim to
   `MarketingPublishingWorker`.
+- **Skipped runs (2026-11-08):** four more tests in `test/cronOverlapGuard.test.ts` (27 now) cover the four
+  kinds of skip, the start-or-stop switch, the HTTP refusal and the checked-but-not-stopping flag that are not
+  skips, the statement, and the skips the answer reads from the checkout; one in `test/jobAdapters.test.ts` covers
+  the blind spots. Nine deliberate breaks; the first pass left two uncaught (dropping the return requirement, and
+  the answer ignoring the checkout's skips), so the last two tests were added, and all nine are caught: dropping the `finally`
+  check, the HTTP exclusion or the constructor exclusion, counting a console line as a log, folding a returned
+  skip into nothing, dropping the return requirement, listing a logged skip as a blind spot, dropping skips from
+  the blind spots, and ignoring the source's skips. Run on `2663cb27e` with an empty snapshot: 208 timers, all
+  unassessable, and 5 jobs that skip their own run.
 
 **Not tested:** it has not run against production records, so no real duration, interval comparison or observed
 overlap has been read yet. That needs a snapshot taken by someone with access.
@@ -113,10 +122,30 @@ overlap has been read yet. That needs a snapshot taken by someone with access.
 - Whether the platform runs each timer in one process is not read here.
 - Timers with no `ai_agents` row stay unassessable until they are registered.
 
-## Decisions left open
+## Skipped runs
 
-**K.D.:** should a skipped tick be recorded as a missed run? It changes what the missed-run detector reports. The
-answer carries this as `policy_open`, and Ellis assumes nothing.
+**K.D. decided on 2026-11-08:** a skipped run is recorded as a skip, separately from a missed run. Overlapping runs
+keep being reported.
+
+Most timers never skip: no timer sets `noOverlap`, so a new run starts while the last is still going, and the
+runs overlap. A few jobs skip by their own guard: a flag set while a run is in flight, checked on entry, and
+cleared in a `finally` block. The answer's `skips` lists each one with what the skip leaves behind:
+
+| `records` | Means |
+|---|---|
+| `log_line` | the skip writes a log line, so it can be counted |
+| `console_only` | it prints to the console only |
+| `returned_to_caller` | it hands a value back, and the caller decides what is kept |
+| `nothing` | it leaves no trace |
+
+A flag cleared by a start or stop switch guards a scheduler, not a run, and an HTTP handler that refuses a second
+click is a person's request, not a timed run; neither is listed. In the shared output, every skip that is not
+logged is a blind spot: it cannot be counted, and must not be read as a missed run.
+
+**On the latest source (`2663cb27e`, 2026-11-08):** 5 jobs skip their own run. The repo tree refresh logs a line;
+dataset discovery prints to the console only; the Basecamp sync and the priority engine hand it back to their
+two-minute timer, which prints a warning only when there are errors, and the sync reports its skip as an error;
+system auto-response leaves nothing. Each reads the current state when it runs, so the next run picks up the work.
 
 ## R4: the guard, built and proven in a sandbox
 

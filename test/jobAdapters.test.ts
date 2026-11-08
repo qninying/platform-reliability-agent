@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import type { OverlapAnswer, TimerAnswer } from '../src/capabilities/cronOverlapGuard.ts';
+import { skipAnswer, type OverlapAnswer, type TimerAnswer } from '../src/capabilities/cronOverlapGuard.ts';
 import { askRun, type RunSnapshot } from '../src/capabilities/cronRunInstrumentation.ts';
 import type { DeadLetterAnswer, FamilyReport } from '../src/capabilities/deadLetterCapture.ts';
 import type { TriageAnswer } from '../src/capabilities/deadLetterTriage.ts';
@@ -33,7 +33,7 @@ const overlap = (can: TimerAnswer[], un: TimerAnswer[], not: TimerAnswer[]): Ove
   verdict: can.length ? 'can_overlap' : un.length ? 'none_assessable_overlap' : 'all_clear_on_record', statement: 's',
   counts: { timers: can.length + un.length + not.length, can_overlap: can.length, not_seen_to_overlap: not.length, unassessable: un.length, holding_own_claim: 0 },
   can_overlap: can, unassessable: un, not_seen_to_overlap: not, claims: { sites: 0, tied_to_a_timer: 0, not_tied: [] },
-  policy_open: { decided: false, decided_by: 'K.D.', question: 'q' }, limits: [],
+  skips: skipAnswer([]), limits: [],
 });
 const unassessable = (name: string) => timer(name, { verdict: 'unassessable', basis: null, unassessable_because: 'no_agents_row', duration: { average_ms: null, worst_ms: null, worst_row_id: null, runs_in_window: 0 } });
 
@@ -176,4 +176,13 @@ test('stale actions: nothing in processing and no recovery timer row is unknown,
   const o = staleOutput(r, s, EMPTY);
   holds(o, r);
   assert.equal(o.verdict, 'unknown');
+});
+
+test('overlap: a skip that is not logged is a blind spot; a logged skip is not', () => {
+  const a = { ...overlap([], [unassessable('T')], []), skips: skipAnswer([
+    { file: 'a.ts', line: 3, flag: 'busy', records: 'nothing' as const },
+    { file: 'b.ts', line: 9, flag: 'running', records: 'log_line' as const },
+  ]) };
+  const out = overlapOutput(a, CAP, EMPTY);
+  assert.deepEqual(out.blind_spots, ['T: no_agents_row', 'a.ts:3: skips a run while the last is still going; the skip is not logged (nothing)']);
 });

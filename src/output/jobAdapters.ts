@@ -32,7 +32,12 @@ export function overlapOutput(a: OverlapAnswer, c: Capture, table: SeverityTable
     tool, as_of: at(c, a.source_commit), verdict,
     case: verdict !== 'problem' ? verdict : a.can_overlap.some((t) => t.observed_overlaps.count) ? 'observed_overlap' : 'can_overlap',
     platform_signal: null, evidence: verdict === 'problem' ? a.can_overlap.flatMap(overlapEvidence) : seen,
-    blind_spots: a.unassessable.map((t) => `${t.timer}: ${t.unassessable_because}`), detail: a,
+    blind_spots: [
+      ...a.unassessable.map((t) => `${t.timer}: ${t.unassessable_because}`),
+      // A skip that is not logged cannot be counted, and must not be read as a missed run (K.D., 2026-11-08).
+      ...a.skips.guards.filter((g) => g.records !== 'log_line').map((g) => `${g.file}:${g.line}: skips a run while the last is still going; the skip is not logged (${g.records})`),
+    ],
+    detail: a,
   }, table);
 }
 

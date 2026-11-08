@@ -5,7 +5,8 @@ import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { overlapGuard, LIMITS, type OverlapSnapshot, type AgentRow, type RunRow, type TimerAnswer } from '../src/capabilities/cronOverlapGuard.ts';
-import { claimsIn, libraryGuard, guardInStarter, guardAtLine } from '../src/inventory/claimSites.ts';
+import { claimsIn, libraryGuard, guardInStarter, guardAtLine, skipGuardsIn } from '../src/inventory/claimSites.ts';
+import { skipAnswer } from '../src/capabilities/cronOverlapGuard.ts';
 import { timerIndex } from '../src/inventory/timerHomes.ts';
 import type { Reader } from '../src/capabilities/registryReconciliation.ts';
 
@@ -253,10 +254,10 @@ test('the answer repeats exactly and leaves its input alone', () => {
   assert.equal(JSON.stringify(s), before);
 });
 
-test('the skip policy stays K.D.\'s and the limits ship with the answer', () => {
+test('K.D.\'s skip rule and the limits ship with the answer', () => {
   const a = ask(snap());
-  assert.equal(a.policy_open.decided, false);
-  assert.equal(a.policy_open.decided_by, 'K.D.');
+  assert.equal(a.skips.decided_by, 'K.D.');
+  assert.equal(a.skips.rule, 'A skipped run is recorded as a skip, separately from a missed run.');
   assert.deepEqual(a.limits, [...LIMITS]);
   assert.match(a.statement, /^9 timers: 0 can overlap, 9 cannot be assessed, 0 not seen to overlap in 30 days\. Own claim found for 1\.$/);
 });
@@ -291,4 +292,50 @@ test('the example snapshot has the tables the CLI requires and only invented nam
   assert.ok(ex.ai_agents.every((a) => a.agent_name.startsWith('Example')));
   assert.equal(ex.ai_agent_activity_logs.length, 2);
   assert.equal(ex.cron_schedule_configs.length, 0);
+});
+
+// The five shapes the platform uses at 2663cb27e, cut down: each skip and what it leaves behind.
+const SKIPS = `let running = false;
+let quiet = false;
+let busy: boolean = false;
+let handed = false;
+let startedOnce = false;
+let clicked = false;
+let noted = false;
+export function a() { if (running) { log('a_skipped', 'success'); return; } running = true; try { work(); } finally { running = false; } }
+export function b() { if (quiet) { console.log('already running'); return null; } quiet = true; try { work(); } finally { quiet = false; } }
+export function c() { if (busy) return; busy = true; try { work(); } finally { busy = false; } }
+export function d() { if (handed) { return { started_at: new Date(), errors: [] }; } handed = true; try { work(); } finally { handed = false; } }
+export function start() { if (startedOnce) { console.warn('already started'); return; } startedOnce = true; }
+export function stop() { startedOnce = false; }
+export function watch() { if (noted) { log('still running'); } noted = true; try { work(); } finally { noted = false; } }
+export function route(req, res) { if (clicked) { res.status(409).json({ error: 'busy' }); return; } clicked = true; try { work(); } finally { clicked = false; } }
+`;
+
+test('a job that skips its own run is found, with what the skip leaves behind', () => {
+  const g = skipGuardsIn('x.ts', SKIPS);
+  assert.deepEqual(g.map((x) => [x.flag, x.records]), [['running', 'log_line'], ['quiet', 'console_only'], ['busy', 'nothing'], ['handed', 'returned_to_caller']]);
+  assert.equal(g[0].line, 8);
+});
+
+test('a start or stop switch and a refused HTTP request are not skipped runs', () => {
+  const flags = skipGuardsIn('x.ts', SKIPS).map((x) => x.flag);
+  assert.ok(!flags.includes('startedOnce'));
+  assert.ok(!flags.includes('clicked'));
+  // A flag that is checked but does not stop the run is a note, not a skip.
+  assert.ok(!flags.includes('noted'));
+  // A constructor in the returned value is not a log line.
+  assert.equal(skipGuardsIn('x.ts', SKIPS).find((x) => x.flag === 'handed')!.records, 'returned_to_caller');
+});
+
+test('the skip statement counts each kind, and says unlogged skips are not missed runs', () => {
+  const s = skipAnswer(skipGuardsIn('x.ts', SKIPS));
+  assert.equal(s.statement, '4 job(s) skip a run while their previous run is still going: 1 log a line, 1 print to the console only, 1 hand it back to their caller, and 1 leave nothing. Only a logged skip can be counted; the rest are not missed runs, but nothing records them as skips.');
+  assert.equal(skipAnswer([]).statement, 'No job skips its own run by a guard Ellis can read.');
+});
+
+test('the overlap answer lists the skips it finds in the checkout it reads', () => {
+  const a = ask(snap(), { ...FILES, [`${S}/busyJob.ts`]: 'let busy = false;\nexport function run() { if (busy) return; busy = true; try { work(); } finally { busy = false; } }\n' });
+  assert.deepEqual(a.skips.guards.map((g) => [g.file, g.flag, g.records]), [[`${S}/busyJob.ts`, 'busy', 'nothing']]);
+  assert.equal(ask(snap()).skips.guards.length, 0);
 });

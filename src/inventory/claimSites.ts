@@ -14,6 +14,9 @@ import { scan, inString, lineOf, balanced, type Scanned } from './sourceScan.ts'
 import type { Reader } from '../capabilities/registryReconciliation.ts';
 
 export type ClaimKind = 'conditional_update' | 'skip_locked' | 'advisory_lock';
+// What a job leaves behind when it skips a run because its previous run is still going.
+export type SkipRecord = 'log_line' | 'console_only' | 'returned_to_caller' | 'nothing';
+export interface SkipGuard { file: string; line: number; flag: string; records: SkipRecord }
 export interface ClaimSite { file: string; line: number; kind: ClaimKind }
 export interface LibraryGuard { no_overlap: boolean; callback_holds_run: boolean }
 
@@ -127,4 +130,39 @@ export function claimIndex(r: Reader): ClaimIndex {
     return [...found.values()];
   };
   return { sites, job };
+}
+
+// A job that skips its own run: a module-level flag set while a run is in flight, checked on entry, and cleared in a
+// finally block, so the next run starts once this one ends. A flag cleared anywhere else (a start or stop switch)
+// guards a scheduler, not a run, and is not counted. A guard that answers an HTTP request refuses a person's click,
+// not a timed run, and is not counted either. A skip that hands a value back leaves the record to its caller, which
+// one hop of source text cannot see, so it is reported as returned_to_caller rather than guessed. The skip itself is what K.D. ruled on 2026-11-08: a skipped
+// run is recorded separately from a missed run, so Ellis says what each skip leaves behind.
+export function skipGuardsIn(file: string, text: string): SkipGuard[] {
+  const code = scan(text).code;
+  const out: SkipGuard[] = [];
+  for (const m of code.matchAll(/^(?:let|var)\s+(\w+)\s*(?::\s*boolean\s*)?=\s*false\s*;/gm)) {
+    const flag = m[1];
+    const clearedInFinally = [...code.matchAll(/\bfinally\s*\{/g)].some((f) => {
+      const body = balanced(code, f.index + f[0].length - 1);
+      return body !== null && new RegExp(`\\b${flag}\\s*=\\s*false\\b`).test(body);
+    });
+    if (!clearedInFinally) continue;
+    for (const c of code.matchAll(new RegExp(`\\bif\\s*\\(\\s*${flag}\\s*\\)\\s*`, 'g'))) {
+      const at = c.index + c[0].length;
+      const block = code[at] === '{' ? balanced(code, at) : code.slice(at, code.indexOf(';', at) + 1);
+      if (!block || !/\breturn\b/.test(block) || /\b(?:res|reply)\s*\./.test(block)) continue;
+      const calls = [...block.replace(/\bnew\s+[\w.]+\s*\(/g, '').matchAll(/\b([\w.]+)\s*\(/g)].map((x) => x[1]);
+      const records: SkipRecord = calls.some((n) => !n.startsWith('console.')) ? 'log_line'
+        : calls.length ? 'console_only'
+        : /\breturn\s+[^\s;]/.test(block) && !/\breturn\s*;/.test(block) ? 'returned_to_caller' : 'nothing';
+      out.push({ file, line: lineOf(code, c.index), flag, records });
+    }
+  }
+  return out.sort((a, b) => a.line - b.line);
+}
+
+// Every job in the checkout that skips its own run, with what the skip leaves behind.
+export function skipGuards(r: Reader): SkipGuard[] {
+  return r.list('backend/src').filter((f) => SOURCE.test(f) && !skipped(f)).flatMap((f) => skipGuardsIn(f, r.read(f)));
 }

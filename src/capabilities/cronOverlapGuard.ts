@@ -15,7 +15,7 @@
 
 import { parseCron, gapRange } from '../inventory/cronExpression.ts';
 import { arrayAfter, topObjects, ownString } from '../inventory/registrySource.ts';
-import { claimIndex, guardAtLine, guardInStarter, type ClaimSite, type LibraryGuard } from '../inventory/claimSites.ts';
+import { claimIndex, guardAtLine, guardInStarter, skipGuards, type ClaimSite, type LibraryGuard, type SkipGuard } from '../inventory/claimSites.ts';
 import type { TimerIndex } from '../inventory/timerHomes.ts';
 import type { Reader } from './registryReconciliation.ts';
 
@@ -54,7 +54,9 @@ export interface OverlapAnswer {
   unassessable: TimerAnswer[];
   not_seen_to_overlap: TimerAnswer[];
   claims: { sites: number; tied_to_a_timer: number; not_tied: ClaimSite[] };
-  policy_open: { decided: false; decided_by: 'K.D.'; question: string };
+  // K.D., 2026-11-08: record every skip, separately from missed runs. Ellis lists each job that skips its own run and
+  // what the skip leaves behind; a skip that leaves nothing cannot be counted, and must not be read as a missed run.
+  skips: { rule: string; decided_by: 'K.D.'; decided_on: '2026-11-08'; guards: SkipGuard[]; statement: string };
   limits: string[];
 }
 
@@ -136,6 +138,16 @@ function assess(t: Seed, s: OverlapSnapshot, now: Date, windowDays: number): Tim
   return { ...base, verdict: 'not_seen_to_overlap', basis: 'within_interval', unassessable_because: null };
 }
 
+const SKIP_RULE = 'A skipped run is recorded as a skip, separately from a missed run.';
+
+export function skipAnswer(guards: SkipGuard[]): OverlapAnswer['skips'] {
+  const n = (k: SkipGuard['records']) => guards.filter((g) => g.records === k).length;
+  const statement = guards.length === 0
+    ? 'No job skips its own run by a guard Ellis can read.'
+    : `${guards.length} job(s) skip a run while their previous run is still going: ${n('log_line')} log a line, ${n('console_only')} print to the console only, ${n('returned_to_caller')} hand it back to their caller, and ${n('nothing')} leave nothing. Only a logged skip can be counted; the rest are not missed runs, but nothing records them as skips.`;
+  return { rule: SKIP_RULE, decided_by: 'K.D.', decided_on: '2026-11-08', guards, statement };
+}
+
 export function overlapGuard(r: Reader, ix: TimerIndex, s: OverlapSnapshot, opts: { window_days: number }): OverlapAnswer {
   const now = new Date(s.captured_at);
   const claims = claimIndex(r);
@@ -151,7 +163,7 @@ export function overlapGuard(r: Reader, ix: TimerIndex, s: OverlapSnapshot, opts
     counts: { timers: all.length, can_overlap: can.length, not_seen_to_overlap: not.length, unassessable: un.length, holding_own_claim: holding },
     can_overlap: can, unassessable: un, not_seen_to_overlap: not,
     claims: { sites: claims.sites.length, tied_to_a_timer: claims.sites.filter((c) => tied.has(`${c.file}:${c.line}`)).length, not_tied: claims.sites.filter((c) => !tied.has(`${c.file}:${c.line}`)) },
-    policy_open: { decided: false, decided_by: 'K.D.', question: 'Should a skipped tick be recorded as a missed run? It changes what the missed-run detector reports.' },
+    skips: skipAnswer(skipGuards(r)),
     limits: [...LIMITS],
   };
 }
