@@ -1,7 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { join } from 'node:path';
+import { tmpdir } from 'node:os';
 import { spawnSync } from 'node:child_process';
+import { managerAccessOutput } from '../src/output/foldAdapters.ts';
 import { managerAccess, downstream, MAX_DOWNWARD_DEPTH, type AccessSnapshot, type AgentRow } from '../src/capabilities/managerAccess.ts';
 
 // The example has the platform's record shapes with invented ids and example.com addresses: not production data.
@@ -28,14 +31,36 @@ test('acceptance (scoped authorization): who may act and by which route, and a m
   assert.ok(a.refused.some((r) => r.email === 'builder@example.com' && /does not have this agent in their downstream/.test(r.why)));
 });
 
-test('acceptance (directives): a directive with no runtime enforcement path is recorded-but-unenforced, not in force', () => {
+test('acceptance (directives): each directive says which surfaces read it, and every one is advisory', () => {
+  // Any agent: the manager conversation reads its directives unconditionally (AF12.8, 2663cb27e).
   const a = managerAccess(load(), 'PlatformAgent');
-  assert.deepEqual(a.directives.map((d) => [d.id, d.effect]), [['md-1', 'recorded_but_unenforced']]);
+  assert.deepEqual(a.directives.map((d) => [d.id, d.effect]), [['md-1', 'in_manager_conversation_only']]);
+  assert.match(a.directives[0].why, /read by the manager conversation/);
+  assert.match(a.directives[0].why, /never a gate/);
+  assert.match(a.statement, /1 directive\(s\), all advisory\./);
   const dara = managerAccess(load(), 'Dara');
-  assert.equal(dara.directives[0].effect, 'injected_into_prompt');
-  assert.match(dara.directives[0].why, /limits nothing mechanically/);
+  assert.equal(dara.directives[0].effect, 'in_manager_conversation_and_own_replies');
+  const reese = managerAccess(snap({ ai_agents: [agent('r', null, null, 'Reese')], manager_directives: [{ id: 'd', agent_id: 'r', status: 'active', created_by_email: 'x' }] }), 'Reese');
+  assert.equal(reese.directives[0].effect, 'in_manager_conversation_and_own_replies');
+  assert.match(dara.directives[0].why, /never a gate/);
   const revoked = managerAccess(snap({ ai_agents: [agent('a', null, null, 'Dara')], manager_directives: [{ id: 'd', agent_id: 'a', status: 'revoked', created_by_email: 'x' }] }), 'Dara');
   assert.equal(revoked.directives[0].effect, 'revoked');
+});
+
+test('a directive on an agent whose own replies read none is reported as missed, and is a problem', () => {
+  const s = snap({ ai_agents: [agent('maya', null, null, 'Maya')], manager_directives: [{ id: 'd1', agent_id: 'maya', status: 'active', created_by_email: 'x' }] });
+  const a = managerAccess(s, 'Maya');
+  assert.equal(a.directives[0].effect, 'missed_by_own_replies');
+  assert.match(a.directives[0].why, /answers real messages/);
+  assert.match(a.statement, /1 missed by the agent's own replies/);
+  // The case name is what a severity rule keys on, so a rule for it must apply.
+  const rule = { tool: 'platform.CAP.manager_scoped_authorization', case: 'directive_missed_by_own_replies', severity: 'Medium' as const, why: 'test' };
+  const out = managerAccessOutput(a, { captured_at: s.captured_at, captured_by: 'test' }, { owner: 'K.D.', status: 'test', rules: [rule] });
+  assert.equal(out.verdict, 'problem');
+  assert.equal(out.severity, 'Medium');
+  // The same directive on an agent with no reply runtime of its own is no problem: the manager conversation reads it.
+  const other = managerAccess(snap({ ai_agents: [agent('x', null, null, 'Other')], manager_directives: [{ id: 'd1', agent_id: 'x', status: 'active', created_by_email: 'x' }] }), 'Other');
+  assert.equal(managerAccessOutput(other, { captured_at: s.captured_at, captured_by: 'test' }, { owner: 'K.D.', status: 'test', rules: [] }).verdict, 'ok');
 });
 
 test('a manager with a login under the recorded email, whose agent reports to them, passes through the chain', () => {
@@ -92,4 +117,23 @@ test('the command exits 3 when the accountable manager cannot reach the agent, a
   assert.equal(r.status, 3, r.stderr);
   assert.equal(JSON.parse(r.stdout).access.agent.agent_name, 'PlatformAgent');
   assert.equal(spawnSync(process.execPath, ['src/cli/managerAccess.ts', '--snapshot', EXAMPLE], { encoding: 'utf8' }).status, 1);
+});
+
+test('the command exits 3 when a reachable agent has a directive its own replies miss, and 0 once they read it', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'manager-access-'));
+  const write = (name: string): string => {
+    const p = join(dir, `${name}.json`);
+    writeFileSync(p, JSON.stringify(snap({
+      ai_agents: [agent('x', 'human', 'm', name)], org_members: [{ id: 'm', email: 'm@example.com' }],
+      admin_users: [{ id: 'u', email: 'm@example.com', role: 'admin' }],
+      manager_directives: [{ id: 'd', agent_id: 'x', status: 'active', created_by_email: 'm@example.com' }],
+    })));
+    return p;
+  };
+  try {
+    assert.equal(spawnSync(process.execPath, ['src/cli/managerAccess.ts', '--snapshot', write('Maya'), '--agent', 'Maya'], { encoding: 'utf8' }).status, 3);
+    assert.equal(spawnSync(process.execPath, ['src/cli/managerAccess.ts', '--snapshot', write('Reese'), '--agent', 'Reese'], { encoding: 'utf8' }).status, 0);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });

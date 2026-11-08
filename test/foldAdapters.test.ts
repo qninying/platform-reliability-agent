@@ -94,17 +94,20 @@ test('manager access: a manager cut off from their agent is a problem; an unknow
   assert.match(u.blind_spots[0], /No ai_agents row is named Nobody/);
 });
 
-test('manager access: a manager who reaches their agent, with no unenforced directive, is ok', () => {
+test('manager access: a manager who reaches their agent, with no directive missed by its own replies, is ok', () => {
   const s: AccessSnapshot = { ...CAP, ai_agents: [{ id: 'a', agent_name: 'A', reports_to_type: 'human', reports_to_id: 'm' }], org_members: [{ id: 'm', email: 'm@example.com' }], admin_users: [{ id: 'u', email: 'm@example.com', role: 'admin' }], management_grants: [], manager_directives: [] };
   assert.equal(managerAccessOutput(managerAccess(s, 'A'), s, EMPTY).verdict, 'ok');
 });
 
-test('manager access: each reason is enough on its own: a directive enforced nowhere, or a manager cut off', () => {
-  const base: AccessSnapshot = { ...CAP, ai_agents: [{ id: 'a', agent_name: 'A', reports_to_type: 'human', reports_to_id: 'm' }], org_members: [{ id: 'm', email: 'm@example.com' }], admin_users: [{ id: 'u', email: 'm@example.com', role: 'admin' }], management_grants: [], manager_directives: [] };
+test('manager access: each reason is enough on its own: a directive the agent\'s own replies miss, or a manager cut off', () => {
+  const base: AccessSnapshot = { ...CAP, ai_agents: [{ id: 'a', agent_name: 'Maya', reports_to_type: 'human', reports_to_id: 'm' }], org_members: [{ id: 'm', email: 'm@example.com' }], admin_users: [{ id: 'u', email: 'm@example.com', role: 'admin' }], management_grants: [], manager_directives: [] };
   const withDirective = { ...base, manager_directives: [{ id: 'd', agent_id: 'a', status: 'active', created_by_email: 'm@example.com' }] };
-  const d = managerAccessOutput(managerAccess(withDirective, 'A'), withDirective, EMPTY);
+  const d = managerAccessOutput(managerAccess(withDirective, 'Maya'), withDirective, EMPTY);
   assert.equal(d.verdict, 'problem');
   assert.equal(d.severity_rule.length > 0, true);
+  // The same directive on an agent the manager conversation reaches, with no reply runtime of its own, is no problem.
+  const other = { ...withDirective, ai_agents: [{ ...withDirective.ai_agents[0], agent_name: 'A' }] };
+  assert.equal(managerAccessOutput(managerAccess(other, 'A'), other, EMPTY).verdict, 'ok');
   const cutOff = { ...base, admin_users: [] };
-  assert.equal(managerAccessOutput(managerAccess(cutOff, 'A'), cutOff, EMPTY).verdict, 'problem');
+  assert.equal(managerAccessOutput(managerAccess(cutOff, 'Maya'), cutOff, EMPTY).verdict, 'problem');
 });

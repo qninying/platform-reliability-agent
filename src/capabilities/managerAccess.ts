@@ -12,10 +12,16 @@
 //   be in that person's downstream. The downstream is the agents reporting to that person, then the agents reporting
 //   to those, up to 5 levels (services/workforce/orgChartHierarchyService.ts:90, :110-141). It walks agents only:
 //   a person above a manager in the human chart does not pass.
-// - Manager directives are rows in manager_directives (models/ManagerDirective.ts). The only runtime reader injects
-//   active directive text into a prompt (agentBlueprint/agentSystemPrompt.ts:21-32), and only Dara's and Reese's
-//   prompt builders pass the agent id that triggers it (curriculum/daraSystemPrompt.ts:19-26,
-//   reese/reeseSystemPrompt.ts:82-96). A directive is text, never a mechanical limit, and a failed lookup drops it.
+// - Manager directives are rows in manager_directives (models/ManagerDirective.ts). Every read site adds active
+//   directive text to a prompt; nothing reads a directive to grant, raise or block anything, so a directive is
+//   advisory everywhere and a failed lookup drops it. Re-read at 2663cb27e (2026-11-08) after the platform's own
+//   AF12.8 (7858b9737, agentBlueprint/directivePosture.ts) corrected this check's earlier "Dara and Reese only":
+//   two surfaces read directives. The manager conversation reads them for every agent, unconditionally
+//   (agentBlueprint/agentManagerConversationPrompt.ts:114, since 7af30086d on 2026-08-28). An agent's own reply
+//   runtime reads them only for Dara and Reese (agentSystemPrompt.ts gates on options.agentId, passed by
+//   curriculum/daraSystemPrompt.ts and reese/reeseSystemPrompt.ts). Maya answers real messages
+//   (maya/mayaReplyService.ts) and neither of her prompt builders reads a directive, so her own replies miss them.
+//   The other agents have no reply runtime of their own for a directive to miss.
 // - After the pin (a247b82c0, 2026-11-05): four GET routes (the agent's page, charter, explainability and goals) moved
 //   to requireAgentManagerOrDomainBuilder, which also admits the agent's domain builder, read-only and refused on any
 //   other method (agentManagerAuthMiddleware.ts:81-104 at 9eaf381e7). Acting is unchanged, so this check's answer is
@@ -25,8 +31,10 @@ import type { Citation } from './orchestrationHealthWatch.ts';
 
 export const PINNED_AT = 'cc1ebc5';
 export const MAX_DOWNWARD_DEPTH = 5;
-// Agents whose prompt builder reads active directives at run time.
-export const DIRECTIVE_READERS = ['Dara', 'Reese'];
+// Agents whose own reply runtime reads active directives (the manager conversation reads them for every agent).
+export const OWN_REPLIES_READ_DIRECTIVES = ['Dara', 'Reese'];
+// Agents with a live reply runtime of their own that reads no directive.
+export const OWN_REPLIES_MISS_DIRECTIVES = ['Maya'];
 
 export interface AgentRow { id: string; agent_name: string; reports_to_type: 'human' | 'agent' | null; reports_to_id: string | null }
 export interface OrgMemberRow { id: string; email: string }
@@ -48,7 +56,7 @@ export interface AccessSnapshot {
 export type Route = 'admin_login' | 'management_role';
 export interface Login { email: string; route: Route; role: string; row_id: string }
 export interface MayAct { email: string; route: Route; because: 'super_admin' | 'agent_in_their_downstream'; org_member_id: string | null }
-export type DirectiveEffect = 'injected_into_prompt' | 'recorded_but_unenforced' | 'revoked';
+export type DirectiveEffect = 'in_manager_conversation_and_own_replies' | 'in_manager_conversation_only' | 'missed_by_own_replies' | 'revoked';
 
 export interface AccessAnswer {
   pinned_at: string;
@@ -135,15 +143,20 @@ export function managerAccess(s: AccessSnapshot, agentName: string): AccessAnswe
 
   const directives = s.manager_directives.filter((d) => d.agent_id === agent.id).sort((a, b) => (a.id < b.id ? -1 : 1)).map((d) => {
     if (d.status !== 'active') return { id: d.id, status: d.status, effect: 'revoked' as const, why: 'not active, so nothing reads it' };
-    return DIRECTIVE_READERS.includes(agent.agent_name)
-      ? { id: d.id, status: d.status, effect: 'injected_into_prompt' as const, why: 'its text is added to this agent\'s prompt on each call; it limits nothing mechanically, and a failed lookup drops it' }
-      : { id: d.id, status: d.status, effect: 'recorded_but_unenforced' as const, why: 'no runtime path reads directives for this agent: only Dara\'s and Reese\'s prompt builders do' };
+    const advisory = 'it is prompt text, never a gate: nothing reads a directive to grant or block anything, and a failed lookup drops it';
+    if (OWN_REPLIES_READ_DIRECTIVES.includes(agent.agent_name)) {
+      return { id: d.id, status: d.status, effect: 'in_manager_conversation_and_own_replies' as const, why: `read by the manager conversation and by this agent's own replies; ${advisory}` };
+    }
+    if (OWN_REPLIES_MISS_DIRECTIVES.includes(agent.agent_name)) {
+      return { id: d.id, status: d.status, effect: 'missed_by_own_replies' as const, why: `read by the manager conversation only: this agent answers real messages through prompt builders that read no directive; ${advisory}` };
+    }
+    return { id: d.id, status: d.status, effect: 'in_manager_conversation_only' as const, why: `read by the manager conversation, the only place this agent produces replies; ${advisory}` };
   });
 
-  const unenforced = directives.filter((d) => d.effect === 'recorded_but_unenforced').length;
+  const missed = directives.filter((d) => d.effect === 'missed_by_own_replies').length;
   const statement = `${may_act.length} login(s) may act on ${agentName}: ${may_act.filter((x) => x.because === 'super_admin').length} as super admin and ${may_act.filter((x) => x.because === 'agent_in_their_downstream').length} through the reporting chain. `
     + (accountable ? (accountable.passes_the_gate ? 'Its accountable manager is among them. ' : 'Its accountable manager is not. ') : 'It reports to no person, so no manager is accountable in the records. ')
-    + `${directives.length} directive(s)${unenforced ? `, ${unenforced} recorded but enforced nowhere` : ''}.`;
+    + `${directives.length} directive(s), all advisory${missed ? `, ${missed} missed by the agent's own replies` : ''}.`;
   const citations: Citation[] = [
     { table: 'ai_agents', id: agent.id, fields: ['agent_name', 'reports_to_type', 'reports_to_id'] },
     ...(accountable ? [{ table: 'org_members' as Citation['table'], id: accountable.org_member_id, fields: ['email'] }] : []),

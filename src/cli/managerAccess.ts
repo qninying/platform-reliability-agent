@@ -35,7 +35,7 @@ try {
   const snap = load(values.snapshot);
   const a = managerAccess(snap, values.agent);
   console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, access: a }, null, 2));
-  process.exitCode = a.accountable?.passes_the_gate && !a.directives.some((d) => d.effect === 'recorded_but_unenforced') ? 0 : 3;
+  process.exitCode = a.accountable?.passes_the_gate && !a.directives.some((d) => d.effect === 'missed_by_own_replies') ? 0 : 3;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

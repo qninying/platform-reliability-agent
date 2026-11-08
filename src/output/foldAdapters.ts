@@ -59,12 +59,12 @@ export function proposalsOutput(p: ProposalSet, recon: ReconAnswer, table: Sever
 
 export function managerAccessOutput(a: AccessAnswer, c: Capture, table: SeverityTable): ToolOutput<AccessAnswer> {
   const tool = 'platform.CAP.manager_scoped_authorization';
-  const unenforced = a.directives.filter((d) => d.effect === 'recorded_but_unenforced');
+  const missed = a.directives.filter((d) => d.effect === 'missed_by_own_replies');
   const cutOff = a.accountable !== null && !a.accountable.passes_the_gate;
-  const verdict = a.agent === null ? 'unknown' : cutOff || unenforced.length ? 'problem' : 'ok';
+  const verdict = a.agent === null ? 'unknown' : cutOff || missed.length ? 'problem' : 'ok';
   return envelope({
     tool, as_of: captured(c), verdict,
-    case: cutOff ? 'manager_cannot_reach_agent' : unenforced.length ? 'directive_enforced_nowhere' : verdict,
+    case: cutOff ? 'manager_cannot_reach_agent' : missed.length ? 'directive_missed_by_own_replies' : verdict,
     platform_signal: null, evidence: verdict === 'unknown' ? [] : rows(a.citations),
     blind_spots: verdict === 'unknown' ? [a.statement, ...a.cannot_see] : a.cannot_see, detail: a,
   }, table);
