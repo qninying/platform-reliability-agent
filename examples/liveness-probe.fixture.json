@@ -1,9 +1,7 @@
 {
   "fixture_id": "liveness-probe-sandbox-1",
-  "description": "A sandbox process with eight registry timers, an expected count pinned at eight and a floor of six. The scheduler flag is left absent, empty, or set to TRUE or 1, none of which the platform's parse reads as on. In the shortfall case three timers fail to register. Invented names; not production data.",
+  "description": "A sandbox process whose code registers eight timers, so eight are expected and any fewer fails. The scheduler flag is left absent, empty, or set to TRUE or 1, none of which the platform's parse reads as on. In the shortfall case three timers fail to register. Invented names; not production data.",
   "registry": ["SandboxReportJob", "SandboxDigestJob", "SandboxCleanupJob", "SandboxSyncJob", "SandboxAuditJob", "SandboxFollowUpJob", "SandboxBriefingJob", "SandboxRetentionJob"],
-  "pinned_expected": 8,
-  "min_registered": 6,
   "unset_values": [null, "", "TRUE", "1"],
   "fail_to_register": ["SandboxSyncJob", "SandboxAuditJob", "SandboxFollowUpJob"]
 }

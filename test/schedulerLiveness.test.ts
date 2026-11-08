@@ -178,7 +178,10 @@ test('the boot log gives the last boot\'s count; no log, or no boot line, says t
   assert.equal(a.registered.scheduled, 101);
   assert.equal(a.registered.disabled, 0);
   assert.equal(a.registered.boots_in_log, 2);
-  assert.match(a.statement, /The last boot in the log registered 101 AI Ops timers \(0 disabled\)\./);
+  assert.match(a.statement, /The last boot in the log registered 101 AI Ops timers and skipped 0 as disabled, 101 in all\./);
+  // 101 is more than the 4 this code registers: the log comes from other code, so no shortfall is judged.
+  assert.equal(a.against_expected.state, 'more_than_expected');
+  assert.ok(a.blind_spots.some((b) => /more than the 4 this code registers, so the log comes from other code/.test(b)));
   const none = liveness(rdr(), null, null);
   assert.equal(none.registered.scheduled, null);
   assert.ok(none.blind_spots.some((b) => /no boot log was given/.test(b) && !/not found in this source/.test(b)));
@@ -196,10 +199,25 @@ test('a cron registered inside startAIOpsScheduler is counted at boot but sits i
   assert.deepEqual(outsideRegistries('export {};'), []);
 });
 
-test('registration is never reported as execution, and no expected count is claimed', () => {
+test('registration is never reported as execution', () => {
   const a = liveness(rdr(), null, null);
   assert.ok(a.blind_spots.some((b) => /a registered timer is not a fired one/.test(b)));
-  assert.ok(a.blind_spots.some((b) => /no expected count is pinned/.test(b)));
+});
+
+test('K.D.\'s rule (2026-11-08): the expected count comes from the code, and the last boot is judged against it', () => {
+  // Two standard entries, one dynamic entry and the auto-response cron: four timers.
+  const none = liveness(rdr(), 'abc', null);
+  assert.deepEqual(none.expected, { from: 'source', total: 4, registry_entries: 3, outside_registries: 1, rule: 'The expected count is what the deployed code registers, and any shortfall raises the alarm (K.D., 2026-11-08).' });
+  assert.deepEqual(none.against_expected, { state: 'not_known', booted_total: null, shortfall: null });
+  assert.ok(none.blind_spots.some((b) => /read from this checkout \(abc\); it is the deployed code's only if this is the deployed commit/.test(b)));
+  assert.match(none.statement, /This code registers 4 AI Ops timers \(3 registry entries and 1 outside them\)\./);
+  const short = liveness(rdr(), 'abc', '[AI Ops] Scheduler started: 3 agents scheduled, 0 disabled\n');
+  assert.deepEqual(short.against_expected, { state: 'shortfall', booted_total: 3, shortfall: 1 });
+  assert.match(short.statement, /3 in all: 1 short of the 4 the code registers\./);
+  // A disabled entry was reached and skipped on purpose: it counts toward the total, so this boot is not short.
+  const match = liveness(rdr(), 'abc', '[AI Ops] Scheduler started: 3 agents scheduled, 1 disabled\n');
+  assert.deepEqual(match.against_expected, { state: 'matches', booted_total: 4, shortfall: 0 });
+  assert.match(match.statement, /4 in all, as the code expects\./);
 });
 
 test('idempotent: the same source and log give the same answer twice', () => {
@@ -218,6 +236,14 @@ test('cli: exit 3 when /health cannot detect zero, 0 when it can, 5 when the gat
   const log = join(root, 'boot.log');
   writeFileSync(log, '[AI Ops] Scheduler started: 7 agents scheduled, 1 disabled\n');
   assert.equal(JSON.parse(run(['--source', root, '--boot-log', log]).stdout).registered.scheduled, 7);
+  // A probe that can see zero timers still exits 3 when the last boot fell short of the code's count.
+  const awareRoot = checkout({ [FILES.health]: aware });
+  const shortLog = join(awareRoot, 'short.log');
+  writeFileSync(shortLog, '[AI Ops] Scheduler started: 2 agents scheduled, 1 disabled\n');
+  assert.equal(run(['--source', awareRoot, '--boot-log', shortLog]).status, 3);
+  const fullLog = join(awareRoot, 'full.log');
+  writeFileSync(fullLog, '[AI Ops] Scheduler started: 3 agents scheduled, 1 disabled\n');
+  assert.equal(run(['--source', awareRoot, '--boot-log', fullLog]).status, 0);
   assert.equal(run(['--source', root, '--boot-log', join(root, 'missing.log')]).status, 1);
   assert.equal(run([]).status, 1);
 });

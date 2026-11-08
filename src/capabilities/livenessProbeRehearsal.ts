@@ -1,7 +1,8 @@
 // platform.scheduler_registration_liveness_probe, rung R4: builds the probe and verifies it against a sandbox
 // process started with the scheduler flag unset. At boot the process records how many timers it actually
-// registered; the probe returns 503 when that count is zero or below a pinned floor, and 200 with the count when
-// it is not. The platform's GET /health runs on the same cases as the control. Sandbox only: nothing runs on the
+// registered; the probe returns 503 when that count is below the count the deployed code registers, and 200 with
+// both counts when it is not. K.D. decided on 2026-11-08: the expected count comes from the deployed code, not a
+// fixed number, and any shortfall raises the alarm. The platform's GET /health runs on the same cases as the control. Sandbox only: nothing runs on the
 // platform.
 //
 // Platform facts this rests on (platform repo, commit 350243226):
@@ -17,7 +18,7 @@ import { SandboxError } from '../sandbox/sandboxStore.ts';
 export const PINNED_AT = '350243226';
 export const LIMITS: readonly string[] = [
   'A registered count is not a fired count: a timer can register and never fire. The probe detects non-registration and does not claim to detect non-execution; the heartbeat check in GET /health/full stays the second signal.',
-  'The floor is the fixture\'s. The expected count, and how far below it the probe fails, are K.D.\'s to set and must be pinned, not derived from the registries the count comes from.',
+  'The expected count is what the deployed code registers (K.D., 2026-11-08), so a timer removed from the code leaves the expected count with it. The probe catches a timer that fails to register, not one deleted on purpose; the registry ratchet watches removals.',
   'Timers registered outside the task registry are not counted here, so the platform\'s own scheduled count is not a trustworthy denominator.',
   'Changing what GET /health returns changes what external monitoring treats as an outage. Shipping it is a reviewed deploy by a person.',
 ];
@@ -25,9 +26,8 @@ export const LIMITS: readonly string[] = [
 export interface LivenessFixture {
   fixture_id: string;
   description: string;
+  // The sandbox's deployed code: every timer it registers. The expected count is its length.
   registry: string[];
-  pinned_expected: number;
-  min_registered: number;
   // Values of ENABLE_FOLLOWUP_SCHEDULER that leave it unset; null means the variable is absent.
   unset_values: Array<string | null>;
   // Timers whose registration throws in the shortfall case.
@@ -49,13 +49,13 @@ export function bootProcess(fx: LivenessFixture, flag: string | null, db_healthy
 export function probe(p: Process, fx: LivenessFixture, which: Probe): Response {
   if (!p.db_healthy) return { status: 503, body: { status: 'error', detail: 'database unreachable' } };
   if (which === 'platform') return { status: 200, body: { status: 'ok', detail: null } };
-  const n = p.registered.length, expected = fx.pinned_expected;
+  const n = p.registered.length, expected = fx.registry.length;
   if (n === 0) return { status: 503, body: { status: 'error', detail: `no timers registered at boot (ENABLE_FOLLOWUP_SCHEDULER is ${p.flag === null ? 'absent' : JSON.stringify(p.flag)})`, registered: n, expected } };
-  if (n < fx.min_registered) return { status: 503, body: { status: 'error', detail: `${n} timers registered at boot, below the pinned floor of ${fx.min_registered}`, registered: n, expected } };
+  if (n < expected) return { status: 503, body: { status: 'error', detail: `${n} of ${expected} timers registered at boot; the deployed code registers ${expected}, and any shortfall fails`, registered: n, expected } };
   return { status: 200, body: { status: 'ok', detail: null, registered: n, expected } };
 }
 
-// expect is what a probe that sees registration should return: 200 only with the database up and the floor met.
+// expect is what a probe that sees registration should return: 200 only with the database up and every timer registered.
 export interface Case { id: string; flag: string | null; db_healthy: boolean; registered: number; expect: 200 | 503; ellis: Response; platform: Response }
 export interface Rehearsal {
   fixture_id: string;
@@ -66,6 +66,7 @@ export interface Rehearsal {
     positive_control_returns_200: boolean;
     healthy_process_passes: boolean;
     shortfall_fails_probe: boolean;
+    one_short_fails_probe: boolean;
   };
   verified: boolean;
   statement: string;
@@ -76,21 +77,24 @@ export interface Rehearsal {
 export function rehearse(fx: LivenessFixture, roles: { subject: Probe; control: Probe } = { subject: 'ellis', control: 'platform' }): Rehearsal {
   const run = (id: string, p: Process): Case => ({
     id, flag: p.flag, db_healthy: p.db_healthy, registered: p.registered.length,
-    expect: p.db_healthy && p.registered.length >= fx.min_registered ? 200 : 503, ellis: probe(p, fx, roles.subject), platform: probe(p, fx, roles.control),
+    expect: p.db_healthy && p.registered.length >= fx.registry.length ? 200 : 503, ellis: probe(p, fx, roles.subject), platform: probe(p, fx, roles.control),
   });
   const unset = fx.unset_values.map((v) => run(`flag_${v === null ? 'absent' : JSON.stringify(v)}_db_healthy`, bootProcess(fx, v, true)));
   const healthy = run('flag_true_db_healthy', bootProcess(fx, 'true', true));
   const short = run('flag_true_some_fail_to_register', bootProcess(fx, 'true', true, fx.fail_to_register));
+  // Any shortfall alarms, so a single timer missing must fail too, not only a large drop.
+  const oneShort = run('flag_true_one_fails_to_register', bootProcess(fx, 'true', true, fx.registry.slice(0, 1)));
   const down = [run('flag_true_db_down', bootProcess(fx, 'true', false)), run('flag_absent_db_down', bootProcess(fx, null, false))];
-  const cases = [...unset, healthy, short, ...down];
+  const cases = [...unset, healthy, short, oneShort, ...down];
   const checks = {
     flag_unset_fails_probe: unset.length > 0 && unset.every((c) => c.ellis.status !== 200),
     // The acceptance names this the exact case the current probe returns 200 for.
     positive_control_returns_200: unset.length > 0 && unset.every((c) => c.platform.status === 200),
-    // Fails when the floor is above what the registry can register: the probe would never pass.
+    // Fails when the expected count is above what the code can register: the probe would never pass.
     healthy_process_passes: healthy.ellis.status === 200,
     // The failures must leave some timers registered, or this is the flag case again.
     shortfall_fails_probe: short.registered > 0 && short.ellis.status !== 200,
+    one_short_fails_probe: oneShort.registered === fx.registry.length - 1 && oneShort.ellis.status !== 200,
   };
   const verified = Object.values(checks).every(Boolean);
   const failed = Object.entries(checks).filter(([, v]) => !v).map(([k]) => k);
@@ -98,7 +102,7 @@ export function rehearse(fx: LivenessFixture, roles: { subject: Probe; control: 
   return {
     fixture_id: fx.fixture_id, pinned_at: PINNED_AT, cases, checks, verified,
     statement: (verified
-      ? `In sandbox ${fx.fixture_id}: with ENABLE_FOLLOWUP_SCHEDULER unset in ${unset.length} way(s) and the database healthy, no timer registered and the probe returned 503 each time. A process that registered all ${healthy.registered} returned 200, one that registered ${short.registered}, below the floor of ${fx.min_registered}, returned 503, and a down database returned 503 as before. Sandbox only; nothing ran on the platform.`
+      ? `In sandbox ${fx.fixture_id}: with ENABLE_FOLLOWUP_SCHEDULER unset in ${unset.length} way(s) and the database healthy, no timer registered and the probe returned 503 each time. A process that registered all ${healthy.registered} returned 200, one that registered ${short.registered} and one that registered ${oneShort.registered} of the ${fx.registry.length} the code registers returned 503, and a down database returned 503 as before. Sandbox only; nothing ran on the platform.`
       : `In sandbox ${fx.fixture_id}, not verified: ${failed.join(', ')}.`)
       + ` GET /health on the same cases returned 200 in ${p200} case(s) where too few timers had registered.`,
     limits: [...LIMITS],
@@ -126,8 +130,9 @@ export function checkFixture(fx: LivenessFixture, path: string): LivenessFixture
   if (typeof fx.fixture_id !== 'string' || !strings(fx.registry) || fx.registry.length === 0 || !strings(fx.fail_to_register)) {
     throw new SandboxError('ContractViolation', `fixture ${path} needs fixture_id, a non-empty registry[] of names and fail_to_register[]`);
   }
-  if (!Number.isInteger(fx.pinned_expected) || !Number.isInteger(fx.min_registered) || fx.min_registered < 1 || fx.min_registered > fx.pinned_expected) {
-    throw new SandboxError('ContractViolation', `fixture ${path}: min_registered must be a whole number from 1 to pinned_expected`);
+  // A pinned count or floor would bring back the rule K.D. replaced on 2026-11-08.
+  if ('pinned_expected' in fx || 'min_registered' in fx) {
+    throw new SandboxError('ContractViolation', `fixture ${path}: the expected count comes from the registry (the deployed code), not a pinned number or floor`);
   }
   if (!Array.isArray(fx.unset_values) || !fx.unset_values.every((v) => v === null || (typeof v === 'string' && !flagOn(v)))) {
     throw new SandboxError('ContractViolation', `fixture ${path}: unset_values must be null or strings other than 'true'`);

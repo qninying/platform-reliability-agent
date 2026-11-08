@@ -34,6 +34,19 @@ export interface AiOpsStart { definitions: Array<At & { called: boolean }>; call
 export interface Probe { route: string; at: At | null; consults_scheduler: boolean | null }
 export interface Heartbeat { at: At; missing: string | null; warning_after_minutes: number | null; critical_after_minutes: number | null }
 export interface Registered { from: 'boot_log' | null; scheduled: number | null; disabled: number | null; boots_in_log: number; counts_outside_registries: At[] }
+// K.D., 2026-11-08: the expected count comes from the deployed code, not a fixed number, and any shortfall raises
+// the alarm. Every registry entry is either scheduled or skipped as disabled at boot, and each cron inside
+// startAIOpsScheduler is scheduled too, so the boot line's two numbers must add up to this total.
+export interface Expected { from: 'source'; total: number; registry_entries: number; outside_registries: number; rule: string }
+export interface AgainstExpected { state: 'matches' | 'shortfall' | 'more_than_expected' | 'not_known'; booted_total: number | null; shortfall: number | null }
+export const EXPECTED_RULE = 'The expected count is what the deployed code registers, and any shortfall raises the alarm (K.D., 2026-11-08).';
+
+export function againstExpected(reg: Registered, expected: Expected): AgainstExpected {
+  if (reg.scheduled === null || reg.disabled === null) return { state: 'not_known', booted_total: null, shortfall: null };
+  const booted = reg.scheduled + reg.disabled;
+  const short = expected.total - booted;
+  return { state: short > 0 ? 'shortfall' : short < 0 ? 'more_than_expected' : 'matches', booted_total: booted, shortfall: short > 0 ? short : 0 };
+}
 export interface LivenessAnswer {
   source_commit: string | null;
   gate: Gate;
@@ -42,12 +55,14 @@ export interface LivenessAnswer {
   full_probe: Probe & { heartbeat: Heartbeat | null };
   registered: Registered;
   registry_entries: number;
+  expected: Expected;
+  against_expected: AgainstExpected;
   blind_spots: string[];
   statement: string;
   decision: string;
 }
 
-const DECISION = 'K.D. approves any change to what a probe returns, and the expected count it fails against. Shipping it is a reviewed deploy. Ellis reports only.';
+const DECISION = 'K.D. approves any change to what a probe returns. The expected count is decided: what the deployed code registers, with any shortfall an alarm. Shipping the probe is a reviewed deploy. Ellis reports only.';
 
 // The innermost `function name(` whose body holds `at`, or null.
 function enclosingFunction(s: Scanned, at: number): string | null {
@@ -175,17 +190,22 @@ export function liveness(r: Reader, commit: string | null, bootLog: string | nul
   blind.push('a registered timer is not a fired one: this reports registration only, never execution.');
   blind.push('the boot line counts the AI Ops scheduler only. Timers registered inline in schedulerService.ts are not in it.');
   if (reg.counts_outside_registries.length) blind.push(`the boot count includes ${reg.counts_outside_registries.length} cron registered inside startAIOpsScheduler outside both registries (${reg.counts_outside_registries.map((x) => `${x.file}:${x.line}`).join(', ')}), so it is not a count of registry entries.`);
-  blind.push('no expected count is pinned in the platform, so a shortfall cannot be judged, only zero.');
+  const entries = registryEntries(schedulerText).length;
+  const expected: Expected = { from: 'source', total: entries + reg.counts_outside_registries.length, registry_entries: entries, outside_registries: reg.counts_outside_registries.length, rule: EXPECTED_RULE };
+  const vs = againstExpected(reg, expected);
+  blind.push(`the expected count is read from this checkout${commit ? ` (${commit})` : ''}; it is the deployed code's only if this is the deployed commit.`);
+  if (vs.state === 'more_than_expected') blind.push(`the last boot registered ${vs.booted_total} timers, more than the ${expected.total} this code registers, so the log comes from other code and a shortfall cannot be judged against it.`);
   const flag = g.single_flag ? g.flags[0].env_var : null;
   const parts = [
     flag ? `${flag} is the single flag: every startScheduler() call (${g.call_sites.map((c) => `${c.file}:${c.line}`).join(', ')}) runs only when it is 'true'.` : `No single flag gates startScheduler(): ${g.call_sites.length} call site(s), guarded by ${[...new Set(g.call_sites.map((c) => c.guarded_by ?? 'nothing'))].join(', ')}.`,
     a.only_caller ? `${a.only_caller}() is the only caller of startAIOpsScheduler() (${a.callers[0].file}:${a.callers[0].line}).` : `startAIOpsScheduler() has ${a.callers.length} caller(s).`,
     p.public_probe.detects_zero_timers === false ? 'GET /health never consults the scheduler, so it returns 200 when no timer registered.' : p.public_probe.detects_zero_timers ? 'GET /health refers to the scheduler.' : 'GET /health was not found.',
-    reg.scheduled !== null ? `The last boot in the log registered ${reg.scheduled} AI Ops timers (${reg.disabled} disabled).` : '',
+    `This code registers ${expected.total} AI Ops timers (${expected.registry_entries} registry entries and ${expected.outside_registries} outside them).`,
+    reg.scheduled !== null ? `The last boot in the log registered ${reg.scheduled} AI Ops timers and skipped ${reg.disabled} as disabled, ${vs.booted_total} in all${vs.state === 'shortfall' ? `: ${vs.shortfall} short of the ${expected.total} the code registers` : vs.state === 'matches' ? ', as the code expects' : ''}.` : '',
   ].filter(Boolean);
   return {
     source_commit: commit, gate: g, ai_ops_start: a, ...p, registered: reg,
-    registry_entries: registryEntries(schedulerText).length,
+    registry_entries: entries, expected, against_expected: vs,
     blind_spots: blind, statement: parts.join(' '), decision: DECISION,
   };
 }

@@ -6,10 +6,17 @@
 This first release reports what decides whether any timer registers at all, and what the platform's probes can see
 of it. It names the flag that gates every timer and the one function that starts the AI Ops scheduler, both measured
 from the source on each run. It also says whether `GET /health` could ever fail when nothing registered. Given a boot
-log, it reports how many AI Ops timers the last boot registered.
+log, it reports how many AI Ops timers the last boot registered, against the count the code registers.
 
 It changes nothing. Changing what a probe returns changes what external monitoring treats as an outage. That
-decision is K.D.'s, as is the expected count a probe would fail against. Shipping either is a reviewed deploy.
+decision is K.D.'s. Shipping it is a reviewed deploy.
+
+**K.D. decided on 2026-11-08:** the expected count comes from the deployed code, not a fixed number, and any
+shortfall raises the alarm. At boot every registry entry is either scheduled or skipped as disabled, and the cron
+inside `startAIOpsScheduler` is scheduled too, so the boot line's two numbers must add up to the code's total.
+A boot short of it is a problem (case `registered_below_expected`, exit 3). A boot above it means the log comes from
+other code, and is a blind spot, not a pass. On `2663cb27e` (2026-11-08) the code registers 114 AI Ops timers: 113
+registry entries and 1 outside them.
 
 Platform facts cite the public Colaberry platform repository at upstream commit `bbde6ef`.
 
@@ -51,7 +58,10 @@ At `bbde6ef`:
 - A registered timer is not a fired one. This reports registration only, never execution.
 - Without a boot log the running count is unknown, and the answer says so rather than estimating it.
 - The boot line counts the AI Ops scheduler only. Timers registered inline in `schedulerService.ts` are not in it.
-- No expected count is pinned in the platform, so a shortfall cannot be judged, only zero.
+- The expected count is read from the checkout Ellis is given. It is the deployed code's count only when that
+  checkout is the deployed commit.
+- A timer deleted from the code leaves the expected count with it, so the probe catches a timer that fails to
+  register, not one removed on purpose. The registry ratchet watches removals.
 
 ## Evidence
 
@@ -63,8 +73,11 @@ At `bbde6ef`:
   the scheduler. It exited 3. At upstream `5ec9750` the answer is the same, with the call at `server.ts:3654` and
   the boot-path cron at `aiOpsScheduler.ts:798`. The story's citations (`env.ts:168`, `server.ts:3462-3464`,
   `schedulerService.ts:3428-3431`) match neither commit.
-- **Not done:** no production boot log has been read, so the running count is unmeasured. The expected count has
-  never been pinned, and K.D. has not approved a failure condition. The dependencies `system_health_probe_and_alerting`
+- **Expected count (2026-11-08):** one new test pins the count from code and the three outcomes against a boot
+  (short, matching, more than expected), and the command test checks that a boot one short exits 3 even when the
+  probe can see the scheduler. 892 tests in the repo.
+- **Not done:** no production boot log has been read, so the running count is unmeasured. K.D. has set the failure
+  condition (any shortfall against the deployed code). The dependencies `system_health_probe_and_alerting`
   and `runtime_cron_drift_detection` are held, and nothing here is validated yet.
 
 ## R4: the probe, built and proven in a sandbox
@@ -79,29 +92,29 @@ actually registered**. The probe:
 
 - returns **503 when the database is down**, as `GET /health` does today, and says so first;
 - returns **503 when no timer registered**, naming the flag's value;
-- returns **503 when the count is above zero but below a pinned floor**;
-- otherwise returns **200 with the registered count and the pinned expected count** in the body.
+- returns **503 when fewer timers registered than the code registers**, even one fewer;
+- otherwise returns **200 with the registered count and the expected count** in the body.
 
-The expected count and the floor are pinned in the fixture, not derived from the registry, because a registry that
-shrinks would lower a derived expectation to match.
+The expected count is the length of the sandbox's registry, its deployed code, as K.D. decided on 2026-11-08. It
+first used a pinned count and a lower floor; a fixture that carries either is now refused.
 
-The fixture has eight timers, an expected count of eight and a floor of six. It leaves `ENABLE_FOLLOWUP_SCHEDULER`
+The fixture's code registers eight timers. It leaves `ENABLE_FOLLOWUP_SCHEDULER`
 absent, empty, `TRUE` and `1`. None of these is the exact string `true` the platform's parse requires
 (`backend/src/config/env.ts:182` at `350243226`), so none starts the scheduler (`server.ts:3701`). In each case
 no timer registered, and the probe returned 503. With the flag set it returned 200 and a count of 8. With three timers
-failing to register, it returned 503 at a count of 5. With the database down it returned 503.
+failing to register, it returned 503 at a count of 5, and with one failing, 503 at a count of 7. With the database
+down it returned 503.
 
 **The control.** The platform's `GET /health` runs `SELECT 1` and nothing else (`routes/healthRoutes.ts:7-15`). On the
-same cases it returned 200 in all four flag-unset cases and in the shortfall case, five in all. That is the exact case
+same cases it returned 200 in all four flag-unset cases and in both shortfall cases, six in all. That is the exact case
 the acceptance names.
 
 Graded as the subject instead of Ellis's probe, `GET /health` fails the flag and shortfall checks. With Ellis's probe as
-the control, the positive control fails. A fixture whose floor is above what the registry can register fails the
-healthy-process check, because such a probe would never pass.
+the control, the positive control fails.
 
 **What this does not prove.** A registered count is not a fired count: a timer can register and never fire, so the
-heartbeat check in `GET /health/full` stays the second signal. The floor is the fixture's; the real expected count and
-floor are K.D.'s to set. Timers registered outside the task registry are not counted. Changing what `GET /health`
+heartbeat check in `GET /health/full` stays the second signal. A timer deleted from the code lowers the expected count
+with it; the registry ratchet, not this probe, watches removals. Timers registered outside the task registry are not counted. Changing what `GET /health`
 returns changes what external monitoring treats as an outage, so shipping it is a reviewed deploy by a person, and the
 ladder stops at R4.
 
@@ -110,4 +123,6 @@ first run caught 38 of 44. Three survivors were check conditions the probe's own
 removed: "registered above zero" on the healthy check, "below the floor" on the shortfall check, and "a down
 database still fails", which no probe built here can fail; the test that a down database gives 503 stays. The other
 three gained assertions. Its rung story id is on the platform board but not yet in this repository's plan, so it is
-recorded here and in the commit.
+recorded here and in the commit. **Changed 2026-11-08** to K.D.'s rule: one more case (one timer short), one more
+check, and a fixture with a pinned count or floor refused. Ten deliberate breaks to the new rule, across the probe
+check, its output, its command and this rehearsal, all caught.

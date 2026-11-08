@@ -21,10 +21,12 @@ export function livenessOutput(a: LivenessAnswer, c: Capture, table: SeverityTab
   const probe = a.public_probe.at ? [source(`${a.public_probe.at.file}:${a.public_probe.at.line}`, ['GET /health'])] : [];
   const gate = a.gate.call_sites.map((s) => source(`${s.file}:${s.line}`, ['startScheduler', s.env_var ?? 'unguarded']));
   const none = a.registered.scheduled === 0;
+  // Any shortfall against the count the deployed code registers is an alarm (K.D., 2026-11-08).
+  const short = !none && a.against_expected.state === 'shortfall';
   const blind = a.public_probe.detects_zero_timers === false;
-  const verdict = none || blind ? 'problem' : a.public_probe.detects_zero_timers === null || !probe.length ? 'unknown' : 'ok';
+  const verdict = none || short || blind ? 'problem' : a.public_probe.detects_zero_timers === null || !probe.length ? 'unknown' : 'ok';
   return envelope({
-    tool, as_of: at(c, a.source_commit), verdict, case: none ? 'no_timer_registered' : blind ? 'probe_blind_to_zero_timers' : verdict,
+    tool, as_of: at(c, a.source_commit), verdict, case: none ? 'no_timer_registered' : short ? 'registered_below_expected' : blind ? 'probe_blind_to_zero_timers' : verdict,
     platform_signal: null, evidence: verdict === 'unknown' ? gate : [...probe, ...gate], blind_spots: a.blind_spots, detail: a,
   }, table);
 }

@@ -9,7 +9,7 @@ import type { SeverityTable } from '../src/output/toolOutput.ts';
 const FIXTURE = 'examples/liveness-probe.fixture.json';
 const load = (): LivenessFixture => loadLivenessFixture(FIXTURE);
 const fx = (over: Partial<LivenessFixture> = {}): LivenessFixture => ({
-  fixture_id: 't', description: 't', registry: ['A', 'B', 'C', 'D'], pinned_expected: 4, min_registered: 3,
+  fixture_id: 't', description: 't', registry: ['A', 'B', 'C', 'D'],
   unset_values: [null], fail_to_register: ['A', 'B'], ...over,
 });
 const EMPTY: SeverityTable = { owner: 'K.D.', status: 'not agreed yet, ISS-032', rules: [] };
@@ -25,7 +25,7 @@ test('acceptance (R4): with the flag unset the probe returns non-200 while the d
   assert.equal(absent.platform.status, 200, 'GET /health answers 200: it only runs SELECT 1');
   assert.match(r.statement, /Sandbox only; nothing ran on the platform/);
   assert.equal(r.limits.length, 4);
-  assert.match(r.statement, /GET \/health on the same cases returned 200 in 5 case\(s\) where too few timers had registered/);
+  assert.match(r.statement, /GET \/health on the same cases returned 200 in 6 case\(s\) where too few timers had registered/);
 });
 
 test('only the exact string true turns the scheduler on, as the platform parses it; empty, TRUE and 1 all leave it off', () => {
@@ -37,20 +37,24 @@ test('only the exact string true turns the scheduler on, as the platform parses 
   }
 });
 
-test('a process that registered every timer passes with its count and the pinned expected count in the body', () => {
+test('a process that registered every timer passes with its count and the count the code registers in the body', () => {
   const ok = byId(rehearse(load()), 'flag_true_db_healthy');
   assert.deepEqual(ok.ellis, { status: 200, body: { status: 'ok', detail: null, registered: 8, expected: 8 } });
 });
 
-test('a count above zero but below the pinned floor fails the probe; at the floor it passes', () => {
-  const short = byId(rehearse(load()), 'flag_true_some_fail_to_register');
+test('K.D.\'s rule (2026-11-08): the expected count is what the code registers, and any shortfall fails, even one timer', () => {
+  const r = rehearse(load());
+  const short = byId(r, 'flag_true_some_fail_to_register');
   assert.equal(short.registered, 5);
   assert.equal(short.ellis.status, 503);
-  assert.match(short.ellis.body.detail!, /5 timers registered at boot, below the pinned floor of 6/);
+  assert.match(short.ellis.body.detail!, /5 of 8 timers registered at boot; the deployed code registers 8, and any shortfall fails/);
   assert.equal(short.platform.status, 200);
+  const one = byId(r, 'flag_true_one_fails_to_register');
+  assert.deepEqual([one.registered, one.ellis.status, one.platform.status], [7, 503, 200]);
+  assert.equal(r.checks.one_short_fails_probe, true);
   const f = fx();
-  assert.deepEqual(probe(bootProcess(f, 'true', true, ['A']), f, 'ellis'), { status: 200, body: { status: 'ok', detail: null, registered: 3, expected: 4 } }, '3 registered meets a floor of 3');
-  assert.equal(probe(bootProcess(f, 'true', true, ['A', 'B']), f, 'ellis').status, 503);
+  assert.deepEqual(probe(bootProcess(f, 'true', true, ['A']), f, 'ellis'), { status: 503, body: { status: 'error', detail: '3 of 4 timers registered at boot; the deployed code registers 4, and any shortfall fails', registered: 3, expected: 4 } });
+  assert.equal(probe(bootProcess(f, 'true', true), f, 'ellis').status, 200);
 });
 
 test('a down database still fails, and says so before anything about timers', () => {
@@ -65,23 +69,21 @@ test('graded as the subject, GET /health fails the flag and shortfall checks; wi
   const r = rehearse(load(), { subject: 'platform', control: 'ellis' });
   assert.deepEqual(r.checks, {
     flag_unset_fails_probe: false, positive_control_returns_200: false, healthy_process_passes: true,
-    shortfall_fails_probe: false,
+    shortfall_fails_probe: false, one_short_fails_probe: false,
   });
   assert.equal(r.verified, false);
-  assert.match(r.statement, /not verified: flag_unset_fails_probe, positive_control_returns_200, shortfall_fails_probe/);
+  assert.match(r.statement, /not verified: flag_unset_fails_probe, positive_control_returns_200, shortfall_fails_probe, one_short_fails_probe/);
 });
 
-test('a fixture whose failures leave nothing registered, with no unset value, or with a floor the registry cannot reach is not verified', () => {
+test('a fixture whose failures leave nothing registered, or with no unset value, is not verified', () => {
   const all = rehearse(fx({ fail_to_register: ['A', 'B', 'C', 'D'] }));
   assert.equal(all.checks.shortfall_fails_probe, false, 'zero registered is the flag case, not a shortfall');
   const none = rehearse(fx({ unset_values: [] }));
   assert.equal(none.checks.flag_unset_fails_probe, false);
   assert.equal(none.checks.positive_control_returns_200, false);
-  const healthyEmpty = rehearse(fx({ registry: ['A'], pinned_expected: 1, min_registered: 1, fail_to_register: [] }));
+  const healthyEmpty = rehearse(fx({ registry: ['A'], fail_to_register: [] }));
   assert.equal(healthyEmpty.checks.healthy_process_passes, true);
   assert.equal(healthyEmpty.checks.shortfall_fails_probe, false);
-  const tooHigh = rehearse(fx({ registry: ['A', 'B'], fail_to_register: ['A'], pinned_expected: 4, min_registered: 3 }));
-  assert.equal(tooHigh.checks.healthy_process_passes, false, 'a floor above the registry means the probe never passes');
 });
 
 test('the same fixture always gives the same rehearsal, and the fixture itself is not changed', () => {
@@ -96,25 +98,24 @@ test('in the shared output, a verified rehearsal is ok citing each case and says
   const r = rehearse(load());
   const o = livenessRehearsalOutput(r, c, EMPTY);
   assert.equal(o.verdict, 'ok');
-  assert.equal(o.evidence.length, 8);
+  assert.equal(o.evidence.length, 9);
   assert.match(o.as_of.note!, /sandbox fixture liveness-probe-sandbox-1, not production/);
   assert.deepEqual(o.blind_spots, r.limits);
   const f = livenessRehearsalOutput(rehearse(load(), { subject: 'platform', control: 'ellis' }), c, EMPTY);
   assert.equal(f.verdict, 'problem');
-  assert.deepEqual(f.evidence.map((e) => e.id), ['flag_absent_db_healthy', 'flag_""_db_healthy', 'flag_"TRUE"_db_healthy', 'flag_"1"_db_healthy', 'flag_true_some_fail_to_register']);
+  assert.deepEqual(f.evidence.map((e) => e.id), ['flag_absent_db_healthy', 'flag_""_db_healthy', 'flag_"TRUE"_db_healthy', 'flag_"1"_db_healthy', 'flag_true_some_fail_to_register', 'flag_true_one_fails_to_register']);
 });
 
-test('a fixture is refused with no registry, a floor outside 1 to the pinned count, or an unset value that reads as on', () => {
+test('a fixture is refused with no registry, a pinned count or floor, or an unset value that reads as on', () => {
   const at = 'inline';
   assert.throws(() => checkFixture(fx({ registry: [] }), at), /non-empty registry/);
   assert.throws(() => checkFixture(fx({ registry: [1] as never }), at), /non-empty registry/);
   assert.throws(() => checkFixture(fx({ fail_to_register: undefined as never }), at), /fail_to_register/);
-  assert.throws(() => checkFixture(fx({ min_registered: 0 }), at), /from 1 to pinned_expected/);
-  assert.throws(() => checkFixture(fx({ min_registered: 5 }), at), /from 1 to pinned_expected/);
-  assert.throws(() => checkFixture(fx({ pinned_expected: 3.5 }), at), /from 1 to pinned_expected/);
+  assert.throws(() => checkFixture({ ...fx(), min_registered: 3 } as never, at), /not a pinned number or floor/);
+  assert.throws(() => checkFixture({ ...fx(), pinned_expected: 4 } as never, at), /not a pinned number or floor/);
   assert.throws(() => checkFixture(fx({ unset_values: ['true'] }), at), /other than 'true'/);
   assert.throws(() => checkFixture(fx({ unset_values: [1] as never }), at), /other than 'true'/);
-  assert.equal(checkFixture(fx({ min_registered: 4 }), at).min_registered, 4);
+  assert.deepEqual(checkFixture(fx(), at).registry, ['A', 'B', 'C', 'D']);
 });
 
 test('the command exits 0 when verified, 3 when not, and 1 for a missing fixture', () => {

@@ -1,1 +1,1 @@
-{ "fixture_id": "no-shortfall", "description": "No timer fails to register, so the shortfall case is not exercised.", "registry": ["A", "B"], "pinned_expected": 2, "min_registered": 2, "unset_values": [null], "fail_to_register": [] }
+{ "fixture_id": "no-shortfall", "description": "No timer fails to register, so the shortfall case is not exercised.", "registry": ["A", "B"], "unset_values": [null], "fail_to_register": [] }

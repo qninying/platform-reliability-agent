@@ -22,7 +22,7 @@ function holds<D>(o: ToolOutput<D>, detail: D) {
   assert.equal(o.detail, detail);
 }
 
-const liveness = (detects: boolean | null, scheduled: number | null, probeAt = true): LivenessAnswer => ({
+const liveness = (detects: boolean | null, scheduled: number | null, probeAt = true, state: LivenessAnswer['against_expected']['state'] = 'not_known'): LivenessAnswer => ({
   source_commit: 'abc123',
   gate: { call_sites: [{ file: 'server.ts', line: 3632, guarded_by: 'env.enableFollowUpScheduler', env_var: 'ENABLE_FOLLOW_UP_SCHEDULER' }], flags: [], single_flag: true },
   ai_ops_start: { definitions: [], callers: [], only_caller: 'startScheduler' },
@@ -30,6 +30,17 @@ const liveness = (detects: boolean | null, scheduled: number | null, probeAt = t
   full_probe: { route: 'GET /health/full', at: null, consults_scheduler: null, heartbeat: null },
   registered: { from: scheduled === null ? null : 'boot_log', scheduled, disabled: 0, boots_in_log: scheduled === null ? 0 : 1, counts_outside_registries: [] },
   registry_entries: 40, blind_spots: ['a registered timer is not a fired one'], statement: 's', decision: 'd',
+  expected: { from: 'source', total: 41, registry_entries: 40, outside_registries: 1, rule: 'r' },
+  against_expected: { state, booted_total: state === 'not_known' ? null : 40, shortfall: state === 'shortfall' ? 1 : state === 'not_known' ? null : 0 },
+});
+
+test('liveness: a boot short of the code\'s count is a problem with its own case, even when the probe sees the scheduler; zero still outranks it', () => {
+  const rule = (kase: string) => ({ ...EMPTY, rules: [{ tool: 'platform.CAP.scheduler_registration_liveness_probe', case: kase, severity: 'High' as const, why: 'w' }] });
+  const short = livenessOutput(liveness(true, 39, true, 'shortfall'), CAP, rule('registered_below_expected'));
+  assert.equal(short.verdict, 'problem');
+  assert.equal(short.severity, 'High');
+  assert.equal(livenessOutput(liveness(true, 40, true, 'matches'), CAP, EMPTY).verdict, 'ok');
+  assert.equal(livenessOutput(liveness(true, 0, true, 'shortfall'), CAP, rule('registered_below_expected')).severity, 'unassigned');
 });
 
 test('liveness: a probe that cannot see zero timers is a problem citing the probe and the gate; zero registered outranks it', () => {
