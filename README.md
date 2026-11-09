@@ -190,7 +190,7 @@ source or written for tests, never production data. Each write-up explains its c
 
 ## Project history
 
-The work started from an assignment to build an AI agent for this role with its manager, K.D. The discovery
+The engagement started with a brief to build an AI agent for this role, working directly with its manager, K.D. The discovery
 stories came first, each approved by K.D. before building started.
 
 | # | Discovery story | Status |
@@ -203,7 +203,7 @@ stories came first, each approved by K.D. before building started.
 
 | Path | What |
 |---|---|
-| [`assignment.md`](assignment.md) | The original assignment |
+| [`assignment.md`](assignment.md) | The original engagement brief |
 | [`research/`](research) | Research summary and a review of the "Demo to Production" video |
 | [`governance/`](governance) | Tool approval rule and how the agent is treated as a governed identity |
 | [`docs/migration/legacy-migration-plan.md`](docs/migration/legacy-migration-plan.md) | Plan for the 38 inherited platform records (version 1 approved by K.D.) |
