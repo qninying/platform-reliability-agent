@@ -1,0 +1,152 @@
+{
+  "note": "Invented example records to show the shape; not production data. Each observation pairs one recorded Ellis output with a reference outcome for the same subject and time.",
+  "observations": [
+    {
+      "id": "obs-001",
+      "tool": "platform.CAP.cron_health_alerting",
+      "subject": "ExampleNightlyJob",
+      "observed_at": "2026-11-10T02:00:00Z",
+      "ellis": {
+        "tool": "platform.CAP.cron_health_alerting",
+        "verdict": "problem",
+        "evidence": [
+          {
+            "table": "cron_job_runs",
+            "id": "row-obs-001",
+            "fields": [
+              "status",
+              "last_run_at"
+            ]
+          }
+        ]
+      },
+      "reference": {
+        "verdict": "problem",
+        "source": "platform check, reviewed",
+        "approved_by": "K.D.",
+        "approved_at": "2026-11-10T12:00:00Z"
+      }
+    },
+    {
+      "id": "obs-002",
+      "tool": "platform.CAP.cron_health_alerting",
+      "subject": "ExampleHourlyJob",
+      "observed_at": "2026-11-10T03:00:00Z",
+      "ellis": {
+        "tool": "platform.CAP.cron_health_alerting",
+        "verdict": "ok",
+        "evidence": [
+          {
+            "table": "cron_job_runs",
+            "id": "row-obs-002",
+            "fields": [
+              "status",
+              "last_run_at"
+            ]
+          }
+        ]
+      },
+      "reference": {
+        "verdict": "ok",
+        "source": "platform check, reviewed",
+        "approved_by": "K.D.",
+        "approved_at": "2026-11-10T12:00:00Z"
+      }
+    },
+    {
+      "id": "obs-003",
+      "tool": "platform.CAP.cron_health_alerting",
+      "subject": "ExampleDigestJob",
+      "observed_at": "2026-11-10T04:00:00Z",
+      "ellis": {
+        "tool": "platform.CAP.cron_health_alerting",
+        "verdict": "ok",
+        "evidence": [
+          {
+            "table": "cron_job_runs",
+            "id": "row-obs-003",
+            "fields": [
+              "status",
+              "last_run_at"
+            ]
+          }
+        ]
+      },
+      "reference": {
+        "verdict": "problem",
+        "source": "platform check, reviewed",
+        "approved_by": "K.D.",
+        "approved_at": "2026-11-10T12:00:00Z"
+      }
+    },
+    {
+      "id": "obs-004",
+      "tool": "platform.CAP.cron_health_alerting",
+      "subject": "ExampleSyncJob",
+      "observed_at": "2026-11-10T05:00:00Z",
+      "ellis": {
+        "tool": "platform.CAP.cron_health_alerting",
+        "verdict": "problem",
+        "evidence": [
+          {
+            "table": "cron_job_runs",
+            "id": "row-obs-004",
+            "fields": [
+              "status",
+              "last_run_at"
+            ]
+          }
+        ]
+      },
+      "reference": {
+        "verdict": "ok",
+        "source": "platform check, reviewed",
+        "approved_by": null,
+        "approved_at": null
+      }
+    },
+    {
+      "id": "obs-005",
+      "tool": "platform.CAP.security_oversight_rollup",
+      "subject": "ExampleScanner",
+      "observed_at": "2026-11-10T06:00:00Z",
+      "ellis": {
+        "tool": "platform.CAP.security_oversight_rollup",
+        "verdict": "unknown",
+        "evidence": []
+      },
+      "reference": {
+        "verdict": "problem",
+        "source": "platform check, reviewed",
+        "approved_by": "K.D.",
+        "approved_at": "2026-11-10T12:00:00Z"
+      }
+    },
+    {
+      "id": "obs-006",
+      "tool": "platform.CAP.security_oversight_rollup",
+      "subject": "ExampleScanner",
+      "observed_at": "2026-11-10T07:00:00Z",
+      "ellis": {
+        "tool": "platform.CAP.security_oversight_rollup",
+        "verdict": "ok",
+        "evidence": [
+          {
+            "table": "ai_agents",
+            "id": "row-obs-006",
+            "fields": [
+              "status",
+              "last_run_at"
+            ]
+          }
+        ]
+      },
+      "reference": {
+        "verdict": "ok",
+        "source": "platform check, reviewed",
+        "approved_by": "K.D.",
+        "approved_at": "2026-11-10T12:00:00Z"
+      }
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "owner": "K.D.",
+  "status": "not set: R5 limits (acceptable misses and false alarms, and how many observations are enough) wait on K.D.",
+  "tools": {
+    "platform.CAP.orchestration_health_watch": {
+      "max_miss_rate": null,
+      "max_false_alarm_rate": null,
+      "min_observations": null
+    },
+    "platform.CAP.system_resilience_supervision": {
+      "max_miss_rate": null,
+      "max_false_alarm_rate": null,
+      "min_observations": null
+    },
+    "platform.CAP.cron_health_alerting": {
+      "max_miss_rate": null,
+      "max_false_alarm_rate": null,
+      "min_observations": null
+    },
+    "platform.CAP.incident_trace_and_error_triage": {
+      "max_miss_rate": null,
+      "max_false_alarm_rate": null,
+      "min_observations": null
+    },
+    "platform.CAP.security_posture_scan": {
+      "max_miss_rate": null,
+      "max_false_alarm_rate": null,
+      "min_observations": null
+    },
+    "platform.CAP.runtime_threat_and_access_watch": {
+      "max_miss_rate": null,
+      "max_false_alarm_rate": null,
+      "min_observations": null
+    },
+    "platform.CAP.agent_behavior_safety_watch": {
+      "max_miss_rate": null,
+      "max_false_alarm_rate": null,
+      "min_observations": null
+    },
+    "platform.CAP.security_oversight_rollup": {
+      "max_miss_rate": null,
+      "max_false_alarm_rate": null,
+      "min_observations": null
+    }
+  }
+}

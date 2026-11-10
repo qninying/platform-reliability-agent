@@ -13,7 +13,7 @@ evidence and judgement layer, read-only, against the real platform's code and re
 | **Engineering ownership** | Quincy Nkwain Ninying: system architecture and forward-deployed engineering |
 | **Platform** | [Colaberry platform](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator) (public): 100+ scheduled agents, Node, TypeScript, PostgreSQL |
 | **Capabilities** | 40 of 48 verified by the platform ([catalog](docs/capabilities/README.md)) |
-| **Tests** | 893 passing, each capability's key rules shown to fail when broken ([how](docs/decisions/004-prove-each-test-can-fail.md)) |
+| **Tests** | 913 passing, each capability's key rules shown to fail when broken ([how](docs/decisions/004-prove-each-test-can-fail.md)) |
 | **Autonomy** | every capability starts at R0; first releases at R2 (answer from records), with two at R4 and one at R1, all in a sandbox |
 | **Production writes** | none: read-only, or a sandbox copy ([decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md)) |
 | **Runtime dependencies** | none (Node 23.6+ runs the TypeScript directly) |
@@ -70,7 +70,7 @@ Ellis climbs it one step at a time, on evidence K.D. approves.
 | R2 | Answer questions using approved knowledge and records | 17 first releases: report and recommend, change nothing |
 | R3 | Perform approved, user-initiated sandbox tool operations | the R3 rungs of schema drift detection (a comparison a person starts, between two sandbox databases), untracked timer proposals (the proposed rows, applied to a sandbox registry) and backup verification (a supplied backup, restored into an isolated target) |
 | R4 | Execute and verify stateful, multi-step sandbox tasks | auto-repair and ticket resolution, and the R4 rungs of stale action recovery, preview stack reaping, data retention, the cron overlap guard, the default-on timer guard, the scheduler liveness probe, dead-letter capture, dead-letter replay, error classification, the idempotency audit, bug-fix verification, the health scoring model and the registry ratchet, on sandbox copies only |
-| R5 | Evaluate in shadow mode against approved reference outcomes | next step for monitoring, once K.D. sets the acceptable misses and false alarms |
+| R5 | Evaluate in shadow mode against approved reference outcomes | next step for monitoring; the scoring harness is built ([shadow evaluation](docs/shadow-evaluation.md)) and judges nothing until K.D. sets the acceptable misses and false alarms |
 | R6+ | Supervised production pilot, then authorized automation | not started; each needs its own approval |
 
 ## Capabilities
@@ -164,15 +164,16 @@ The pattern behind many of them is written up as a rule for anyone building a mo
 | [Pin rules to platform code, re-check live](docs/decisions/003-pin-to-platform-code.md) | The platform changes daily; an unpinned copy goes stale silently | Each pin is maintenance when the platform changes |
 | [Prove each test can fail](docs/decisions/004-prove-each-test-can-fail.md) | A test that passes first time may not test its rule | Slower to finish each capability |
 | [Evidence layer before reasoning layer](docs/decisions/005-evidence-layer-before-reasoning.md) | A model's answer must trace to records K.D. can check before promotion | No free-form questions yet |
+| [Shadow runs judged only against K.D.'s limits](docs/decisions/007-shadow-judged-only-against-kd-limits.md) | A default threshold would read as an approved one | Every shadow run is not judged until K.D. sets limits |
 
 ## Current boundaries and next steps
 
 | | |
 |---|---|
-| **Implemented** | 40 of 48 capabilities verified by the platform, the merged manager-access check and the folded untracked timer proposal among them; under A.M.'s 4 November ruling, 6 more are folded into others, and 2 are held. 893 tests. Every check returns one output shape. |
+| **Implemented** | 40 of 48 capabilities verified by the platform, the merged manager-access check and the folded untracked timer proposal among them; under A.M.'s 4 November ruling, 6 more are folded into others, and 2 are held. 913 tests. Every check returns one output shape. |
 | **Validated in a sandbox** | Auto-repair and ticket resolution (R4), the R4 rungs of stale action recovery, preview stack reaping, data retention, the cron overlap guard, the default-on timer guard, the scheduler liveness probe, dead-letter capture, dead-letter replay, error classification, the idempotency audit, bug-fix verification, the health scoring model and the registry ratchet, the schema comparison, the timer proposals and the restore check (R3), bug baselines (R1). |
 | **Not yet done** | No capability has run on a live production export; each read-only capability's write-up lists that check as outstanding. K.D. signs in through a management role, from which the portal mints an admin login (A.M., 4 November); A.M. is correcting the domain record to K.D.'s work address, which the agent's own pages need. |
-| **Next** | The first live export and comparison with what the platform shows; the gate and broker that call these checks as tools; shadow-mode evaluation (R5) once K.D. sets the thresholds and the severity table; choosing the model and prompt for the reasoning layer. |
+| **Next** | The first live export and comparison with what the platform shows; the gate and broker that call these checks as tools; running shadow-mode evaluation (R5) on the built harness once K.D. sets its limits and references are approved; choosing the model and prompt for the reasoning layer. |
 
 ## Run it
 
@@ -183,6 +184,7 @@ npm run typecheck
 npm run cron-health -- --snapshot examples/cron-health.example.json    # exits 3: blind spots listed
 npm run agent-health -- --snapshot examples/cron-health.example.json   # exits 3: unscored agents listed
 npm run orchestration-repair -- --fixture examples/orchestration-repair.fixture.json
+npm run shadow-evaluation -- --observations examples/shadow-observations.example.json   # exits 3: no limits set yet
 ```
 
 Each capability has a command and an example input in `examples/`. The examples are built from platform
