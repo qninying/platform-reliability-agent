@@ -209,7 +209,7 @@ stories came first, each approved by K.D. before building started.
 | [`research/`](research) | Research summary and a review of the "Demo to Production" video |
 | [`governance/`](governance) | Tool approval rule and how the agent is treated as a governed identity |
 | [`docs/migration/legacy-migration-plan.md`](docs/migration/legacy-migration-plan.md) | Plan for the 38 inherited platform records (version 1 approved by K.D.) |
-| [`docs/artifacts/`](docs/artifacts) | PDFs: architecture, charter, platform audit, problem brief, trust and risk review, governance brief, workflow, executive brief, playbook, communication kit, capability map, one-pager |
+| [`docs/artifacts/`](docs/artifacts) | PDFs: architecture, charter, platform audit, problem brief, trust and risk review, governance brief, workflow, executive brief, playbook, communication kit, capability map, one-pager, project story |
 | [`brd/brd-draft-v0.7.pdf`](brd/brd-draft-v0.7.pdf) | Business requirement document, early draft v0.7 (2026-10-14, written before platform access) |
 | [Command Center](https://qninying.github.io/platform-reliability-agent/) (`index.html`, `command-center/`) | Project progress and plan, read live from `.colaberry/`, and the Agent domain tab: six panels on what Ellis is allowed to do |
 | `docs/stories/`, `docs/REQUIREMENTS.md`, `CLAUDE.md` | Build plan files managed by the platform's pipeline |
