@@ -24,10 +24,11 @@ flowchart LR
   PIN --> CAP
   FIX["Sandbox fixtures"] --> SB["Sandbox stores<br/>every write journaled"]
   SB --> CAP
-  CAP --> OUT["Report: verdict, citations,<br/>explicit unknowns, exit code"]
+  CAP --> OUT["One output shape: verdict,<br/>rows cited, blind spots, exit code"]
+  OUT --> SH["Shadow scorer<br/>judged only on K.D.'s limits"]
   OUT --> KD(["K.D.: approves promotion<br/>and production actions"])
-  OUT --> AM(["A.M.: reviews platform findings"])
-  AM -- "upstream fixes" --> P
+  OUT --> AM(["A.M.: governance, rungs from R3"])
+  KD -- "every live change, made by a person" --> P
 ```
 
 ## Five layers, each with one job
@@ -38,7 +39,7 @@ flowchart LR
 | 2. Read boundary | Capabilities see the platform only through `ReadSource`, which can find and list rows but cannot change them. Errors are classified as `SourceUnavailable` or `ContractViolation`. | [`readSource.ts`](../../src/readSource.ts), [`records.ts`](../../src/records.ts) |
 | 3. Pinned platform knowledge | Rules copied from the platform's code, each with the commit and file:line it came from: agent grants, the admin section map, the retention sweeps, the timer inventory, alert thresholds and the health score formula. | [`agentGrants.ts`](../../src/grants/agentGrants.ts), [`sectionMap.ts`](../../src/access/sectionMap.ts), [`sweepCatalogue.ts`](../../src/retention/sweepCatalogue.ts), [`inventory/`](../../src/inventory) |
 | 4. Capabilities | One module per capability, a function from snapshot to report. Changes happen only in sandbox stores that journal every write. | [`capabilities/`](../../src/capabilities), [`sandbox/`](../../src/sandbox) |
-| 5. Output | Every verdict carries citations (table and row id). Each command exits with a code per state, so a scheduler or a person can act on it without parsing text. | [`cli/`](../../src/cli) |
+| 5. Output | Every check returns one envelope: a shared verdict, a severity set only by K.D.'s table, the rows behind it and what it could not see ([decision 006](../decisions/006-one-output-shape-for-every-tool.md)). Each command exits with a code per state, so a scheduler or a person can act on it without parsing text. A shadow scorer compares recorded verdicts with approved outcomes ([shadow evaluation](../shadow-evaluation.md)). | [`output/`](../../src/output), [`cli/`](../../src/cli), [`shadow/`](../../src/shadow) |
 
 ## The core rule: unknown is checked before clean
 
@@ -67,16 +68,18 @@ flowchart TD
 
 ## Where change is allowed
 
-Nothing in Ellis writes to the platform. Three capabilities change state, each only inside a sandbox:
+Nothing in Ellis writes to the platform. Change happens only inside a sandbox, at three levels:
 
-| Capability | Sandbox | What proves it safe |
+| Level | What changes, and where | Examples |
 |---|---|---|
-| Orchestration auto-repair (R4) | [`sandboxStore.ts`](../../src/sandbox/sandboxStore.ts): a copy of the three tables a repair can touch | each changed value is read back after the run (`orchestrationAutoRepair.ts:92`), and a second run makes no change, counted from the journal |
-| Agent ticket auto-resolution (R4) | [`ticketSandbox.ts`](../../src/sandbox/ticketSandbox.ts): a copy of the ticket queue | a close and its evidence comment are one journal entry; a second run closes nothing more |
-| Bug fix dispatch (R1) | [`baselineRunner.ts`](../../src/sandbox/baselineRunner.ts): a fresh directory under Node's permission model | the test can read and write only its own directory, and must fail for the reported reason before any fix |
+| R1 | A baseline test in a fresh directory under Node's permission model: its own folder only, no other programs, no network | bug fix dispatch, the idempotency harness ([`baselineRunner.ts`](../../src/sandbox/baselineRunner.ts)) |
+| R3 | A person starts one sandbox operation, with a named operator | schema comparison, proposed timer rows applied to a sandbox registry, a supplied backup restored into a proven-isolated target |
+| R4 | A multi-step task run end to end on a sandbox copy, with every write journaled and a second run required to change nothing | auto-repair and ticket resolution as first releases, and the R4 rungs of 13 more capabilities ([`sandbox/`](../../src/sandbox)) |
 
-Moving any of these into production is a separate step that K.D. approves
-([decision 001](../decisions/001-read-only-first-sandbox-for-change.md)).
+16 higher-autonomy rungs are built this way in all; the [Capability Map](../artifacts/ellis-capability-map.pdf) lists
+each one with its commit. Moving any of them into production is a separate step that a person approves
+([decision 001](../decisions/001-read-only-first-sandbox-for-change.md)), and no capability has an approved level on
+record yet.
 
 ## Dependencies
 

@@ -50,7 +50,7 @@ platform often merges: *healthy*, *broken*, and *unknown*.
 
 ## Architecture
 
-![Ellis reads a dated export through a read boundary and rules pinned to platform code; 20 capability modules make changes only in sandbox copies and produce verdicts with citations for K.D. and A.M., whose reviews lead to upstream fixes](docs/architecture/overview.svg)
+![Ellis reads a dated export through a read boundary and rules pinned to platform code; 39 capabilities make changes only in sandbox copies and return one output shape, scored in shadow mode against K.D.'s limits and decided on by people: K.D. approves, A.M. governs, and a person makes every live change](docs/architecture/overview.svg)
 
 Diagram source: [`overview.mmd`](docs/architecture/overview.mmd), rendered to SVG with Mermaid (plain text labels).
 
