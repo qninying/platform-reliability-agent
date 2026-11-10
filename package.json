@@ -46,6 +46,7 @@
     "timer-proposal-sandbox": "node src/cli/proposalApplyRehearsal.ts",
     "restore-sandbox": "node src/cli/restoreRehearsal.ts",
     "shadow-evaluation": "node src/cli/shadowEvaluation.ts",
+    "shadow-observations": "node src/cli/shadowObservations.ts",
     "cron-health": "node src/cli/cronHealth.ts",
     "agent-health": "node src/cli/agentHealth.ts",
     "registry-reconcile": "node src/cli/registryReconcile.ts",
