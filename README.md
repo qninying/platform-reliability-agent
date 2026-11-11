@@ -25,6 +25,8 @@ healthy, what is broken, and what it cannot see.**
 >   [One-pager (PDF)](docs/artifacts/ellis-one-pager.pdf) ·
 >   [Project story (PDF)](docs/artifacts/ellis-project-story.pdf)
 
+New to the terms (R0 to R9, rung, `unknown`, shadow mode)? See the [glossary](docs/GLOSSARY.md).
+
 **Context:** Colaberry AI Agent Internship, Platform Automation & Reliability, 6 Oct 2026 to present.
 Supervised by the platform's manager (K.D., AI Engineer), with platform findings and governance reviewed by
 A.M. Ellis is an AI agent built in phases: this phase builds its evidence and judgement layer, read-only,
@@ -54,7 +56,7 @@ capabilities across reliability engineering, security and AI safety, agent opera
 controlled remediation (sandbox only) and platform optimisation; each has a write-up in the
 [capability catalog](docs/capabilities/README.md). Ellis makes **no production writes**: it is read-only, or
 works on a sandbox copy ([decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md)). Every
-capability starts at R0 on the platform's [autonomy ladder](docs/autonomy.md) and climbs one rung at a time
+capability starts at R0 on the platform's [autonomy ladder](docs/autonomy.md) and climbs one [rung](docs/GLOSSARY.md#terms) at a time
 on evidence K.D. approves.
 
 | Principle | What it means in the code |
@@ -107,7 +109,7 @@ boundaries: [docs/architecture](docs/architecture/README.md).
 | [Pin rules to platform code, re-check live](docs/decisions/003-pin-to-platform-code.md) | The platform changes daily; an unpinned copy goes stale silently | Each pin is maintenance when the platform changes |
 | [Prove each test can fail](docs/decisions/004-prove-each-test-can-fail.md) | A test that passes first time may not test its rule | Slower to finish each capability |
 | [Evidence layer before reasoning layer](docs/decisions/005-evidence-layer-before-reasoning.md) | A model's answer must trace to records K.D. can check before promotion | No free-form questions yet |
-| [Shadow runs judged only against K.D.'s limits](docs/decisions/007-shadow-judged-only-against-kd-limits.md) | A default threshold would read as an approved one | Every shadow run is not judged until K.D. sets limits |
+| [Shadow runs judged only against K.D.'s limits](docs/decisions/007-shadow-judged-only-against-kd-limits.md) | A default threshold would read as an approved one | Every [shadow](docs/GLOSSARY.md#terms) run is not judged until K.D. sets limits |
 
 ## Run it
 
@@ -143,6 +145,7 @@ How the engagement ran, step by step: [forward-deployed engineering approach](do
 
 | Where | What |
 |---|---|
+| [Glossary](docs/GLOSSARY.md) | Plain meanings: the R0 to R9 ladder, verdicts, sandbox, shadow mode, mutation checks |
 | [Status](docs/STATUS.md) | What is implemented, validated in a sandbox, not yet done, and next |
 | [Capability catalog](docs/capabilities/README.md) | One write-up per capability: the question, the rule, the evidence |
 | [Autonomy](docs/autonomy.md) | The platform's R0 to R9 ladder and where each capability stands |
