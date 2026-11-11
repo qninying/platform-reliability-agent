@@ -76,7 +76,7 @@ Nothing in Ellis writes to the platform. Change happens only inside a sandbox, a
 | R3 | A person starts one sandbox operation, with a named operator | schema comparison, proposed timer rows applied to a sandbox registry, a supplied backup restored into a proven-isolated target |
 | R4 | A multi-step task run end to end on a sandbox copy, with every write journaled and a second run required to change nothing | auto-repair and ticket resolution as first releases, and the R4 rungs of 13 more capabilities ([`sandbox/`](../../src/sandbox)) |
 
-16 higher-autonomy rungs are built this way in all; the [Capability Map](../artifacts/ellis-capability-map.pdf) lists
+The [status page](../STATUS.md) counts the higher-autonomy rungs built this way; the [Capability Map](../artifacts/ellis-capability-map.pdf) lists
 each one with its commit. Moving any of them into production is a separate step that a person approves
 ([decision 001](../decisions/001-read-only-first-sandbox-for-change.md)), and no capability has an approved level on
 record yet.
