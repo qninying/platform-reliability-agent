@@ -3,6 +3,9 @@
 ### Reliability and governance for a multi-agent AI platform
 
 [![CI](https://github.com/qninying/platform-reliability-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/qninying/platform-reliability-agent/actions/workflows/ci.yml)
+[![Node 23.6+](https://img.shields.io/badge/node-%3E%3D23.6-339933?logo=node.js&logoColor=white)](package.json)
+[![Runtime dependencies: 0](https://img.shields.io/badge/runtime%20dependencies-0-brightgreen)](package.json)
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)](tsconfig.json)
 
 **An AI reliability agent for a 100-agent production platform: it tells a person, with evidence, what is
 healthy, what is broken, and what it cannot see.**
@@ -32,6 +35,8 @@ Supervised by the platform's manager (K.D., AI Engineer), with platform findings
 A.M. Ellis is an AI agent built in phases: this phase builds its evidence and judgement layer, read-only,
 against the real platform's code and records.
 
+[![The Command Center: where Ellis stands, read live from the platform's build plan](docs/media/command-center-overview.png)](https://qninying.github.io/platform-reliability-agent/)
+
 ## The problem
 
 A platform run by a hundred scheduled AI agents can look healthy while it is not. Uptime checks say the
@@ -50,6 +55,12 @@ Ellis answers one operational question per capability, and every answer separate
 platform often merges: *healthy*, *broken*, and *unknown*.
 
 ## What Ellis does
+
+A real answer, from the cron health check on an example built from platform source. No alert is not reported
+as healthy: Ellis says how many jobs it could not judge, and what it cannot see at all.
+
+![A cron health answer: clear with blind spots, 190 jobs evaluated in part, 52 not evaluated, and two things it cannot say](docs/media/cron-health-answer.png)
+
 
 Ellis answers one operational question per capability. The platform's build plan for this domain has 48
 capabilities across reliability engineering, security and AI safety, agent operations and governance,
@@ -127,6 +138,44 @@ npm run shadow-observations -- --mode record --monitor cron_health --snapshot ex
 Each capability has a command and an example input in `examples/`. The examples are built from platform
 source or written for tests, never production data. Each write-up explains its command and exit codes.
 
+## Testing approach
+
+- **Every capability is tested on four fronts:** the happy path; failure paths (source missing, malformed
+  input, contract broken); boundaries (empty inputs, exact limits); and running the same input twice, which
+  must give the same answer ([idempotent](docs/GLOSSARY.md#terms)).
+- **Tests are proven to test something.** For each capability, key rules are deliberately broken in the code
+  and a named test must fail before the code is restored: a [mutation check](docs/GLOSSARY.md#terms)
+  ([decision 004](docs/decisions/004-prove-each-test-can-fail.md)). Each write-up's Evidence section lists them.
+- **Rules copied from the platform are pinned** to a commit and line, and `--source` re-reads the live code
+  and fails if it changed shape ([decision 003](docs/decisions/003-pin-to-platform-code.md)).
+- **CI on every push:** type check, the full suite, and a check that the README's figures match the
+  repository. Tests use the built-in `node:test`, so there is no test framework to install.
+
+```
+npm test               # the full suite
+npm run typecheck      # tsc --noEmit
+npm run check:readme   # README figures against the repository
+```
+
+## Project structure
+
+```
+src/capabilities/   one module per capability: the question, the rule, the verdict
+src/cli/            command-line entry points behind each npm run script
+src/output/         the shared output envelope every check returns
+src/sandbox/        journaled sandbox stores for change rehearsals
+src/shadow/         shadow evaluation and the observation builder
+src/readSource.ts   the read boundary: an interface with no write method
+src/access/, grants/, inventory/, retention/, tickets/   readers the capabilities share
+test/               node:test suites, one or more per capability
+examples/           inputs built from platform source or written for tests; no production data
+governance/         severity table, shadow limits, agent identity, tool catalog approach
+scripts/            README figure check and the Command Center data builder
+docs/               write-ups, decisions, architecture, glossary, status, artifacts (PDF)
+index.html, command-center/          the Command Center on GitHub Pages
+.colaberry/, docs/stories/, CLAUDE.md   build plan, managed by the platform's pipeline
+```
+
 ## My contribution and AI usage
 
 This is directed, AI-assisted engineering, with the decisions on record.
@@ -153,7 +202,8 @@ How the engagement ran, step by step: [forward-deployed engineering approach](do
 | [Decision records](docs/decisions/README.md) | Engineering decisions, their tradeoffs, and the stakeholder rulings behind them |
 | [Shadow evaluation](docs/shadow-evaluation.md) | The R5 scoring harness and the blind review sheet |
 | [No evidence is not health](docs/no-evidence-is-not-health.md) | The rule behind most findings, for anyone building a monitor |
-| [Artifacts](docs/artifacts/) | PDFs: one-pager, project story, architecture, charter, briefs, playbook and more |
+| [Artifacts](docs/artifacts/README.md) | PDFs, grouped: start here, for the client, governance and operations |
+| [Changelog](CHANGELOG.md) | Milestones by date |
 | [Project history](docs/project-history.md) and [discovery](docs/discovery/) | How the engagement started; the five approved discovery stories |
 | [The platform Ellis watches](docs/platform.md) | Pinned links into the platform's code |
 | [`governance/`](governance) | Tool approval rule, agent identity, severity table, shadow limits |

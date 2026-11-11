@@ -17,6 +17,10 @@ and PDFs keep the figures they had on their date.
 Some capabilities cover more than one build-plan story after A.M.'s 4 November ruling, which is why the two
 first counts differ.
 
+Every story in the build plan and its state, as the [Command Center](https://qninying.github.io/platform-reliability-agent/#/pm) shows it:
+
+![The build plan's stories, most marked verified, some folded or held](media/command-center-stories.png)
+
 ## Boundaries and next steps
 
 | | |
