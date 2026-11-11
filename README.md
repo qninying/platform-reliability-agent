@@ -136,7 +136,7 @@ This is directed, AI-assisted engineering, with the decisions on record.
 | Scope, read-only boundary, repository rules, push only on my go | I decided | No command in Ellis can write to the platform ([decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md)) |
 | Discovery: role, agent anatomy, manager interview, proposed tasks | I directed and led; AI drafted | [docs/discovery](docs/discovery/); three approved by K.D. on 21 and 22 Oct |
 | Capabilities and their tests | I directed; AI (Claude Code) implemented | Each verified by the platform from its commit |
-| Decisions above my authority | Escalated to K.D. and A.M. | Rulings recorded with dates in the [decisions log](decisions.md) |
+| Decisions above my authority | Escalated to K.D. and A.M. | Rulings cited with dates in the [decision records](docs/decisions/README.md) and [capability write-ups](docs/capabilities/README.md) |
 | Findings sent to the platform | I found and wrote up; A.M. verified | Five merged platform PRs ([findings](#findings-that-changed-the-platform)) |
 
 How the engagement ran, step by step: [forward-deployed engineering approach](docs/fde-approach.md).
@@ -150,7 +150,7 @@ How the engagement ran, step by step: [forward-deployed engineering approach](do
 | [Capability catalog](docs/capabilities/README.md) | One write-up per capability: the question, the rule, the evidence |
 | [Autonomy](docs/autonomy.md) | The platform's R0 to R9 ladder and where each capability stands |
 | [Architecture](docs/architecture/README.md) | Layers, the read boundary and the sandbox boundaries |
-| [Decision records](docs/decisions/README.md) and [decisions log](decisions.md) | Engineering decisions with tradeoffs; dated stakeholder rulings |
+| [Decision records](docs/decisions/README.md) | Engineering decisions, their tradeoffs, and the stakeholder rulings behind them |
 | [Shadow evaluation](docs/shadow-evaluation.md) | The R5 scoring harness and the blind review sheet |
 | [No evidence is not health](docs/no-evidence-is-not-health.md) | The rule behind most findings, for anyone building a monitor |
 | [Artifacts](docs/artifacts/) | PDFs: one-pager, project story, architecture, charter, briefs, playbook and more |

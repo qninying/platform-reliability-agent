@@ -16,7 +16,7 @@ stories came first, each approved by K.D. before building started.
 
 | Path | What |
 |---|---|
-| [`assignment.md`](../assignment.md) | The original engagement brief |
-| [`research/`](../research) | Research summary and a review of the "Demo to Production" video |
+| [`archive/assignment.md`](archive/assignment.md) | The original engagement brief |
+| [`research/`](research) | Research summary and a review of the "Demo to Production" video |
 | [`migration/legacy-migration-plan.md`](migration/legacy-migration-plan.md) | Plan for the 38 inherited platform records (version 1 approved by K.D.) |
 | [`brd/brd-draft-v0.7.pdf`](../brd/brd-draft-v0.7.pdf) | Business requirement document, early draft v0.7 (2026-10-14, written before platform access) |
