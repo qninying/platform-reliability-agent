@@ -14,8 +14,8 @@ healthy, what is broken, and what it cannot see.**
 >   governance, end to end.
 > - **Stack:** TypeScript on Node 23.6+ (no runtime dependencies), `node:test`, GitHub Actions, Mermaid; the
 >   platform is Node, Express and PostgreSQL.
-> - **Result:** 40 of 48 capabilities verified by the platform, 926 tests, and five fixes merged into the
->   platform from Ellis's findings
+> - **Result:** 40 of 48 verified by the platform, 926 passing tests, and five fixes merged into the platform
+>   from Ellis's findings
 >   ([#3410](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3410),
 >   [#3422](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3422),
 >   [#3430](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3430),
@@ -29,17 +29,6 @@ healthy, what is broken, and what it cannot see.**
 Supervised by the platform's manager (K.D., AI Engineer), with platform findings and governance reviewed by
 A.M. Ellis is an AI agent built in phases: this phase builds its evidence and judgement layer, read-only,
 against the real platform's code and records.
-
-| | |
-|---|---|
-| **Engineering ownership** | Quincy Nkwain Ninying: system architecture and forward-deployed engineering |
-| **Platform** | [Colaberry platform](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator) (public): 100+ scheduled agents, Node, TypeScript, PostgreSQL |
-| **Capabilities** | 40 of 48 verified by the platform ([catalog](docs/capabilities/README.md)) |
-| **Tests** | 926 passing, each capability's key rules shown to fail when broken ([how](docs/decisions/004-prove-each-test-can-fail.md)) |
-| **Autonomy** | every capability starts at R0; first releases at R2 (answer from records), with two at R4 and one at R1, all in a sandbox |
-| **Production writes** | none: read-only, or a sandbox copy ([decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md)) |
-| **Runtime dependencies** | none (Node 23.6+ runs the TypeScript directly) |
-| **Oversight** | K.D. (AI Engineer, manager) approves promotions and any production action; A.M. reviews platform findings and governance |
 
 ## The problem
 
@@ -58,7 +47,15 @@ Ellis turned up the ways this happens, each with file:line references:
 Ellis answers one operational question per capability, and every answer separates three things the
 platform often merges: *healthy*, *broken*, and *unknown*.
 
-## How Ellis is built
+## What Ellis does
+
+Ellis answers one operational question per capability. The platform's build plan for this domain has 48
+capabilities across reliability engineering, security and AI safety, agent operations and governance,
+controlled remediation (sandbox only) and platform optimisation; each has a write-up in the
+[capability catalog](docs/capabilities/README.md). Ellis makes **no production writes**: it is read-only, or
+works on a sandbox copy ([decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md)). Every
+capability starts at R0 on the platform's [autonomy ladder](docs/autonomy.md) and climbs one rung at a time
+on evidence K.D. approves.
 
 | Principle | What it means in the code |
 |---|---|
@@ -68,86 +65,11 @@ platform often merges: *healthy*, *broken*, and *unknown*.
 | **Pinned to the platform** | Every copied rule names the platform commit and file:line it came from; `--source` re-reads it live and fails if it changed shape ([decision 003](docs/decisions/003-pin-to-platform-code.md)) |
 | **Prove the test can fail** | For each capability, key rules are deliberately broken and a named test is confirmed to fail ([decision 004](docs/decisions/004-prove-each-test-can-fail.md)) |
 | **One output shape** | Every check returns one envelope: verdict, severity from K.D.'s table only (none yet, so `unassigned`), and the rows behind it; an uncited `problem` or `ok` is refused ([decision 006](docs/decisions/006-one-output-shape-for-every-tool.md)) |
-| **Verify after a change** | In the sandbox, each changed value is read back, and a second run must change nothing ([example below](#end-to-end-a-repair-proven-safe-to-repeat)) |
+| **Verify after a change** | In the sandbox, each changed value is read back, and a second run must change nothing ([walkthrough](docs/end-to-end-repair.md)) |
 
-## Architecture
+## Key results
 
-![Ellis reads a dated export through a read boundary and rules pinned to platform code; 39 capabilities make changes only in sandbox copies and return one output shape, scored in shadow mode against K.D.'s limits and decided on by people: K.D. approves, A.M. governs, and a person makes every live change](docs/architecture/overview.svg)
-
-Diagram source: [`overview.mmd`](docs/architecture/overview.mmd), rendered to SVG with Mermaid (plain text labels).
-
-Ellis holds no credentials and has no network path to the platform. Detail, layers and the sandbox
-boundaries: [docs/architecture](docs/architecture/README.md).
-
-## Autonomy: where Ellis is, and what moves it
-
-The platform defines an R0 to R9 ladder per capability
-([`autonomyLadder.ts:59-68`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/44430870b/backend/src/services/agentDomain/autonomyLadder.ts#L59-L68)).
-Ellis climbs it one step at a time, on evidence K.D. approves.
-
-| Level | Platform meaning | Ellis today |
-|---|---|---|
-| R0 | Define the workflow, requirements, risks and human decisions | every capability starts here ([discovery](docs/discovery/)) |
-| R1 | Prepare isolated development, fixtures and baseline tests | bug fix dispatch: a sealed baseline test, run in a locked sandbox |
-| R2 | Answer questions using approved knowledge and records | 17 first releases: report and recommend, change nothing |
-| R3 | Perform approved, user-initiated sandbox tool operations | the R3 rungs of schema drift detection (a comparison a person starts, between two sandbox databases), untracked timer proposals (the proposed rows, applied to a sandbox registry) and backup verification (a supplied backup, restored into an isolated target) |
-| R4 | Execute and verify stateful, multi-step sandbox tasks | auto-repair and ticket resolution, and the R4 rungs of stale action recovery, preview stack reaping, data retention, the cron overlap guard, the default-on timer guard, the scheduler liveness probe, dead-letter capture, dead-letter replay, error classification, the idempotency audit, bug-fix verification, the health scoring model and the registry ratchet, on sandbox copies only |
-| R5 | Evaluate in shadow mode against approved reference outcomes | next step for monitoring; the scoring harness is built ([shadow evaluation](docs/shadow-evaluation.md)) and judges nothing until K.D. sets the acceptable misses and false alarms |
-| R6+ | Supervised production pilot, then authorized automation | not started; each needs its own approval |
-
-## Capabilities
-
-| Domain | Built | What it covers |
-|---|---|---|
-| Reliability engineering | 7 | orchestration health, stuck actions, resilience, cron runs, cron health alerts, agent health scores, timer and agent registry reconciliation |
-| Security and AI safety | 4 | secret, code and dependency scans; admin access; agents acting outside their grants; one security verdict |
-| Agent operations and governance | 4 | agent registry, enable and disable control, technology direction, data retention |
-| Controlled remediation, sandbox only | 3 | auto-repair, ticket auto-resolution, bug baselines |
-| Platform optimisation and change | 3 | prompt cost and speed, evolution proposals, preview stacks |
-
-Each row in the [capability catalog](docs/capabilities/README.md) links to a write-up: the question it
-answers, how the answer is decided, what the platform code showed, and the evidence. 27 more capabilities
-are planned in the platform's build plan for this domain.
-
-## End to end: a repair proven safe to repeat
-
-The platform's auto-repair agent fixes broken prompt links on a timer, every minute. Ellis runs the same two
-authorized repairs, but only on a sandbox copy, and proves that running them twice changes things once.
-
-```
-npm run orchestration-repair -- --fixture examples/orchestration-repair.fixture.json
-```
-
-1. **Signal.** Six fault events, shaped like the platform's `ai_system_events` rows: one of each authorized
-   kind, a duplicate (the monitor runs every minute), and faults Ellis must not touch.
-2. **Plan.** Each fault is matched against the authorized repair set and an allowlist of columns. A fault
-   outside the set is reported, not improvised on.
-3. **Act, in the sandbox.** Every write goes through a store that journals it.
-4. **Verify.** Each changed value is read back; any mismatch marks the run failed
-   ([`orchestrationAutoRepair.ts:92`](src/capabilities/orchestrationAutoRepair.ts#L92)).
-5. **Repeat.** A second run must make no change, counted from the journal.
-
-Excerpt of the real output on that fixture (trimmed; the fixture is test data, not production):
-
-```json
-{
-  "runs": [
-    { "run": 1, "outcome": "changed", "verified": true,
-      "applied": [ { "table": "prompt_templates", "row_id": "prompt-off", "column": "is_active",
-                     "from": false, "to": true, "repair_class": "inactive_prompt_reactivation" }, "...3 more" ],
-      "no_op": [ { "fault_id": "evt-2", "reason": "duplicate signal: prompt_templates:prompt-off:is_active is already planned by an earlier fault" } ],
-      "left_alone": [ "...2 more", { "fault_id": "evt-6", "event_type": "gating_deadlock",
-                      "reason": "outside the authorized repair set; reported, not repaired" } ] },
-    { "run": 2, "outcome": "no_op", "verified": true, "applied": [] }
-  ],
-  "total_changes": 4
-}
-```
-
-6. **Approval boundary.** A production pilot is R6 and needs K.D.'s separate approval. One of the two repairs
-   can undo a person's deliberate decision, so it needs K.D.'s decision before any production pilot ([write-up](docs/capabilities/orchestration-auto-repair.md)).
-
-## Findings that changed the platform
+### Findings that changed the platform
 
 Each capability starts by reading the platform code it depends on. The weaknesses found go to A.M., who
 verifies each one against the code. Five fixes are merged in the platform repository, each crediting the
@@ -164,18 +86,17 @@ findings by number:
 The pattern behind many of them is written up as a rule for anyone building a monitor on the platform:
 [no evidence is not health](docs/no-evidence-is-not-health.md).
 
-## Forward-deployed engineering approach
+A worked example of Ellis's sandbox discipline: [a repair proven safe to repeat](docs/end-to-end-repair.md),
+where running the same repair twice changes things once.
 
-| Step | What it meant here | Evidence |
-|---|---|---|
-| **Discover** | Classify the system, map the agent's anatomy onto the platform, interview the manager | [discovery](docs/discovery/), each version approved by K.D. |
-| **Map** | Inventory every timer, the wrapper that runs it and the row it reads; grants; admin sections | [`timer-inventory.example.json`](examples/timer-inventory.example.json), [`agentGrants.ts`](src/grants/agentGrants.ts) |
-| **Bound** | Read-only interface, sandbox stores, per-capability autonomy ceilings | [decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md), [`sandbox/`](src/sandbox) |
-| **Build** | One narrow question per capability, against the real platform's rules, pinned to a commit | [`src/capabilities/`](src/capabilities) |
-| **Verify** | Happy path, failure path, boundaries, same-input-twice, and deliberate defects | [`test/`](test), the Evidence section of each write-up |
-| **Report** | Platform weaknesses found while building go to the governance reviewer | [findings that changed the platform](#findings-that-changed-the-platform) |
-| **Observe** | First live export, compared with what the platform shows | outstanding: see boundaries below |
-| **Expand** | Promotion one rung at a time, on evidence K.D. approves | [autonomy](#autonomy-where-ellis-is-and-what-moves-it) |
+## Architecture
+
+![Ellis architecture: dated export in, read boundary and pinned rules, changes only in sandbox copies, one output shape, people decide](docs/architecture/overview.svg)
+
+Diagram source: [`overview.mmd`](docs/architecture/overview.mmd), rendered to SVG with Mermaid (plain text labels).
+
+Ellis holds no credentials and has no network path to the platform. Detail, layers and the sandbox
+boundaries: [docs/architecture](docs/architecture/README.md).
 
 ## Key engineering decisions
 
@@ -187,27 +108,6 @@ The pattern behind many of them is written up as a rule for anyone building a mo
 | [Prove each test can fail](docs/decisions/004-prove-each-test-can-fail.md) | A test that passes first time may not test its rule | Slower to finish each capability |
 | [Evidence layer before reasoning layer](docs/decisions/005-evidence-layer-before-reasoning.md) | A model's answer must trace to records K.D. can check before promotion | No free-form questions yet |
 | [Shadow runs judged only against K.D.'s limits](docs/decisions/007-shadow-judged-only-against-kd-limits.md) | A default threshold would read as an approved one | Every shadow run is not judged until K.D. sets limits |
-
-## Current boundaries and next steps
-
-| | |
-|---|---|
-| **Implemented** | 40 of 48 capabilities verified by the platform, the merged manager-access check and the folded untracked timer proposal among them; under A.M.'s 4 November ruling, 6 more are folded into others, and 2 are held. 926 tests. Every check returns one output shape. |
-| **Validated in a sandbox** | Auto-repair and ticket resolution (R4), the R4 rungs of stale action recovery, preview stack reaping, data retention, the cron overlap guard, the default-on timer guard, the scheduler liveness probe, dead-letter capture, dead-letter replay, error classification, the idempotency audit, bug-fix verification, the health scoring model and the registry ratchet, the schema comparison, the timer proposals and the restore check (R3), bug baselines (R1). |
-| **Not yet done** | No capability has run on a live production export; each read-only capability's write-up lists that check as outstanding. K.D. signs in through a management role, from which the portal mints an admin login (A.M., 4 November); A.M. is correcting the domain record to K.D.'s work address, which the agent's own pages need. |
-| **Next** | The first live export and comparison with what the platform shows; the gate and broker that call these checks as tools; running shadow-mode evaluation (R5) on the built harness once K.D. sets its limits and references are approved; choosing the model and prompt for the reasoning layer. |
-
-## My contribution and AI usage
-
-This is directed, AI-assisted engineering, with the decisions on record.
-
-| Piece of work | Who | Evidence |
-|---|---|---|
-| Scope, read-only boundary, repository rules, push only on my go | I decided | No command in Ellis can write to the platform ([decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md)) |
-| Discovery: role, agent anatomy, manager interview, proposed tasks | I directed and led; AI drafted | [docs/discovery](docs/discovery/); three approved by K.D. on 21 and 22 Oct |
-| Capabilities and their tests | I directed; AI (Claude Code) implemented | Each verified by the platform from its commit |
-| Decisions above my authority | Escalated to K.D. and A.M. | Rulings recorded with dates in the [decisions log](decisions.md) |
-| Findings sent to the platform | I found and wrote up; A.M. verified | Five merged platform PRs ([findings](#findings-that-changed-the-platform)) |
 
 ## Run it
 
@@ -225,42 +125,34 @@ npm run shadow-observations -- --mode record --monitor cron_health --snapshot ex
 Each capability has a command and an example input in `examples/`. The examples are built from platform
 source or written for tests, never production data. Each write-up explains its command and exit codes.
 
-## Project history
+## My contribution and AI usage
 
-The engagement started with a brief to build an AI agent for this role, working directly with its manager, K.D. The discovery
-stories came first, each approved by K.D. before building started.
+This is directed, AI-assisted engineering, with the decisions on record.
 
-| # | Discovery story | Status |
+| Piece of work | Who | Evidence |
 |---|---|---|
-| 1 | Compare the five system classes, and place this domain among them | Approved by K.D. 2026-10-22, version 3 ([01-system-classes.md](docs/discovery/01-system-classes.md)) |
-| 2 | Map the nine anatomy elements onto this domain's agent | Approved by K.D. 2026-10-21, version 4 ([02-agent-anatomy.md](docs/discovery/02-agent-anatomy.md)) |
-| 3 | Document the role and which DA responsibilities transition | Approved by K.D. 2026-10-21, version 2 ([03-role-and-da-transition.md](docs/discovery/03-role-and-da-transition.md)) |
-| 4 | 30-minute manager interview and weekly check-in | Interview prepared; first working session with K.D. 2026-10-19; weekly check-in Mondays 1:30 pm Central ([04-manager-interview.md](docs/discovery/04-manager-interview.md)) |
-| 5 | Three proposed agent tasks with boundaries and completion evidence | Version 3; K.D. asked to proceed with building 2026-10-26 ([05-three-proposed-tasks.md](docs/discovery/05-three-proposed-tasks.md)) |
+| Scope, read-only boundary, repository rules, push only on my go | I decided | No command in Ellis can write to the platform ([decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md)) |
+| Discovery: role, agent anatomy, manager interview, proposed tasks | I directed and led; AI drafted | [docs/discovery](docs/discovery/); three approved by K.D. on 21 and 22 Oct |
+| Capabilities and their tests | I directed; AI (Claude Code) implemented | Each verified by the platform from its commit |
+| Decisions above my authority | Escalated to K.D. and A.M. | Rulings recorded with dates in the [decisions log](decisions.md) |
+| Findings sent to the platform | I found and wrote up; A.M. verified | Five merged platform PRs ([findings](#findings-that-changed-the-platform)) |
 
-| Path | What |
+How the engagement ran, step by step: [forward-deployed engineering approach](docs/fde-approach.md).
+
+## Documentation
+
+| Where | What |
 |---|---|
-| [`assignment.md`](assignment.md) | The original engagement brief |
-| [`research/`](research) | Research summary and a review of the "Demo to Production" video |
-| [`governance/`](governance) | Tool approval rule and how the agent is treated as a governed identity |
-| [`docs/migration/legacy-migration-plan.md`](docs/migration/legacy-migration-plan.md) | Plan for the 38 inherited platform records (version 1 approved by K.D.) |
-| [`docs/artifacts/`](docs/artifacts) | PDFs: architecture, charter, platform audit, problem brief, trust and risk review, governance brief, workflow, executive brief, playbook, communication kit, capability map, one-pager, project story |
-| [`brd/brd-draft-v0.7.pdf`](brd/brd-draft-v0.7.pdf) | Business requirement document, early draft v0.7 (2026-10-14, written before platform access) |
-| [Command Center](https://qninying.github.io/platform-reliability-agent/) (`index.html`, `command-center/`) | Project progress and plan, read live from `.colaberry/`, and the Agent domain tab: six panels on what Ellis is allowed to do |
-| `docs/stories/`, `docs/REQUIREMENTS.md`, `CLAUDE.md` | Build plan files managed by the platform's pipeline |
-
-## The platform Ellis watches
-
-**[ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator)** (public).
-The links below are pinned to commit `c860274`, the version discovery was done against. Each capability
-write-up names the later commit its own rules were checked against.
-
-| What | Where in the platform repo |
-|---|---|
-| Every scheduled agent and its timer | [`aiOpsScheduler.ts`, `SCHEDULE_REGISTRY`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/aiOpsScheduler.ts#L172) |
-| The platform's agents | [`backend/src/services/agents/`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/tree/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agents) |
-| How each agent run is recorded | [`aiOrchestrator.ts`, `runAgent`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/aiOrchestrator.ts#L171) |
-| This domain's 48 draft capabilities | [`agentDomain/capabilities/platform.json`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agentDomain/capabilities/platform.json) |
-| Agent registry and activity log tables | [`AiAgent.ts`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/models/AiAgent.ts), [`AiAgentActivityLog.ts`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/models/AiAgentActivityLog.ts) |
-| Per-agent write grants | [`agentPermissionService.ts`, `AGENT_PERMISSIONS`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/agentPermissionService.ts#L36) |
-| Admin roles and sections | [`access/mgmtRoles.ts`](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/blob/c860274f52f8d0a17e9f3a458b76b2a15d797074/backend/src/services/access/mgmtRoles.ts) |
+| [Status](docs/STATUS.md) | What is implemented, validated in a sandbox, not yet done, and next |
+| [Capability catalog](docs/capabilities/README.md) | One write-up per capability: the question, the rule, the evidence |
+| [Autonomy](docs/autonomy.md) | The platform's R0 to R9 ladder and where each capability stands |
+| [Architecture](docs/architecture/README.md) | Layers, the read boundary and the sandbox boundaries |
+| [Decision records](docs/decisions/README.md) and [decisions log](decisions.md) | Engineering decisions with tradeoffs; dated stakeholder rulings |
+| [Shadow evaluation](docs/shadow-evaluation.md) | The R5 scoring harness and the blind review sheet |
+| [No evidence is not health](docs/no-evidence-is-not-health.md) | The rule behind most findings, for anyone building a monitor |
+| [Artifacts](docs/artifacts/) | PDFs: one-pager, project story, architecture, charter, briefs, playbook and more |
+| [Project history](docs/project-history.md) and [discovery](docs/discovery/) | How the engagement started; the five approved discovery stories |
+| [The platform Ellis watches](docs/platform.md) | Pinned links into the platform's code |
+| [`governance/`](governance) | Tool approval rule, agent identity, severity table, shadow limits |
+| [Command Center](https://qninying.github.io/platform-reliability-agent/) (`index.html`, `command-center/`) | Live project progress and the agent domain, read from `.colaberry/` |
+| `docs/stories/`, `docs/REQUIREMENTS.md`, `CLAUDE.md`, `.colaberry/` | Build plan files managed by the platform's pipeline |
