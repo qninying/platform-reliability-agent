@@ -4,9 +4,31 @@
 
 [![CI](https://github.com/qninying/platform-reliability-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/qninying/platform-reliability-agent/actions/workflows/ci.yml)
 
-**Ellis watches the AI agents that run the Colaberry platform. It tells a person, with evidence, what is
-healthy, what is broken, and what it cannot see.** It is an AI agent built in phases: this phase builds its
-evidence and judgement layer, read-only, against the real platform's code and records.
+**An AI reliability agent for a 100-agent production platform: it tells a person, with evidence, what is
+healthy, what is broken, and what it cannot see.**
+
+> **TL;DR**
+> - **What:** Ellis watches the scheduled AI agents that run the Colaberry platform and separates
+>   *healthy*, *broken* and *unknown*, citing the database row behind every verdict.
+> - **My role:** Forward Deployed Engineer: discovery with the platform's manager, architecture, build, and
+>   governance, end to end.
+> - **Stack:** TypeScript on Node 23.6+ (no runtime dependencies), `node:test`, GitHub Actions, Mermaid; the
+>   platform is Node, Express and PostgreSQL.
+> - **Result:** 40 of 48 capabilities verified by the platform, 926 tests, and five fixes merged into the
+>   platform from Ellis's findings
+>   ([#3410](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3410),
+>   [#3422](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3422),
+>   [#3430](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3430),
+>   [#3435](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3435),
+>   [#3439](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3439)).
+> - **See it:** [Command Center](https://qninying.github.io/platform-reliability-agent/) ·
+>   [One-pager (PDF)](docs/artifacts/ellis-one-pager.pdf) ·
+>   [Project story (PDF)](docs/artifacts/ellis-project-story.pdf)
+
+**Context:** Colaberry AI Agent Internship, Platform Automation & Reliability, 6 Oct 2026 to present.
+Supervised by the platform's manager (K.D., AI Engineer), with platform findings and governance reviewed by
+A.M. Ellis is an AI agent built in phases: this phase builds its evidence and judgement layer, read-only,
+against the real platform's code and records.
 
 | | |
 |---|---|
@@ -174,6 +196,18 @@ The pattern behind many of them is written up as a rule for anyone building a mo
 | **Validated in a sandbox** | Auto-repair and ticket resolution (R4), the R4 rungs of stale action recovery, preview stack reaping, data retention, the cron overlap guard, the default-on timer guard, the scheduler liveness probe, dead-letter capture, dead-letter replay, error classification, the idempotency audit, bug-fix verification, the health scoring model and the registry ratchet, the schema comparison, the timer proposals and the restore check (R3), bug baselines (R1). |
 | **Not yet done** | No capability has run on a live production export; each read-only capability's write-up lists that check as outstanding. K.D. signs in through a management role, from which the portal mints an admin login (A.M., 4 November); A.M. is correcting the domain record to K.D.'s work address, which the agent's own pages need. |
 | **Next** | The first live export and comparison with what the platform shows; the gate and broker that call these checks as tools; running shadow-mode evaluation (R5) on the built harness once K.D. sets its limits and references are approved; choosing the model and prompt for the reasoning layer. |
+
+## My contribution and AI usage
+
+This is directed, AI-assisted engineering, with the decisions on record.
+
+| Piece of work | Who | Evidence |
+|---|---|---|
+| Scope, read-only boundary, repository rules, push only on my go | I decided | No command in Ellis can write to the platform ([decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md)) |
+| Discovery: role, agent anatomy, manager interview, proposed tasks | I directed and led; AI drafted | [docs/discovery](docs/discovery/); three approved by K.D. on 21 and 22 Oct |
+| Capabilities and their tests | I directed; AI (Claude Code) implemented | Each verified by the platform from its commit |
+| Decisions above my authority | Escalated to K.D. and A.M. | Rulings recorded with dates in the [decisions log](decisions.md) |
+| Findings sent to the platform | I found and wrote up; A.M. verified | Five merged platform PRs ([findings](#findings-that-changed-the-platform)) |
 
 ## Run it
 
