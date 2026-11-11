@@ -14,7 +14,7 @@ try {
   if (Number.isNaN(now.getTime())) throw new SnapshotSourceError('ContractViolation', `not a valid time: ${values.now ?? snapshot.captured_at}`);
   const rollup = securityRollup(snapshotSource(snapshot), { now });
   console.log(JSON.stringify({ snapshot: { captured_at: snapshot.captured_at, captured_by: snapshot.captured_by }, ...rollup }, null, 2));
-  process.exit({ green: 0, unknown: 3, red: 4 }[rollup.verdict]);
+  process.exitCode = { green: 0, unknown: 3, red: 4 }[rollup.verdict];
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

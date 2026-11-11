@@ -56,7 +56,7 @@ try {
   const ix = timerIndex(reader(source), commitOf(source));
   const answer = propose(ix, snap, wanted, { window_days: windowDays });
   console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, ...answer }, null, 2));
-  process.exit(!answer.proposals.length ? 4 : answer.proposals.some((p) => p.home === 'unknown') ? 3 : 0);
+  process.exitCode = !answer.proposals.length ? 4 : answer.proposals.some((p) => p.home === 'unknown') ? 3 : 0;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

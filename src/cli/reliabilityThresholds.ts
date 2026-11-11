@@ -28,7 +28,7 @@ try {
   const source = requireCheckout(values.source);
   const answer = thresholdReport(reader(source), commitOf(source), values.alerts ? load(values.alerts) : null);
   console.log(JSON.stringify(answer, null, 2));
-  process.exit(!answer.inventory_complete ? 5 : answer.counts.unmeasured || answer.counts.outside_the_inventory ? 4 : 0);
+  process.exitCode = !answer.inventory_complete ? 5 : answer.counts.unmeasured || answer.counts.outside_the_inventory ? 4 : 0;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

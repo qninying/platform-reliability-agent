@@ -65,7 +65,7 @@ try {
   console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, now, ...report, ...(probes ? { platform_probes: probes } : {}) }, null, 2));
   const unknown = report.verdict === 'unknown' || (probes !== null && (probes.verdict === 'unknown' || probes.verdict === 'partly_unknown'));
   const problem = report.verdict === 'degraded' || probes?.verdict === 'problem';
-  process.exit(unknown ? 3 : problem ? 4 : 0);
+  process.exitCode = unknown ? 3 : problem ? 4 : 0;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

@@ -17,7 +17,7 @@ try {
   if (unknown.length > 0) throw new SandboxError('ContractViolation', `unknown resolver ${unknown.join(', ')}; choose from ${RESOLVERS.join(', ')}`);
   const report = verifyResolution(new TicketSandbox(loadTicketFixture(values.fixture)), chosen as ResolverName[]);
   console.log(JSON.stringify(report, null, 2));
-  process.exit(report.verified ? 0 : 3);
+  process.exitCode = report.verified ? 0 : 3;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

@@ -58,22 +58,21 @@ try {
   if (values.agent) {
     const c = containment(snap, values.agent);
     console.log(JSON.stringify({ snapshot: head, containment: c }, null, 2));
-    process.exit(c.row_exists && c.pause === c.disable ? 0 : 3);
-  }
-  if (values['fleet-stop']) {
+    process.exitCode = c.row_exists && c.pause === c.disable ? 0 : 3;
+  } else if (values['fleet-stop']) {
     const f = fleetStop(snap);
     console.log(JSON.stringify({ snapshot: head, fleet_stop: f }, null, 2));
-    process.exit(f.emergency_stop.timers_not_reached.length === 0 && f.resume_undoes.length === 0 ? 0 : 3);
-  }
-  if (values['pause-gaps']) {
+    process.exitCode = f.emergency_stop.timers_not_reached.length === 0 && f.resume_undoes.length === 0 ? 0 : 3;
+  } else if (values['pause-gaps']) {
     const gaps = pauseGaps(snap);
     const noRow = timersWithNoRow(snap);
     console.log(JSON.stringify({ snapshot: head, pause_gaps: gaps, timers_no_control_reaches: noRow }, null, 2));
-    process.exit(gaps.length === 0 && noRow.length === 0 ? 0 : 3);
+    process.exitCode = gaps.length === 0 && noRow.length === 0 ? 0 : 3;
+  } else {
+    const recommendations = recommendAll(snap);
+    console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, recommendations }, null, 2));
+    process.exitCode = recommendations.every((r) => r.recommendation === 'disable') ? 0 : 3;
   }
-  const recommendations = recommendAll(snap);
-  console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, recommendations }, null, 2));
-  process.exit(recommendations.every((r) => r.recommendation === 'disable') ? 0 : 3);
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

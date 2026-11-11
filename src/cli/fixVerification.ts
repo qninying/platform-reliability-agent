@@ -11,7 +11,7 @@ try {
   if (!values.fixture || !values.source || !values.sandbox) throw Object.assign(new Error('needs --fixture, --source and --sandbox'), { errorClass: 'ContractViolation' });
   const r = rehearse(loadFixFixture(values.fixture), values.source, values.sandbox);
   console.log(JSON.stringify(r, null, 2));
-  process.exit(r.verified ? 0 : 3);
+  process.exitCode = r.verified ? 0 : 3;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

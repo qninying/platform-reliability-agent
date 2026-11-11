@@ -44,7 +44,7 @@ try {
   if (hours !== undefined && !(hours > 0 && hours <= 24 * 30)) throw new InputError('ContractViolation', `--hours must be between 0 and 720, got ${values.hours}`);
   const report = behaviorWatch(snap, { now, windowHours: hours });
   console.log(JSON.stringify(report, null, 2));
-  process.exit(report.findings.length > 0 ? 4 : 0);
+  process.exitCode = report.findings.length > 0 ? 4 : 0;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

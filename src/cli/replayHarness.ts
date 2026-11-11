@@ -12,7 +12,7 @@ try {
   const source = requireCheckout(values.source);
   const answer = await audit(reader(source), commitOf(source));
   console.log(JSON.stringify(answer, null, 2));
-  process.exit(answer.verdict === 'harness_proven' ? 0 : 3);
+  process.exitCode = answer.verdict === 'harness_proven' ? 0 : 3;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

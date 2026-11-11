@@ -13,7 +13,7 @@ try {
   const source = requireCheckout(values.source);
   const answer = backupPosition(reader(source), commitOf(source));
   console.log(JSON.stringify(answer, null, 2));
-  process.exit({ nothing_found: 4, candidates_need_a_person: 3, search_incomplete: 5 }[answer.basis]);
+  process.exitCode = { nothing_found: 4, candidates_need_a_person: 3, search_incomplete: 5 }[answer.basis];
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

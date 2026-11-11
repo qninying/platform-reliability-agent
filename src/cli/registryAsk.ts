@@ -72,7 +72,7 @@ try {
     const snap = load(values.snapshot);
     const answers = [...new Set(values.name)].sort().map((n) => askRegistry(snap, n));
     console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, answers }, null, 2));
-    process.exit(answers.every((a) => a.registration === 'registered') ? 0 : 3);
+    process.exitCode = answers.every((a) => a.registration === 'registered') ? 0 : 3;
   }
 } catch (err) {
   const e = err as Error & { errorClass?: string };

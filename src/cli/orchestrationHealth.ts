@@ -20,7 +20,7 @@ try {
   if (Number.isNaN(now.getTime())) throw new SnapshotSourceError('ContractViolation', `not a valid time: ${values.now ?? snapshot.captured_at}`);
   const answer = watchOrchestrationHealth(snapshotSource(snapshot), { now, agentName: values.agent });
   console.log(JSON.stringify({ snapshot: { captured_at: snapshot.captured_at, captured_by: snapshot.captured_by }, ...answer }, null, 2));
-  process.exit(answer.kind === 'answer' ? 0 : 2);
+  process.exitCode = answer.kind === 'answer' ? 0 : 2;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

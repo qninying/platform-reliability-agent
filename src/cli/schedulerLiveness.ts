@@ -20,7 +20,7 @@ try {
   }
   const answer = liveness(reader(source), commitOf(source), log);
   console.log(JSON.stringify(answer, null, 2));
-  process.exit(!answer.gate.single_flag || !answer.ai_ops_start.only_caller ? 5 : answer.public_probe.detects_zero_timers && answer.against_expected.state !== 'shortfall' ? 0 : 3);
+  process.exitCode = !answer.gate.single_flag || !answer.ai_ops_start.only_caller ? 5 : answer.public_probe.detects_zero_timers && answer.against_expected.state !== 'shortfall' ? 0 : 3;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

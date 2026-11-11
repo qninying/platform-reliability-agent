@@ -24,7 +24,7 @@ try {
   }
   const journal = store.journal();
   console.log(JSON.stringify({ fixture_id: fixture.fixture_id, runs: reports, journal, total_changes: journal.length }, null, 2));
-  process.exit(reports.every((r) => r.verified || r.outcome === 'no_op') && !reports.some((r) => r.error) ? 0 : 1);
+  process.exitCode = reports.every((r) => r.verified || r.outcome === 'no_op') && !reports.some((r) => r.error) ? 0 : 1;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

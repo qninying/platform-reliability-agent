@@ -47,7 +47,7 @@ try {
   const snap = load(values.snapshot);
   const report = assessPrompts(snap);
   console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, report }, null, 2));
-  process.exit(report.prompts.every((p) => p.cost.state === 'measured' && p.latency.state === 'measured') ? 0 : 3);
+  process.exitCode = report.prompts.every((p) => p.cost.state === 'measured' && p.latency.state === 'measured') ? 0 : 3;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

@@ -24,7 +24,7 @@ function load(path: string | undefined): Evidence {
 try {
   const answer = judgeRelease(load(values.evidence));
   console.log(JSON.stringify(answer, null, 2));
-  process.exit({ evidence_agrees: 0, disagrees: 3, unverified: 4 }[answer.verdict]);
+  process.exitCode = { evidence_agrees: 0, disagrees: 3, unverified: 4 }[answer.verdict];
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

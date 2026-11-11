@@ -51,11 +51,12 @@ try {
   if (values.coverage) {
     const c = coverage(snap);
     console.log(JSON.stringify({ snapshot: head, coverage: c }, null, 2));
-    process.exit(c.counters_only.length + c.not_instrumented.length + c.unknown.length === 0 ? 0 : 3);
+    process.exitCode = c.counters_only.length + c.not_instrumented.length + c.unknown.length === 0 ? 0 : 3;
+  } else {
+    const answers = [...new Set(values.name)].sort().map((n) => askRun(snap, n));
+    console.log(JSON.stringify({ snapshot: head, answers }, null, 2));
+    process.exitCode = answers.every((a) => a.answer === 'run_recorded') ? 0 : 3;
   }
-  const answers = [...new Set(values.name)].sort().map((n) => askRun(snap, n));
-  console.log(JSON.stringify({ snapshot: head, answers }, null, 2));
-  process.exit(answers.every((a) => a.answer === 'run_recorded') ? 0 : 3);
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

@@ -38,7 +38,7 @@ try {
   const criteria = readJson(values.criteria ?? DEFAULT_CRITERIA) as ShadowCriteria;
   const report = evaluateShadow(file.observations as ShadowObservation[], criteria);
   console.log(JSON.stringify(report, null, 2));
-  process.exit(report.judgement === 'meets' ? 0 : report.judgement === 'does_not_meet' ? 4 : 3);
+  process.exitCode = report.judgement === 'meets' ? 0 : report.judgement === 'does_not_meet' ? 4 : 3;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

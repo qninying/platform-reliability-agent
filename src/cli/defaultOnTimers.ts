@@ -32,7 +32,7 @@ try {
   const rows = v.rows ? load(v.rows) : null;
   const answer = guard(reader(source), commitOf(source), rows);
   console.log(JSON.stringify(answer, null, 2));
-  process.exit(!answer.sites_as_expected ? 5 : answer.ungoverned.length ? 3 : 0);
+  process.exitCode = !answer.sites_as_expected ? 5 : answer.ungoverned.length ? 3 : 0;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

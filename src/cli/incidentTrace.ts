@@ -49,7 +49,7 @@ try {
   const snap = load(values.snapshot);
   const answer = trace(snap, query);
   console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, ...answer }, null, 2));
-  process.exit(answer.verdict === 'traced' ? 0 : answer.verdict === 'not_traceable' ? 3 : 4);
+  process.exitCode = answer.verdict === 'traced' ? 0 : answer.verdict === 'not_traceable' ? 3 : 4;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

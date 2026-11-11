@@ -34,7 +34,7 @@ try {
   const r = reader(source);
   const answer = overlapGuard(r, timerIndex(r, commitOf(source)), snap, { window_days: windowDays });
   console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, ...answer }, null, 2));
-  process.exit(answer.verdict === 'can_overlap' ? 3 : answer.verdict === 'none_assessable_overlap' ? 4 : 0);
+  process.exitCode = answer.verdict === 'can_overlap' ? 3 : answer.verdict === 'none_assessable_overlap' ? 4 : 0;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

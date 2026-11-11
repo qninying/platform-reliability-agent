@@ -46,7 +46,7 @@ try {
   if (idleMinutes !== undefined && !(Number.isInteger(idleMinutes) && idleMinutes > 0)) throw new InputError('ContractViolation', `--idle-minutes must be a whole number above 0, got ${raw}`);
   const report = reapingReport(snap, { now, idleMinutes });
   console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, ...report }, null, 2));
-  process.exit(report.counts.unknown_idle > 0 || report.attention.length > 0 ? 3 : 0);
+  process.exitCode = report.counts.unknown_idle > 0 || report.attention.length > 0 ? 3 : 0;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

@@ -9,7 +9,7 @@ and PDFs keep the figures they had on their date.
 |---|---|
 | Capabilities built (rows in the [catalog](capabilities/README.md)) | 39 |
 | Build-plan stories verified by the platform | 40 of 48 |
-| Tests | 926 passing |
+| Tests | 929 passing |
 | Higher-autonomy rungs rehearsed in a sandbox | 16 |
 | [Decision records](decisions/README.md) | 7 |
 | Fixes merged into the platform | 5 |

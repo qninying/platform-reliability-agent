@@ -59,7 +59,7 @@ try {
     records: values.snapshot === undefined ? null : records(values.snapshot),
   });
   console.log(values.json ? JSON.stringify(answer, null, 2) : renderBriefing(answer));
-  process.exit(answer.records_captured_at === null ? 4 : 0);
+  process.exitCode = answer.records_captured_at === null ? 4 : 0;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

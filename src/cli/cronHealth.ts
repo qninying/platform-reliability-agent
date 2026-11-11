@@ -67,7 +67,7 @@ try {
     answer = cronHealth(snap);
   }
   console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, ...answer }, null, 2));
-  process.exit(answer.answer === 'alerting' ? 4 : answer.answer === 'clear_with_blind_spots' ? 3 : 0);
+  process.exitCode = answer.answer === 'alerting' ? 4 : answer.answer === 'clear_with_blind_spots' ? 3 : 0;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

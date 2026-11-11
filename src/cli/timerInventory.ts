@@ -63,7 +63,7 @@ try {
     requests: [],
   };
   console.log(JSON.stringify({ ...snap, unresolved }, null, 2));
-  process.exit(unresolved.length === 0 ? 0 : 3);
+  process.exitCode = unresolved.length === 0 ? 0 : 3;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

@@ -63,25 +63,24 @@ try {
     const { records, added } = mergeRecords(loadRecords(recordsPath, false), [makeRecord(output, values.subject ?? 'fleet')]);
     writeJson(recordsPath, { records });
     console.log(JSON.stringify({ mode, added, records: records.length, tool: output.tool, verdict_recorded: true }, null, 2));
-    process.exit(0);
-  }
-  if (mode === 'sheet') {
+    process.exitCode = 0;
+  } else if (mode === 'sheet') {
     const sheetPath = need('sheet');
     const prior = readJson<ReviewSheet | undefined>(sheetPath, { instructions: '', rows: [] });
     const sheet = reviewSheet(loadRecords(need('records'), true), prior);
     writeJson(sheetPath, sheet);
     console.log(JSON.stringify({ mode, rows: sheet.rows.length, filled: sheet.rows.filter((r) => r.reference.verdict !== null).length }, null, 2));
-    process.exit(0);
-  }
-  if (mode === 'pair') {
+    process.exitCode = 0;
+  } else if (mode === 'pair') {
     const sheet = readJson<ReviewSheet>(need('sheet'));
     if (!Array.isArray(sheet.rows)) throw new ContractViolation(`${values.sheet} needs rows[]`);
     const result = pair(loadRecords(need('records'), true), sheet);
     writeJson(need('out'), { note: 'Built by shadow-observations from recorded Ellis outputs and a signed review sheet.', observations: result.observations });
     console.log(JSON.stringify({ mode, observations: result.observations.length, awaiting_review: result.awaiting_review, orphaned: result.orphaned }, null, 2));
-    process.exit(result.awaiting_review.length > 0 || result.orphaned.length > 0 ? 3 : 0);
+    process.exitCode = result.awaiting_review.length > 0 || result.orphaned.length > 0 ? 3 : 0;
+  } else {
+    throw new ContractViolation('--mode must be record, sheet or pair');
   }
-  throw new ContractViolation('--mode must be record, sheet or pair');
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

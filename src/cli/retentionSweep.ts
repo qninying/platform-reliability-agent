@@ -45,7 +45,7 @@ try {
   const tables = retentionReport(snap, { now });
   console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, tables }, null, 2));
   const allKnown = tables.every((t) => t.window.status === 'stated' && t.last_sweep.status === 'swept');
-  process.exit(allKnown ? 0 : 3);
+  process.exitCode = allKnown ? 0 : 3;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

@@ -17,7 +17,7 @@ healthy, what is broken, and what it cannot see.**
 >   governance, end to end.
 > - **Stack:** TypeScript on Node 23.6+ (no runtime dependencies), `node:test`, GitHub Actions, Mermaid; the
 >   platform is Node, Express and PostgreSQL.
-> - **Result:** 39 capabilities built (build-plan stories: 40 of 48 verified by the platform), 926 passing tests,
+> - **Result:** 39 capabilities built (build-plan stories: 40 of 48 verified by the platform), 929 passing tests,
 >   and five fixes merged into the platform from Ellis's findings
 >   ([#3410](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3410),
 >   [#3422](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3422),

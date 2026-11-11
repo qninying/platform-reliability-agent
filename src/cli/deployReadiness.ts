@@ -12,7 +12,7 @@ try {
   if (!values.checkout) throw new InputError('ContractViolation', 'needs --checkout <git checkout>');
   const answer = readiness(gitReader(values.checkout), reader(values.checkout));
   console.log(JSON.stringify(answer, null, 2));
-  process.exit({ facts_ready: 0, not_ready: 3, unknown: 4 }[answer.readiness]);
+  process.exitCode = { facts_ready: 0, not_ready: 3, unknown: 4 }[answer.readiness];
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

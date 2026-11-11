@@ -56,7 +56,7 @@ try {
     files = sandboxFiles(prepared);
   }
   console.log(JSON.stringify({ record, sandbox_files: files }, null, 2));
-  process.exit(record.list === 'confirmed' ? 0 : record.list === 'unreproducible' ? 4 : 3);
+  process.exitCode = record.list === 'confirmed' ? 0 : record.list === 'unreproducible' ? 4 : 3;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

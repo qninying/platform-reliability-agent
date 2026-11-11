@@ -68,7 +68,7 @@ try {
   }
   console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, ...answer }, null, 2));
   const f = answer.fleet;
-  process.exit(answer.unscored.some((a) => a.attention) ? 4 : f.unscored + f.timers_with_no_row > 0 ? 3 : 0);
+  process.exitCode = answer.unscored.some((a) => a.attention) ? 4 : f.unscored + f.timers_with_no_row > 0 ? 3 : 0;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

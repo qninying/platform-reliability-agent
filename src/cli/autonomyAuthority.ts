@@ -14,7 +14,7 @@ try {
   if (v.environment !== 'sandbox' && v.environment !== 'production') throw new InputError('ContractViolation', 'needs --environment sandbox or production');
   const answer = authorityReport(reader(source), commitOf(source), v.environment, v.capability);
   console.log(JSON.stringify(answer, null, 2));
-  process.exit(!answer.rules_match ? 5 : answer.counts.no_authority ? 4 : 0);
+  process.exitCode = !answer.rules_match ? 5 : answer.counts.no_authority ? 4 : 0;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

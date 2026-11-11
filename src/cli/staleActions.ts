@@ -47,7 +47,7 @@ try {
   if (thresholdMinutes !== undefined && !(Number.isInteger(thresholdMinutes) && thresholdMinutes > 0)) throw new InputError('ContractViolation', `--threshold-minutes must be a whole number above 0, got ${raw}`);
   const report = staleReport(snap, { now, thresholdMinutes });
   console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, ...report }, null, 2));
-  process.exit(report.counts.past_attempt_cap > 0 ? 4 : report.counts.past_threshold > 0 || report.counts.unknown > 0 ? 3 : 0);
+  process.exitCode = report.counts.past_attempt_cap > 0 ? 4 : report.counts.past_threshold > 0 || report.counts.unknown > 0 ? 3 : 0;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

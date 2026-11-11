@@ -41,7 +41,7 @@ try {
   const snap = load(values.snapshot);
   const report = proposalReport(snap, { architects: values.architect });
   console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, ...report }, null, 2));
-  process.exit(report.counts.open > 0 ? 3 : 0);
+  process.exitCode = report.counts.open > 0 ? 3 : 0;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

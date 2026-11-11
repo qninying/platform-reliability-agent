@@ -57,7 +57,7 @@ try {
   const snap = load(values.snapshot);
   const report = assessDirection(snap);
   console.log(JSON.stringify({ snapshot: { captured_at: snap.captured_at, captured_by: snap.captured_by }, report }, null, 2));
-  process.exit(report.verdict === 'no_divergence' ? 0 : report.verdict === 'unknown' ? 3 : 4);
+  process.exitCode = report.verdict === 'no_divergence' ? 0 : report.verdict === 'unknown' ? 3 : 4;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

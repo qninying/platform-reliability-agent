@@ -25,7 +25,7 @@ try {
   }
   const answer = schemaDriftAnswer(reader(source), log, capturedAt, { max_age_hours: maxAge, source_commit: commitOf(source) });
   console.log(JSON.stringify(answer, null, 2));
-  process.exit(answer.verdict === 'drift_reported' ? 3 : answer.verdict === 'unknown' ? 4 : 0);
+  process.exitCode = answer.verdict === 'drift_reported' ? 3 : answer.verdict === 'unknown' ? 4 : 0;
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));

@@ -41,7 +41,7 @@ try {
   };
   const answer = assemble(reader(source), reader(process.cwd()), commitOf(source), { capability_id: v.capability, rung: v.rung, environment }, items, readRecord);
   console.log(JSON.stringify(answer, null, 2));
-  process.exit({ meets_criteria: 0, unproven: 4, unmet: 4, no_criteria_defined: 5, above_ceiling: 5, rung_needs_production: 5 }[answer.verdict]);
+  process.exitCode = { meets_criteria: 0, unproven: 4, unmet: 4, no_criteria_defined: 5, above_ceiling: 5, rung_needs_production: 5 }[answer.verdict];
 } catch (err) {
   const e = err as Error & { errorClass?: string };
   console.error(JSON.stringify({ error_class: e.errorClass ?? e.name, message: e.message }));
