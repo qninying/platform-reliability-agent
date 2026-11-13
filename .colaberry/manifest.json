@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-07T15:09:03.582Z",
+  "generated_at": "2026-11-13T20:06:29.420Z",
   "plan_version": 1,
   "plan_sha256": "63f1a191da70b55bb9d8a823ec84b0a8183199091da5287a0b2f138d973afdb1",
-  "correlation_id": "2807fbeb-9004-4b15-8ab8-fda5bc611e71",
+  "correlation_id": "cc-20261113-q7m2-postladder-platform",
   "project_id": "9424aa6e-f754-521a-ace7-ae17fb2a5ff4",
   "truth_revision": null,
   "files": [
@@ -244,7 +244,7 @@
     },
     {
       "path": "docs/stories/platform.STORY-000.md",
-      "sha256": "b80a6a80bc9f9321dc9a68b318659f2146b6d87d965f9bcbf38c245bdd4fcc11"
+      "sha256": "2258bd3712af62c52ff2ee955edb13afb22aff70555f6fedeb8735a218c3bdda"
     },
     {
       "path": ".colaberry/plan.json",
@@ -260,7 +260,7 @@
     },
     {
       "path": ".colaberry/agent-domain.json",
-      "sha256": "d1dfe58ff88dc6bc2e6cab363e37051ebd61398f036f1eaa3a48b264bd71e2a0"
+      "sha256": "301bbe95a2c68b681ae6ec1397b302a0471328b65bdb6620bb81ca70c5f320a4"
     },
     {
       "path": "docs/stories/STORY-000.md",

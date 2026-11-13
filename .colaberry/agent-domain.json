@@ -567,7 +567,7 @@
     "known": true,
     "disclosure": "A criterion counts as passing when it is marked in `.colaberry/progress.json` in this repository. The verifier reads that file on every sync and records what it found. A story showing 0 of N is not a rejection: nothing has been claimed yet.",
     "summary": {
-      "stories": 136,
+      "stories": 59,
       "checked": 55,
       "verified": 47,
       "awaiting_criteria": 2,
@@ -589,33 +589,9 @@
         "commit_sha": "f01081468dba747a45178f254e516fdfd691520a"
       },
       {
-        "story_id": "platform.CAP.agent_behavior_safety_watch.autonomy:R2",
-        "title": "Agent behaviour and AI-safety watch · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.agent_behavior_safety_watch.autonomy:R6",
-        "title": "Agent behaviour and AI-safety watch · R6",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.agent_discovery_sync",
         "title": "Agent registry discovery sync",
-        "status": "not_started",
+        "status": "in_progress",
         "verification_state": "submitted",
         "verified": false,
         "criteria_passed": 1,
@@ -623,18 +599,6 @@
         "reasons": [
           "No commit in the repo names platform.CAP.agent_discovery_sync and changes a file. Commit your work with a `Story: platform.CAP.agent_discovery_sync` trailer (or platform.CAP.agent_discovery_sync in the subject line) and push."
         ],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.agent_discovery_sync.autonomy:R2",
-        "title": "Agent registry discovery sync · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
         "outstanding": [],
         "commit_sha": null
       },
@@ -653,18 +617,6 @@
         "commit_sha": "2cccba97dd46727a615d3b93869976cd30a6d12c"
       },
       {
-        "story_id": "platform.CAP.agent_enable_disable_control.autonomy:R2",
-        "title": "Agent enable, disable, pause and resume control · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.agent_health_scoring",
         "title": "Agent health scoring",
         "status": "complete",
@@ -677,33 +629,9 @@
         "commit_sha": "f7724caf0fd5bac7e6f8a1b535921a2784b13d51"
       },
       {
-        "story_id": "platform.CAP.agent_health_scoring.autonomy:R2",
-        "title": "Agent health scoring · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.agent_health_scoring.autonomy:R4",
-        "title": "Agent health scoring · R4",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.agent_identity_attribution",
         "title": "Agent identity and reporting-chain attribution",
-        "status": "not_started",
+        "status": "in_progress",
         "verification_state": "in_progress",
         "verified": false,
         "criteria_passed": 0,
@@ -718,18 +646,6 @@
         "commit_sha": null
       },
       {
-        "story_id": "platform.CAP.agent_identity_attribution.autonomy:R2",
-        "title": "Agent identity and reporting-chain attribution · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.agent_promotion_and_approval_decision",
         "title": "Agent promotion and approval decision",
         "status": "complete",
@@ -740,18 +656,6 @@
         "reasons": [],
         "outstanding": [],
         "commit_sha": "02842d9c59dc9baf460eb61c60fd0c2b8ac34e87"
-      },
-      {
-        "story_id": "platform.CAP.agent_promotion_and_approval_decision.autonomy:R2",
-        "title": "Agent promotion and approval decision · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
       },
       {
         "story_id": "platform.CAP.agent_registry_read_surface",
@@ -768,18 +672,6 @@
         "commit_sha": "b4618072580ab0a475ca4b9e6ed7812a66174054"
       },
       {
-        "story_id": "platform.CAP.agent_registry_read_surface.autonomy:R2",
-        "title": "Agent registry read surface · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.agent_ticket_auto_resolution",
         "title": "Agent ticket auto-resolution",
         "status": "complete",
@@ -794,30 +686,6 @@
         "commit_sha": "a2a40ee601fbc20621886e55d7e90ee4abea7417"
       },
       {
-        "story_id": "platform.CAP.agent_ticket_auto_resolution.autonomy:R4",
-        "title": "Agent ticket auto-resolution · R4",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.agent_ticket_auto_resolution.autonomy:R7",
-        "title": "Agent ticket auto-resolution · R7",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.backup_and_restore_verification",
         "title": "Backup and restore verification",
         "status": "complete",
@@ -830,30 +698,6 @@
         "commit_sha": "b59f0dfeaa4f7a0482dd882dc92a882fe498a91f"
       },
       {
-        "story_id": "platform.CAP.backup_and_restore_verification.autonomy:R2",
-        "title": "Backup and restore verification · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.backup_and_restore_verification.autonomy:R3",
-        "title": "Backup and restore verification · R3",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.capability_autonomy_authority_resolution",
         "title": "Per-capability autonomy authority resolution",
         "status": "complete",
@@ -864,18 +708,6 @@
         "reasons": [],
         "outstanding": [],
         "commit_sha": "a00c719bd4aae6209f4910cf9282a22108f175a1"
-      },
-      {
-        "story_id": "platform.CAP.capability_autonomy_authority_resolution.autonomy:R2",
-        "title": "Per-capability autonomy authority resolution · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
       },
       {
         "story_id": "platform.CAP.cron_health_alerting",
@@ -892,30 +724,6 @@
         "commit_sha": "be1836de54c38b804008f29ea1fe127f1c2b0b7e"
       },
       {
-        "story_id": "platform.CAP.cron_health_alerting.autonomy:R2",
-        "title": "Cron health alerting · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.cron_health_alerting.autonomy:R5",
-        "title": "Cron health alerting · R5",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.cron_overlap_guard",
         "title": "Cron overlap guard",
         "status": "complete",
@@ -926,30 +734,6 @@
         "reasons": [],
         "outstanding": [],
         "commit_sha": "ece5f6cc50c7a852665b3c7a2bb9f09fc7f39ad1"
-      },
-      {
-        "story_id": "platform.CAP.cron_overlap_guard.autonomy:R2",
-        "title": "Cron overlap guard · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.cron_overlap_guard.autonomy:R4",
-        "title": "Cron overlap guard · R4",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
       },
       {
         "story_id": "platform.CAP.cron_run_instrumentation",
@@ -966,18 +750,6 @@
         "commit_sha": "b1eba8878347062bcdd61e9a063ee45fe069a349"
       },
       {
-        "story_id": "platform.CAP.cron_run_instrumentation.autonomy:R2",
-        "title": "Cron run instrumentation · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.data_retention_sweep",
         "title": "Platform data retention sweeps",
         "status": "complete",
@@ -988,30 +760,6 @@
         "reasons": [],
         "outstanding": [],
         "commit_sha": "3612aca5818e327c14e7651567a8839eb9c1a21d"
-      },
-      {
-        "story_id": "platform.CAP.data_retention_sweep.autonomy:R2",
-        "title": "Platform data retention sweeps · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.data_retention_sweep.autonomy:R4",
-        "title": "Platform data retention sweeps · R4",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
       },
       {
         "story_id": "platform.CAP.dead_letter_capture",
@@ -1026,30 +774,6 @@
         "commit_sha": "730bfaecb33a8374c169121353d89ded8376ee9b"
       },
       {
-        "story_id": "platform.CAP.dead_letter_capture.autonomy:R2",
-        "title": "Dead-letter capture for repeatedly failing jobs · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.dead_letter_capture.autonomy:R4",
-        "title": "Dead-letter capture for repeatedly failing jobs · R4",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.dead_letter_triage",
         "title": "Dead-letter triage and recovery runbook",
         "status": "complete",
@@ -1060,30 +784,6 @@
         "reasons": [],
         "outstanding": [],
         "commit_sha": "ce04db2774dd43265e1d9b99a0bdfad7af7f0e46"
-      },
-      {
-        "story_id": "platform.CAP.dead_letter_triage.autonomy:R2",
-        "title": "Dead-letter triage and recovery runbook · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.dead_letter_triage.autonomy:R4",
-        "title": "Dead-letter triage and recovery runbook · R4",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
       },
       {
         "story_id": "platform.CAP.default_on_timer_guard",
@@ -1098,30 +798,6 @@
         "commit_sha": "279489b8e5b33f8827a26d5cfe8a705725737d3f"
       },
       {
-        "story_id": "platform.CAP.default_on_timer_guard.autonomy:R2",
-        "title": "Default-on timer guard · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.default_on_timer_guard.autonomy:R4",
-        "title": "Default-on timer guard · R4",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.deploy_verification_evidence",
         "title": "Deploy verification evidence",
         "status": "complete",
@@ -1134,21 +810,9 @@
         "commit_sha": "709e5b30bb68f944b7d49086c575e4c9dc1dc801"
       },
       {
-        "story_id": "platform.CAP.deploy_verification_evidence.autonomy:R2",
-        "title": "Deploy verification evidence · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.emergency_stop_and_kill_switch",
         "title": "Emergency stop, resume and kill switch",
-        "status": "not_started",
+        "status": "in_progress",
         "verification_state": "submitted",
         "verified": false,
         "criteria_passed": 1,
@@ -1156,18 +820,6 @@
         "reasons": [
           "No commit in the repo names platform.CAP.emergency_stop_and_kill_switch and changes a file. Commit your work with a `Story: platform.CAP.emergency_stop_and_kill_switch` trailer (or platform.CAP.emergency_stop_and_kill_switch in the subject line) and push."
         ],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.emergency_stop_and_kill_switch.autonomy:R2",
-        "title": "Emergency stop, resume and kill switch · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
         "outstanding": [],
         "commit_sha": null
       },
@@ -1184,33 +836,9 @@
         "commit_sha": "6a1c0afb8983d0750692adde20a3a9acf594ec34"
       },
       {
-        "story_id": "platform.CAP.error_class_coverage.autonomy:R2",
-        "title": "Error classification coverage · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.error_class_coverage.autonomy:R4",
-        "title": "Error classification coverage · R4",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.execution_policy_enforcement",
         "title": "Execution policy and default-deny enforcement",
-        "status": "not_started",
+        "status": "in_progress",
         "verification_state": "in_progress",
         "verified": false,
         "criteria_passed": 0,
@@ -1225,18 +853,6 @@
         "commit_sha": null
       },
       {
-        "story_id": "platform.CAP.execution_policy_enforcement.autonomy:R2",
-        "title": "Execution policy and default-deny enforcement · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.idempotency_and_replay_audit",
         "title": "Idempotency and replay-safety audit",
         "status": "complete",
@@ -1247,30 +863,6 @@
         "reasons": [],
         "outstanding": [],
         "commit_sha": "ff99053c18ef63445c1f93074a20df3e8f66b542"
-      },
-      {
-        "story_id": "platform.CAP.idempotency_and_replay_audit.autonomy:R1",
-        "title": "Idempotency and replay-safety audit · R1",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.idempotency_and_replay_audit.autonomy:R4",
-        "title": "Idempotency and replay-safety audit · R4",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
       },
       {
         "story_id": "platform.CAP.incident_trace_and_error_triage",
@@ -1287,30 +879,6 @@
         "commit_sha": "e9d8ecc34b57772a3881bb5703405bf137d5fb80"
       },
       {
-        "story_id": "platform.CAP.incident_trace_and_error_triage.autonomy:R2",
-        "title": "Incident trace and error triage · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.incident_trace_and_error_triage.autonomy:R5",
-        "title": "Incident trace and error triage · R5",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.infrastructure_evolution_proposals",
         "title": "Infrastructure and platform evolution proposals",
         "status": "complete",
@@ -1325,33 +893,9 @@
         "commit_sha": "20f265e25c78d06e0d0296c200177b55c2d9ed04"
       },
       {
-        "story_id": "platform.CAP.infrastructure_evolution_proposals.autonomy:R2",
-        "title": "Infrastructure and platform evolution proposals · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.infrastructure_evolution_proposals.autonomy:R5",
-        "title": "Infrastructure and platform evolution proposals · R5",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.manager_reachable_agent_surface",
         "title": "Manager-reachable agent surface",
-        "status": "not_started",
+        "status": "in_progress",
         "verification_state": "submitted",
         "verified": false,
         "criteria_passed": 1,
@@ -1363,21 +907,9 @@
         "commit_sha": null
       },
       {
-        "story_id": "platform.CAP.manager_reachable_agent_surface.autonomy:R2",
-        "title": "Manager-reachable agent surface · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.manager_restriction_directives",
         "title": "Manager restriction directives",
-        "status": "not_started",
+        "status": "in_progress",
         "verification_state": "submitted",
         "verified": false,
         "criteria_passed": 1,
@@ -1385,18 +917,6 @@
         "reasons": [
           "No commit in the repo names platform.CAP.manager_restriction_directives and changes a file. Commit your work with a `Story: platform.CAP.manager_restriction_directives` trailer (or platform.CAP.manager_restriction_directives in the subject line) and push."
         ],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.manager_restriction_directives.autonomy:R2",
-        "title": "Manager restriction directives · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
         "outstanding": [],
         "commit_sha": null
       },
@@ -1413,18 +933,6 @@
         "commit_sha": "cdec00f207965cb4bdfd698ed4fdff70ddd62927"
       },
       {
-        "story_id": "platform.CAP.manager_scoped_authorization.autonomy:R2",
-        "title": "Manager-scoped authorization for agent management · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.orchestration_auto_repair",
         "title": "Orchestration auto-repair",
         "status": "complete",
@@ -1437,30 +945,6 @@
         ],
         "outstanding": [],
         "commit_sha": "add84c905fd550b798a99696da5ab70ba90361f1"
-      },
-      {
-        "story_id": "platform.CAP.orchestration_auto_repair.autonomy:R4",
-        "title": "Orchestration auto-repair · R4",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.orchestration_auto_repair.autonomy:R6",
-        "title": "Orchestration auto-repair · R6",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
       },
       {
         "story_id": "platform.CAP.orchestration_health_watch",
@@ -1477,8 +961,8 @@
         "commit_sha": "cd225afb5c023d414572c58b53927efafdf8f3d7"
       },
       {
-        "story_id": "platform.CAP.orchestration_health_watch.autonomy:R2",
-        "title": "Orchestration health watch · R2",
+        "story_id": "platform.CAP.orchestration_health_watch.L1-BY-HAND",
+        "title": "Orchestration health watch · 1 · do it by hand",
         "status": "not_started",
         "verification_state": null,
         "verified": false,
@@ -1489,8 +973,32 @@
         "commit_sha": null
       },
       {
-        "story_id": "platform.CAP.orchestration_health_watch.autonomy:R5",
-        "title": "Orchestration health watch · R5",
+        "story_id": "platform.CAP.orchestration_health_watch.L2-IN-THE-APP",
+        "title": "Orchestration health watch · 2 · do it in the app",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.orchestration_health_watch.L3-TOOL-REQUEST",
+        "title": "Orchestration health watch · 3 · request the tool",
+        "status": "not_started",
+        "verification_state": null,
+        "verified": false,
+        "criteria_passed": null,
+        "criteria_total": null,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED",
+        "title": "Orchestration health watch · 4 · agent does it, watched",
         "status": "not_started",
         "verification_state": null,
         "verified": false,
@@ -1513,30 +1021,6 @@
         "commit_sha": "b811e9acf2027d92015411780afe63f6617ea829"
       },
       {
-        "story_id": "platform.CAP.platform_bug_fix_dispatch.autonomy:R1",
-        "title": "On-demand platform bug fix dispatch · R1",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.platform_bug_fix_dispatch.autonomy:R4",
-        "title": "On-demand platform bug fix dispatch · R4",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.preview_stack_reaping",
         "title": "Preview stack reaping",
         "status": "complete",
@@ -1549,30 +1033,6 @@
         "commit_sha": "b519ce648c8a80d7dd3f8aa923cbc9a3f27710f6"
       },
       {
-        "story_id": "platform.CAP.preview_stack_reaping.autonomy:R2",
-        "title": "Preview stack reaping · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.preview_stack_reaping.autonomy:R4",
-        "title": "Preview stack reaping · R4",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.production_deploy_review_and_approval",
         "title": "Production deploy review and approval",
         "status": "complete",
@@ -1583,18 +1043,6 @@
         "reasons": [],
         "outstanding": [],
         "commit_sha": "db13ddff4fde7630b93ff0be440fe450156ec6c3"
-      },
-      {
-        "story_id": "platform.CAP.production_deploy_review_and_approval.autonomy:R1",
-        "title": "Production deploy review and approval · R1",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
       },
       {
         "story_id": "platform.CAP.prompt_and_performance_optimization",
@@ -1611,30 +1059,6 @@
         "commit_sha": "67e2bc0258ce6fce014df2c266e014ad6c421524"
       },
       {
-        "story_id": "platform.CAP.prompt_and_performance_optimization.autonomy:R2",
-        "title": "Prompt and performance optimisation loop · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.prompt_and_performance_optimization.autonomy:R5",
-        "title": "Prompt and performance optimisation loop · R5",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.registry_runtime_reconciliation",
         "title": "Timer registry and agent registry reconciliation",
         "status": "complete",
@@ -1645,30 +1069,6 @@
         "reasons": [],
         "outstanding": [],
         "commit_sha": "9da41aac99b9237108a600089f49c21fb8152031"
-      },
-      {
-        "story_id": "platform.CAP.registry_runtime_reconciliation.autonomy:R2",
-        "title": "Timer registry and agent registry reconciliation · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.registry_runtime_reconciliation.autonomy:R4",
-        "title": "Timer registry and agent registry reconciliation · R4",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
       },
       {
         "story_id": "platform.CAP.reliability_briefing_for_manager",
@@ -1683,30 +1083,6 @@
         "commit_sha": "bd6336cc2f99bfe520d8aae2851f196fae96319b"
       },
       {
-        "story_id": "platform.CAP.reliability_briefing_for_manager.autonomy:R2",
-        "title": "Reliability briefing for the accountable manager · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.reliability_briefing_for_manager.autonomy:R5",
-        "title": "Reliability briefing for the accountable manager · R5",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.reliability_threshold_ownership",
         "title": "Reliability threshold ownership",
         "status": "complete",
@@ -1719,33 +1095,9 @@
         "commit_sha": "efff59bb5499c65e4bfd8c9205587a009c4a0158"
       },
       {
-        "story_id": "platform.CAP.reliability_threshold_ownership.autonomy:R2",
-        "title": "Reliability threshold ownership · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.reliability_threshold_ownership.autonomy:R5",
-        "title": "Reliability threshold ownership · R5",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.runtime_cron_drift_detection",
         "title": "Runtime cron drift detection",
-        "status": "not_started",
+        "status": "in_progress",
         "verification_state": "submitted",
         "verified": false,
         "criteria_passed": 1,
@@ -1753,30 +1105,6 @@
         "reasons": [
           "No commit in the repo names platform.CAP.runtime_cron_drift_detection and changes a file. Commit your work with a `Story: platform.CAP.runtime_cron_drift_detection` trailer (or platform.CAP.runtime_cron_drift_detection in the subject line) and push."
         ],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.runtime_cron_drift_detection.autonomy:R2",
-        "title": "Runtime cron drift detection · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.runtime_cron_drift_detection.autonomy:R5",
-        "title": "Runtime cron drift detection · R5",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
         "outstanding": [],
         "commit_sha": null
       },
@@ -1795,30 +1123,6 @@
         "commit_sha": "8263fa2034f200bc66c49f28d3a47339960c95f4"
       },
       {
-        "story_id": "platform.CAP.runtime_threat_and_access_watch.autonomy:R2",
-        "title": "Runtime threat and access-control watch · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.runtime_threat_and_access_watch.autonomy:R5",
-        "title": "Runtime threat and access-control watch · R5",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.schedule_governance_live_reload",
         "title": "Schedule governance and live reload",
         "status": "complete",
@@ -1829,18 +1133,6 @@
         "reasons": [],
         "outstanding": [],
         "commit_sha": "1052ddd624b067b8985c45d974114f542d750d67"
-      },
-      {
-        "story_id": "platform.CAP.schedule_governance_live_reload.autonomy:R2",
-        "title": "Schedule governance and live reload · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
       },
       {
         "story_id": "platform.CAP.scheduler_registration_liveness_probe",
@@ -1855,30 +1147,6 @@
         "commit_sha": "b336b03a65686540355b97c07e589eaa107e1a13"
       },
       {
-        "story_id": "platform.CAP.scheduler_registration_liveness_probe.autonomy:R2",
-        "title": "Scheduler registration liveness probe · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.scheduler_registration_liveness_probe.autonomy:R4",
-        "title": "Scheduler registration liveness probe · R4",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.schema_drift_detection",
         "title": "Schema drift detection between environments",
         "status": "complete",
@@ -1889,30 +1157,6 @@
         "reasons": [],
         "outstanding": [],
         "commit_sha": "15d81be49b3d6fb7d7f49166d9ccba310a6c9fac"
-      },
-      {
-        "story_id": "platform.CAP.schema_drift_detection.autonomy:R2",
-        "title": "Schema drift detection between environments · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.schema_drift_detection.autonomy:R3",
-        "title": "Schema drift detection between environments · R3",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
       },
       {
         "story_id": "platform.CAP.security_oversight_rollup",
@@ -1929,30 +1173,6 @@
         "commit_sha": "a520ec200c01f98fc7e0506869e5baa5efa85fd0"
       },
       {
-        "story_id": "platform.CAP.security_oversight_rollup.autonomy:R2",
-        "title": "Security oversight rollup · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.security_oversight_rollup.autonomy:R5",
-        "title": "Security oversight rollup · R5",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.security_posture_scan",
         "title": "Static security posture scanning",
         "status": "complete",
@@ -1967,30 +1187,6 @@
         "commit_sha": "8ad3ba90ccaeabdce88a312f57abf7defe68da68"
       },
       {
-        "story_id": "platform.CAP.security_posture_scan.autonomy:R2",
-        "title": "Static security posture scanning · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.security_posture_scan.autonomy:R5",
-        "title": "Static security posture scanning · R5",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.stale_action_recovery",
         "title": "Stale action recovery",
         "status": "complete",
@@ -2003,33 +1199,9 @@
         "commit_sha": "c97bff6dda4163bb42e423e7601fc7adf65d319c"
       },
       {
-        "story_id": "platform.CAP.stale_action_recovery.autonomy:R2",
-        "title": "Stale action recovery · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.stale_action_recovery.autonomy:R4",
-        "title": "Stale action recovery · R4",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.system_health_probe_and_alerting",
         "title": "System health probes and alerting",
-        "status": "not_started",
+        "status": "in_progress",
         "verification_state": "submitted",
         "verified": false,
         "criteria_passed": 1,
@@ -2037,30 +1209,6 @@
         "reasons": [
           "No commit in the repo names platform.CAP.system_health_probe_and_alerting and changes a file. Commit your work with a `Story: platform.CAP.system_health_probe_and_alerting` trailer (or platform.CAP.system_health_probe_and_alerting in the subject line) and push."
         ],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.system_health_probe_and_alerting.autonomy:R2",
-        "title": "System health probes and alerting · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.system_health_probe_and_alerting.autonomy:R5",
-        "title": "System health probes and alerting · R5",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
         "outstanding": [],
         "commit_sha": null
       },
@@ -2079,30 +1227,6 @@
         "commit_sha": "9b251a186e1e52e8e2aed0e8f2fc76a390fd1d2d"
       },
       {
-        "story_id": "platform.CAP.system_resilience_supervision.autonomy:R2",
-        "title": "System resilience supervision · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.system_resilience_supervision.autonomy:R5",
-        "title": "System resilience supervision · R5",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
         "story_id": "platform.CAP.untracked_timer_registration_proposal",
         "title": "Untracked timer registration proposal",
         "status": "complete",
@@ -2113,30 +1237,6 @@
         "reasons": [],
         "outstanding": [],
         "commit_sha": "a15090c50b056d69f8aa2b0b562dc6f4ac1814a0"
-      },
-      {
-        "story_id": "platform.CAP.untracked_timer_registration_proposal.autonomy:R2",
-        "title": "Untracked timer registration proposal · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.untracked_timer_registration_proposal.autonomy:R3",
-        "title": "Untracked timer registration proposal · R3",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
       },
       {
         "story_id": "platform.CAP.workforce_technology_direction",
@@ -2151,30 +1251,6 @@
         ],
         "outstanding": [],
         "commit_sha": "22cff653a3d37fcb9f03318498a7baa59ad920e8"
-      },
-      {
-        "story_id": "platform.CAP.workforce_technology_direction.autonomy:R2",
-        "title": "Workforce technology direction · R2",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
-      },
-      {
-        "story_id": "platform.CAP.workforce_technology_direction.autonomy:R5",
-        "title": "Workforce technology direction · R5",
-        "status": "not_started",
-        "verification_state": null,
-        "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
-        "commit_sha": null
       },
       {
         "story_id": "platform.LEGACY-MIGRATION-PLAN",

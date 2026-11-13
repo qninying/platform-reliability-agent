@@ -70,11 +70,34 @@ Read the brief above this prompt on the story page. It names your domain's real 
 accountable human and your employee. **Those numbers are not repeated here on purpose:** a
 second copy drifts from the first, and then nobody knows which is true. Work from the brief.
 
+## Where the data comes from: a file in this repository, not a live call
+
+Every panel below names an endpoint. **Those names are provenance, not instructions to call
+them.** This page is public and every one of those endpoints is behind
+`requireSection('dashboard')`, which means an `Authorization: Bearer` header. No cookie is ever
+set, so being signed in to the admin site in another tab gives this page nothing to send, and a
+page opened from your own machine cannot read that token either. A fetch from here returns
+`Authentication required`, and no amount of work on the page will change that.
+
+Read `.colaberry/agent-domain.json` in this repository instead. It is written by the platform
+on every document sync, it carries the data for all six panels, and its `sources` map names the
+endpoint each section came from -- which is how a panel satisfies "names the endpoint it read"
+without calling anything.
+
+Two rules about that file. **Read every figure out of it at runtime**; do not copy a count into
+the page, because the records change and a hardcoded number starts lying the day after you
+write it. And **the file deliberately carries no timestamp** -- take the staleness from
+`.colaberry/manifest.json` and show it, so a reader can tell how old the picture is.
+
+If the file is not there, your repository has not been synced since it started shipping. Click
+Sync from GitHub in the portal; if it still does not appear, say so rather than inventing data.
+
 ## The six panels, and the question each one answers
 
 **1. Your employee -- "does it exist, and what is it allowed to do?"**
 
-Read `GET /api/admin/agent-domains-mine`. Render the agent's `agent_name`, whether it is
+From `agent` in the snapshot (source: `GET /api/admin/agent-domains-mine`). Render the
+agent's `agent_name`, whether it is
 `enabled`, its `autonomy_level`, how many tools are granted to it, and when its autonomy was
 last set and by whom. If the agent does not appear, say so in those words and do not draw an
 empty card that looks like a loading state. An agent with no identity rows renders as nothing,
