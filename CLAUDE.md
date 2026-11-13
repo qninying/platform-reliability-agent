@@ -1,5 +1,5 @@
 <!-- COLABERRY:BEGIN — managed by the build pipeline. Edits inside this block are overwritten. -->
-# CLAUDE.md — platform
+# CLAUDE.md — Platform Automation & Reliability
 
 Conventions for this build. Claude Code reads this automatically.
 

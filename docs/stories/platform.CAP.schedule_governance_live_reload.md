@@ -1,5 +1,7 @@
 # platform.CAP.schedule_governance_live_reload — Schedule governance and live reload
 
+**CANDIDATE -- not started, not assigned.** This is one line on this domain's list of everything its agent could eventually do. It becomes real work only when the builder picks it and their manager agrees, at which point it opens as four stories. Until then it is deliberately inert, and the honest status of it is "not started" rather than "behind".
+
 An agent's cron schedule can be changed or disabled from a governance screen and take effect without a restart, so a runaway cadence is corrected immediately.
 
 **Built today:** implemented. **Requirement validated:** draft -- Kesetebirhan Delele must confirm scope, exceptions and success measures; he has no admin login today
@@ -11,7 +13,7 @@ An agent's cron schedule can be changed or disabled from a governance screen and
 
 Full build prompt is attached to this story.
 
-**Release:** r2 · r2 (weeks 0–0)
+**Release:** autonomy:R0 · Legacy migration plan (weeks 0–0)
 **Owner:** 
 **Blocked by:** nothing — you can start this now
 

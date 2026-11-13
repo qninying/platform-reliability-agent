@@ -6,7 +6,7 @@ Choose from this domain's own draft capabilities rather than inventing tasks -- 
 
 **Completion evidence may not be any of these:** a story being marked done, time having passed, a conversation that went well, or a mocked test passing. This platform already has 106 approval rows whose only recorded decider is a 4.25-hour timer, which is the failure this requirement exists to prevent.
 
-**Release:** r0 · Discovery and validation (weeks 0–0)
+**Release:** autonomy:R0 · Legacy migration plan (weeks 0–0)
 **Owner:** 
 **Blocked by:** nothing — you can start this now
 

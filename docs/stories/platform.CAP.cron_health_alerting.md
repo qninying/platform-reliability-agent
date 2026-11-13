@@ -1,5 +1,7 @@
 # platform.CAP.cron_health_alerting — Cron health alerting
 
+**CANDIDATE -- not started, not assigned.** This is one line on this domain's list of everything its agent could eventually do. It becomes real work only when the builder picks it and their manager agrees, at which point it opens as four stories. Until then it is deliberately inert, and the honest status of it is "not started" rather than "behind".
+
 A scheduled job that has started failing or has stopped running raises an alert on its own, so a silently dead job is caught in hours rather than discovered weeks later.
 
 **Built today:** partial. **Requirement validated:** draft -- Kesetebirhan Delele must confirm scope, exceptions and success measures; he has no admin login today — and the thresholds are already recorded as his discretion, so this capability is validated by him twice over
@@ -11,7 +13,7 @@ A scheduled job that has started failing or has stopped running raises an alert 
 
 Full build prompt is attached to this story.
 
-**Release:** r2 · r2 (weeks 0–0)
+**Release:** autonomy:R0 · Legacy migration plan (weeks 0–0)
 **Owner:** 
 **Blocked by:** nothing — you can start this now
 

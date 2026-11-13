@@ -6,7 +6,7 @@ Ground it in this domain, not in the abstract: it has **48 candidate capabilitie
 
 State explicitly which class this domain does NOT need, and what would have to change for the next class up to be justified.
 
-**Release:** r0 · Discovery and validation (weeks 0–0)
+**Release:** autonomy:R0 · Legacy migration plan (weeks 0–0)
 **Owner:** 
 **Blocked by:** nothing — you can start this now
 

@@ -8,7 +8,7 @@ Cover: which capabilities they want first, which must stay human forever, what "
 
 **Blocker to raise in the interview:** Kesetebirhan Delele cannot reach the agent surface today. manager_has_no_admin_login: Kesetebirhan Delele has an org_members row but no admin_users row, so they cannot open their employee's Agent Detail or Talk surface. Already the reports_to target for workforce_intelligence_engine. Until that is fixed they cannot see what they are being asked to validate.
 
-**Release:** r0 · Discovery and validation (weeks 0–0)
+**Release:** autonomy:R0 · Legacy migration plan (weeks 0–0)
 **Owner:** 
 **Blocked by:** nothing — you can start this now
 

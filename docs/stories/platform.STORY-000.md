@@ -1,14 +1,4 @@
-# STORY-000 · Build your Command Center
-
-**Story id:** `platform.STORY-000`
-**Rung:** `autonomy:R0` -- the first story of the first rung, before any of this
-domain's own work
-**Owner:** you, with Claude Code
-**Blocked by:** nothing -- this is the first thing you build
-
----
-
-## The brief
+# platform.STORY-000 — STORY-000 · Build your Command Center
 
 Build one page that shows what you are building and how far along it is, so you can see your
 own domain and demonstrate from it.
@@ -31,33 +21,15 @@ invent; they are yours to read, render and then satisfy one rung at a time.
 has reviewed it. This page must show that state honestly rather than rendering a plan as a
 plan that somebody agreed to.
 
-## The capability this fulfils
+**Release:** autonomy:R0 · Legacy migration plan (weeks 0–0)
+**Owner:** 
+**Blocked by:** nothing — you can start this now
 
-The Command Center fulfils no capability of this domain because it is not part of the system being built -- it is the window onto it. Every builder gets the same one so the programme can be taught, reviewed and demonstrated as one thing, and so a builder can see the whole of what they are walking their agent through before they start walking it.
+## The requirement this satisfies
 
-## Acceptance -- your stop condition
+_No requirement linked._
 
-Every one of these is checkable by looking at the page. None of them can be satisfied by
-marking this story complete.
-
-- [ ] Given the Command Center, when it is opened, then all six panels render and each one names the endpoint it read.
-- [ ] Given a panel whose endpoint returned nothing, when it renders, then it says so in words and is visibly distinct from a panel that is still loading.
-- [ ] Given the autonomy ladder panel, when it renders, then all ten rungs are present with the owner's wording, and each capability's ceiling is marked against the rung it stops at.
-- [ ] Given the autonomy ladder panel, when a capability's authority is shown, then the page shows the effective authority `effectiveAuthority()` returns rather than the level the capability record asks for, and names the `no_tool_grants` rule with the number of capabilities it currently constrains, saying so in words when that number is zero.
-- [ ] Given the governance panel, when a tool request is shown, then nothing on the page states or implies that filing it granted anything.
-- [ ] Trust -- no panel shows a number, a grant, a rung or a result this domain has not actually produced.
-
-## Who closes this story
-
-Reviewed by the domain's accountable human against the page itself, on the evidence the page renders. Marking this story complete is not evidence that it is done.
-
----
-
-## The build prompt
-
-This is the prompt attached to this story on the portal. It is reproduced here so a Claude Code
-session opening this repository cold has the whole brief locally and does not have to author it
-from memory of a page it has never seen.
+## How to build it
 
 # STORY-000 · Build your Command Center -- Platform Automation & Reliability
 
@@ -70,34 +42,11 @@ Read the brief above this prompt on the story page. It names your domain's real 
 accountable human and your employee. **Those numbers are not repeated here on purpose:** a
 second copy drifts from the first, and then nobody knows which is true. Work from the brief.
 
-## Where the data comes from: a file in this repository, not a live call
-
-Every panel below names an endpoint. **Those names are provenance, not instructions to call
-them.** This page is public and every one of those endpoints is behind
-`requireSection('dashboard')`, which means an `Authorization: Bearer` header. No cookie is ever
-set, so being signed in to the admin site in another tab gives this page nothing to send, and a
-page opened from your own machine cannot read that token either. A fetch from here returns
-`Authentication required`, and no amount of work on the page will change that.
-
-Read `.colaberry/agent-domain.json` in this repository instead. It is written by the platform
-on every document sync, it carries the data for all six panels, and its `sources` map names the
-endpoint each section came from -- which is how a panel satisfies "names the endpoint it read"
-without calling anything.
-
-Two rules about that file. **Read every figure out of it at runtime**; do not copy a count into
-the page, because the records change and a hardcoded number starts lying the day after you
-write it. And **the file deliberately carries no timestamp** -- take the staleness from
-`.colaberry/manifest.json` and show it, so a reader can tell how old the picture is.
-
-If the file is not there, your repository has not been synced since it started shipping. Click
-Sync from GitHub in the portal; if it still does not appear, say so rather than inventing data.
-
 ## The six panels, and the question each one answers
 
 **1. Your employee -- "does it exist, and what is it allowed to do?"**
 
-From `agent` in the snapshot (source: `GET /api/admin/agent-domains-mine`). Render the
-agent's `agent_name`, whether it is
+Read `GET /api/admin/agent-domains-mine`. Render the agent's `agent_name`, whether it is
 `enabled`, its `autonomy_level`, how many tools are granted to it, and when its autonomy was
 last set and by whom. If the agent does not appear, say so in those words and do not draw an
 empty card that looks like a loading state. An agent with no identity rows renders as nothing,
@@ -197,3 +146,22 @@ Cite the real thing: a named passing test, a screenshot of the rendered page bes
 endpoint response it was built from, or a file:line. **None of these count:** this story being
 marked complete, elapsed time, a conversation that went well, or a mocked test passing.
 Kesetebirhan Delele evaluates the evidence.
+
+## Failure paths you must handle
+
+
+## Acceptance — your stop condition
+
+Tick each box as it genuinely passes. This file is yours — the platform reads
+the same criteria out of `.colaberry/progress.json`, which Claude Code keeps in
+step (see the managed block in CLAUDE.md). Ticking something you have not
+actually met only misleads you.
+
+- [ ] Given the Command Center, when it is opened, then all six panels render and each one names the endpoint it read.
+- [ ] Given a panel whose endpoint returned nothing, when it renders, then it says so in words and is visibly distinct from a panel that is still loading.
+- [ ] Given the autonomy ladder panel, when it renders, then all ten rungs are present with the owner's wording, and each capability's ceiling is marked against the rung it stops at.
+- [ ] Given the autonomy ladder panel, when a capability's authority is shown, then the page shows the effective authority `effectiveAuthority()` returns rather than the level the capability record asks for, and names the `no_tool_grants` rule with the number of capabilities it currently constrains, saying so in words when that number is zero.
+- [ ] Given the governance panel, when a tool request is shown, then nothing on the page states or implies that filing it granted anything.
+- [ ] Trust -- no panel shows a number, a grant, a rung or a result this domain has not actually produced.
+
+When every box above is ticked, stop and show the demo.

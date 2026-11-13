@@ -1,5 +1,7 @@
 # platform.CAP.incident_trace_and_error_triage — Incident trace and error triage
 
+**CANDIDATE -- not started, not assigned.** This is one line on this domain's list of everything its agent could eventually do. It becomes real work only when the builder picks it and their manager agrees, at which point it opens as four stories. Until then it is deliberately inert, and the honest status of it is "not started" rather than "behind".
+
 A failure can be followed from the symptom back to the run that caused it using one identifier, and the resulting error record can be closed out, so incidents end in a diagnosis instead of a guess.
 
 **Built today:** partial. **Requirement validated:** draft -- Kesetebirhan Delele must confirm scope, exceptions and success measures; he has no admin login today
@@ -10,7 +12,7 @@ A failure can be followed from the symptom back to the run that caused it using 
 
 Full build prompt is attached to this story.
 
-**Release:** r2 · r2 (weeks 0–0)
+**Release:** autonomy:R0 · Legacy migration plan (weeks 0–0)
 **Owner:** 
 **Blocked by:** nothing — you can start this now
 

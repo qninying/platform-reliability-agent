@@ -6,7 +6,7 @@ Study the employee's role as it is actually performed. Write down the existing D
 
 Record each responsibility as: stays human / transitions to AI / splits, with the reason.
 
-**Release:** r0 · Discovery and validation (weeks 0–0)
+**Release:** autonomy:R0 · Legacy migration plan (weeks 0–0)
 **Owner:** 
 **Blocked by:** nothing — you can start this now
 

@@ -1,5 +1,7 @@
 # platform.CAP.platform_bug_fix_dispatch — On-demand platform bug fix dispatch
 
+**CANDIDATE -- not started, not assigned.** This is one line on this domain's list of everything its agent could eventually do. It becomes real work only when the builder picks it and their manager agrees, at which point it opens as four stories. Until then it is deliberately inert, and the honest status of it is "not started" rather than "behind".
+
 A ticket typed as a bug is routed to a platform fix attempt on demand, so routine defects are picked up without a human triaging each one into a queue.
 
 **Built today:** implemented. **Requirement validated:** draft -- Kesetebirhan Delele must confirm scope, exceptions and success measures; he has no admin login today
@@ -11,7 +13,7 @@ A ticket typed as a bug is routed to a platform fix attempt on demand, so routin
 
 Full build prompt is attached to this story.
 
-**Release:** r2 · r2 (weeks 0–0)
+**Release:** autonomy:R0 · Legacy migration plan (weeks 0–0)
 **Owner:** 
 **Blocked by:** nothing — you can start this now
 

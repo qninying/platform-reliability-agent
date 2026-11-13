@@ -6,7 +6,7 @@ For each element, answer with evidence or with "unknown": what exists today, wha
 
 Coordination specifically: agent-to-agent handoff does NOT exist in this platform. Record what coordination would require rather than describing it as available.
 
-**Release:** r0 · Discovery and validation (weeks 0–0)
+**Release:** autonomy:R0 · Legacy migration plan (weeks 0–0)
 **Owner:** 
 **Blocked by:** nothing — you can start this now
 

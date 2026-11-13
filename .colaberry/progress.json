@@ -1,12 +1,12 @@
 {
   "schema_version": 2,
-  "project": "platform",
+  "project": "Platform Automation & Reliability",
   "totals": {
-    "stories_total": 55,
+    "stories_total": 59,
     "stories_verified": 47,
     "stories_submitted": 6,
     "stories_in_progress": 2,
-    "stories_not_started": 0,
+    "stories_not_started": 4,
     "criteria_total": 72,
     "criteria_passed": 70,
     "points_awarded": 705
@@ -14,7 +14,7 @@
   "stories": [
     {
       "id": "platform.CAP.agent_behavior_safety_watch",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -52,7 +52,7 @@
     },
     {
       "id": "platform.CAP.agent_discovery_sync",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -88,7 +88,7 @@
     },
     {
       "id": "platform.CAP.agent_enable_disable_control",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -124,7 +124,7 @@
     },
     {
       "id": "platform.CAP.agent_health_scoring",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -158,7 +158,7 @@
     },
     {
       "id": "platform.CAP.agent_identity_attribution",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -186,7 +186,7 @@
     },
     {
       "id": "platform.CAP.agent_promotion_and_approval_decision",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -220,7 +220,7 @@
     },
     {
       "id": "platform.CAP.agent_registry_read_surface",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -255,7 +255,7 @@
     },
     {
       "id": "platform.CAP.agent_ticket_auto_resolution",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -293,7 +293,7 @@
     },
     {
       "id": "platform.CAP.backup_and_restore_verification",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -327,7 +327,7 @@
     },
     {
       "id": "platform.CAP.capability_autonomy_authority_resolution",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -361,7 +361,7 @@
     },
     {
       "id": "platform.CAP.cron_health_alerting",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -400,7 +400,7 @@
     },
     {
       "id": "platform.CAP.cron_overlap_guard",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -437,7 +437,7 @@
     },
     {
       "id": "platform.CAP.cron_run_instrumentation",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -472,7 +472,7 @@
     },
     {
       "id": "platform.CAP.data_retention_sweep",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -511,7 +511,7 @@
     },
     {
       "id": "platform.CAP.dead_letter_capture",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -549,7 +549,7 @@
     },
     {
       "id": "platform.CAP.dead_letter_triage",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -584,7 +584,7 @@
     },
     {
       "id": "platform.CAP.default_on_timer_guard",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -618,7 +618,7 @@
     },
     {
       "id": "platform.CAP.deploy_verification_evidence",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -653,7 +653,7 @@
     },
     {
       "id": "platform.CAP.emergency_stop_and_kill_switch",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -690,7 +690,7 @@
     },
     {
       "id": "platform.CAP.error_class_coverage",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -726,7 +726,7 @@
     },
     {
       "id": "platform.CAP.execution_policy_enforcement",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -754,7 +754,7 @@
     },
     {
       "id": "platform.CAP.idempotency_and_replay_audit",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -790,7 +790,7 @@
     },
     {
       "id": "platform.CAP.incident_trace_and_error_triage",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -826,7 +826,7 @@
     },
     {
       "id": "platform.CAP.infrastructure_evolution_proposals",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -863,7 +863,7 @@
     },
     {
       "id": "platform.CAP.manager_reachable_agent_surface",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -901,7 +901,7 @@
     },
     {
       "id": "platform.CAP.manager_restriction_directives",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -939,7 +939,7 @@
     },
     {
       "id": "platform.CAP.manager_scoped_authorization",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -977,7 +977,7 @@
     },
     {
       "id": "platform.CAP.orchestration_auto_repair",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1014,7 +1014,7 @@
     },
     {
       "id": "platform.CAP.orchestration_health_watch",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1054,8 +1054,136 @@
       }
     },
     {
+      "id": "platform.CAP.orchestration_health_watch.L1-BY-HAND",
+      "release": "autonomy:R0",
+      "acceptance_total": 2,
+      "criteria": [
+        {
+          "text": "The capability was performed end to end by hand, producing its real outcome on real inputs.",
+          "passed": false
+        },
+        {
+          "text": "A run log exists recording the date, the elapsed time, each step actually performed, every judgment call made, and at least one way the recorded workflow differed from what the work was really like.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 0,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": []
+      }
+    },
+    {
+      "id": "platform.CAP.orchestration_health_watch.L2-IN-THE-APP",
+      "release": "autonomy:R0",
+      "acceptance_total": 2,
+      "criteria": [
+        {
+          "text": "The same outcome was produced a second time using only the product, with no agent, no script and no direct database edit -- or the exact step that made this impossible is written down as a named gap.",
+          "passed": false
+        },
+        {
+          "text": "The app route was compared against the step 1 run log, and every difference between them is recorded.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 0,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": []
+      }
+    },
+    {
+      "id": "platform.CAP.orchestration_health_watch.L3-TOOL-REQUEST",
+      "release": "autonomy:R0",
+      "acceptance_total": 3,
+      "criteria": [
+        {
+          "text": "A change request for a tool exists against this domain, filed by the builder, naming the tool, its scope, what it must never touch, and who approves a run.",
+          "passed": false
+        },
+        {
+          "text": "The request cites the step 1 run log and the step 2 result as its evidence.",
+          "passed": false
+        },
+        {
+          "text": "A named human other than the builder has recorded a decision on it. A decline counts; an undecided request does not.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 0,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": []
+      }
+    },
+    {
+      "id": "platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED",
+      "release": "autonomy:R0",
+      "acceptance_total": 3,
+      "criteria": [
+        {
+          "text": "Every answer cites the ai_agents row and activity-log rows it was derived from; no answer is produced for an agent name with no row.",
+          "passed": false
+        },
+        {
+          "text": "The agent produced the same outcome as the step 1 run log, on the same inputs, including the exceptions recorded there.",
+          "passed": false
+        },
+        {
+          "text": "Every run in the evidence window was approved by a named human before it took effect, and the record shows who.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 0,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": []
+      }
+    },
+    {
       "id": "platform.CAP.platform_bug_fix_dispatch",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1100,7 +1228,7 @@
     },
     {
       "id": "platform.CAP.preview_stack_reaping",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1137,7 +1265,7 @@
     },
     {
       "id": "platform.CAP.production_deploy_review_and_approval",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1171,7 +1299,7 @@
     },
     {
       "id": "platform.CAP.prompt_and_performance_optimization",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1207,7 +1335,7 @@
     },
     {
       "id": "platform.CAP.registry_runtime_reconciliation",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1245,7 +1373,7 @@
     },
     {
       "id": "platform.CAP.reliability_briefing_for_manager",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1281,7 +1409,7 @@
     },
     {
       "id": "platform.CAP.reliability_threshold_ownership",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1315,7 +1443,7 @@
     },
     {
       "id": "platform.CAP.runtime_cron_drift_detection",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1349,7 +1477,7 @@
     },
     {
       "id": "platform.CAP.runtime_threat_and_access_watch",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1387,7 +1515,7 @@
     },
     {
       "id": "platform.CAP.schedule_governance_live_reload",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1426,7 +1554,7 @@
     },
     {
       "id": "platform.CAP.scheduler_registration_liveness_probe",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1460,7 +1588,7 @@
     },
     {
       "id": "platform.CAP.schema_drift_detection",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1495,7 +1623,7 @@
     },
     {
       "id": "platform.CAP.security_oversight_rollup",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1531,7 +1659,7 @@
     },
     {
       "id": "platform.CAP.security_posture_scan",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1570,7 +1698,7 @@
     },
     {
       "id": "platform.CAP.stale_action_recovery",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1607,7 +1735,7 @@
     },
     {
       "id": "platform.CAP.system_health_probe_and_alerting",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1644,7 +1772,7 @@
     },
     {
       "id": "platform.CAP.system_resilience_supervision",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1681,7 +1809,7 @@
     },
     {
       "id": "platform.CAP.untracked_timer_registration_proposal",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1719,7 +1847,7 @@
     },
     {
       "id": "platform.CAP.workforce_technology_direction",
-      "release": "r2",
+      "release": "autonomy:R0",
       "acceptance_total": 1,
       "criteria": [
         {
@@ -1756,7 +1884,7 @@
     },
     {
       "id": "platform.LEGACY-MIGRATION-PLAN",
-      "release": "r1",
+      "release": "autonomy:R0",
       "acceptance_total": 3,
       "criteria": [
         {
@@ -1792,7 +1920,7 @@
     },
     {
       "id": "platform.RESEARCH-1-SYSTEM-CLASSES",
-      "release": "r0",
+      "release": "autonomy:R0",
       "acceptance_total": 3,
       "criteria": [
         {
@@ -1828,7 +1956,7 @@
     },
     {
       "id": "platform.RESEARCH-2-AGENT-ANATOMY",
-      "release": "r0",
+      "release": "autonomy:R0",
       "acceptance_total": 3,
       "criteria": [
         {
@@ -1864,7 +1992,7 @@
     },
     {
       "id": "platform.RESEARCH-3-ROLE-AND-DA-TRANSITION",
-      "release": "r0",
+      "release": "autonomy:R0",
       "acceptance_total": 3,
       "criteria": [
         {
@@ -1900,7 +2028,7 @@
     },
     {
       "id": "platform.RESEARCH-4-MANAGER-INTERVIEW",
-      "release": "r0",
+      "release": "autonomy:R0",
       "acceptance_total": 3,
       "criteria": [
         {
@@ -1936,7 +2064,7 @@
     },
     {
       "id": "platform.RESEARCH-5-THREE-PROPOSED-TASKS",
-      "release": "r0",
+      "release": "autonomy:R0",
       "acceptance_total": 3,
       "criteria": [
         {

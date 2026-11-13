@@ -1,5 +1,7 @@
 # platform.CAP.system_health_probe_and_alerting — System health probes and alerting
 
+**CANDIDATE -- not started, not assigned.** This is one line on this domain's list of everything its agent could eventually do. It becomes real work only when the builder picks it and their manager agrees, at which point it opens as four stories. Until then it is deliberately inert, and the honest status of it is "not started" rather than "behind".
+
 The platform's liveness, database, memory, email and third-party dependencies are checked on a schedule and a critical result reaches a human, so an outage is announced rather than noticed.
 
 **Built today:** partial. **Requirement validated:** draft -- Kesetebirhan Delele must confirm scope, exceptions and success measures; he has no admin login today
@@ -11,7 +13,7 @@ The platform's liveness, database, memory, email and third-party dependencies ar
 
 Full build prompt is attached to this story.
 
-**Release:** r2 · r2 (weeks 0–0)
+**Release:** autonomy:R0 · Legacy migration plan (weeks 0–0)
 **Owner:** 
 **Blocked by:** nothing — you can start this now
 

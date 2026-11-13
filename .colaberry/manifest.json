@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-11-13T20:06:29.420Z",
-  "plan_version": 1,
-  "plan_sha256": "63f1a191da70b55bb9d8a823ec84b0a8183199091da5287a0b2f138d973afdb1",
-  "correlation_id": "cc-20261113-q7m2-postladder-platform",
+  "generated_at": "2026-11-13T22:54:01.239Z",
+  "plan_version": 2,
+  "plan_sha256": "f25112e1434ce9a043d8eb1b7d387b3caa8d3c3d66783f2584a180a94aa1ac3c",
+  "correlation_id": null,
   "project_id": "9424aa6e-f754-521a-ace7-ae17fb2a5ff4",
   "truth_revision": null,
   "files": [
     {
       "path": "docs/REQUIREMENTS.md",
-      "sha256": "29f515206caf8773e5fcb876650ce6354291222e413a1b48f747b16d835e09a3"
+      "sha256": "a01e4a23d7d1fe423c14de9564938763cd8440a3d48c9b3a864f511681260288"
     },
     {
       "path": "docs/STORIES.md",
-      "sha256": "4664783fdd9aa7c4a86c5f43706a5e82751fee2797427848f85907ffcb2b6fce"
+      "sha256": "5abafc9a7bb3df0dad6a1207d4c281ea3932c2ee4bb42fdbc4a5bfbca56623b0"
     },
     {
       "path": "docs/TRACEABILITY.md",
-      "sha256": "b7ee512263cb45a4dd23d9adb004519cc28daa1da92883155ded705ffb78b6f7"
+      "sha256": "8fdf4425c05e1d238c9bf58098f4c21be2710b2ef7041df79f7ea6d9e86bc5e7"
     },
     {
       "path": "docs/DATA_CONTRACT.md",
@@ -24,235 +24,251 @@
     },
     {
       "path": "CLAUDE.md",
-      "sha256": "a256b169b819080124ac60c2ce22721dcce144a96f804fb1d71909654d1d5802"
+      "sha256": "5c4c2a8d1d8f82cde49a07e8f05a5c77430d34a0668e002b22f857dabac0b701"
     },
     {
       "path": "docs/stories/platform.CAP.agent_behavior_safety_watch.md",
-      "sha256": "a52434b5ea82225e89498bc539560a6d59db0087321a7addad908cc0acddee7c"
+      "sha256": "4056a4c52d7d1b8b814d4dbbd044a785a890d0bb6777ba6cc9a5c0c8e9d49876"
     },
     {
       "path": "docs/stories/platform.CAP.agent_discovery_sync.md",
-      "sha256": "043ef941e348a72640d5ebddb5e3e288b325ee33d5880e7dafa272b0729d85ae"
+      "sha256": "b99374c15a4720c5e6054dc09266377a7a1673393671e37250025e0b3f1cb2f0"
     },
     {
       "path": "docs/stories/platform.CAP.agent_enable_disable_control.md",
-      "sha256": "354c28720fd42c3e28a4e2367e186a44853a02f128a72527f1cfa9165ba807a0"
+      "sha256": "f5ffdce42218732cc0e8b524560b0a80b22accabc5392e8bbda721a00fc35aba"
     },
     {
       "path": "docs/stories/platform.CAP.agent_health_scoring.md",
-      "sha256": "cd776a5b317185e59e8ed3c4ad30676bccc38a80261c9dc91df51c57f2f8ec2a"
+      "sha256": "8268d19cd934caf9e8f700cd081d06dbe875f925f624886b916dde6e26466bb3"
     },
     {
       "path": "docs/stories/platform.CAP.agent_identity_attribution.md",
-      "sha256": "8514039ee552e0127c52766200c14415ddd4e9089a35c47acaa0d876e4b94447"
+      "sha256": "b47e16c95ca2668e332a0e379107b69348e6c88d0bf6dc4783de50a775f69b97"
     },
     {
       "path": "docs/stories/platform.CAP.agent_promotion_and_approval_decision.md",
-      "sha256": "28cac0f1c91326876a668af7bb9f81372a739a59f90a79f4805d6e72c068a973"
+      "sha256": "26ecf3b629cc4b44d1c210093805c1dc5c44000158f7bee004c0d939a9181004"
     },
     {
       "path": "docs/stories/platform.CAP.agent_registry_read_surface.md",
-      "sha256": "82c401134b5717fcd7be798aa11ee9c84819941b79616305ebb7f9a3549e1648"
+      "sha256": "8bb35dfbed6864995b1739f1f3fa0f05e4d4dfe4a25b60889e8bd05da4cc6183"
     },
     {
       "path": "docs/stories/platform.CAP.agent_ticket_auto_resolution.md",
-      "sha256": "bf3b6d868787c3e2940007d0931dffa0459cdb769ab49213d623a09365461a74"
+      "sha256": "b1c5a79e9aa6941bb12d32db413962c6e84577ce8a0658391ae6105c7de29b2a"
     },
     {
       "path": "docs/stories/platform.CAP.backup_and_restore_verification.md",
-      "sha256": "fdc178987fc34b8c44c8c223f404f9b57847a2a9042386996bfd80519e5035ad"
+      "sha256": "47ed4cee14133ed412d4a8d0b21f99f8bbccbe00be3973ac67310c5739e3cbad"
     },
     {
       "path": "docs/stories/platform.CAP.capability_autonomy_authority_resolution.md",
-      "sha256": "f333c366b52f926f001f54a9a49e00766dd2fa38f99fe11c7d86b38cf72d02b1"
+      "sha256": "869f7dc0030952b44833892660879171d083f009249d272d4a11134b3be62a11"
     },
     {
       "path": "docs/stories/platform.CAP.cron_health_alerting.md",
-      "sha256": "9d8a2e82f4f890a5dd0e6f9b86fde1bbff706600e055d4e9b5310897ddf15812"
+      "sha256": "9cd3ecdfd396f6d97581c7d7bc96dc146790b58e1a6408b69eb48eb1df1e4a75"
     },
     {
       "path": "docs/stories/platform.CAP.cron_overlap_guard.md",
-      "sha256": "a69f18a843c6f4b91fea106957e69747de80b33af34c06f3c5d0f78c8b3c06bc"
+      "sha256": "5b4c2c8a3c7cca0292684b1d0785dc2291ddc43783aff938f038b032dfcccdf9"
     },
     {
       "path": "docs/stories/platform.CAP.cron_run_instrumentation.md",
-      "sha256": "474a9cfc1b7548764ddb8a493531c0ab05f8b496f0a9912ad4cfe972f75dfa1a"
+      "sha256": "4492feb4f06a2fc53da359f1c668ae2cf388b32403b2b09680c16f4c0b33e3f8"
     },
     {
       "path": "docs/stories/platform.CAP.data_retention_sweep.md",
-      "sha256": "43e837955953191029c5c4a0b440b222b1836036eb34d8b1f2fe40c5da9d3acf"
+      "sha256": "cc410203eac2da5254cf2f662c9c514b42dbb774db71f7173dca5ddc8a283519"
     },
     {
       "path": "docs/stories/platform.CAP.dead_letter_capture.md",
-      "sha256": "3c4843054e32133885ac62621712c585175f51d328c43f37e6a5b55f23c8efbf"
+      "sha256": "451bbf1d54d7f6f3dbf677b77e85f44280c80f81b9a0315fd2f4f31aa98c42cf"
     },
     {
       "path": "docs/stories/platform.CAP.dead_letter_triage.md",
-      "sha256": "f6ff5befe6326e0ff747f7091fc4ba960ea3fabb801834041fe8c32586b7573d"
+      "sha256": "9a38f419c308b027f2870009e0bc14f0b4d096d3bc764b2a24627631678adeba"
     },
     {
       "path": "docs/stories/platform.CAP.default_on_timer_guard.md",
-      "sha256": "ccfe9d22dd25967411cfc555a70121dc1933a6c7bf567ffa0e4b2d3bfc754a8a"
+      "sha256": "5377a67c74c06b20e6b15cb05245d265129235ae1fd7367082ca89a3871784ca"
     },
     {
       "path": "docs/stories/platform.CAP.deploy_verification_evidence.md",
-      "sha256": "e95888544dd07da69dfa9763b555b2db6ed5028c287c4908a2de62333763c1d0"
+      "sha256": "3c870d7a8e781a8fe61ad47b939e74049c47c1f8466aa8474004c795f8217310"
     },
     {
       "path": "docs/stories/platform.CAP.emergency_stop_and_kill_switch.md",
-      "sha256": "faa5c40c3ce581f2ee7a475e1f713ff4b73a7472e88700615c37de38beea8bff"
+      "sha256": "a061303aa6bfd06205c6917b0caf1973efe55180de2b48a6893783d0372b87c7"
     },
     {
       "path": "docs/stories/platform.CAP.error_class_coverage.md",
-      "sha256": "1edcc80029bef03e937cf09a218095f8d75cb514c91d5bb7d638f846da521613"
+      "sha256": "4c2e959d86d55fb9ba3417c7445c4df4787ab50f400380674e41240da143c4cf"
     },
     {
       "path": "docs/stories/platform.CAP.execution_policy_enforcement.md",
-      "sha256": "cf6cd19e47d2af449bd7ce07482c8d41616034321b141dc614de434bc13d3d43"
+      "sha256": "0709a996fc1778b82f2904de1c507025ab9016657ffcdce6ee4b8d49beac5d76"
     },
     {
       "path": "docs/stories/platform.CAP.idempotency_and_replay_audit.md",
-      "sha256": "514b522b9518856231cd72cdf2bbb8beca1cb8c0bab3c47396335506e6ceb412"
+      "sha256": "69a89925f4cf6544185d9e8ae400364b8cc46288477564e7e6a1e76af35a07d3"
     },
     {
       "path": "docs/stories/platform.CAP.incident_trace_and_error_triage.md",
-      "sha256": "fc6f47cad54e427305aeccd1fa721262c778b52ab7d451260e93c25502fd48c9"
+      "sha256": "4999ebfbc012e7241dfa1cde7cdf88c222af4dc679296317d2cd728d5fd8bc2c"
     },
     {
       "path": "docs/stories/platform.CAP.infrastructure_evolution_proposals.md",
-      "sha256": "2670a36a04b2911c8ffd9a4db4c1ee7d7c24a11516e233655ca6231bca3fa3fd"
+      "sha256": "e8127abb9932635dbbccd81379da2ff64319daef42412c880a98eee0e19268a8"
     },
     {
       "path": "docs/stories/platform.CAP.manager_reachable_agent_surface.md",
-      "sha256": "6be63bdafc27e5ea296807ee83f3c7e19088f8127ea9687128bba4da416dcad3"
+      "sha256": "6849fdcb778f96c64c9f2dd6181e5d3db85d4a5f9e27a516f11eec2662a21fab"
     },
     {
       "path": "docs/stories/platform.CAP.manager_restriction_directives.md",
-      "sha256": "c83d98ef4716c9c9698f81b059bf4f14e82a5a075a99390f9b6cc69ba96a9c85"
+      "sha256": "19e4ed2cb738add743ca3b77b1ccf0566e7b4783f6c0e6067f4b0c95c578f5f3"
     },
     {
       "path": "docs/stories/platform.CAP.manager_scoped_authorization.md",
-      "sha256": "e84fc4ab63a42913070920064f1692b49727b5077c12ec5da6919d25c36a55cd"
+      "sha256": "3f4017c986f7861e5574b85081485a7b52cf364ac1128f619f0d338e9ad35362"
     },
     {
       "path": "docs/stories/platform.CAP.orchestration_auto_repair.md",
-      "sha256": "61724700e7472ead3d4f518bb667eac6953c9c35c34fc69b31d17e11fbf32146"
+      "sha256": "8ebca2b6ae49568c31c39f9f4f6c5c6875e9b103f9236ecc35bfe73bf0a1a402"
     },
     {
       "path": "docs/stories/platform.CAP.orchestration_health_watch.md",
-      "sha256": "7504365098531b29ed61f6b00a5052bcbe27cd13de2386ee42ccb9bad5fc8a9f"
+      "sha256": "9c4672c3315f6d8d8b7dcffee4317e90ffa72c251a87e26842e4d9d30842a8d0"
+    },
+    {
+      "path": "docs/stories/platform.CAP.orchestration_health_watch.L1-BY-HAND.md",
+      "sha256": "a0328852fde0ca6aaa30ffebd88feb15d673cc9c7724e582877dd35fec983514"
+    },
+    {
+      "path": "docs/stories/platform.CAP.orchestration_health_watch.L2-IN-THE-APP.md",
+      "sha256": "9e225815c23129ee367caecba76cc266379cad98c3059a19b6e37ce90360995e"
+    },
+    {
+      "path": "docs/stories/platform.CAP.orchestration_health_watch.L3-TOOL-REQUEST.md",
+      "sha256": "6319f031cc34f0f1e32a760c267cf399546af1cd2f7d7fb5e28f7de0e83cd679"
+    },
+    {
+      "path": "docs/stories/platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED.md",
+      "sha256": "4d534f32740ad1432cc523963674adc5990370cd59359d82f42073e1b9d68238"
     },
     {
       "path": "docs/stories/platform.CAP.platform_bug_fix_dispatch.md",
-      "sha256": "098e6c8d61739db4fe2c8a64a1b130af6f52dae18f6fde191a9fb68b0e859090"
+      "sha256": "ba3df34c67a2870fcbb2e7306a03affc1e96208204ea6de738789535de5b610b"
     },
     {
       "path": "docs/stories/platform.CAP.preview_stack_reaping.md",
-      "sha256": "14b5ef0e892545be7185d9c528695cc7dedda08a9ca0c620861e44ed6de652e3"
+      "sha256": "3f9eaef7d0014cc1407bf1955d860535961b18dc61eb9c9b5d021deb69031265"
     },
     {
       "path": "docs/stories/platform.CAP.production_deploy_review_and_approval.md",
-      "sha256": "c92cd2e650c78f3d4a867858b78720cfa91b2399d25a9d9bb77d92ade4d60b66"
+      "sha256": "5c0ab3585ae2d49c395fa6f87df67a8ba7a9e82040c0af69aba95c657530a9e9"
     },
     {
       "path": "docs/stories/platform.CAP.prompt_and_performance_optimization.md",
-      "sha256": "3f1393acc5c296b22411c79ec9b14750afb03b4b0303e6c615ab1417993ffe11"
+      "sha256": "de7e663fe97621005dfb720ac823fd34ddd989a6e2193eefc6f26bb63d531a59"
     },
     {
       "path": "docs/stories/platform.CAP.registry_runtime_reconciliation.md",
-      "sha256": "956c922b8ab0cec1dda3c6089c4f7f94cfc6086b445cd27bd90b96b8ec0a1983"
+      "sha256": "facd988b98ecbeb199a8d83f40db11de99c547b3d8da800aef8cef97e8e76af0"
     },
     {
       "path": "docs/stories/platform.CAP.reliability_briefing_for_manager.md",
-      "sha256": "eb945cfadc77fbacfd6af6269048456e369df7a298992481a1a1fac113675fd7"
+      "sha256": "53a420e1e4a6461e9265c65dd055e6f298914a13f9d492f861a4ec347fb76ba9"
     },
     {
       "path": "docs/stories/platform.CAP.reliability_threshold_ownership.md",
-      "sha256": "a1296db480ed9bf20418fd4f87e4adb04a42877b92972abee1f6a4c82b3e1940"
+      "sha256": "3175b94552fd8cc1dc4cebe7ccdac013aba2d448c25c348e91c580808d2fc6c7"
     },
     {
       "path": "docs/stories/platform.CAP.runtime_cron_drift_detection.md",
-      "sha256": "ea848ca986a25210767636316ce6c995510b1a611dd3d3070d0208be76ffe5eb"
+      "sha256": "283080b9ba60e648f7f5af212631447acfcdefe39778f92168e9c048fe16d343"
     },
     {
       "path": "docs/stories/platform.CAP.runtime_threat_and_access_watch.md",
-      "sha256": "cabb430e091029b7346a445e4002e9bbed22708e9637c9e483915a584fedb22f"
+      "sha256": "58166917c8749e4c91c5d118f61bca1a7c69d59c225ddd1036a8145aba761a66"
     },
     {
       "path": "docs/stories/platform.CAP.schedule_governance_live_reload.md",
-      "sha256": "b000bb0df80ef0155602ff3f09130959c5465a78c905943aba88feadab03fa2c"
+      "sha256": "faf8cae999d8bdadbb982dd1d1b13caa74009af5f795cc8852dbcabe2a6c5f9b"
     },
     {
       "path": "docs/stories/platform.CAP.scheduler_registration_liveness_probe.md",
-      "sha256": "2f415f7d492a40cc787075e8f113f09b4a2e28dbe3d62c7ed6bc7cd6b57c6c73"
+      "sha256": "702eb951df0e66230e5aa7eca7793256b788e81158b58be8fea6b3f18e90ffb5"
     },
     {
       "path": "docs/stories/platform.CAP.schema_drift_detection.md",
-      "sha256": "9df39c30e3c23903b99661f67ee2c942d4b0e5f93e42f85d117cdfe84c61c63c"
+      "sha256": "fef6b811a5b39e29b1cf3d7ee1e934188c44149fb5a1d40793e2b2bb00f013ee"
     },
     {
       "path": "docs/stories/platform.CAP.security_oversight_rollup.md",
-      "sha256": "ef22b7370b0fae8a603b180b03f7efc992cec5109b35ab3f21baf31a52487b6d"
+      "sha256": "3586e0bdae2a41e140f06e0002d6dac0872bb03bd12357182cdb6814b6c9666e"
     },
     {
       "path": "docs/stories/platform.CAP.security_posture_scan.md",
-      "sha256": "e88972dbac8bf763f780a842987e2aa7897fbfbecd79e37fe81176d3c62e65ba"
+      "sha256": "8b724608205626577adc1369271036fb6be39f1f3557111b79246091cc73a565"
     },
     {
       "path": "docs/stories/platform.CAP.stale_action_recovery.md",
-      "sha256": "1ae5c038c15115ec8bf611f8e94d14230fce66a15957207711f3b44341b179a5"
+      "sha256": "de25c5c1ed8c3943c69d0724164498fb2e1f0588f7ec8fd6acb3c0e2427c3e0b"
     },
     {
       "path": "docs/stories/platform.CAP.system_health_probe_and_alerting.md",
-      "sha256": "e177400bcfd475f6eaca3363f6f1aef4352cc6ff07bddf0cd2b016da30078751"
+      "sha256": "e1572ce3db63b127ad0f9664d8e2a2ed99451f177f15c6f68bcb92f29c5bdb61"
     },
     {
       "path": "docs/stories/platform.CAP.system_resilience_supervision.md",
-      "sha256": "9be53efa51f65a06db9e5a36811cefcc66faf2c2efaa1ab66d7c82777272676d"
+      "sha256": "795373e3a8e19e4c28b812c5f288a4957f6fae8bd968a434b0944f085f7a9958"
     },
     {
       "path": "docs/stories/platform.CAP.untracked_timer_registration_proposal.md",
-      "sha256": "9bbad334310b130c1cc51b84e8d674cf6d59acbfd1f3b0e69de787da02f2dffe"
+      "sha256": "87aed7ee91ce19071715123c2f9e7fb9e6fb6a8e5c2794bd25a84d7c184dcbdb"
     },
     {
       "path": "docs/stories/platform.CAP.workforce_technology_direction.md",
-      "sha256": "de57ef212bcc5472d52e7fbdd1a7d66cd56b945cab393d48ccac5c2975a1024b"
+      "sha256": "19179938739450490e15b82106b262321759b90f2939617f4d17563df21bc2a2"
     },
     {
       "path": "docs/stories/platform.LEGACY-MIGRATION-PLAN.md",
-      "sha256": "46651ea3268d0cc055ce131699771f0c7956fd80e07115e09d1ba9449849f778"
+      "sha256": "3c2818e9e6fb8da9e50acac440cdaeeae4fe46d3f653bb57e0ce6e4aae613b5d"
     },
     {
       "path": "docs/stories/platform.RESEARCH-1-SYSTEM-CLASSES.md",
-      "sha256": "732b6285b6c1c3a78488560287565bd970184ebde74cd133149266f3c0d03f36"
+      "sha256": "c104695a55858a1b129e7592f112b9e8551586dec5638e481af3a244598cc157"
     },
     {
       "path": "docs/stories/platform.RESEARCH-2-AGENT-ANATOMY.md",
-      "sha256": "d6131a2305dae0d64ea393844aec7ed63afb15dacec671b02f3948ccbf4ae236"
+      "sha256": "56bde7306a6f36e6eed46f1af41aa061bea94c356e9129b283326a150d850ca6"
     },
     {
       "path": "docs/stories/platform.RESEARCH-3-ROLE-AND-DA-TRANSITION.md",
-      "sha256": "731db2a15a578a00d04e95fbf205131830fd5cb9416e45d80658c0700b58f040"
+      "sha256": "49a866efa112000cb549ec296da5d3eb2eb55347aa87e1ee41856233cdd61536"
     },
     {
       "path": "docs/stories/platform.RESEARCH-4-MANAGER-INTERVIEW.md",
-      "sha256": "e2633d553efc0016b27618d9483ee23e0fd2aed93f97ca3272a4b89fa430eea0"
+      "sha256": "3f86ff58c59b432d5584e3fe80db895dd6d59050426ed7e09655b68d20f53ab4"
     },
     {
       "path": "docs/stories/platform.RESEARCH-5-THREE-PROPOSED-TASKS.md",
-      "sha256": "2967f023315ade3bd19dcbf784ce8265ff81127adecbff57c127a37e8f93edef"
+      "sha256": "8b97043657c84f92c471e5e111e6b72772397157f11115b642d90671f695ebce"
     },
     {
       "path": "docs/stories/platform.STORY-000.md",
-      "sha256": "2258bd3712af62c52ff2ee955edb13afb22aff70555f6fedeb8735a218c3bdda"
+      "sha256": "de8be8c33584f07095fdebc8c4bf045f99a20d971e701b6e54483d33d3043f47"
     },
     {
       "path": ".colaberry/plan.json",
-      "sha256": "8df1b3564b9a2bd7448fb0ffebecaaad8c02fd6df857898a55389829739a7866"
+      "sha256": "140ebff7883c235bb3f78aea8b828cd1ac3e5f857a744210a4e2e44f3900f8ca"
     },
     {
       "path": ".colaberry/progress.json",
-      "sha256": "b4dbab42c1333073a83deb6d63cb12e073fe9edd95dbb094e2f6ba16b8f4c631"
+      "sha256": "eea7bc7fc8c06752195eab4d70fbdb450d4c09486bea7481c6c34baa540a3321"
     },
     {
       "path": ".colaberry/profile.json",

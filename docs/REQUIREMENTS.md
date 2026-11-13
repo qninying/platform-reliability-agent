@@ -1,4 +1,4 @@
-# platform — Requirements
+# Platform Automation & Reliability — Requirements
 
 The platform domain agent.
 

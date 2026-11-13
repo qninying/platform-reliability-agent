@@ -1,5 +1,7 @@
 # platform.CAP.idempotency_and_replay_audit — Idempotency and replay-safety audit
 
+**CANDIDATE -- not started, not assigned.** This is one line on this domain's list of everything its agent could eventually do. It becomes real work only when the builder picks it and their manager agrees, at which point it opens as four stories. Until then it is deliberately inert, and the honest status of it is "not started" rather than "behind".
+
 Every side-effecting job, webhook handler and script is assessed for whether running it twice produces one outcome, so retry and recovery stop being guesses.
 
 **Built today:** absent. **Requirement validated:** draft -- Kesetebirhan Delele must confirm scope, exceptions and success measures; he has no admin login today
@@ -11,7 +13,7 @@ Every side-effecting job, webhook handler and script is assessed for whether run
 
 Full build prompt is attached to this story.
 
-**Release:** r2 · r2 (weeks 0–0)
+**Release:** autonomy:R0 · Legacy migration plan (weeks 0–0)
 **Owner:** 
 **Blocked by:** nothing — you can start this now
 

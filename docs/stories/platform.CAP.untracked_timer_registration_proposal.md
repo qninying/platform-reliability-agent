@@ -1,5 +1,7 @@
 # platform.CAP.untracked_timer_registration_proposal — Untracked timer registration proposal
 
+**CANDIDATE -- not started, not assigned.** This is one line on this domain's list of everything its agent could eventually do. It becomes real work only when the builder picks it and their manager agrees, at which point it opens as four stories. Until then it is deliberately inert, and the honest status of it is "not started" rather than "behind".
+
 Every timer that fires without a registry row gets a proposed row, so the fleet becomes governable — each job gaining an enabled gate, a run count and a place in health alerting.
 
 **Built today:** absent. **Requirement validated:** draft -- Kesetebirhan Delele must confirm scope, exceptions and success measures; he has no admin login today
@@ -11,7 +13,7 @@ Every timer that fires without a registry row gets a proposed row, so the fleet 
 
 Full build prompt is attached to this story.
 
-**Release:** r2 · r2 (weeks 0–0)
+**Release:** autonomy:R0 · Legacy migration plan (weeks 0–0)
 **Owner:** 
 **Blocked by:** nothing — you can start this now
 
