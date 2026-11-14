@@ -343,7 +343,7 @@
       "approved_autonomy_note": null,
       "max_permitted_autonomy": "autonomy:R5",
       "max_permitted_autonomy_note": null,
-      "ceiling_reason": "Read-and-report over existing records. Shadow evaluation against an approved reference verdict is the highest rung that needs no new production side effect; anything above R5 would mean acting on the verdict, which is a separate capability."
+      "ceiling_reason": "Read-and-report over existing records. Shadow evaluation against an approved reference score is the highest rung that needs no new production side effect; anything above R5 would mean acting on the score, which is a separate capability."
     },
     {
       "capability_id": "platform.platform_bug_fix_dispatch",
@@ -454,6 +454,16 @@
       "max_permitted_autonomy": "autonomy:R2",
       "max_permitted_autonomy_note": null,
       "ceiling_reason": "Changing a live schedule or disabling a live timer is a human decision by this domain's own rule. The agent may propose a cadence change with the cost and signal evidence behind it; a human applies it. R2 is the ceiling because every rung above involves touching the live schedule."
+    },
+    {
+      "capability_id": "platform.scheduler_liveness_watch",
+      "effective_autonomy": "autonomy:R0",
+      "reasons": [],
+      "approved_autonomy": "autonomy:R0",
+      "approved_autonomy_note": null,
+      "max_permitted_autonomy": "autonomy:R5",
+      "max_permitted_autonomy_note": null,
+      "ceiling_reason": "Read-and-report over scheduler records, plus a notification. Shadow evaluation against an approved reference verdict is the highest rung that needs no new production side effect; acting on a silent agent, such as restarting it, is platform.orchestration_auto_repair's job and not this one's."
     },
     {
       "capability_id": "platform.scheduler_registration_liveness_probe",
@@ -568,10 +578,10 @@
     "disclosure": "A criterion counts as passing when it is marked in `.colaberry/progress.json` in this repository. The verifier reads that file on every sync and records what it found. A story showing 0 of N is not a rejection: nothing has been claimed yet.",
     "summary": {
       "stories": 59,
-      "checked": 55,
+      "checked": 59,
       "verified": 47,
-      "awaiting_criteria": 2,
-      "outstanding_criteria": 2
+      "awaiting_criteria": 6,
+      "outstanding_criteria": 12
     },
     "stories": [
       {
@@ -963,49 +973,75 @@
       {
         "story_id": "platform.CAP.orchestration_health_watch.L1-BY-HAND",
         "title": "Orchestration health watch · 1 · do it by hand",
-        "status": "not_started",
-        "verification_state": null,
+        "status": "in_progress",
+        "verification_state": "in_progress",
         "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
+        "criteria_passed": 0,
+        "criteria_total": 2,
+        "reasons": [
+          "None of the 2 acceptance criteria are marked as passing yet.",
+          "No commit in the repo names platform.CAP.orchestration_health_watch.L1-BY-HAND and changes a file. Commit your work with a `Story: platform.CAP.orchestration_health_watch.L1-BY-HAND` trailer (or platform.CAP.orchestration_health_watch.L1-BY-HAND in the subject line) and push."
+        ],
+        "outstanding": [
+          "The capability was performed end to end by hand, producing its real outcome on real inputs.",
+          "A run log exists recording the date, the elapsed time, each step actually performed, every judgment call made, and at least one way the recorded workflow differed from what the work was really like."
+        ],
         "commit_sha": null
       },
       {
         "story_id": "platform.CAP.orchestration_health_watch.L2-IN-THE-APP",
         "title": "Orchestration health watch · 2 · do it in the app",
-        "status": "not_started",
-        "verification_state": null,
+        "status": "in_progress",
+        "verification_state": "in_progress",
         "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
+        "criteria_passed": 0,
+        "criteria_total": 2,
+        "reasons": [
+          "None of the 2 acceptance criteria are marked as passing yet.",
+          "No commit in the repo names platform.CAP.orchestration_health_watch.L2-IN-THE-APP and changes a file. Commit your work with a `Story: platform.CAP.orchestration_health_watch.L2-IN-THE-APP` trailer (or platform.CAP.orchestration_health_watch.L2-IN-THE-APP in the subject line) and push."
+        ],
+        "outstanding": [
+          "The same outcome was produced a second time using only the product, with no agent, no script and no direct database edit -- or the exact step that made this impossible is written down as a named gap.",
+          "The app route was compared against the step 1 run log, and every difference between them is recorded."
+        ],
         "commit_sha": null
       },
       {
         "story_id": "platform.CAP.orchestration_health_watch.L3-TOOL-REQUEST",
         "title": "Orchestration health watch · 3 · request the tool",
-        "status": "not_started",
-        "verification_state": null,
+        "status": "in_progress",
+        "verification_state": "in_progress",
         "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
+        "criteria_passed": 0,
+        "criteria_total": 3,
+        "reasons": [
+          "None of the 3 acceptance criteria are marked as passing yet.",
+          "No commit in the repo names platform.CAP.orchestration_health_watch.L3-TOOL-REQUEST and changes a file. Commit your work with a `Story: platform.CAP.orchestration_health_watch.L3-TOOL-REQUEST` trailer (or platform.CAP.orchestration_health_watch.L3-TOOL-REQUEST in the subject line) and push."
+        ],
+        "outstanding": [
+          "A change request for a tool exists against this domain, filed by the builder, naming the tool, its scope, what it must never touch, and who approves a run.",
+          "The request cites the step 1 run log and the step 2 result as its evidence.",
+          "A named human other than the builder has recorded a decision on it. A decline counts; an undecided request does not."
+        ],
         "commit_sha": null
       },
       {
         "story_id": "platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED",
         "title": "Orchestration health watch · 4 · agent does it, watched",
-        "status": "not_started",
-        "verification_state": null,
+        "status": "in_progress",
+        "verification_state": "in_progress",
         "verified": false,
-        "criteria_passed": null,
-        "criteria_total": null,
-        "reasons": [],
-        "outstanding": [],
+        "criteria_passed": 0,
+        "criteria_total": 3,
+        "reasons": [
+          "None of the 3 acceptance criteria are marked as passing yet.",
+          "No commit in the repo names platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED and changes a file. Commit your work with a `Story: platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED` trailer (or platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED in the subject line) and push."
+        ],
+        "outstanding": [
+          "Every answer cites the ai_agents row and activity-log rows it was derived from; no answer is produced for an agent name with no row.",
+          "The agent produced the same outcome as the step 1 run log, on the same inputs, including the exceptions recorded there.",
+          "Every run in the evidence window was approved by a named human before it took effect, and the record shows who."
+        ],
         "commit_sha": null
       },
       {
