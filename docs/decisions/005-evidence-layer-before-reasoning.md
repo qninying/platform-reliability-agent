@@ -24,6 +24,14 @@ model's answer can always be traced to records and checked.
 - Every answer is reproducible from its input, which is what promotion up the autonomy ladder needs.
 
 ## Evidence
-- `src/` has no runtime dependencies and no network calls (`package.json`: devDependencies only).
+- At the time of this decision, `src/` had no runtime dependencies and no network calls (`package.json`:
+  devDependencies only).
+
+## Update, 2026-11-20: the reasoning layer starts
+K.D. asked for a demo agent following his architecture: a model on top, the checks as its tools. It is
+`src/agent/` and `npm run ask`. The decision holds: the model reasons only over the checks' verdicts and
+citations, through a guardrail that refuses any tool not on the read-only list and records proposed changes
+for a person instead of carrying them out. The checks themselves are unchanged and still make no model call.
+The one runtime dependency added is the Anthropic SDK, used only by `npm run ask`.
 - Most capability test files run the same input twice and require the same answer (for example
   `test/agentHealthScoring.test.ts`, `test/orchestrationAutoRepair.test.ts`).

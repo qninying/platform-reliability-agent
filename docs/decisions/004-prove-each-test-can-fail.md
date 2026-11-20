@@ -13,7 +13,7 @@ part of every capability write-up, under "The tests catch defects". A mutation t
 treated as a missing test and closed before the capability is committed.
 
 ## Alternatives considered
-- **A mutation-testing framework.** Deferred: Ellis has no runtime dependencies, and hand-chosen mutations
+- **A mutation-testing framework.** Deferred: the checks have no runtime dependencies, and hand-chosen mutations
   target the rules that matter rather than every operator.
 - **Coverage figures.** Rejected as the bar: coverage shows a line ran, not that a wrong answer would be noticed.
 

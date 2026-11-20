@@ -15,9 +15,9 @@ healthy, what is broken, and what it cannot see.**
 >   *healthy*, *broken* and *unknown*, citing the database row behind every verdict.
 > - **My role:** Forward Deployed Engineer: discovery with the platform's manager, architecture, build, and
 >   governance, end to end.
-> - **Stack:** TypeScript on Node 23.6+ (no runtime dependencies), `node:test`, GitHub Actions, Mermaid; the
+> - **Stack:** TypeScript on Node 23.6+ (one runtime dependency, the Anthropic SDK, used only by the optional `ask` command), `node:test`, GitHub Actions, Mermaid; the
 >   platform is Node, Express and PostgreSQL.
-> - **Result:** 39 capabilities built (build-plan stories: 40 of 48 verified by the platform), 929 passing tests,
+> - **Result:** 39 capabilities built (build-plan stories: 40 of 48 verified by the platform), 946 passing tests,
 >   and five fixes merged into the platform from Ellis's findings
 >   ([#3410](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3410),
 >   [#3422](https://github.com/ColaberryIntern/ColaberryEnterprise_AI_LeadershipAccelerator/pull/3422),
@@ -108,7 +108,8 @@ where running the same repair twice changes things once.
 
 Diagram source: [`overview.mmd`](docs/architecture/overview.mmd), rendered to SVG with Mermaid (plain text labels).
 
-Ellis holds no credentials and has no network path to the platform. Detail, layers and the sandbox
+Ellis holds no platform credentials and has no network path to the platform. The optional `ask` command calls one
+external service, the model API, with a key the operator supplies; the checks it runs never receive that key. Detail, layers and the sandbox
 boundaries: [docs/architecture](docs/architecture/README.md).
 
 ## Key engineering decisions
@@ -119,13 +120,13 @@ boundaries: [docs/architecture](docs/architecture/README.md).
 | [Unknown is never healthy](docs/decisions/002-unknown-is-not-healthy.md) | Most findings were something reporting health it had not measured | More answers read `unknown`, which is less comfortable but true |
 | [Pin rules to platform code, re-check live](docs/decisions/003-pin-to-platform-code.md) | The platform changes daily; an unpinned copy goes stale silently | Each pin is maintenance when the platform changes |
 | [Prove each test can fail](docs/decisions/004-prove-each-test-can-fail.md) | A test that passes first time may not test its rule | Slower to finish each capability |
-| [Evidence layer before reasoning layer](docs/decisions/005-evidence-layer-before-reasoning.md) | A model's answer must trace to records K.D. can check before promotion | No free-form questions yet |
+| [Evidence layer before reasoning layer](docs/decisions/005-evidence-layer-before-reasoning.md) | A model's answer must trace to records K.D. can check before promotion | Free-form questions arrived only on 20 Nov, and only over the checks (`npm run ask`) |
 | [Shadow runs judged only against K.D.'s limits](docs/decisions/007-shadow-judged-only-against-kd-limits.md) | A default threshold would read as an approved one | Every [shadow](docs/GLOSSARY.md#terms) run is not judged until K.D. sets limits |
 
 ## Run it
 
 ```
-npm install   # TypeScript for the type check; Ellis itself has no runtime dependencies
+npm install   # TypeScript for the type check, and the Anthropic SDK for `npm run ask`
 npm test
 npm run typecheck
 npm run cron-health -- --snapshot examples/cron-health.example.json    # exits 3: blind spots listed
@@ -137,6 +138,35 @@ npm run shadow-observations -- --mode record --monitor cron_health --snapshot ex
 
 Each capability has a command and an example input in `examples/`. The examples are built from platform
 source or written for tests, never production data. Each write-up explains its command and exit codes.
+
+### Ask Ellis a question (agent layer, demo)
+
+Following K.D.'s agent architecture (20 Nov), a model sits on top of the checks and uses them as its tools.
+You ask in plain words; the model chooses which checks to run, reads their exit codes and output, and answers
+with the evidence, the blind spots and anything that needs a person.
+
+```
+cp .env.example .env   # add ANTHROPIC_API_KEY; optionally ELLIS_PLATFORM_SOURCE, a read-only platform checkout
+npm run ask -- "Is anything broken right now?"
+npm run ask -- "Why did CampaignHealthScanner fail?"
+npm run ask -- "Is it safe to deploy?"
+npm run ask:web        # the same, as a local page for demos: http://localhost:4317
+```
+
+- **Tools:** eight existing checks (scheduler liveness, cron health, agent health, incident trace, dead-letter
+  triage, error class coverage, deploy readiness, schema drift), each run as its own command over a fixed
+  example input. The model picks the check, never the file it reads.
+- **Guardrail:** a call to anything not on that read-only list is refused, inputs are validated before a check
+  runs, and a proposed change goes to `request_human_approval`, which records it and carries nothing out.
+- **Limits:** a cap on model calls per question (`ELLIS_MAX_STEPS`, default 8), a timeout on every check and
+  on the model call, and long check output shortened to its first rows plus a count, keeping every field.
+- **Record:** each run is written to `.ellis/runs/` (git-ignored) with every tool call, its exit code, the
+  tokens used and an estimated cost.
+- **Demo page:** `npm run ask:web` shows the question, each check as it runs, the answer, the guardrail's
+  decisions and the cost, and replays saved runs without calling the model. It listens on 127.0.0.1 only and
+  accepts a question only from its own page, so another website cannot spend the API credits.
+- **Model:** `claude-sonnet-5-5` by default, set by `ELLIS_MODEL`. The tests use a scripted fake model, so the
+  suite and CI never call the API.
 
 ## Testing approach
 
@@ -162,6 +192,8 @@ npm run check:readme   # README figures against the repository
 ```
 src/capabilities/   one module per capability: the question, the rule, the verdict
 src/cli/            command-line entry points behind each npm run script
+src/agent/          the agent layer: the model loop, the guardrail, the checks as tools, the run record
+src/web/            the local Ask Ellis demo page and its server
 src/output/         the shared output envelope every check returns
 src/sandbox/        journaled sandbox stores for change rehearsals
 src/shadow/         shadow evaluation and the observation builder

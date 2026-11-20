@@ -3,14 +3,19 @@
 ## What Ellis can and cannot touch
 
 - **Read-only.** Capabilities read platform records through an interface with no write method
-  (`src/readSource.ts`). Ellis holds no database credentials, API keys or tokens, and makes no network calls.
+  (`src/readSource.ts`). The checks hold no database credentials, API keys or tokens, and make no network calls.
 - **Changes only in a sandbox.** The three capabilities that change state do so on sandbox copies that journal
   every write, or in a directory locked down by Node's permission model (`src/sandbox/`). See
   [decision 001](docs/decisions/001-read-only-first-sandbox-for-change.md).
 - **No production data in this repository.** Everything in `examples/` is built from platform source code or
   written by hand for tests. Secret values are never passed on: the security posture scan reports where a
   secret was found, never the value.
-- **No runtime dependencies,** so there is no third-party code in the run path.
+- **The checks have no runtime dependencies,** so there is no third-party code in their run path.
+- **The agent layer (`npm run ask`) is the one exception.** It uses the Anthropic SDK (pinned to an exact
+  version) to call the model API with a key the operator supplies in a git-ignored `.env`. The key is never
+  logged, never written to the run record, and removed from the environment of every check the model runs.
+  The model can only call the read-only checks on an approved list, and a proposed change is recorded for a
+  person, never carried out (`src/agent/gate.ts`).
 
 ## Platform findings
 

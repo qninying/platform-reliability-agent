@@ -68,10 +68,15 @@
     "command-center-domain": "node scripts/buildCommandCenterDomain.ts",
     "default-on-timers": "node src/cli/defaultOnTimers.ts",
     "scheduler-liveness": "node src/cli/schedulerLiveness.ts",
-    "manager-access": "node src/cli/managerAccess.ts"
+    "manager-access": "node src/cli/managerAccess.ts",
+    "ask": "node --env-file-if-exists=.env src/cli/ask.ts",
+    "ask:web": "node --env-file-if-exists=.env src/cli/askWeb.ts"
   },
   "devDependencies": {
     "@types/node": "22.15.3",
     "typescript": "5.8.3"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "1.6.0"
   }
 }
