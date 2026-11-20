@@ -153,9 +153,11 @@ npm run ask -- "Is it safe to deploy?"
 npm run ask:web        # the same, as a local page for demos: http://localhost:4317
 ```
 
-- **Tools:** eight existing checks (scheduler liveness, cron health, agent health, incident trace, dead-letter
-  triage, error class coverage, deploy readiness, schema drift), each run as its own command over a fixed
-  example input. The model picks the check, never the file it reads.
+- **Tools:** for the demo, 8 of the 39 capabilities are wired in, chosen to answer the three questions above
+  (scheduler liveness, cron health, agent health, incident trace, dead-letter triage, error class coverage,
+  deploy readiness, schema drift). This is a selection, not a limit: any other read-only check is added as one
+  entry in [`src/agent/tools.ts`](src/agent/tools.ts), with no change to the loop or the guardrail. Each runs as
+  its own command over a fixed example input; the model picks the check, never the file it reads.
 - **Guardrail:** a call to anything not on that read-only list is refused, inputs are validated before a check
   runs, and a proposed change goes to `request_human_approval`, which records it and carries nothing out.
 - **Limits:** a cap on model calls per question (`ELLIS_MAX_STEPS`, default 8), a timeout on every check and
