@@ -1095,17 +1095,19 @@
       "criteria": [
         {
           "text": "The same outcome was produced a second time using only the product, with no agent, no script and no direct database edit -- or the exact step that made this impossible is written down as a named gap.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "The app route was compared against the step 1 run log, and every difference between them is recorded.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
+      "files_touched": [
+        "docs/runlogs/orchestration_health_watch-L2-in-the-app.md"
+      ],
       "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "notes": "Tried in the product only on 23 Nov, about 10 minutes. Named gap: Curriculum (/admin/orchestration) and AI Organization (/admin/workforce) show No Access; Agents is the only room that opens and holds no health data. Every difference from the step 1 run log is recorded. A view-only change request was filed the same day.",
+      "updated_at": "2026-11-23",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
