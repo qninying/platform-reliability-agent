@@ -1811,7 +1811,7 @@
         "criteria_total": 1,
         "reasons": [],
         "outstanding": [],
-        "commit_sha": "ce04db2774dd43265e1d9b99a0bdfad7af7f0e46"
+        "commit_sha": "de98ddcb165fd609a0768f6395c3f5651c5743b1"
       },
       {
         "story_id": "platform.CAP.default_on_timer_guard",
@@ -1991,8 +1991,8 @@
       {
         "story_id": "platform.CAP.orchestration_health_watch.L0-ASK-FOR-A-SCREEN",
         "title": "Curriculum content health scan · 0.3 · waiting on the platform",
-        "status": "not_started",
-        "verification_state": "not_started",
+        "status": "in_progress",
+        "verification_state": "in_progress",
         "verified": false,
         "criteria_passed": 0,
         "criteria_total": 3,
@@ -2010,8 +2010,8 @@
       {
         "story_id": "platform.CAP.orchestration_health_watch.L0-CHOOSE",
         "title": "Curriculum content health scan · 0.1 · pick one from the list",
-        "status": "not_started",
-        "verification_state": "not_started",
+        "status": "in_progress",
+        "verification_state": "in_progress",
         "verified": false,
         "criteria_passed": 0,
         "criteria_total": 3,
@@ -2029,8 +2029,8 @@
       {
         "story_id": "platform.CAP.orchestration_health_watch.L0-SCOPE-SHEET",
         "title": "Curriculum content health scan · 0.2 · write the scope sheet",
-        "status": "not_started",
-        "verification_state": "not_started",
+        "status": "in_progress",
+        "verification_state": "in_progress",
         "verified": false,
         "criteria_passed": 0,
         "criteria_total": 3,
@@ -2098,7 +2098,6 @@
         "criteria_total": 3,
         "reasons": [
           "None of the 3 acceptance criteria are marked as passing yet.",
-          "1 criterion/criteria in platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED's entry do not match any acceptance criterion in the published plan, so ticking them would do nothing. Replace them with the exact wording from this story's doc in `docs/stories/platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED.md`, then tick the ones that genuinely pass.",
           "No commit in the repo names platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED and changes a file. Commit your work with a `Story: platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED` trailer (or platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED in the subject line) and push."
         ],
         "outstanding": [
@@ -2239,8 +2238,8 @@
       {
         "story_id": "platform.CAP.scheduler_liveness_watch",
         "title": "Scheduler and agent liveness watch",
-        "status": "not_started",
-        "verification_state": "not_started",
+        "status": "in_progress",
+        "verification_state": "in_progress",
         "verified": false,
         "criteria_passed": 0,
         "criteria_total": 0,
@@ -2372,8 +2371,8 @@
       {
         "story_id": "platform.GATE.R0.1",
         "title": "R0 gate · 1 of 1 · a capability the agent does, watched",
-        "status": "not_started",
-        "verification_state": "not_started",
+        "status": "in_progress",
+        "verification_state": "in_progress",
         "verified": false,
         "criteria_passed": 0,
         "criteria_total": 3,
