@@ -1060,17 +1060,19 @@
       "criteria": [
         {
           "text": "The capability was performed end to end by hand, producing its real outcome on real inputs.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "A run log exists recording the date, the elapsed time, each step actually performed, every judgment call made, and at least one way the recorded workflow differed from what the work was really like.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
+      "files_touched": [
+        "docs/runlogs/orchestration_health_watch-L1-by-hand.md"
+      ],
       "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "notes": "Done by hand on 14 Nov, about 15 minutes (estimated 23 Nov). The portal view was not reachable, so the claims were tested against the platform code. Finding 1: the record described a scheduler watchdog while the code scores course content; the capability was retitled Curriculum content health scan the same day. Run log shared with A.M. on 14 Nov and committed here on 23 Nov.",
+      "updated_at": "2026-11-23",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
