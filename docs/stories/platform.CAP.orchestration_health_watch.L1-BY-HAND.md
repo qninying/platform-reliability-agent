@@ -1,4 +1,4 @@
-# platform.CAP.orchestration_health_watch.L1-BY-HAND — Orchestration health watch · 1 · do it by hand
+# platform.CAP.orchestration_health_watch.L1-BY-HAND — Curriculum content health scan · 1 · do it by hand
 
 **Understand the work by doing it yourself, before anything automates it.**
 

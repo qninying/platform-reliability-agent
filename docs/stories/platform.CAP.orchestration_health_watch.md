@@ -1,4 +1,4 @@
-# platform.CAP.orchestration_health_watch — Orchestration health watch
+# platform.CAP.orchestration_health_watch — Curriculum content health scan
 
 **IN FLIGHT.** This capability is the one this domain is building right now. The work itself is its four ladder stories -- do it by hand, do it in the app, request the tool, then let the agent do it watched -- and they run in that order. This row is the capability they belong to, not a fifth piece of work.
 

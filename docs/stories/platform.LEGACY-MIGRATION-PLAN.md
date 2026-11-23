@@ -27,7 +27,7 @@ Disposition of this domain's 38 inherited legacy agent record(s).
 These are recorded as `unknown` rather than guessed. "No useful legacy functionality is silently lost" is the rule, and an unexamined row is exactly where loss hides.
 
 ### Not covered by this plan
-The 21 legacy records whose `proposed_owner_domain` is `unresolved` belong to no domain and are therefore not in any project's plan. Five of them are live production rows. They need an owner decision, and naming that here is the point.
+The 21 legacy records whose `proposed_owner_domain` is `unresolved` belong to no domain and are therefore not in any project's plan. 13 of them are live, with 1,491,129 runs between them; the 8 proposed for retirement are disabled and have never run. They need an owner decision, and naming that here is the point.
 
 **Release:** autonomy:R0 · Legacy migration plan (weeks 0–0)
 **Owner:** 

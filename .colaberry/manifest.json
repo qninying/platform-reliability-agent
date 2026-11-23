@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-19T01:40:20.109Z",
-  "plan_version": 2,
-  "plan_sha256": "f25112e1434ce9a043d8eb1b7d387b3caa8d3c3d66783f2584a180a94aa1ac3c",
-  "correlation_id": "fe70eb64-7c5e-4fbc-ae9e-a83615fe33ba",
+  "generated_at": "2026-11-23T16:24:50.486Z",
+  "plan_version": 3,
+  "plan_sha256": "3c5dda5557129bccea2c6dc7068b4f001f5de3b38485187c21594189a0b002db",
+  "correlation_id": "cc32a877-185f-43a0-b20f-9f765293338c",
   "project_id": "9424aa6e-f754-521a-ace7-ae17fb2a5ff4",
   "truth_revision": null,
   "files": [
@@ -12,7 +12,7 @@
     },
     {
       "path": "docs/STORIES.md",
-      "sha256": "5abafc9a7bb3df0dad6a1207d4c281ea3932c2ee4bb42fdbc4a5bfbca56623b0"
+      "sha256": "85fa589f10f5300db65b778c1d843e36cdaf947ca4a2aa08dafb6c404e998573"
     },
     {
       "path": "docs/TRACEABILITY.md",
@@ -20,11 +20,19 @@
     },
     {
       "path": "docs/DATA_CONTRACT.md",
-      "sha256": "d56e89edcfe36725945d961cf3479b646507d1fa855bba0dcdfff3f8f8a658b0"
+      "sha256": "f40e4c188037375d1a26fa99184eb5a550e81a492723e28e98f37d33deb02b72"
     },
     {
       "path": "CLAUDE.md",
       "sha256": "5c4c2a8d1d8f82cde49a07e8f05a5c77430d34a0668e002b22f857dabac0b701"
+    },
+    {
+      "path": "docs/agent/README.md",
+      "sha256": "d505a1cb65080cccaeb1309179099c72bafbb60f86b4ad28d71e5293c4d79826"
+    },
+    {
+      "path": "docs/agent/capability.md",
+      "sha256": "21c003d5fa56a4da809ffc5deacbc557aa692ae7518e59feae278010d1836263"
     },
     {
       "path": "docs/stories/platform.CAP.agent_behavior_safety_watch.md",
@@ -140,23 +148,35 @@
     },
     {
       "path": "docs/stories/platform.CAP.orchestration_health_watch.md",
-      "sha256": "9c4672c3315f6d8d8b7dcffee4317e90ffa72c251a87e26842e4d9d30842a8d0"
+      "sha256": "39f5ab747e08ff1bd66f0e9b2fd7ac0023de52e4f88cdffafd8ab802c00c69bc"
+    },
+    {
+      "path": "docs/stories/platform.CAP.orchestration_health_watch.L0-ASK-FOR-A-SCREEN.md",
+      "sha256": "b9c5b88a0434eda7ed8c9dc81a4b21719b7ed7f0b6cd5fde1e672c8f096ae1c1"
+    },
+    {
+      "path": "docs/stories/platform.CAP.orchestration_health_watch.L0-CHOOSE.md",
+      "sha256": "4752574e894d096b4f1ad2c7516ef7b696ba4300517c64a484e362eb8cf0c8ab"
+    },
+    {
+      "path": "docs/stories/platform.CAP.orchestration_health_watch.L0-SCOPE-SHEET.md",
+      "sha256": "a641e238d9df0fcea824532a7522cd6de05fb9d9528af8fe98b419925c80e089"
     },
     {
       "path": "docs/stories/platform.CAP.orchestration_health_watch.L1-BY-HAND.md",
-      "sha256": "a0328852fde0ca6aaa30ffebd88feb15d673cc9c7724e582877dd35fec983514"
+      "sha256": "1c7e700ecb4ba12deb45bb14105c90dc3c4b21ef28c68409d98af6227c519b39"
     },
     {
       "path": "docs/stories/platform.CAP.orchestration_health_watch.L2-IN-THE-APP.md",
-      "sha256": "9e225815c23129ee367caecba76cc266379cad98c3059a19b6e37ce90360995e"
+      "sha256": "2d5adb5197871a3507dfda5f33291c950833bb547dfb15988405883cf670a9a9"
     },
     {
       "path": "docs/stories/platform.CAP.orchestration_health_watch.L3-TOOL-REQUEST.md",
-      "sha256": "6319f031cc34f0f1e32a760c267cf399546af1cd2f7d7fb5e28f7de0e83cd679"
+      "sha256": "7075a39a8dc7bdbb1300c8266276f7f6f47d4486e4947698b60f561cd0470fb8"
     },
     {
       "path": "docs/stories/platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED.md",
-      "sha256": "4d534f32740ad1432cc523963674adc5990370cd59359d82f42073e1b9d68238"
+      "sha256": "85a2d16bfb1eec55307c3aa0a7c52854196c573aca57aa67c42b02a824d3ad36"
     },
     {
       "path": "docs/stories/platform.CAP.platform_bug_fix_dispatch.md",
@@ -199,6 +219,10 @@
       "sha256": "faf8cae999d8bdadbb982dd1d1b13caa74009af5f795cc8852dbcabe2a6c5f9b"
     },
     {
+      "path": "docs/stories/platform.CAP.scheduler_liveness_watch.md",
+      "sha256": "a84dd7e84478acdebbd04d80efac33c43f93ed73c5a0eb7bf4844d370563acd5"
+    },
+    {
       "path": "docs/stories/platform.CAP.scheduler_registration_liveness_probe.md",
       "sha256": "702eb951df0e66230e5aa7eca7793256b788e81158b58be8fea6b3f18e90ffb5"
     },
@@ -235,8 +259,12 @@
       "sha256": "19179938739450490e15b82106b262321759b90f2939617f4d17563df21bc2a2"
     },
     {
+      "path": "docs/stories/platform.GATE.R0.1.md",
+      "sha256": "ef1a20aca74aaf7401f73ac5de61f0df048ff94dbeaa67b91c4fdc6c8b782b94"
+    },
+    {
       "path": "docs/stories/platform.LEGACY-MIGRATION-PLAN.md",
-      "sha256": "3c2818e9e6fb8da9e50acac440cdaeeae4fe46d3f653bb57e0ce6e4aae613b5d"
+      "sha256": "bfbca01a56cf91c0fd6e9d5c9c11324626976f23bca1467810cae7cab61fb071"
     },
     {
       "path": "docs/stories/platform.RESEARCH-1-SYSTEM-CLASSES.md",
@@ -264,11 +292,11 @@
     },
     {
       "path": ".colaberry/plan.json",
-      "sha256": "140ebff7883c235bb3f78aea8b828cd1ac3e5f857a744210a4e2e44f3900f8ca"
+      "sha256": "e4faf56eae4be7df3fef1733a164736d134172a8a1cedae44d3906ef25c4405e"
     },
     {
       "path": ".colaberry/progress.json",
-      "sha256": "92350c86c693d2326b5d4936a21b720e3478bc01471827629bb2e6f63b3e33d6"
+      "sha256": "0fc4be96a474d22983ddc03f4809db1ff498aac2daaf67ac073ab2334f869b05"
     },
     {
       "path": ".colaberry/profile.json",
@@ -276,11 +304,15 @@
     },
     {
       "path": ".colaberry/agent-domain.json",
-      "sha256": "02d5a81dcde5f547c845a75f0697892c97b6b5ce9e0b832a575f4caf975cf008"
+      "sha256": "2a81f4f56b514b6b431479a05ca0d6ffa42839ceaec85d2b8d81d4b416f805a2"
     },
     {
       "path": "docs/stories/STORY-000.md",
       "sha256": "082341a4f6aa558da99a8bb0fe4e54977a4a56a8659a2422450a65ac97c84029"
+    },
+    {
+      "path": ".nojekyll",
+      "sha256": "d217e70c3bf6e6d9e36bf665911518f42d770a37127ccdef341cdd48fd3ece4b"
     }
   ]
 }

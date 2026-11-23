@@ -1,4 +1,4 @@
-# platform.CAP.orchestration_health_watch.L3-TOOL-REQUEST — Orchestration health watch · 3 · request the tool
+# platform.CAP.orchestration_health_watch.L3-TOOL-REQUEST — Curriculum content health scan · 3 · request the tool
 
 **Ask for the tool, and let a human decide whether the agent may have it.**
 

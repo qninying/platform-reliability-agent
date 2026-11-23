@@ -2,14 +2,14 @@
   "schema_version": 2,
   "project": "Platform Automation & Reliability",
   "totals": {
-    "stories_total": 59,
-    "stories_verified": 47,
+    "stories_total": 64,
+    "stories_verified": 49,
     "stories_submitted": 6,
-    "stories_in_progress": 6,
-    "stories_not_started": 0,
-    "criteria_total": 82,
-    "criteria_passed": 70,
-    "points_awarded": 705
+    "stories_in_progress": 4,
+    "stories_not_started": 5,
+    "criteria_total": 94,
+    "criteria_passed": 74,
+    "points_awarded": 731
   },
   "stories": [
     {
@@ -542,7 +542,7 @@
         "verified_at": "2026-10-30T17:25:22.400Z",
         "commit_sha": "730bfaecb33a8374c169121353d89ded8376ee9b",
         "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/730bfaecb33a8374c169121353d89ded8376ee9b",
-        "commit_at": "2026-10-30T17:25:04Z",
+        "commit_at": "2026-11-05T00:15:53Z",
         "points_awarded": 15,
         "outstanding": []
       }
@@ -1054,6 +1054,120 @@
       }
     },
     {
+      "id": "platform.CAP.orchestration_health_watch.L0-ASK-FOR-A-SCREEN",
+      "release": "autonomy:R0",
+      "acceptance_total": 3,
+      "criteria": [
+        {
+          "text": "A change request exists against this domain naming the screen or the ruling needed, and the route it would live at.",
+          "passed": false
+        },
+        {
+          "text": "The request does NOT argue that the capability should exist, because the product already does most of it.",
+          "passed": false
+        },
+        {
+          "text": "A second candidate was started while this one waits, so the builder is not idle on a decision that is not theirs.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 3,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "A change request exists against this domain naming the screen or the ruling needed, and the route it would live at.",
+          "The request does NOT argue that the capability should exist, because the product already does most of it.",
+          "A second candidate was started while this one waits, so the builder is not idle on a decision that is not theirs."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.orchestration_health_watch.L0-CHOOSE",
+      "release": "autonomy:R0",
+      "acceptance_total": 3,
+      "criteria": [
+        {
+          "text": "One candidate was chosen from a list of four, and the record names which of the four sources it came from.",
+          "passed": false
+        },
+        {
+          "text": "The choice is written down with one paragraph saying why this one before the other three.",
+          "passed": false
+        },
+        {
+          "text": "The candidate was run past the product front door and the answer is recorded as one of in_app, partly, api_only or not_built, with the feature it matched when it matched one.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 3,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "One candidate was chosen from a list of four, and the record names which of the four sources it came from.",
+          "The choice is written down with one paragraph saying why this one before the other three.",
+          "The candidate was run past the product front door and the answer is recorded as one of in_app, partly, api_only or not_built, with the feature it matched when it matched one."
+        ]
+      }
+    },
+    {
+      "id": "platform.CAP.orchestration_health_watch.L0-SCOPE-SHEET",
+      "release": "autonomy:R0",
+      "acceptance_total": 3,
+      "criteria": [
+        {
+          "text": "The scope sheet names the person who will act on the output, by name rather than by role.",
+          "passed": false
+        },
+        {
+          "text": "It states one threshold that decides whether the capability worked.",
+          "passed": false
+        },
+        {
+          "text": "It names what the system already records that would produce that number, or says plainly that nothing does and that the measurement is part of the build.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 3,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "The scope sheet names the person who will act on the output, by name rather than by role.",
+          "It states one threshold that decides whether the capability worked.",
+          "It names what the system already records that would produce that number, or says plainly that nothing does and that the measurement is part of the build."
+        ]
+      }
+    },
+    {
       "id": "platform.CAP.orchestration_health_watch.L1-BY-HAND",
       "release": "autonomy:R0",
       "acceptance_total": 2,
@@ -1074,18 +1188,15 @@
       "notes": "Done by hand on 14 Nov, about 15 minutes (estimated 23 Nov). The portal view was not reachable, so the claims were tested against the platform code. Finding 1: the record described a scheduler watchdog while the code scores course content; the capability was retitled Curriculum content health scan the same day. Run log shared with A.M. on 14 Nov and committed here on 23 Nov.",
       "updated_at": "2026-11-23",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 2,
         "criteria_total": 2,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "The capability was performed end to end by hand, producing its real outcome on real inputs.",
-          "A run log exists recording the date, the elapsed time, each step actually performed, every judgment call made, and at least one way the recorded workflow differed from what the work was really like."
-        ]
+        "verified_at": "2026-11-23T16:22:11.381Z",
+        "commit_sha": "33798351b4291a2b3cf475bc303ce522b44be519",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/33798351b4291a2b3cf475bc303ce522b44be519",
+        "commit_at": "2026-11-23T16:21:20Z",
+        "points_awarded": 13,
+        "outstanding": []
       }
     },
     {
@@ -1109,18 +1220,15 @@
       "notes": "Tried in the product only on 23 Nov, about 10 minutes. Named gap: Curriculum (/admin/orchestration) and AI Organization (/admin/workforce) show No Access; Agents is the only room that opens and holds no health data. Every difference from the step 1 run log is recorded. A view-only change request was filed the same day.",
       "updated_at": "2026-11-23",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 2,
         "criteria_total": 2,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "The same outcome was produced a second time using only the product, with no agent, no script and no direct database edit -- or the exact step that made this impossible is written down as a named gap.",
-          "The app route was compared against the step 1 run log, and every difference between them is recorded."
-        ]
+        "verified_at": "2026-11-23T16:22:11.448Z",
+        "commit_sha": "ff0d1fec16b382fa652231bb1b52a6d758ed6070",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/ff0d1fec16b382fa652231bb1b52a6d758ed6070",
+        "commit_at": "2026-11-23T16:21:20Z",
+        "points_awarded": 13,
+        "outstanding": []
       }
     },
     {
@@ -1167,7 +1275,7 @@
       "acceptance_total": 3,
       "criteria": [
         {
-          "text": "Every answer cites the ai_agents row and activity-log rows it was derived from; no answer is produced for an agent name with no row.",
+          "text": "Every answer cites the orchestration_health snapshot rows it was derived from, including their scan_timestamp; no answer is produced for a window with no snapshot.",
           "passed": false
         },
         {
@@ -1193,7 +1301,7 @@
         "commit_at": null,
         "points_awarded": null,
         "outstanding": [
-          "Every answer cites the ai_agents row and activity-log rows it was derived from; no answer is produced for an agent name with no row.",
+          "Every answer cites the orchestration_health snapshot rows it was derived from, including their scan_timestamp; no answer is produced for a window with no snapshot.",
           "The agent produced the same outcome as the step 1 run log, on the same inputs, including the exceptions recorded there.",
           "Every run in the evidence window was approved by a named human before it took effect, and the record shows who."
         ]
@@ -1571,6 +1679,27 @@
       }
     },
     {
+      "id": "platform.CAP.scheduler_liveness_watch",
+      "release": "autonomy:R0",
+      "acceptance_total": 0,
+      "criteria": [],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 0,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": []
+      }
+    },
+    {
       "id": "platform.CAP.scheduler_registration_liveness_probe",
       "release": "autonomy:R0",
       "acceptance_total": 1,
@@ -1898,6 +2027,44 @@
         "commit_at": "2026-10-27T13:46:28Z",
         "points_awarded": 15,
         "outstanding": []
+      }
+    },
+    {
+      "id": "platform.GATE.R0.1",
+      "release": "autonomy:R0",
+      "acceptance_total": 3,
+      "criteria": [
+        {
+          "text": "A capability in this domain has reached the watched stage: the agent produced the outcome and a named human approved the run before it took effect.",
+          "passed": false
+        },
+        {
+          "text": "Its output was compared against the by-hand run recorded earlier in the same path, and the differences are written down.",
+          "passed": false
+        },
+        {
+          "text": "It is not a capability already counted toward another R0 gate story.",
+          "passed": false
+        }
+      ],
+      "files_touched": [],
+      "tests_added": [],
+      "notes": null,
+      "updated_at": null,
+      "verification": {
+        "state": "not_started",
+        "criteria_passed": 0,
+        "criteria_total": 3,
+        "verified_at": null,
+        "commit_sha": null,
+        "commit_url": null,
+        "commit_at": null,
+        "points_awarded": null,
+        "outstanding": [
+          "A capability in this domain has reached the watched stage: the agent produced the outcome and a named human approved the run before it took effect.",
+          "Its output was compared against the by-hand run recorded earlier in the same path, and the differences are written down.",
+          "It is not a capability already counted toward another R0 gate story."
+        ]
       }
     },
     {

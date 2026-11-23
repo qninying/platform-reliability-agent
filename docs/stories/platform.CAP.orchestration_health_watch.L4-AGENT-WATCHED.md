@@ -1,4 +1,4 @@
-# platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED — Orchestration health watch · 4 · agent does it, watched
+# platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED — Curriculum content health scan · 4 · agent does it, watched
 
 **Let the agent do it at its starting rung, with a human approving every run.**
 
@@ -102,7 +102,7 @@ the same criteria out of `.colaberry/progress.json`, which Claude Code keeps in
 step (see the managed block in CLAUDE.md). Ticking something you have not
 actually met only misleads you.
 
-- [ ] Every answer cites the ai_agents row and activity-log rows it was derived from; no answer is produced for an agent name with no row.
+- [ ] Every answer cites the orchestration_health snapshot rows it was derived from, including their scan_timestamp; no answer is produced for a window with no snapshot.
 - [ ] The agent produced the same outcome as the step 1 run log, on the same inputs, including the exceptions recorded there.
 - [ ] Every run in the evidence window was approved by a named human before it took effect, and the record shows who.
 

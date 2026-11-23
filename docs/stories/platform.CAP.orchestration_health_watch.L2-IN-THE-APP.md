@@ -1,4 +1,4 @@
-# platform.CAP.orchestration_health_watch.L2-IN-THE-APP — Orchestration health watch · 2 · do it in the app
+# platform.CAP.orchestration_health_watch.L2-IN-THE-APP — Curriculum content health scan · 2 · do it in the app
 
 **Prove the product can already do it, with no agent involved.**
 

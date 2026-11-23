@@ -49,6 +49,7 @@ releases[]       key           string        r0, r1, …
                  starts_on     YYYY-MM-DD | null
                  ends_on       YYYY-MM-DD | null
                  is_demo_target boolean      true for the release you demo
+                 is_roadmap    boolean       after the demo; dated after demo_day
 
 stories[]        id            string        STORY-001, …
                  release       string        a release KEY, not a name
@@ -65,6 +66,7 @@ stories[]        id            string        STORY-001, …
 
 agents[]         id, name, purpose, trigger_type, trigger, inputs[], outputs[],
                  autonomy_level, approval_gates[], escalation_rules[], skills[], owns[]
+                 hard_rules[]  rules nobody can override; may be absent
 
 project          name, descriptor, repo_url, plan_version, plan_sha256
 
@@ -72,10 +74,19 @@ schedule         build_start, build_end, demo_day, build_weeks,
                  demo_release_key, roadmap_release_keys[], prep[]
 
 derived          measures[]    { id, statement }   the numbers you committed to
-                 guardrails[]  { id, statement }   your SAFE requirements
+                 guardrails[]  { id, statement, kind, approver }
+                               your SAFE requirements; kind is approval or hard_rule,
+                               approver is who can let an approval through (null when unnamed)
                  systems[]     string[]            systems named by CONSTRAINTs
                  roles[]       string[]            roles your stories are written for
                  counts        { … }               totals, precomputed
+                 understanding { entries[], unanswered[] }
+                               entries: { dimension, heading, statement, standing }
+                               what you said at intake, quoted; standing is
+                               confirmed | stated_not_confirmed | from_build |
+                               inferred | question | unknown
+                 handoffs[]    { from_agent, to_agent, via }  agent A feeds agent B
+                 artifacts[]   { name, produced_by[], read_by[] }  what agents move
 ```
 
 `derived` is there so every student's page agrees on "which of my requirements
@@ -120,26 +131,33 @@ verification     state             not_started | in_progress | submitted | verif
 absent and zero as different things: absent means not measured, zero means
 measured as zero. Show "not checked yet", never a `0` that reads as a result.
 
+`totals` counts every story in this file, and that includes `STORY-000` (the
+Command Center itself), which `plan.json` does not list. So `stories_total` is
+one more than `plan.stories.length`. Say so beside the number rather than
+showing two counts that disagree.
+
 ## Joining them
 
-The files are normalised, not duplicated — neither repeats the other:
+The files are normalised, not duplicated — neither repeats the other. The paths
+are relative to `index.html` at the repo root:
 
 ```js
 const [plan, progress, manifest] = await Promise.all([
-  fetch('../.colaberry/plan.json').then((r) => r.json()),
-  fetch('../.colaberry/progress.json').then((r) => r.json()),
-  fetch('../.colaberry/manifest.json').then((r) => r.json()),
+  fetch('./.colaberry/plan.json').then((r) => r.json()),
+  fetch('./.colaberry/progress.json').then((r) => r.json()),
+  fetch('./.colaberry/manifest.json').then((r) => r.json()),
 ]);
 
 const progressById = new Map(progress.stories.map((s) => [s.id, s]));
 
-// Story state — from progress, never from plan.
+// Story state — from progress, never from plan. null means NOT CHECKED YET:
+// render it as words, never as `not_started` or a 0, which are measurements.
 const rows = plan.stories.map((story) => {
   const p = progressById.get(story.id);
   return {
     ...story,                                    // title, release, acceptance, due_on
-    state: p?.verification?.state ?? 'not_started',
-    passed: p?.verification?.criteria_passed ?? 0,
+    state: p?.verification?.state ?? null,
+    passed: p?.verification?.criteria_passed ?? null,
     total: p?.verification?.criteria_total ?? story.acceptance.length,
   };
 });

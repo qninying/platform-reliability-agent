@@ -1,6 +1,6 @@
 # Platform Automation & Reliability — Stories
 
-59 stories across 1 releases, walking-skeleton first:
+64 stories across 1 releases, walking-skeleton first:
 the earliest release proves the thinnest end-to-end path including the trust
 spine, and later releases stack features on top of something already working.
 
@@ -46,11 +46,14 @@ system rather than a part of it.
 - **[platform.CAP.manager_restriction_directives](stories/platform.CAP.manager_restriction_directives.md)** — Manager restriction directives
 - **[platform.CAP.manager_scoped_authorization](stories/platform.CAP.manager_scoped_authorization.md)** — Manager-scoped authorization for agent management
 - **[platform.CAP.orchestration_auto_repair](stories/platform.CAP.orchestration_auto_repair.md)** — Orchestration auto-repair
-- **[platform.CAP.orchestration_health_watch](stories/platform.CAP.orchestration_health_watch.md)** — Orchestration health watch
-- **[platform.CAP.orchestration_health_watch.L1-BY-HAND](stories/platform.CAP.orchestration_health_watch.L1-BY-HAND.md)** — Orchestration health watch · 1 · do it by hand
-- **[platform.CAP.orchestration_health_watch.L2-IN-THE-APP](stories/platform.CAP.orchestration_health_watch.L2-IN-THE-APP.md)** — Orchestration health watch · 2 · do it in the app
-- **[platform.CAP.orchestration_health_watch.L3-TOOL-REQUEST](stories/platform.CAP.orchestration_health_watch.L3-TOOL-REQUEST.md)** — Orchestration health watch · 3 · request the tool
-- **[platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED](stories/platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED.md)** — Orchestration health watch · 4 · agent does it, watched
+- **[platform.CAP.orchestration_health_watch](stories/platform.CAP.orchestration_health_watch.md)** — Curriculum content health scan
+- **[platform.CAP.orchestration_health_watch.L0-ASK-FOR-A-SCREEN](stories/platform.CAP.orchestration_health_watch.L0-ASK-FOR-A-SCREEN.md)** — Curriculum content health scan · 0.3 · waiting on the platform
+- **[platform.CAP.orchestration_health_watch.L0-CHOOSE](stories/platform.CAP.orchestration_health_watch.L0-CHOOSE.md)** — Curriculum content health scan · 0.1 · pick one from the list
+- **[platform.CAP.orchestration_health_watch.L0-SCOPE-SHEET](stories/platform.CAP.orchestration_health_watch.L0-SCOPE-SHEET.md)** — Curriculum content health scan · 0.2 · write the scope sheet
+- **[platform.CAP.orchestration_health_watch.L1-BY-HAND](stories/platform.CAP.orchestration_health_watch.L1-BY-HAND.md)** — Curriculum content health scan · 1 · do it by hand
+- **[platform.CAP.orchestration_health_watch.L2-IN-THE-APP](stories/platform.CAP.orchestration_health_watch.L2-IN-THE-APP.md)** — Curriculum content health scan · 2 · do it in the app
+- **[platform.CAP.orchestration_health_watch.L3-TOOL-REQUEST](stories/platform.CAP.orchestration_health_watch.L3-TOOL-REQUEST.md)** — Curriculum content health scan · 3 · request the tool
+- **[platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED](stories/platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED.md)** — Curriculum content health scan · 4 · agent does it, watched
 - **[platform.CAP.platform_bug_fix_dispatch](stories/platform.CAP.platform_bug_fix_dispatch.md)** — On-demand platform bug fix dispatch
 - **[platform.CAP.preview_stack_reaping](stories/platform.CAP.preview_stack_reaping.md)** — Preview stack reaping
 - **[platform.CAP.production_deploy_review_and_approval](stories/platform.CAP.production_deploy_review_and_approval.md)** — Production deploy review and approval
@@ -61,6 +64,7 @@ system rather than a part of it.
 - **[platform.CAP.runtime_cron_drift_detection](stories/platform.CAP.runtime_cron_drift_detection.md)** — Runtime cron drift detection
 - **[platform.CAP.runtime_threat_and_access_watch](stories/platform.CAP.runtime_threat_and_access_watch.md)** — Runtime threat and access-control watch
 - **[platform.CAP.schedule_governance_live_reload](stories/platform.CAP.schedule_governance_live_reload.md)** — Schedule governance and live reload
+- **[platform.CAP.scheduler_liveness_watch](stories/platform.CAP.scheduler_liveness_watch.md)** — Scheduler and agent liveness watch
 - **[platform.CAP.scheduler_registration_liveness_probe](stories/platform.CAP.scheduler_registration_liveness_probe.md)** — Scheduler registration liveness probe
 - **[platform.CAP.schema_drift_detection](stories/platform.CAP.schema_drift_detection.md)** — Schema drift detection between environments
 - **[platform.CAP.security_oversight_rollup](stories/platform.CAP.security_oversight_rollup.md)** — Security oversight rollup
@@ -70,6 +74,7 @@ system rather than a part of it.
 - **[platform.CAP.system_resilience_supervision](stories/platform.CAP.system_resilience_supervision.md)** — System resilience supervision
 - **[platform.CAP.untracked_timer_registration_proposal](stories/platform.CAP.untracked_timer_registration_proposal.md)** — Untracked timer registration proposal
 - **[platform.CAP.workforce_technology_direction](stories/platform.CAP.workforce_technology_direction.md)** — Workforce technology direction
+- **[platform.GATE.R0.1](stories/platform.GATE.R0.1.md)** — R0 gate · 1 of 1 · a capability the agent does, watched
 - **[platform.LEGACY-MIGRATION-PLAN](stories/platform.LEGACY-MIGRATION-PLAN.md)** — Legacy migration plan
 - **[platform.RESEARCH-1-SYSTEM-CLASSES](stories/platform.RESEARCH-1-SYSTEM-CLASSES.md)** — Compare the five system classes, and place this domain among them
 - **[platform.RESEARCH-2-AGENT-ANATOMY](stories/platform.RESEARCH-2-AGENT-ANATOMY.md)** — Map the nine anatomy elements onto this domain's agent

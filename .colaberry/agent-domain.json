@@ -5,7 +5,9 @@
     "agent": "GET /api/admin/agent-domains-mine",
     "capabilities": "GET /api/admin/agent-domains-mine/platform",
     "capability_ladder": "GET /api/admin/agent-domains-mine/platform/coverage",
-    "governance": "GET /api/admin/agent-domain-change-requests-mine"
+    "governance": "GET /api/admin/agent-domain-change-requests-mine",
+    "candidates": "GET /api/admin/agent-domain-candidates-mine",
+    "owed_by_product": "GET /api/admin/agent-domain-candidates-mine"
   },
   "autonomy_models": {
     "agent_level": "observe | suggest | act_audited | communicate -- a property of the employee",
@@ -1576,18 +1578,28 @@
   },
   "governance": {
     "disclosure": "A filed request grants nothing. Status is what a named human decided, and a pending row means nobody has decided yet.",
-    "requests": [],
+    "requests": [
+      {
+        "id": "64c609ba-ff15-4726-ba97-73af6ccfc0ce",
+        "kind": "change",
+        "title": "View-only access to Curriculum Health and the Orchestration Health agent page",
+        "status": "submitted",
+        "requested_at": "2026-11-23T15:52:35.224Z",
+        "approved_at": null,
+        "declined_reason": null
+      }
+    ],
     "pending": 0
   },
   "verification": {
     "known": true,
     "disclosure": "A criterion counts as passing when it is marked in `.colaberry/progress.json` in this repository. The verifier reads that file on every sync and records what it found. A story showing 0 of N is not a rejection: nothing has been claimed yet.",
     "summary": {
-      "stories": 59,
-      "checked": 59,
-      "verified": 47,
-      "awaiting_criteria": 6,
-      "outstanding_criteria": 12
+      "stories": 64,
+      "checked": 64,
+      "verified": 49,
+      "awaiting_criteria": 9,
+      "outstanding_criteria": 20
     },
     "stories": [
       {
@@ -1787,7 +1799,7 @@
         "criteria_total": 1,
         "reasons": [],
         "outstanding": [],
-        "commit_sha": "730bfaecb33a8374c169121353d89ded8376ee9b"
+        "commit_sha": "a8f21d9145e70328a3bb11430c76de55a8f65777"
       },
       {
         "story_id": "platform.CAP.dead_letter_triage",
@@ -1964,7 +1976,7 @@
       },
       {
         "story_id": "platform.CAP.orchestration_health_watch",
-        "title": "Orchestration health watch",
+        "title": "Curriculum content health scan",
         "status": "complete",
         "verification_state": "verified",
         "verified": true,
@@ -1977,44 +1989,89 @@
         "commit_sha": "cd225afb5c023d414572c58b53927efafdf8f3d7"
       },
       {
-        "story_id": "platform.CAP.orchestration_health_watch.L1-BY-HAND",
-        "title": "Orchestration health watch · 1 · do it by hand",
-        "status": "in_progress",
-        "verification_state": "in_progress",
+        "story_id": "platform.CAP.orchestration_health_watch.L0-ASK-FOR-A-SCREEN",
+        "title": "Curriculum content health scan · 0.3 · waiting on the platform",
+        "status": "not_started",
+        "verification_state": "not_started",
         "verified": false,
         "criteria_passed": 0,
-        "criteria_total": 2,
+        "criteria_total": 3,
         "reasons": [
-          "None of the 2 acceptance criteria are marked as passing yet.",
-          "No commit in the repo names platform.CAP.orchestration_health_watch.L1-BY-HAND and changes a file. Commit your work with a `Story: platform.CAP.orchestration_health_watch.L1-BY-HAND` trailer (or platform.CAP.orchestration_health_watch.L1-BY-HAND in the subject line) and push."
+          "None of the 3 acceptance criteria are marked as passing yet.",
+          "No commit in the repo names platform.CAP.orchestration_health_watch.L0-ASK-FOR-A-SCREEN and changes a file. Commit your work with a `Story: platform.CAP.orchestration_health_watch.L0-ASK-FOR-A-SCREEN` trailer (or platform.CAP.orchestration_health_watch.L0-ASK-FOR-A-SCREEN in the subject line) and push."
         ],
         "outstanding": [
-          "The capability was performed end to end by hand, producing its real outcome on real inputs.",
-          "A run log exists recording the date, the elapsed time, each step actually performed, every judgment call made, and at least one way the recorded workflow differed from what the work was really like."
+          "A change request exists against this domain naming the screen or the ruling needed, and the route it would live at.",
+          "The request does NOT argue that the capability should exist, because the product already does most of it.",
+          "A second candidate was started while this one waits, so the builder is not idle on a decision that is not theirs."
         ],
         "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.orchestration_health_watch.L0-CHOOSE",
+        "title": "Curriculum content health scan · 0.1 · pick one from the list",
+        "status": "not_started",
+        "verification_state": "not_started",
+        "verified": false,
+        "criteria_passed": 0,
+        "criteria_total": 3,
+        "reasons": [
+          "None of the 3 acceptance criteria are marked as passing yet.",
+          "No commit in the repo names platform.CAP.orchestration_health_watch.L0-CHOOSE and changes a file. Commit your work with a `Story: platform.CAP.orchestration_health_watch.L0-CHOOSE` trailer (or platform.CAP.orchestration_health_watch.L0-CHOOSE in the subject line) and push."
+        ],
+        "outstanding": [
+          "One candidate was chosen from a list of four, and the record names which of the four sources it came from.",
+          "The choice is written down with one paragraph saying why this one before the other three.",
+          "The candidate was run past the product front door and the answer is recorded as one of in_app, partly, api_only or not_built, with the feature it matched when it matched one."
+        ],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.orchestration_health_watch.L0-SCOPE-SHEET",
+        "title": "Curriculum content health scan · 0.2 · write the scope sheet",
+        "status": "not_started",
+        "verification_state": "not_started",
+        "verified": false,
+        "criteria_passed": 0,
+        "criteria_total": 3,
+        "reasons": [
+          "None of the 3 acceptance criteria are marked as passing yet.",
+          "No commit in the repo names platform.CAP.orchestration_health_watch.L0-SCOPE-SHEET and changes a file. Commit your work with a `Story: platform.CAP.orchestration_health_watch.L0-SCOPE-SHEET` trailer (or platform.CAP.orchestration_health_watch.L0-SCOPE-SHEET in the subject line) and push."
+        ],
+        "outstanding": [
+          "The scope sheet names the person who will act on the output, by name rather than by role.",
+          "It states one threshold that decides whether the capability worked.",
+          "It names what the system already records that would produce that number, or says plainly that nothing does and that the measurement is part of the build."
+        ],
+        "commit_sha": null
+      },
+      {
+        "story_id": "platform.CAP.orchestration_health_watch.L1-BY-HAND",
+        "title": "Curriculum content health scan · 1 · do it by hand",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 2,
+        "criteria_total": 2,
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "33798351b4291a2b3cf475bc303ce522b44be519"
       },
       {
         "story_id": "platform.CAP.orchestration_health_watch.L2-IN-THE-APP",
-        "title": "Orchestration health watch · 2 · do it in the app",
-        "status": "in_progress",
-        "verification_state": "in_progress",
-        "verified": false,
-        "criteria_passed": 0,
+        "title": "Curriculum content health scan · 2 · do it in the app",
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 2,
         "criteria_total": 2,
-        "reasons": [
-          "None of the 2 acceptance criteria are marked as passing yet.",
-          "No commit in the repo names platform.CAP.orchestration_health_watch.L2-IN-THE-APP and changes a file. Commit your work with a `Story: platform.CAP.orchestration_health_watch.L2-IN-THE-APP` trailer (or platform.CAP.orchestration_health_watch.L2-IN-THE-APP in the subject line) and push."
-        ],
-        "outstanding": [
-          "The same outcome was produced a second time using only the product, with no agent, no script and no direct database edit -- or the exact step that made this impossible is written down as a named gap.",
-          "The app route was compared against the step 1 run log, and every difference between them is recorded."
-        ],
-        "commit_sha": null
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "ff0d1fec16b382fa652231bb1b52a6d758ed6070"
       },
       {
         "story_id": "platform.CAP.orchestration_health_watch.L3-TOOL-REQUEST",
-        "title": "Orchestration health watch · 3 · request the tool",
+        "title": "Curriculum content health scan · 3 · request the tool",
         "status": "in_progress",
         "verification_state": "in_progress",
         "verified": false,
@@ -2033,7 +2090,7 @@
       },
       {
         "story_id": "platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED",
-        "title": "Orchestration health watch · 4 · agent does it, watched",
+        "title": "Curriculum content health scan · 4 · agent does it, watched",
         "status": "in_progress",
         "verification_state": "in_progress",
         "verified": false,
@@ -2041,10 +2098,11 @@
         "criteria_total": 3,
         "reasons": [
           "None of the 3 acceptance criteria are marked as passing yet.",
+          "1 criterion/criteria in platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED's entry do not match any acceptance criterion in the published plan, so ticking them would do nothing. Replace them with the exact wording from this story's doc in `docs/stories/platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED.md`, then tick the ones that genuinely pass.",
           "No commit in the repo names platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED and changes a file. Commit your work with a `Story: platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED` trailer (or platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED in the subject line) and push."
         ],
         "outstanding": [
-          "Every answer cites the ai_agents row and activity-log rows it was derived from; no answer is produced for an agent name with no row.",
+          "Every answer cites the orchestration_health snapshot rows it was derived from, including their scan_timestamp; no answer is produced for a window with no snapshot.",
           "The agent produced the same outcome as the step 1 run log, on the same inputs, including the exceptions recorded there.",
           "Every run in the evidence window was approved by a named human before it took effect, and the record shows who."
         ],
@@ -2172,9 +2230,26 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [],
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
         "outstanding": [],
         "commit_sha": "1052ddd624b067b8985c45d974114f542d750d67"
+      },
+      {
+        "story_id": "platform.CAP.scheduler_liveness_watch",
+        "title": "Scheduler and agent liveness watch",
+        "status": "not_started",
+        "verification_state": "not_started",
+        "verified": false,
+        "criteria_passed": 0,
+        "criteria_total": 0,
+        "reasons": [
+          "This story has no acceptance criteria in the published plan, so there is nothing to verify against.",
+          "No commit in the repo names platform.CAP.scheduler_liveness_watch and changes a file. Commit your work with a `Story: platform.CAP.scheduler_liveness_watch` trailer (or platform.CAP.scheduler_liveness_watch in the subject line) and push."
+        ],
+        "outstanding": [],
+        "commit_sha": null
       },
       {
         "story_id": "platform.CAP.scheduler_registration_liveness_probe",
@@ -2295,6 +2370,25 @@
         "commit_sha": "22cff653a3d37fcb9f03318498a7baa59ad920e8"
       },
       {
+        "story_id": "platform.GATE.R0.1",
+        "title": "R0 gate · 1 of 1 · a capability the agent does, watched",
+        "status": "not_started",
+        "verification_state": "not_started",
+        "verified": false,
+        "criteria_passed": 0,
+        "criteria_total": 3,
+        "reasons": [
+          "None of the 3 acceptance criteria are marked as passing yet.",
+          "No commit in the repo names platform.GATE.R0.1 and changes a file. Commit your work with a `Story: platform.GATE.R0.1` trailer (or platform.GATE.R0.1 in the subject line) and push."
+        ],
+        "outstanding": [
+          "A capability in this domain has reached the watched stage: the agent produced the outcome and a named human approved the run before it took effect.",
+          "Its output was compared against the by-hand run recorded earlier in the same path, and the differences are written down.",
+          "It is not a capability already counted toward another R0 gate story."
+        ],
+        "commit_sha": null
+      },
+      {
         "story_id": "platform.LEGACY-MIGRATION-PLAN",
         "title": "Legacy migration plan",
         "status": "complete",
@@ -2391,6 +2485,38 @@
         "commit_sha": "be7079d9d1cba875d2670148f7b125b39ab4c8fe"
       }
     ]
+  },
+  "candidates": {
+    "known": true,
+    "reason": "No candidates have been put on the list yet for platform. An empty list means nobody has proposed anything, not that nothing qualifies.",
+    "scoped_to_domains": [
+      "platform"
+    ],
+    "summary": {
+      "candidates": 0,
+      "yours_to_move": 0,
+      "waiting_on_the_owner": 0,
+      "finished": 0,
+      "cleared_the_gate": 0
+    },
+    "candidates": []
+  },
+  "owed_by_product": {
+    "known": true,
+    "reason": "Nothing is waiting on the platform for you right now. Every candidate on your list is either yours to move or already through.",
+    "scoped_to_domains": [
+      "platform"
+    ],
+    "stages_counted": [
+      "platform_owed",
+      "screen_built"
+    ],
+    "summary": {
+      "owed": 0,
+      "waiting_for_a_screen_or_a_ruling": 0,
+      "built_and_not_yet_used": 0
+    },
+    "owed": []
   },
   "not_recorded": [
     {
