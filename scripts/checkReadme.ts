@@ -18,9 +18,9 @@ if (Number.isNaN(pass) || Number.isNaN(fail)) problems.push('could not read the 
 else if (fail > 0) problems.push(`${fail} test(s) fail`);
 else if (!readme.includes(`${pass} passing`)) problems.push(`README does not say "${pass} passing" (${pass} tests pass now)`);
 
-// The four ladder steps of one capability (ids ending .L1-BY-HAND to .L4-AGENT-WATCHED, added by the platform on
-// 13 Nov) are steps of a capability already counted, not capabilities of their own.
-const isLadderStep = (id: string) => /\.L[1-4]-[A-Z-]+$/.test(id);
+// The ladder steps of one capability (ids ending .L1-BY-HAND to .L4-AGENT-WATCHED, added by the platform on 13 Nov,
+// and the step 0 stories .L0-*, added on 23 Nov) are steps of a capability already counted, not capabilities.
+const isLadderStep = (id: string) => /\.L[0-4]-[A-Z-]+$/.test(id);
 const caps = (JSON.parse(readFileSync('.colaberry/progress.json', 'utf8')).stories as Story[])
   .filter((s) => s.id.startsWith('platform.CAP.') && !isLadderStep(s.id));
 const verified = caps.filter((s) => s.verification?.state === 'verified').length;

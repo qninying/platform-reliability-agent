@@ -63,7 +63,10 @@ test('acceptance: a panel with nothing says so in words and differs from one sti
   for (const p of loading) { assert.match(p, /^loading/); assert.match(p, /Still fetching/); assert.doesNotMatch(p, /Nothing returned/); }
   for (const p of panels(view(cc, null, false))) { assert.match(p, /^nothing/); assert.doesNotMatch(p, /Still fetching/); }
   assert.match(panels(view(cc, data([])))[1], /^nothing/);
-  assert.match(panels(view(cc, REAL))[4], /^nothing[\s\S]*No change requests and no tool requests have been filed/);
+  // An empty queue, built here: the real snapshot now carries a filed request (23 Nov), so it can no longer stand in.
+  const emptyQueue = snap({ governance: { ...SNAP.governance, requests: [] } });
+  assert.match(panels(view(cc, REAL, false, emptyQueue))[4], /^nothing[\s\S]*No change requests and no tool requests have been filed/);
+  assert.doesNotMatch(panels(view(cc, REAL))[4], /^nothing/, 'a filed request is shown, not reported as nothing');
 });
 
 test('acceptance: all ten rungs are present in the owner\'s words, with each ceiling marked where it stops', () => {

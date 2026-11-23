@@ -58,10 +58,12 @@ test('on the real files, every story that is not verified explains itself: the s
   assert.equal(count('held'), 2);
   // A story with no note explains itself only by having every criterion passed: it waits on the platform's check.
   const allPassed = (id: string) => (PROGRESS.stories.find((x: { id: string }) => x.id === id)?.criteria ?? []).every((c: { passed: boolean }) => c.passed);
-  // A ladder step (by hand, in the app, tool request, agent watched; added by the platform on 13 Nov) explains itself:
-  // it is the next piece of work on a capability already counted, and the ladder runs those steps in order.
-  const isLadderStep = (id: string) => /\.L[1-4]-[A-Z-]+$/.test(id);
-  const unexplained = open.filter((s: { id: string; disposition: unknown }) => s.disposition === null && !allPassed(s.id) && !isLadderStep(s.id));
+  // A ladder step (step 0 added 23 Nov; by hand, in the app, tool request, agent watched added 13 Nov) explains itself:
+  // it is the next piece of work on a capability already counted, and the ladder runs those steps in order. A rung
+  // gate (platform.GATE.*, added 23 Nov) explains itself too: it clears only when a capability finishes the ladder.
+  const isLadderStep = (id: string) => /\.L[0-4]-[A-Z-]+$/.test(id);
+  const isGate = (id: string) => id.startsWith('platform.GATE.');
+  const unexplained = open.filter((s: { id: string; disposition: unknown }) => s.disposition === null && !allPassed(s.id) && !isLadderStep(s.id) && !isGate(s.id));
   assert.deepEqual(unexplained.map((s: { id: string }) => s.id), [], 'no unexplained absence');
 });
 
