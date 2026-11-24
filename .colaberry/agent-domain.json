@@ -1587,6 +1587,15 @@
         "requested_at": "2026-11-23T15:52:35.224Z",
         "approved_at": null,
         "declined_reason": null
+      },
+      {
+        "id": "af260168-998b-477f-b46d-702abcc616e4",
+        "kind": "tool",
+        "title": "Read-only: return the latest curriculum content health snapshots (score, status, findings, run time)",
+        "status": "submitted",
+        "requested_at": "2026-11-23T19:17:31.675Z",
+        "approved_at": null,
+        "declined_reason": null
       }
     ],
     "pending": 0
@@ -1597,9 +1606,9 @@
     "summary": {
       "stories": 64,
       "checked": 64,
-      "verified": 49,
-      "awaiting_criteria": 9,
-      "outstanding_criteria": 20
+      "verified": 50,
+      "awaiting_criteria": 8,
+      "outstanding_criteria": 17
     },
     "stories": [
       {
@@ -1861,7 +1870,7 @@
         "criteria_total": 1,
         "reasons": [],
         "outstanding": [],
-        "commit_sha": "6a1c0afb8983d0750692adde20a3a9acf594ec34"
+        "commit_sha": "2c0d58bb4c3a86ee59c961af51d35de8c7590bd3"
       },
       {
         "story_id": "platform.CAP.execution_policy_enforcement",
@@ -1890,7 +1899,7 @@
         "criteria_total": 1,
         "reasons": [],
         "outstanding": [],
-        "commit_sha": "ff99053c18ef63445c1f93074a20df3e8f66b542"
+        "commit_sha": "7d1845738e3906792bd76ec13b50b7192c8a5a95"
       },
       {
         "story_id": "platform.CAP.incident_trace_and_error_triage",
@@ -1991,21 +2000,14 @@
       {
         "story_id": "platform.CAP.orchestration_health_watch.L0-ASK-FOR-A-SCREEN",
         "title": "Curriculum content health scan · 0.3 · waiting on the platform",
-        "status": "in_progress",
-        "verification_state": "in_progress",
-        "verified": false,
-        "criteria_passed": 0,
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 3,
         "criteria_total": 3,
-        "reasons": [
-          "None of the 3 acceptance criteria are marked as passing yet.",
-          "No commit in the repo names platform.CAP.orchestration_health_watch.L0-ASK-FOR-A-SCREEN and changes a file. Commit your work with a `Story: platform.CAP.orchestration_health_watch.L0-ASK-FOR-A-SCREEN` trailer (or platform.CAP.orchestration_health_watch.L0-ASK-FOR-A-SCREEN in the subject line) and push."
-        ],
-        "outstanding": [
-          "A change request exists against this domain naming the screen or the ruling needed, and the route it would live at.",
-          "The request does NOT argue that the capability should exist, because the product already does most of it.",
-          "A second candidate was started while this one waits, so the builder is not idle on a decision that is not theirs."
-        ],
-        "commit_sha": null
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "fd41d026eff194991a4c0a95c2384b57c0b23e70"
       },
       {
         "story_id": "platform.CAP.orchestration_health_watch.L0-CHOOSE",
@@ -2481,7 +2483,7 @@
         "criteria_total": 6,
         "reasons": [],
         "outstanding": [],
-        "commit_sha": "be7079d9d1cba875d2670148f7b125b39ab4c8fe"
+        "commit_sha": "1bcb85d237c9393dd83e3ebf8d37a8753aa73252"
       }
     ]
   },

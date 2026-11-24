@@ -3,13 +3,13 @@
   "project": "Platform Automation & Reliability",
   "totals": {
     "stories_total": 64,
-    "stories_verified": 49,
+    "stories_verified": 50,
     "stories_submitted": 6,
-    "stories_in_progress": 9,
+    "stories_in_progress": 8,
     "stories_not_started": 0,
     "criteria_total": 94,
-    "criteria_passed": 74,
-    "points_awarded": 731
+    "criteria_passed": 77,
+    "points_awarded": 744
   },
   "stories": [
     {
@@ -719,7 +719,7 @@
         "verified_at": "2026-10-31T16:27:55.386Z",
         "commit_sha": "6a1c0afb8983d0750692adde20a3a9acf594ec34",
         "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/6a1c0afb8983d0750692adde20a3a9acf594ec34",
-        "commit_at": "2026-10-31T16:27:38Z",
+        "commit_at": "2026-11-05T01:03:18Z",
         "points_awarded": 15,
         "outstanding": []
       }
@@ -783,7 +783,7 @@
         "verified_at": "2026-10-31T18:08:06.600Z",
         "commit_sha": "ff99053c18ef63445c1f93074a20df3e8f66b542",
         "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/ff99053c18ef63445c1f93074a20df3e8f66b542",
-        "commit_at": "2026-10-31T18:07:49Z",
+        "commit_at": "2026-11-05T01:17:33Z",
         "points_awarded": 15,
         "outstanding": []
       }
@@ -1079,19 +1079,15 @@
       "notes": "View-only change request filed 23 Nov naming Curriculum (/admin/orchestration) and AI Organization (/admin/workforce); it asks only to see, not for the capability to exist. A.M. answered 24 Nov with /admin/orchestration-health. Second candidate scheduler_liveness_watch started 23 Nov (code read), confirmed by A.M. 24 Nov.",
       "updated_at": "2026-11-24",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 3,
         "criteria_total": 3,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "A change request exists against this domain naming the screen or the ruling needed, and the route it would live at.",
-          "The request does NOT argue that the capability should exist, because the product already does most of it.",
-          "A second candidate was started while this one waits, so the builder is not idle on a decision that is not theirs."
-        ]
+        "verified_at": "2026-11-24T21:03:14.323Z",
+        "commit_sha": "fd41d026eff194991a4c0a95c2384b57c0b23e70",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/fd41d026eff194991a4c0a95c2384b57c0b23e70",
+        "commit_at": "2026-11-24T21:02:50Z",
+        "points_awarded": 13,
+        "outstanding": []
       }
     },
     {
@@ -2340,7 +2336,7 @@
         "verified_at": "2026-11-03T01:08:33.846Z",
         "commit_sha": "be7079d9d1cba875d2670148f7b125b39ab4c8fe",
         "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/be7079d9d1cba875d2670148f7b125b39ab4c8fe",
-        "commit_at": "2026-10-31T15:57:16Z",
+        "commit_at": "2026-11-02T19:38:04Z",
         "points_awarded": 15,
         "outstanding": []
       }
