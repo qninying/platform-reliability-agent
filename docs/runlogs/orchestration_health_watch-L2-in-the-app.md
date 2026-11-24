@@ -95,7 +95,20 @@ Orchestration Health agent's own page (`/admin/agents/<id>`) as the agent half.
 1. **No run history.** Only the latest snapshot is shown, so a missed or failed run can't be seen.
 2. **The critical finding is a count, not a list.** "3 issue(s)" does not say which issues or where.
 3. **No component scores on the page.** Only the overall 65/100 is shown.
-4. **The scanner's own errors aren't explained.** OrchestrationHealth shows 292 errors, with no detail on this page.
-   The agent page, which would explain them, refuses ("not in your reporting chain").
+4. **The error count has no date.** OrchestrationHealth shows "292 err" with nothing beside it. The count is
+   lifetime, against 72,682 runs, and the most recent error was 26 Aug, three months earlier (confirmed in review,
+   below). With no date it reads as a live incident, and it sent me looking for a current failure that did not exist.
 5. **Prompt backfill is empty.** Three of the four tiles show "-".
 6. **No sign of an alert.** Nothing on the page shows that the critical finding notified anyone.
+
+### Review, 24 Nov
+
+A.M. reviewed the second attempt and confirmed the six gaps above as step 2's result. Two corrections came with it:
+
+- **The agent refusal was the wrong link, not a missing permission.** The link pointed to OrchestrationHealthAgent,
+  which reports to nobody and so is in no one's reporting chain. The refusal was the system behaving correctly. This
+  domain's agent is a different record, PlatformDomainAgent, which opens for the domain's verified builder.
+- **The 292 errors are old.** The count is lifetime, and the last error was 26 Aug. Gap 4 is recorded as the missing
+  date, not as an unexplained failure.
+
+Next: step 3. The tool request filed on 23 Nov is open and waiting for a decision in the product.
