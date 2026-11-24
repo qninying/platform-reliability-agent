@@ -1770,7 +1770,7 @@
         "criteria_total": 1,
         "reasons": [],
         "outstanding": [],
-        "commit_sha": "ece5f6cc50c7a852665b3c7a2bb9f09fc7f39ad1"
+        "commit_sha": "61f68b1e4db4ed0f987bb0b309e21b852565265d"
       },
       {
         "story_id": "platform.CAP.cron_run_instrumentation",
@@ -2246,11 +2246,10 @@
         "criteria_passed": 0,
         "criteria_total": 0,
         "reasons": [
-          "This story has no acceptance criteria in the published plan, so there is nothing to verify against.",
-          "No commit in the repo names platform.CAP.scheduler_liveness_watch and changes a file. Commit your work with a `Story: platform.CAP.scheduler_liveness_watch` trailer (or platform.CAP.scheduler_liveness_watch in the subject line) and push."
+          "This story has no acceptance criteria in the published plan, so there is nothing to verify against."
         ],
         "outstanding": [],
-        "commit_sha": null
+        "commit_sha": "0af2b51daea0d594d4438684523399c1850cce7c"
       },
       {
         "story_id": "platform.CAP.scheduler_registration_liveness_probe",
