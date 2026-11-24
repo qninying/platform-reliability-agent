@@ -1060,21 +1060,24 @@
       "criteria": [
         {
           "text": "A change request exists against this domain naming the screen or the ruling needed, and the route it would live at.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "The request does NOT argue that the capability should exist, because the product already does most of it.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "A second candidate was started while this one waits, so the builder is not idle on a decision that is not theirs.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
+      "files_touched": [
+        "docs/runlogs/orchestration_health_watch-L0-ask-for-a-screen.md",
+        "docs/runlogs/scheduler_liveness_watch-L1-code-read.md"
+      ],
       "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "notes": "View-only change request filed 23 Nov naming Curriculum (/admin/orchestration) and AI Organization (/admin/workforce); it asks only to see, not for the capability to exist. A.M. answered 24 Nov with /admin/orchestration-health. Second candidate scheduler_liveness_watch started 23 Nov (code read), confirmed by A.M. 24 Nov.",
+      "updated_at": "2026-11-24",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
