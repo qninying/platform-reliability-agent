@@ -674,8 +674,8 @@
       "tests_added": [
         "test/fleetStopLevers.test.ts"
       ],
-      "notes": "Folded into platform.CAP.agent_enable_disable_control (A.M.'s ruling of 2026-11-04). Not built on its own: agent enable/disable control now also answers this story's question with --fleet-stop (src/capabilities/fleetStopLevers.ts), which shows what the emergency stop, kill switch, scheduler pause and governance row each reach, and what an emergency resume would undo. Read at platform cc1ebc5. 10 tests; eleven deliberate breaks each caught. Commit 49783e7.",
-      "updated_at": "2026-11-04",
+      "notes": "Folded into platform.CAP.agent_enable_disable_control (A.M.'s ruling of 2026-11-04). Not built on its own: agent enable/disable control now also answers this story's question with --fleet-stop (src/capabilities/fleetStopLevers.ts), which shows what the emergency stop, kill switch, scheduler pause and governance row each reach, and what an emergency resume would undo. Read at platform cc1ebc5. 10 tests; eleven deliberate breaks each caught. Commit 49783e7. Built in 49783e7; this commit names the story id so the board can read the trail (A.M., 24 Nov).",
+      "updated_at": "2026-11-24",
       "verification": {
         "state": "submitted",
         "criteria_passed": 1,
