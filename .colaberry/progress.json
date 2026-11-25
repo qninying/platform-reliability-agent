@@ -1904,8 +1904,8 @@
       "tests_added": [
         "test/platformHealthProbe.test.ts"
       ],
-      "notes": "Folded into platform.CAP.system_resilience_supervision (A.M.'s ruling of 2026-11-04). Not built on its own: resilience supervision now also reads an export of GET /health/full with --health-full (src/capabilities/platformHealthProbe.ts), judges each check on what it can show, and lists on every answer what the probes cannot see. Read at platform cc1ebc5. 11 tests; ten deliberate breaks each caught. Commit ed3c52b.",
-      "updated_at": "2026-11-04",
+      "notes": "Folded into platform.CAP.system_resilience_supervision (A.M.'s ruling of 2026-11-04). Not built on its own: resilience supervision now also reads an export of GET /health/full with --health-full (src/capabilities/platformHealthProbe.ts), judges each check on what it can show, and lists on every answer what the probes cannot see. Read at platform cc1ebc5. 11 tests; ten deliberate breaks each caught. Commit ed3c52b. Built in ed3c52b; this commit names the story id so the board can read the trail (A.M., 24 Nov).",
+      "updated_at": "2026-11-24",
       "verification": {
         "state": "submitted",
         "criteria_passed": 1,
