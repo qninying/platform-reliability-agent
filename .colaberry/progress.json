@@ -1135,21 +1135,23 @@
       "criteria": [
         {
           "text": "The scope sheet names the person who will act on the output, by name rather than by role.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "It states one threshold that decides whether the capability worked.",
-          "passed": false
+          "passed": true
         },
         {
           "text": "It names what the system already records that would produce that number, or says plainly that nothing does and that the measurement is part of the build.",
-          "passed": false
+          "passed": true
         }
       ],
-      "files_touched": [],
+      "files_touched": [
+        "docs/runlogs/orchestration_health_watch-L0-scope-sheet.md"
+      ],
       "tests_added": [],
-      "notes": null,
-      "updated_at": null,
+      "notes": "Scope sheet filed 23 Nov with the step 3 tool request. Acts on the output: Kesetebirhan Delele. Threshold: 10 of 10 answers match the latest snapshot on /admin/orchestration-health, and a scan older than 10 minutes is reported stale every time. Recorded already: one orchestration_health row per scan (scan_timestamp, health_score, status, findings).",
+      "updated_at": "2026-11-24",
       "verification": {
         "state": "in_progress",
         "criteria_passed": 0,
