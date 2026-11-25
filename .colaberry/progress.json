@@ -923,8 +923,8 @@
       "tests_added": [
         "test/managerAccess.test.ts"
       ],
-      "notes": "Folded into platform.CAP.manager_scoped_authorization (A.M.'s ruling of 2026-11-04): one manager-access check answers it. At cc1ebc5 only Dara's and Reese's prompt builders read directives, as prompt text; for every other agent a directive is recorded but enforced nowhere.",
-      "updated_at": "2026-11-04",
+      "notes": "Folded into platform.CAP.manager_scoped_authorization (A.M.'s ruling of 2026-11-04): one manager-access check answers it. At cc1ebc5 only Dara's and Reese's prompt builders read directives, as prompt text; for every other agent a directive is recorded but enforced nowhere. Built in 9ec4d6c; this commit names the story id so the board can read the trail (A.M., 24 Nov).",
+      "updated_at": "2026-11-24",
       "verification": {
         "state": "submitted",
         "criteria_passed": 1,
