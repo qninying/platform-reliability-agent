@@ -3,13 +3,13 @@
   "project": "Platform Automation & Reliability",
   "totals": {
     "stories_total": 64,
-    "stories_verified": 50,
-    "stories_submitted": 6,
-    "stories_in_progress": 8,
+    "stories_verified": 57,
+    "stories_submitted": 0,
+    "stories_in_progress": 7,
     "stories_not_started": 0,
     "criteria_total": 94,
-    "criteria_passed": 77,
-    "points_awarded": 744
+    "criteria_passed": 80,
+    "points_awarded": 835
   },
   "stories": [
     {
@@ -75,14 +75,14 @@
       "notes": "Folded into platform.CAP.agent_registry_read_surface (A.M.'s ruling of 2026-11-04). Not built on its own: the registry read surface now also previews the discover action with --discovery-preview (src/capabilities/discoveryPreview.ts): which rows it would create from the seed, whether each arrives enabled, which timers that would start or stop, and which timers no discovery run will ever register. Read at platform cc1ebc5. 9 tests; ten deliberate breaks each caught. Built in 1113146; this commit names the story id so the board can read the trail (A.M., 24 Nov).",
       "updated_at": "2026-11-24",
       "verification": {
-        "state": "submitted",
+        "state": "verified",
         "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
+        "verified_at": "2026-11-25T01:13:19.888Z",
+        "commit_sha": "cd26b023fb1a36bf1964abeeb5cbade96aa1155b",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/cd26b023fb1a36bf1964abeeb5cbade96aa1155b",
+        "commit_at": "2026-11-25T01:06:06Z",
+        "points_awarded": 13,
         "outstanding": []
       }
     },
@@ -320,7 +320,7 @@
         "verified_at": "2026-11-01T18:22:56.507Z",
         "commit_sha": "b59f0dfeaa4f7a0482dd882dc92a882fe498a91f",
         "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/b59f0dfeaa4f7a0482dd882dc92a882fe498a91f",
-        "commit_at": "2026-11-01T18:22:35Z",
+        "commit_at": "2026-11-05T16:06:58Z",
         "points_awarded": 15,
         "outstanding": []
       }
@@ -677,14 +677,14 @@
       "notes": "Folded into platform.CAP.agent_enable_disable_control (A.M.'s ruling of 2026-11-04). Not built on its own: agent enable/disable control now also answers this story's question with --fleet-stop (src/capabilities/fleetStopLevers.ts), which shows what the emergency stop, kill switch, scheduler pause and governance row each reach, and what an emergency resume would undo. Read at platform cc1ebc5. 10 tests; eleven deliberate breaks each caught. Commit 49783e7. Built in 49783e7; this commit names the story id so the board can read the trail (A.M., 24 Nov).",
       "updated_at": "2026-11-24",
       "verification": {
-        "state": "submitted",
+        "state": "verified",
         "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
+        "verified_at": "2026-11-25T01:13:20.118Z",
+        "commit_sha": "84b302d85c0f11b8d80137879821d88bb59f9dc6",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/84b302d85c0f11b8d80137879821d88bb59f9dc6",
+        "commit_at": "2026-11-25T01:06:06Z",
+        "points_awarded": 13,
         "outstanding": []
       }
     },
@@ -888,14 +888,14 @@
       "notes": "Folded into platform.CAP.manager_scoped_authorization (A.M.'s ruling of 2026-11-04): one manager-access check answers it, reporting the accountable manager's org_members row and, as a separate fact, whether any login carries that row's email. Built in 9ec4d6c; this commit names the story id so the board can read the trail (A.M., 24 Nov).",
       "updated_at": "2026-11-24",
       "verification": {
-        "state": "submitted",
+        "state": "verified",
         "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
+        "verified_at": "2026-11-25T01:13:20.185Z",
+        "commit_sha": "72b82c1d4ddd0aeb4967fa1352c3bb89bbf125a9",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/72b82c1d4ddd0aeb4967fa1352c3bb89bbf125a9",
+        "commit_at": "2026-11-25T01:06:06Z",
+        "points_awarded": 13,
         "outstanding": []
       }
     },
@@ -926,14 +926,14 @@
       "notes": "Folded into platform.CAP.manager_scoped_authorization (A.M.'s ruling of 2026-11-04): one manager-access check answers it. At cc1ebc5 only Dara's and Reese's prompt builders read directives, as prompt text; for every other agent a directive is recorded but enforced nowhere. Built in 9ec4d6c; this commit names the story id so the board can read the trail (A.M., 24 Nov).",
       "updated_at": "2026-11-24",
       "verification": {
-        "state": "submitted",
+        "state": "verified",
         "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
+        "verified_at": "2026-11-25T01:13:20.219Z",
+        "commit_sha": "0058b93130eaa4e1e2ad15fa1186f75b24dd47c5",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/0058b93130eaa4e1e2ad15fa1186f75b24dd47c5",
+        "commit_at": "2026-11-25T01:06:07Z",
+        "points_awarded": 13,
         "outstanding": []
       }
     },
@@ -1153,19 +1153,15 @@
       "notes": "Scope sheet filed 23 Nov with the step 3 tool request. Acts on the output: Kesetebirhan Delele. Threshold: 10 of 10 answers match the latest snapshot on /admin/orchestration-health, and a scan older than 10 minutes is reported stale every time. Recorded already: one orchestration_health row per scan (scan_timestamp, health_score, status, findings).",
       "updated_at": "2026-11-24",
       "verification": {
-        "state": "in_progress",
-        "criteria_passed": 0,
+        "state": "verified",
+        "criteria_passed": 3,
         "criteria_total": 3,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
-        "outstanding": [
-          "The scope sheet names the person who will act on the output, by name rather than by role.",
-          "It states one threshold that decides whether the capability worked.",
-          "It names what the system already records that would produce that number, or says plainly that nothing does and that the measurement is part of the build."
-        ]
+        "verified_at": "2026-11-25T01:13:20.303Z",
+        "commit_sha": "c0a104a851b60d2ce4314ab7e19dd0a236647efb",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/c0a104a851b60d2ce4314ab7e19dd0a236647efb",
+        "commit_at": "2026-11-25T01:06:06Z",
+        "points_awarded": 13,
+        "outstanding": []
       }
     },
     {
@@ -1591,14 +1587,14 @@
       "notes": "Folded into platform.CAP.registry_runtime_reconciliation (A.M.'s ruling of 2026-11-04). Not built on its own: reconciliation already measured each drift class from source at run time as a list of names with its measurement time and commit; the fold adds the guarantee that no name is published without a call site, and records the run at cc1ebc5 (examples/registry-reconciliation.run-cc1ebc5.json). It measures the source at a commit, not the live process: what fires in production needs a live export of cron_schedule_configs, which the answer states. Built in 3c0cfd0; this commit names the story id so the board can read the trail (A.M., 24 Nov).",
       "updated_at": "2026-11-24",
       "verification": {
-        "state": "submitted",
+        "state": "verified",
         "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
+        "verified_at": "2026-11-25T01:13:20.417Z",
+        "commit_sha": "edcaeea35bb8cff2e4bf10ce2c40255e809a999f",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/edcaeea35bb8cff2e4bf10ce2c40255e809a999f",
+        "commit_at": "2026-11-25T01:06:07Z",
+        "points_awarded": 13,
         "outstanding": []
       }
     },
@@ -1764,7 +1760,7 @@
         "verified_at": "2026-11-01T17:54:58.156Z",
         "commit_sha": "15d81be49b3d6fb7d7f49166d9ccba310a6c9fac",
         "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/15d81be49b3d6fb7d7f49166d9ccba310a6c9fac",
-        "commit_at": "2026-11-01T17:54:32Z",
+        "commit_at": "2026-11-05T16:00:59Z",
         "points_awarded": 15,
         "outstanding": []
       }
@@ -1907,14 +1903,14 @@
       "notes": "Folded into platform.CAP.system_resilience_supervision (A.M.'s ruling of 2026-11-04). Not built on its own: resilience supervision now also reads an export of GET /health/full with --health-full (src/capabilities/platformHealthProbe.ts), judges each check on what it can show, and lists on every answer what the probes cannot see. Read at platform cc1ebc5. 11 tests; ten deliberate breaks each caught. Commit ed3c52b. Built in ed3c52b; this commit names the story id so the board can read the trail (A.M., 24 Nov).",
       "updated_at": "2026-11-24",
       "verification": {
-        "state": "submitted",
+        "state": "verified",
         "criteria_passed": 1,
         "criteria_total": 1,
-        "verified_at": null,
-        "commit_sha": null,
-        "commit_url": null,
-        "commit_at": null,
-        "points_awarded": null,
+        "verified_at": "2026-11-25T01:13:20.482Z",
+        "commit_sha": "3e3ca5e4c70a3bc446a579794f1fcdc96d88331b",
+        "commit_url": "https://github.com/qninying/platform-reliability-agent/commit/3e3ca5e4c70a3bc446a579794f1fcdc96d88331b",
+        "commit_at": "2026-11-25T01:06:07Z",
+        "points_awarded": 13,
         "outstanding": []
       }
     },

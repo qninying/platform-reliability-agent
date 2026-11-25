@@ -1606,9 +1606,9 @@
     "summary": {
       "stories": 64,
       "checked": 64,
-      "verified": 50,
-      "awaiting_criteria": 8,
-      "outstanding_criteria": 17
+      "verified": 57,
+      "awaiting_criteria": 7,
+      "outstanding_criteria": 14
     },
     "stories": [
       {
@@ -1628,16 +1628,14 @@
       {
         "story_id": "platform.CAP.agent_discovery_sync",
         "title": "Agent registry discovery sync",
-        "status": "in_progress",
-        "verification_state": "submitted",
-        "verified": false,
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [
-          "No commit in the repo names platform.CAP.agent_discovery_sync and changes a file. Commit your work with a `Story: platform.CAP.agent_discovery_sync` trailer (or platform.CAP.agent_discovery_sync in the subject line) and push."
-        ],
+        "reasons": [],
         "outstanding": [],
-        "commit_sha": null
+        "commit_sha": "cd26b023fb1a36bf1964abeeb5cbade96aa1155b"
       },
       {
         "story_id": "platform.CAP.agent_enable_disable_control",
@@ -1690,7 +1688,9 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [],
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
         "outstanding": [],
         "commit_sha": "02842d9c59dc9baf460eb61c60fd0c2b8ac34e87"
       },
@@ -1732,7 +1732,7 @@
         "criteria_total": 1,
         "reasons": [],
         "outstanding": [],
-        "commit_sha": "b59f0dfeaa4f7a0482dd882dc92a882fe498a91f"
+        "commit_sha": "1e16163175c671b6082105b591d639ccef980603"
       },
       {
         "story_id": "platform.CAP.capability_autonomy_authority_resolution",
@@ -1742,7 +1742,9 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [],
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
         "outstanding": [],
         "commit_sha": "a00c719bd4aae6209f4910cf9282a22108f175a1"
       },
@@ -1842,23 +1844,23 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [],
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
         "outstanding": [],
         "commit_sha": "709e5b30bb68f944b7d49086c575e4c9dc1dc801"
       },
       {
         "story_id": "platform.CAP.emergency_stop_and_kill_switch",
         "title": "Emergency stop, resume and kill switch",
-        "status": "in_progress",
-        "verification_state": "submitted",
-        "verified": false,
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [
-          "No commit in the repo names platform.CAP.emergency_stop_and_kill_switch and changes a file. Commit your work with a `Story: platform.CAP.emergency_stop_and_kill_switch` trailer (or platform.CAP.emergency_stop_and_kill_switch in the subject line) and push."
-        ],
+        "reasons": [],
         "outstanding": [],
-        "commit_sha": null
+        "commit_sha": "84b302d85c0f11b8d80137879821d88bb59f9dc6"
       },
       {
         "story_id": "platform.CAP.error_class_coverage",
@@ -1932,30 +1934,26 @@
       {
         "story_id": "platform.CAP.manager_reachable_agent_surface",
         "title": "Manager-reachable agent surface",
-        "status": "in_progress",
-        "verification_state": "submitted",
-        "verified": false,
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [
-          "No commit in the repo names platform.CAP.manager_reachable_agent_surface and changes a file. Commit your work with a `Story: platform.CAP.manager_reachable_agent_surface` trailer (or platform.CAP.manager_reachable_agent_surface in the subject line) and push."
-        ],
+        "reasons": [],
         "outstanding": [],
-        "commit_sha": null
+        "commit_sha": "72b82c1d4ddd0aeb4967fa1352c3bb89bbf125a9"
       },
       {
         "story_id": "platform.CAP.manager_restriction_directives",
         "title": "Manager restriction directives",
-        "status": "in_progress",
-        "verification_state": "submitted",
-        "verified": false,
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [
-          "No commit in the repo names platform.CAP.manager_restriction_directives and changes a file. Commit your work with a `Story: platform.CAP.manager_restriction_directives` trailer (or platform.CAP.manager_restriction_directives in the subject line) and push."
-        ],
+        "reasons": [],
         "outstanding": [],
-        "commit_sha": null
+        "commit_sha": "0058b93130eaa4e1e2ad15fa1186f75b24dd47c5"
       },
       {
         "story_id": "platform.CAP.manager_scoped_authorization",
@@ -2031,21 +2029,14 @@
       {
         "story_id": "platform.CAP.orchestration_health_watch.L0-SCOPE-SHEET",
         "title": "Curriculum content health scan · 0.2 · write the scope sheet",
-        "status": "in_progress",
-        "verification_state": "in_progress",
-        "verified": false,
-        "criteria_passed": 0,
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
+        "criteria_passed": 3,
         "criteria_total": 3,
-        "reasons": [
-          "None of the 3 acceptance criteria are marked as passing yet.",
-          "No commit in the repo names platform.CAP.orchestration_health_watch.L0-SCOPE-SHEET and changes a file. Commit your work with a `Story: platform.CAP.orchestration_health_watch.L0-SCOPE-SHEET` trailer (or platform.CAP.orchestration_health_watch.L0-SCOPE-SHEET in the subject line) and push."
-        ],
-        "outstanding": [
-          "The scope sheet names the person who will act on the output, by name rather than by role.",
-          "It states one threshold that decides whether the capability worked.",
-          "It names what the system already records that would produce that number, or says plainly that nothing does and that the measurement is part of the build."
-        ],
-        "commit_sha": null
+        "reasons": [],
+        "outstanding": [],
+        "commit_sha": "c0a104a851b60d2ce4314ab7e19dd0a236647efb"
       },
       {
         "story_id": "platform.CAP.orchestration_health_watch.L1-BY-HAND",
@@ -2141,7 +2132,9 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [],
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
         "outstanding": [],
         "commit_sha": "db13ddff4fde7630b93ff0be440fe450156ec6c3"
       },
@@ -2179,7 +2172,9 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [],
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
         "outstanding": [],
         "commit_sha": "bd6336cc2f99bfe520d8aae2851f196fae96319b"
       },
@@ -2191,23 +2186,23 @@
         "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [],
+        "reasons": [
+          "Verified, and it stays verified — the current read of your repo no longer shows it complete. Verification is recorded here on the platform, not in your repo, so nothing you do to the repo can take it away."
+        ],
         "outstanding": [],
         "commit_sha": "efff59bb5499c65e4bfd8c9205587a009c4a0158"
       },
       {
         "story_id": "platform.CAP.runtime_cron_drift_detection",
         "title": "Runtime cron drift detection",
-        "status": "in_progress",
-        "verification_state": "submitted",
-        "verified": false,
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [
-          "No commit in the repo names platform.CAP.runtime_cron_drift_detection and changes a file. Commit your work with a `Story: platform.CAP.runtime_cron_drift_detection` trailer (or platform.CAP.runtime_cron_drift_detection in the subject line) and push."
-        ],
+        "reasons": [],
         "outstanding": [],
-        "commit_sha": null
+        "commit_sha": "edcaeea35bb8cff2e4bf10ce2c40255e809a999f"
       },
       {
         "story_id": "platform.CAP.runtime_threat_and_access_watch",
@@ -2273,7 +2268,7 @@
         "criteria_total": 1,
         "reasons": [],
         "outstanding": [],
-        "commit_sha": "15d81be49b3d6fb7d7f49166d9ccba310a6c9fac"
+        "commit_sha": "53814d0980f2f1cf26513e1aaac61866f46577d4"
       },
       {
         "story_id": "platform.CAP.security_oversight_rollup",
@@ -2318,16 +2313,14 @@
       {
         "story_id": "platform.CAP.system_health_probe_and_alerting",
         "title": "System health probes and alerting",
-        "status": "in_progress",
-        "verification_state": "submitted",
-        "verified": false,
+        "status": "complete",
+        "verification_state": "verified",
+        "verified": true,
         "criteria_passed": 1,
         "criteria_total": 1,
-        "reasons": [
-          "No commit in the repo names platform.CAP.system_health_probe_and_alerting and changes a file. Commit your work with a `Story: platform.CAP.system_health_probe_and_alerting` trailer (or platform.CAP.system_health_probe_and_alerting in the subject line) and push."
-        ],
+        "reasons": [],
         "outstanding": [],
-        "commit_sha": null
+        "commit_sha": "3e3ca5e4c70a3bc446a579794f1fcdc96d88331b"
       },
       {
         "story_id": "platform.CAP.system_resilience_supervision",
