@@ -1,13 +1,13 @@
 # Scheduler and agent liveness watch, R0: workflow, requirements, risks and human decisions
 
-Story: `platform.CAP.scheduler_liveness_watch`. Accountable human on the card: K.D. Decisions: A.M. Written by Q.N. on 24 Nov.
+Story: `platform.CAP.scheduler_liveness_watch`. Accountable human on the card: K.D. Written by Q.N. on 24 Nov; section 5 updated the same day with A.M.'s answer.
 
 | | |
 |---|---|
 | Status on the board | Candidate: not started, not assigned |
 | Outcome wanted | Somebody is told when a scheduled agent stops running, instead of the silence being mistaken for health |
 | Finding | **Mostly built already.** The platform has the detector, and Ellis has two verified checks that answer this card's first release. What is missing is coverage and a person being told |
-| Decision needed | A.M.: merge this into Ellis's cron health alerting, or keep it as its own capability for the parts that are new |
+| Decision | **Keep it separate** (A.M., 24 Nov). Scope, who is told and tolerance are the builder's to decide (section 5) |
 
 ## 1. What already exists
 
@@ -60,15 +60,29 @@ These are the gaps left after section 1. They are what this capability would add
 | Treating silence as health | The original problem | "Not evaluated" is never shown as clear |
 | Acting, not reporting | Restarting or disabling agents | No write tool; that belongs to another capability |
 
-## 5. Human decisions (A.M.)
+## 5. Decisions
 
-1. **Merge or keep separate.** Fold this into cron health alerting, as A.M. ruled for overlaps on 4 Nov, or keep it
-   as its own capability for section 2 only.
-2. **Scope.** All scheduled agents, or only enabled ones. And what happens to the 84 unwatched timers: each one
-   gets a row (the page proposes one per timer), or is reported as out of scope.
-3. **Who is told.** Which person, and by which route, when an agent goes silent.
-4. **Tolerance.** Keep 2x and 4x for every cadence, or set it per cadence. The card's "tolerance_undefined" blocker
-   is out of date: the tolerance is set, just not per cadence.
+**Merge or keep separate: keep separate (A.M., 24 Nov).** The reason is structural. `cronHealthAlertService`
+evaluates registered, enabled agent entries only. A job with no registry row runs untracked by design, and a disabled
+row is a deliberate skip. The unwatched timers are exactly that population, so the existing detector cannot reach them
+however it is tuned. The two answer different questions:
+
+- **Cron health alerting:** is a watched timer running and succeeding?
+- **This capability:** is every timer that should be watched registered at all?
+
+So the risk of building it twice (section 4) does not apply, and section 1 describes the neighbour, not this
+capability. Its core is section 2, items 1 and 2.
+
+A.M. said the remaining three are the builder's to decide. Q.N.'s decisions:
+
+1. **Scope.** Every timer in the source, registered or not, because the unregistered ones are the point. Disabled
+   rows are reported as deliberately skipped, not as silent.
+2. **The backlog of unwatched timers.** Reported once as a dated list, each with the row it would need (the Platform
+   Operations page already proposes one). After that, only a newly unwatched timer is raised.
+3. **Who is told.** Kesetebirhan Delele, the accountable human, through Ellis's answer. Anything that would page or
+   email someone is a later rung, not the first release.
+4. **Tolerance.** Not needed for the core question, which is registered or not. Where a time test is used (an agent
+   that has never run), the grace is one full interval of its schedule, the same rule the card asks for.
 
 ## Corrections to the card
 
