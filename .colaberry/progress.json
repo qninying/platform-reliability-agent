@@ -1588,8 +1588,8 @@
       "tests_added": [
         "test/registrationProposal.test.ts"
       ],
-      "notes": "Folded into platform.CAP.registry_runtime_reconciliation (A.M.'s ruling of 2026-11-04). Not built on its own: reconciliation already measured each drift class from source at run time as a list of names with its measurement time and commit; the fold adds the guarantee that no name is published without a call site, and records the run at cc1ebc5 (examples/registry-reconciliation.run-cc1ebc5.json). It measures the source at a commit, not the live process: what fires in production needs a live export of cron_schedule_configs, which the answer states.",
-      "updated_at": "2026-11-04",
+      "notes": "Folded into platform.CAP.registry_runtime_reconciliation (A.M.'s ruling of 2026-11-04). Not built on its own: reconciliation already measured each drift class from source at run time as a list of names with its measurement time and commit; the fold adds the guarantee that no name is published without a call site, and records the run at cc1ebc5 (examples/registry-reconciliation.run-cc1ebc5.json). It measures the source at a commit, not the live process: what fires in production needs a live export of cron_schedule_configs, which the answer states. Built in 3c0cfd0; this commit names the story id so the board can read the trail (A.M., 24 Nov).",
+      "updated_at": "2026-11-24",
       "verification": {
         "state": "submitted",
         "criteria_passed": 1,
