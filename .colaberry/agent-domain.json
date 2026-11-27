@@ -2065,7 +2065,7 @@
       {
         "story_id": "platform.CAP.orchestration_health_watch.L3-TOOL-REQUEST",
         "title": "Curriculum content health scan · 3 · request the tool",
-        "status": "in_progress",
+        "status": "not_started",
         "verification_state": "in_progress",
         "verified": false,
         "criteria_passed": 0,
@@ -2084,7 +2084,7 @@
       {
         "story_id": "platform.CAP.orchestration_health_watch.L4-AGENT-WATCHED",
         "title": "Curriculum content health scan · 4 · agent does it, watched",
-        "status": "in_progress",
+        "status": "not_started",
         "verification_state": "in_progress",
         "verified": false,
         "criteria_passed": 0,
